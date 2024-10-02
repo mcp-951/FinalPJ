@@ -1,0 +1,54 @@
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 400px;
+  background-color: #f9f9f9;
+}
+
+.inquiry-form h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.inquiry-form div {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.inquiry-form label {
+  display: inline-block;
+  width: 100px;
+  font-weight: bold;
+}
+
+.inquiry-form input[type="text"],
+.inquiry-form textarea,
+.inquiry-form input[type="file"] {
+  width: calc(100% - 110px);
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.inquiry-form textarea {
+  height: 150px;
+}
+
+.inquiry-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.inquiry-form button:hover {
+  background-color: #0056b3;
+}

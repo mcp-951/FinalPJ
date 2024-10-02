@@ -1,0 +1,119 @@
+/* 전체 페이지 스타일 */
+.app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+/* 예금 상품 항목 스타일 */
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.deposit-item {
+  border-bottom: 1px solid #ddd;
+  padding: 20px;
+  background-color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 버튼 스타일 */
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.deposit-item h3 {
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+}
+
+.deposit-item p {
+  margin: 5px 0;
+  color: gray;
+}
+
+.deposit-item strong {
+  font-size: 1.1rem;
+  color: #ff4500;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background-color: #f1f1f1;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.pagination button.active {
+  background-color: #333;
+  color: white;
+}
+
+/* 수수료 테이블 전체 컨테이너 스타일 */
+.fee-table-container {
+  margin-top: 30px;
+  margin-left: 0; /* 왼쪽 정렬 */
+  width: 70%; /* 전체 테이블 크기를 작게 설정 */
+  min-width: 600px; /* 최소 너비 설정 */
+  text-align: left; /* 전체 테이블 왼쪽 정렬 */
+}
+
+/* 수수료 테이블 스타일 */
+.fee-table {
+  width: 100%; /* 테이블 너비를 컨테이너에 맞게 설정 */
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+/* 테이블 헤더 스타일 */
+.fee-table th {
+  background-color: #f4f4f4; /* 헤더 배경색 */
+  font-weight: bold;
+  padding: 10px; /* 헤더 셀의 패딩 */
+  font-size: 0.9rem; /* 헤더 폰트 크기 조정 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+/* 테이블 본문 셀 스타일 */
+.fee-table td {
+  padding: 8px; /* 셀의 패딩 크기를 줄임 */
+  font-size: 0.85rem; /* 셀 폰트 크기를 줄임 */
+  border: 1px solid #ddd; /* 셀 경계 */
+  background-color: #fafafa; /* 본문 셀 배경색 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+/* 테이블 제목 스타일 */
+.fee-table-container h2 {
+  text-align: left;
+  font-size: 1.3rem; /* 폰트 크기를 작게 조정 */
+  margin-bottom: 15px; /* 제목과 테이블 간 간격 */
+  color: #333; /* 텍스트 색상 */
+}
+
+/* 모바일 화면에 대한 반응형 디자인 */
+@media (max-width: 768px) {
+  .fee-table-container {
+    width: 100%; /* 모바일에서는 테이블 너비를 100%로 */
+    min-width: auto; /* 최소 너비 해제 */
+    margin-left: 0;
+  }
+
+  .fee-table th,
+  .fee-table td {
+    font-size: 0.75rem; /* 모바일에서 폰트 크기 축소 */
+    padding: 6px; /* 모바일에서 셀 패딩 축소 */
+  }
+}

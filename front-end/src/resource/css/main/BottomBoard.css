@@ -1,0 +1,11 @@
+.boardTable{
+    width: 40%;
+    align-self: flex-start;
+}
+.title{
+    width: 80%;
+}
+.boardPlus{
+    border: none;             
+    background: none;  
+}

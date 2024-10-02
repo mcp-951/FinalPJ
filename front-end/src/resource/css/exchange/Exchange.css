@@ -1,0 +1,83 @@
+.exchange-container {
+    padding: 20px;
+    position: relative;
+    min-height: 100vh;
+}
+
+.exchange-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.exchange-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 중앙 정렬 */
+}
+
+.exchange-column-vertical {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 중앙 정렬 */
+}
+/*
+label {
+    display: block;
+    background-color: #20B2AA; 
+    padding: 5px;
+    margin-bottom: 5px;
+    width: 80%; 
+    text-align: center; 
+}
+*/
+/*
+input, select {
+    width: 80%; 
+    padding: 5px;
+    margin-bottom: 20px; 
+}
+*/
+
+.password-container {
+    display: flex;
+    align-items: center;
+    width: 80%;
+}
+
+.password-input {
+    width: 70%; /* 비밀번호 입력창의 너비를 늘림 */
+    padding: 5px;
+}
+
+.password-button {
+    padding: 5px 10px; /* 입력창과 높이를 맞춤 */
+    background-color: #20B2AA; /* 청록색 계열 */
+    border: none;
+    color: white;
+    cursor: pointer;
+    height: 36px; /* 입력창과 높이를 맞춤 */
+    margin-left: 10px; /* 입력창과 버튼 사이 간격 */
+}
+
+.password-button:hover {
+    background-color: #1E90FF; /* 어두운 청록색 */
+}
+/*
+button {
+    padding: 10px 20px; 
+    background-color: #20B2AA; 
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-left: 5px;
+}
+*/
+
+/*
+button:hover {
+    background-color: #1E90FF;
+}
+*/

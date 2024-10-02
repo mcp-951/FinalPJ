@@ -1,0 +1,111 @@
+/* 컨테이너 스타일 */
+.auto-transfer-step2-container {
+  width: 50%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* 테이블 스타일 */
+.auto-transfer-step2-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px; /* 테이블과 아래 버튼 사이 간격 추가 */
+}
+
+.auto-transfer-step2-table th, 
+.auto-transfer-step2-table td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.auto-transfer-step2-table th {
+  background-color: #f1f1f1;
+  width: 30%;
+}
+
+/* 출금 가능 금액 버튼과 정보 섹션 */
+.auto-transfer-step2-balance-section {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* 버튼과 정보 사이 간격 */
+  margin-bottom: 15px; /* 섹션 간격 추가 */
+}
+
+.auto-transfer-step2-balance-button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.auto-transfer-step2-balance-button:hover {
+  background-color: #0056b3;
+}
+
+.auto-transfer-step2-balance-info {
+  font-size: 14px;
+  color: green;
+}
+
+/* 에러 메시지 스타일 */
+.auto-transfer-step2-error-message {
+  font-size: 14px;
+  color: red;
+}
+
+/* 유효성 확인 메시지 */
+.auto-transfer-step2-valid-check {
+  margin-left: 10px;
+  color: green;
+  font-size: 14px;
+}
+
+/* 제출 버튼 */
+.auto-transfer-step2-submit-button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.auto-transfer-step2-submit-button:hover {
+  background-color: #218838;
+}
+
+/* 인풋 필드와 버튼 간격 조정 */
+.auto-transfer-step2-input {
+  padding: 8px;
+  width: calc(100% - 120px); /* 버튼을 제외한 인풋 필드 너비 (더 넓은 간격 반영) */
+  margin-right: 20px; /* 인풋 필드와 버튼 사이 간격을 크게 설정 */
+}
+
+/* 금액 버튼과의 간격 스타일링 */
+.auto-transfer-step2-amount-buttons {
+  display: flex;
+  gap: 12px; /* 금액 버튼 간의 간격 */
+  margin-bottom: 15px; /* 금액 버튼과 입력 필드 사이 간격 */
+}
+
+.auto-transfer-step2-amount-buttons button {
+  padding: 8px 14px; /* 버튼의 패딩 조정 */
+  font-size: 14px; /* 텍스트 크기 조정 */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.auto-transfer-step2-amount-buttons button:hover {
+  background-color: #0056b3;
+}
