@@ -1,6 +1,6 @@
 package com.urambank.uram.entities;
 
-import com.ict03.urambank.dto.AccountDTO;
+import com.urambank.uram.dto.AccountDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

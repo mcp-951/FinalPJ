@@ -1,6 +1,6 @@
-package com.ict03.urambank.repository;
+package com.urambank.uram.repository;
 
-import com.ict03.urambank.entity.AutoTransferEntity;
+import com.urambank.uram.entities.AutoTransferEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AutoTransferRepository extends JpaRepository<AutoTransferEntity, Integer> {

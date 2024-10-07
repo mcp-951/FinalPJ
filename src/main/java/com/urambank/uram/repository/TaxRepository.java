@@ -1,6 +1,6 @@
-package com.ict03.urambank.repository;
+package com.urambank.uram.repository;
 
-import com.ict03.urambank.entity.TaxEntity;
+import com.urambank.uram.entities.TaxEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TaxRepository extends JpaRepository<TaxEntity, Integer> {

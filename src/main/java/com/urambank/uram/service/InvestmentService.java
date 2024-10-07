@@ -1,8 +1,8 @@
-package com.ict03.urambank.service;
+package com.urambank.uram.service;
 
-import com.ict03.urambank.dto.CoinListDTO;
-import com.ict03.urambank.entity.CoinListEntity;
-import com.ict03.urambank.repository.CoinListRepository;
+import com.urambank.uram.dto.CoinListDTO;
+import com.urambank.uram.entities.CoinListEntity;
+import com.urambank.uram.repository.CoinListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

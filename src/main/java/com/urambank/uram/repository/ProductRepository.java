@@ -1,6 +1,6 @@
-package com.ict03.urambank.repository;
+package com.urambank.uram.repository;
 
-import com.ict03.urambank.entity.ProductEntity;
+import com.urambank.uram.entities.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

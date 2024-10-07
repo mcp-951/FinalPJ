@@ -1,6 +1,6 @@
 package com.urambank.uram.dto;
 
-import com.ict03.urambank.entity.AccountEntity;
+import com.urambank.uram.entities.AccountEntity;
 import lombok.*;
 
 import java.util.Date;

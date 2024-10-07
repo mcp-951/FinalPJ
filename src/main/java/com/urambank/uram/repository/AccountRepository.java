@@ -1,7 +1,7 @@
-package com.ict03.urambank.repository;
+package com.urambank.uram.repository;
 
-import com.ict03.urambank.dto.AccountDTO;
-import com.ict03.urambank.entity.AccountEntity;
+import com.urambank.uram.dto.AccountDTO;
+import com.urambank.uram.entities.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;

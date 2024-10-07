@@ -1,6 +1,6 @@
-package com.ict03.urambank.repository;
+package com.urambank.uram.repository;
 
-import com.ict03.urambank.entity.CurrencyExchangeEntity;
+import com.urambank.uram.entities.CurrencyExchangeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CurrencyExchangeRepository extends JpaRepository<CurrencyExchangeEntity, Integer> {

@@ -1,9 +1,9 @@
-package com.urambank.uram.config;
+package com.urambank.uram.controller;
 
-import com.ict03.urambank.dto.AccountDTO;
-import com.ict03.urambank.dto.LogDTO;
-import com.ict03.urambank.dto.OutAccountDTO;
-import com.ict03.urambank.service.AccountService;
+import com.urambank.uram.dto.AccountDTO;
+import com.urambank.uram.dto.LogDTO;
+import com.urambank.uram.dto.OutAccountDTO;
+import com.urambank.uram.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

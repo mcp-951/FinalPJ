@@ -1,14 +1,14 @@
-package com.ict03.urambank.service;
+package com.urambank.uram.service;
 
-import com.ict03.urambank.dto.AccountDTO;
-import com.ict03.urambank.dto.LogDTO;
-import com.ict03.urambank.dto.OutAccountDTO;
-import com.ict03.urambank.entity.AccountEntity;
-import com.ict03.urambank.entity.LogEntity;
-import com.ict03.urambank.entity.OutAccountEntity;
-import com.ict03.urambank.repository.AccountRepository;
-import com.ict03.urambank.repository.LogRepository;
-import com.ict03.urambank.repository.OutAccountRepository;
+import com.urambank.uram.dto.AccountDTO;
+import com.urambank.uram.dto.LogDTO;
+import com.urambank.uram.dto.OutAccountDTO;
+import com.urambank.uram.entities.AccountEntity;
+import com.urambank.uram.entities.LogEntity;
+import com.urambank.uram.entities.OutAccountEntity;
+import com.urambank.uram.repository.AccountRepository;
+import com.urambank.uram.repository.LogRepository;
+import com.urambank.uram.repository.OutAccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
