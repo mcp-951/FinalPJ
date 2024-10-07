@@ -6,8 +6,6 @@ import Main from '../mainPage/Main';
 
 // 로그인 라우터 임포트
 import Login from '../page/loginPage/Login';
-import Signup from '../page/loginPage/SignUp';
-
 
 // 투자 라우터 임포트
 import InvestmentMain from 'component/page/investment/InvestmentMain';
@@ -76,7 +74,6 @@ const RouteComponent = () => {
                         <Route path="/" exact={true} element={<Main />} />
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
-                        <Route path="/signup" exact={true} element={<Signup />} />
                         {/*}투자 페이지{*/}
                         <Route path="/investment" exact={true} element={<InvestmentMain/>} />
                         {/*}공과금페이지{*/}

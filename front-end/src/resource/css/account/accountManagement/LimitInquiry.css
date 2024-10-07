@@ -41,3 +41,7 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.limit-change-button:hover {
+  background-color: #0056b3;
+}

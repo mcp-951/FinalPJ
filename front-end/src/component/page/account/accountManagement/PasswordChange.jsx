@@ -1,29 +1,47 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // useNavigate 추가
+import { useParams, useNavigate, useLocation } from 'react-router-dom'; // useLocation 추가
+import axios from 'axios'; // axios 임포트 추가
 import '../../../../resource/css/account/accountManagement/PasswordChange.css'; // CSS 파일
 
 const PasswordChange = () => {
   const { accountNumber } = useParams(); // URL 파라미터에서 계좌번호 가져오기
+  const location = useLocation();  // 이전 페이지에서 전달된 데이터를 받기 위한 useLocation 사용
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isVerified, setIsVerified] = useState(false); // 휴대폰 인증 여부
   const [error, setError] = useState('');
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
+  // 전달된 계좌명 (productName)
+  const productName = location.state?.productName || 'Unknown';  // 이전 페이지에서 전달된 계좌명 확인
+
+  // 전달된 데이터 확인
+  console.log('Received accountNumber:', accountNumber);
+  console.log('Received productName from state:', productName);
+
   const handlePhoneVerification = () => {
     setIsVerified(true);
     alert('휴대폰 인증이 완료되었습니다.');
   };
 
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {
       setError('변경할 비밀번호가 일치하지 않습니다.');
     } else {
       setError('');
-      alert('비밀번호가 성공적으로 변경되었습니다.');
-      
-      // 비밀번호 변경 성공 후 메인 페이지로 이동
-      navigate('/');
+      try {
+        const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/change-password`, {
+          newPassword: parseInt(newPassword, 10) // 비밀번호를 숫자로 변환하여 전송
+        });
+
+        if (response.status === 200) {
+          alert('비밀번호가 성공적으로 변경되었습니다.');
+          navigate('/'); // 성공적으로 변경되면 메인 페이지로 이동
+        }
+      } catch (error) {
+        alert('비밀번호 변경 중 오류가 발생했습니다.');
+        console.error("Error during password change:", error);
+      }
     }
   };
 
@@ -38,7 +56,7 @@ const PasswordChange = () => {
           </tr>
           <tr>
             <th>계좌명</th>
-            <td>xxxxxxxx</td>
+            <td>{productName}</td> {/* 이전 페이지에서 가져온 계좌명 표시 */}
           </tr>
           <tr>
             <th>변경후 비밀번호</th>

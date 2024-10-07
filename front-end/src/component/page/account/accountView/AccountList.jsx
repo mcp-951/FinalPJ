@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import ApiService from '../../../../ApiService';
 import '../../../../resource/css/account/accountView/AccountList.css';
 import Modal from './Modal';
 import { FaEllipsisV } from 'react-icons/fa';
@@ -7,18 +8,37 @@ import { FaEllipsisV } from 'react-icons/fa';
 const AccountList = ({ type }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(null);
+  const [accounts, setAccounts] = useState([]); // 서버에서 가져온 데이터를 저장
+  const [error, setError] = useState(null); // 에러 상태 추가
   const navigate = useNavigate();
 
-  const accounts = [
-    { number: '123-456-789', name: '예금계좌', type: '예금', balance: '100,000원' },
-    { number: '234-567-890', name: '적금계좌', type: '적금', balance: '100,000원' },
-    { number: '345-678-901', name: '대출계좌', type: '대출', balance: '200,000원' }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await ApiService.getAllAccounts();
+        setAccounts(response.data); 
+      } catch (error) {
+        setError('데이터를 가져오는 중 오류가 발생했습니다.');
+      }
+    };
 
-  const filteredAccounts = accounts.filter(account => account.type === type);
+    fetchData(); 
+  }, []);
+
+  const filteredAccounts = accounts.filter(account => {
+    if (type === '예금') {
+      return account.productName.includes('예금');
+    } else if (type === '적금') {
+      return account.productName.includes('적금');
+    } else if (type === '대출') {
+      return account.productName.includes('대출');
+    } else {
+      return false;
+    }
+  });
 
   const handleMoreClick = (account) => {
-    setSelectedAccount(account); // 계좌 객체를 저장
+    setSelectedAccount(account);
     setShowModal(true);
   };
 
@@ -28,29 +48,30 @@ const AccountList = ({ type }) => {
 
   return (
     <div>
-      <h5>{type} 계좌 조회 | 총 잔액: {filteredAccounts.reduce((acc, account) => acc + parseInt(account.balance.replace(/[^0-9]/g, '')), 0).toLocaleString()}원</h5>
+      <h5>{type} 계좌 조회 | 총 잔액: {filteredAccounts.reduce((acc, account) => acc + account.accountBalance, 0).toLocaleString()}원</h5>
       <div className="account-list-container">
-        {filteredAccounts.length > 0 ? (
+        {error ? (
+          <p>{error}</p>
+        ) : filteredAccounts.length > 0 ? (
           filteredAccounts.map((account) => (
-            <div className="account-list-box" key={account.number}>
+            <div className="account-list-box" key={account.accountNumber}>
               <div className="list-more-icon" onClick={() => handleMoreClick(account)}>
                 <FaEllipsisV />
               </div>
 
               <div className="account-list-number-section">
-                <Link to={`/account/detail/${account.number}`} className="account-list-number">
-                  <span>계좌번호: {account.number} | 계좌명: {account.name}</span>
+                <Link to={`/account/detail/${account.accountNumber}`} className="account-list-number">
+                  <span>계좌번호: {account.accountNumber} | 계좌명: {account.productName}</span>
                 </Link>
-                <div className="account-list-balance">잔액: {account.balance}</div>
+                <div className="account-list-balance">잔액: {account.accountBalance.toLocaleString()}원</div>
               </div>
 
-              {/* 대출 계좌가 아닌 경우에만 버튼 표시 */}
-              {account.type !== '대출' && (
+              {account.productName.includes('대출') === false && (
                 <div className="account-list-buttons">
-                  <Link to={`/account/detail/${account.number}`}>
+                  <Link to={`/account/detail/${account.accountNumber}`}>
                     <button className="list-detail-button">상세</button>
                   </Link>
-                  <button className="list-transfer-button" onClick={() => handleTransferClick(account.number)}>이체</button>
+                  <button className="list-transfer-button" onClick={() => handleTransferClick(account.accountNumber)}>이체</button>
                 </div>
               )}
             </div>
@@ -60,12 +81,11 @@ const AccountList = ({ type }) => {
         )}
       </div>
 
-      {/* Modal에 선택된 계좌의 정보를 전달 */}
       {selectedAccount && (
         <Modal
           show={showModal}
           onClose={() => setShowModal(false)}
-          account={selectedAccount} // 선택된 계좌 정보 전달
+          account={selectedAccount} 
         />
       )}
     </div>
