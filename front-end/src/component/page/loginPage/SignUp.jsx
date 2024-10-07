@@ -157,9 +157,7 @@ function SignUp() {
 
     // 회원가입 완료
     const handleSubmit = (e) => {
-    if({...form} === null) {
-        alert("값을 입력하세요")
-        }else if(idCheckState === '' || idCheckState === false){
+        if(idCheckState === '' || idCheckState === false){
             setIdCheckMessage('중복확인 해주세요.');
             }else if(form.userPw === null || form.userPw === '' || form.userPw !== form.confirmPassword){
                 alert("비밀번호 확인 바랍니다.")
