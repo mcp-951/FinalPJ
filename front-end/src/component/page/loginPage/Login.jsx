@@ -27,6 +27,7 @@ function Login() {
         localStorage.setItem("token",token.data);
         //console.log("token:", token);
         navigate("/");
+        window.location.reload();
     } catch (error) {
         console.error("Login failed:", error);
         // 로그인 실패 시 처리
