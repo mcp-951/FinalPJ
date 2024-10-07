@@ -1,7 +1,7 @@
-package com.urambank.uram.config;
+package com.ict03.urambank.controller;
 
-import com.urambank.uram.dto.CoinListDTO;
-import com.urambank.uram.InvestmentService;
+import com.ict03.urambank.dto.CoinListDTO;
+import com.ict03.urambank.service.InvestmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
