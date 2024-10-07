@@ -1,6 +1,7 @@
 package com.urambank.uram.controller;
 
 
+import com.urambank.uram.dto.TokenDTO;
 import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.service.UserService;
 import jakarta.servlet.ServletException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 public class UserController {
 
@@ -20,6 +22,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
 
     //id 중복조회
     @GetMapping("/findById/{userId}")
@@ -41,10 +44,6 @@ public class UserController {
         return userService.checkHp(hp);
     }
 
-    @GetMapping("/Ace")
-    public int Ace(){
-        return 123;
-    }
 
 //    @PostMapping("/refresh")
 //    public ResponseEntity<UserDTO> refreshToken(@RequestBody UserDTO dto){

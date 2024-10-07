@@ -65,6 +65,9 @@ import AssetsCal from '../page/assetsPage/AssetsCal';
 import AssetsList from '../page/assetsPage/AssetsList';
 import AssetsAnalysis from '../page/assetsPage/AssetsAnalysis';
 
+//팝업
+import GetAddress from 'component/page/loginPage/GetAddress';
+
 
 const RouteComponent = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -154,6 +157,10 @@ const RouteComponent = () => {
                         <Route path="/myAsset" exact={true} element={<AssetsList />} />
                         <Route path="/consumeAnalyse" exact={true} element={<AssetsAnalysis/>} />
                         <Route path="/AssetsAnalysis" exact={true} element={<AssetsAnalysis />} />
+
+
+                        <Route path="/getAddress" exact={true} element={<GetAddress />} />
+
                    </Routes>
                 </div>
             </BrowserRouter>

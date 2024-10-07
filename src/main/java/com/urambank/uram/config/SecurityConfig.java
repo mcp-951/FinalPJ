@@ -40,8 +40,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf((auth) -> auth.disable());
+        http
+                .cors((cors) -> cors.configurationSource(CorsConfig.corsConfigurationSource()));
         // form 로그인 방식을 disable 함
         http
                 .formLogin((auth) ->auth.disable());

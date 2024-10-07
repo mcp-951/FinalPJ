@@ -62,8 +62,6 @@ public class UserService {
         userDTO.setResidentNumber(userDTO.getResidentNumber1() + userDTO.getResidentNumber2());
 
         try {
-            int userNo = userRepository.findMaxNo();
-            System.out.println("No : " + userNo);
             // 사용자 정보 설정 및 비밀번호 암호화
             User user = new User();
 //            user.setUserNo(userNo);
