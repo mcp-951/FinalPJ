@@ -25,7 +25,7 @@ public class UserDTO {
     private String address;
     private String residentNumber;
     private Date joinDate;
-    private int ban;
+    private char state;
     private int idCheck;
     private int OCRCheck;
     private String token;

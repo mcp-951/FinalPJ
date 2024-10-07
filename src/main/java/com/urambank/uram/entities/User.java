@@ -46,7 +46,7 @@ public class User {
     private Date joinDate;
 
     @Column(length = 100, nullable = true, unique = false)
-    private int ban;
+    private char state;
 
     @Column(length = 100, nullable = true, unique = false)
     private int OCRCheck;
@@ -58,7 +58,7 @@ public class User {
     private String residentNumber;
 
     @Builder
-    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, int ban, int ocrCheck) {
+    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck) {
         this.userNo = userNo;
         this.userId = userId;
         this.userPw = userPw;
@@ -67,7 +67,7 @@ public class User {
         this.hp = hp;
         this.email = email;
         this.joinDate = joinDate;
-        this.ban = ban;
+        this.state = state;
         this.OCRCheck = ocrCheck;
     }
 

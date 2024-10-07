@@ -22,11 +22,9 @@ import java.util.Map;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
-    @Autowired
     private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.authenticationManager = authenticationManager;

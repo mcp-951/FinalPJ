@@ -4,6 +4,7 @@ import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.repository.UserRepository;
 import com.urambank.uram.util.JWTUtil;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
@@ -22,24 +23,26 @@ import java.util.Random;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JWTUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+    private DefaultMessageService messageService;
 
+    @PostConstruct
+    public void initMessageService() {
+        this.messageService = NurigoApp.INSTANCE.initialize(
+                "NCSWFN2OVSKW3MPS",
+                "P9YBFDGTRQNVQ2KXSP7NGF1BE7PLX5DP",
+                "https://api.coolsms.co.kr"
+        );
+    }
     @Autowired
-    private JWTUtil jwtUtil;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-
-    private final DefaultMessageService messageService;
-
-    public UserService() {
-        this.messageService = NurigoApp.INSTANCE.initialize("NCSWFN2OVSKW3MPS", "P9YBFDGTRQNVQ2KXSP7NGF1BE7PLX5DP", "https://api.coolsms.co.kr");
-        this.passwordEncoder = null;
+    public UserService(UserRepository userRepository, JWTUtil jwtUtil, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
+        this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public String findByUserId(String userId) {

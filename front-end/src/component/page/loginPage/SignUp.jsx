@@ -26,16 +26,15 @@ function SignUp() {
     const [startCheckHp, setStartCheckHp] = useState(false);
     const [stateAuth, setStateAuth] = useState(false);
     const [pwSameCheck, setPwSameCheck] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
     const [plusAddress, setPlusAddress] = useState(false);
     const navigate = useNavigate();
-    let [hpAuthKey, setHpAuthKey] = useState('');
-    let [authHp, setAuthHp] = useState('');
-    const [zoneCode, setZoneCode] = useState('');
-    const [addressCode, setAddressCode] = useState('');
-    let reg_password = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,20}$/;	//비밀번호 판별을 위한 정규식 문자(소문자, 대문자)+숫자로 구성된 8~20 자 비밀번호
+    const [hpAuthKey, setHpAuthKey] = useState('');
+    const [authHp, setAuthHp] = useState('');
+    // 정규식
+    const reg_id = /^(?=.*?[a-zA-Z0-9]).{6,16}$/;   //아이디 판별을 위한 정규식 영문자숫자만 입력 가능 6~16 자
+    const reg_password = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,20}$/;	//비밀번호 판별을 위한 정규식 문자(소문자, 대문자)+숫자로 구성된 8~20 자
 
-
+    // 입력창 실시간 업데이트
     const handleChange = (e) => {
       const { name, value } = e.target;
       setForm({ ...form, [name]: value });
@@ -49,15 +48,15 @@ function SignUp() {
         setStateAuth(true);
     };
 
-
+    //아이디
     const idCheck = () => {
-      const userId = form.userId;
-      if(userId === "") {
-          setIdCheckMessage('아이디를 입력하세요');
-      }else{
+        const userId = form.userId;
+        if(userId === "") {
+            setIdCheckMessage('아이디를 입력하세요');
+        }else{
           console.log("userId :" + userId)
           handleCheckId(userId);
-      }
+        }
     }
     const handleCheckId = (userId) => {
     apiSer.checkId(userId)
@@ -76,7 +75,7 @@ function SignUp() {
         });
     };
 
-
+    // 비밀번호
     useEffect(() => {
         checkingPw();
     }, [form.userPw, form.confirmPassword]);
@@ -91,6 +90,7 @@ function SignUp() {
         }
     };
 
+    // 휴대폰
     const hpCheck = () => {
         const hp = form.hp;
         if(hp.length < 10 || hp.length >11) {
@@ -101,19 +101,17 @@ function SignUp() {
             startCheckHpHandler();
         }
     };
-
     const authingKey = () => {
-        let takeKey= hpAuthKey;
-        let takeHp = form.hpAuthkey;
-        console.log("takeHp : " + form.hpAuthkey +", hpAuthKey :"+ takeKey)
-        if(takeHp === takeKey) {
+        const getHpAuthKey = String(hpAuthKey).trim()
+        const getFormHpAuthKey = String(form.hpAuthkey).trim()
+        console.log("hpAuthKey : " + hpAuthKey +", form.hpAuthkey :"+ form.hpAuthkey)
+        if(getHpAuthKey === getFormHpAuthKey) {
             settingStateAuth(true);
-            setAuthHp = true;
+            setAuthHp(true);
             }else{
                 alert("인증번호가 맞지 않습니다.")
             }
     };
-
     const handleCheckHp = (hp) => {
     apiSer.checkHp(hp)
         .then((response) => {
@@ -124,7 +122,7 @@ function SignUp() {
         });
     };
 
-
+    // 주소
     const openPopup = link => {
         // 팝업 window의 크기 지정
         const width = 500;
@@ -142,7 +140,7 @@ function SignUp() {
         const receiveMessage = (event) => {
             if (event.origin !== window.location.origin) return; // 보안 상 다른 도메인에서 온 메시지 무시
             if (event.data.address) {
-                setForm((prevForm) => ({ ...prevForm, address: event.data.address }));
+                setForm((prevForm) => ({ ...prevForm, address1: event.data.address }));
                 getPlusAddress();
             }
         };
@@ -153,11 +151,11 @@ function SignUp() {
 
         };
     }, []);
-
     const getPlusAddress = () => {
         setPlusAddress(true);
     }
 
+    // 회원가입 완료
     const handleSubmit = (e) => {
     if({...form} === null) {
         alert("값을 입력하세요")
@@ -166,13 +164,16 @@ function SignUp() {
             }else if(form.userPw === null || form.userPw === '' || form.userPw !== form.confirmPassword){
                 alert("비밀번호 확인 바랍니다.")
                 }else if(authHp === 'false' || authHp === ''){
-                alert("휴대폰 인증이 되지 않았습니다.")
-                }else {
-                    form.address == form.address1 + form.address2;
-                    console.log({...form})
-                    apiSer.signUp({...form});
-                    navigate("/login");
-                }
+                    alert("휴대폰 인증이 되지 않았습니다.")
+                    }else {
+                        const fullAddress = form.address1 + form.address2;
+                        setForm({...form, address: fullAddress})
+                        //form.address == form.address1 + form.address2;
+                        console.log(form.address)
+                        console.log({...form})
+                        apiSer.signUp({...form});
+                        navigate("/login");
+                    }
     };
 
     return (
