@@ -3,8 +3,14 @@ import '../../../resource/css/Login.css'
 import apiSer from '../../ApiService'
 
 import {useNavigate} from 'react-router-dom';
+import localStorage from 'localStorage';
 
 function Login() {
+//     if(localStorage.getItem('token') !== null || localStorage.getItem('token') !== ''){
+//         alert('이미 로그인된 상태입니다.')
+//         navigate('/')
+//         }
+
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -20,7 +26,6 @@ function Login() {
         const response = await apiSer.login(form);
         console.log("Login successful:", response);
         // 로그인 성공 시 처리
-        
         navigate("/");
     } catch (error) {
         console.error("Login failed:", error);
@@ -32,7 +37,6 @@ function Login() {
                 }else{
                     alert("로그인에 실패했습니다.");
                     }
-
     }
 };
 

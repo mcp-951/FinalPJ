@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.sql.Date;
 import java.util.Collection;
 
-@Table(name="USER_TB")
+@Table(name="userInfo")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -46,10 +46,10 @@ public class User {
     private Date joinDate;
 
     @Column(length = 100, nullable = true, unique = false)
-    private int ban;
+    private char state;
 
     @Column(length = 100, nullable = true, unique = false)
-    private String OCRCheck;
+    private int OCRCheck;
 
     @Column(length = 20, nullable = false, unique = false)
     private String user_role;
@@ -58,7 +58,7 @@ public class User {
     private String residentNumber;
 
     @Builder
-    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, int ban, String ocrCheck) {
+    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck) {
         this.userNo = userNo;
         this.userId = userId;
         this.userPw = userPw;
@@ -67,15 +67,11 @@ public class User {
         this.hp = hp;
         this.email = email;
         this.joinDate = joinDate;
-        this.ban = ban;
+        this.state = state;
         this.OCRCheck = ocrCheck;
     }
 
 
     public User(String subject, String s, Collection<? extends GrantedAuthority> authorities) {
-    }
-
-    public Object getPassword() {
-        return null;
     }
 }

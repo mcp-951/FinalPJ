@@ -25,8 +25,7 @@ const apiSer = {
         console.log("hp : " + hp);
         console.log("checkHp");
         return axios.get(`${API_BASE_URL}/checkHp` + '/' + hp);
-    },
-    
+    }
 
 };
 

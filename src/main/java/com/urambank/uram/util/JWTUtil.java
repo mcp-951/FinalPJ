@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class JWTUtil {
 
     private final SecretKey secretKey;
-    private static final long ACCESS_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 10L;  // 10시간
+    private static final long ACCESS_TOKEN_EXPIRATION_TIME = 10 * 60 * 10L;  // 1시간
     private static final long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7L;  // 7일
 
     public JWTUtil(@Value("${spring.jwt.secret}") String secret) {

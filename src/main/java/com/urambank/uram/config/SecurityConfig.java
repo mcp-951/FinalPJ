@@ -17,15 +17,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
     private final AuthenticationConfiguration authenticationConfiguration;
 
-    @Autowired
-    private JWTUtil jwtUtil;
+
+    private final JWTUtil jwtUtil;
 
 
-    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration) {
+    public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
         this.authenticationConfiguration= authenticationConfiguration;
+        this.jwtUtil = jwtUtil;
     }
 
     @Bean
@@ -40,8 +40,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        // csrf 미적용
         http
                 .csrf((auth) -> auth.disable());
+        // cors filter 적용
+        http
+                .cors((cors) -> cors.configurationSource(CorsConfig.corsConfigurationSource()));
         // form 로그인 방식을 disable 함
         http
                 .formLogin((auth) ->auth.disable());

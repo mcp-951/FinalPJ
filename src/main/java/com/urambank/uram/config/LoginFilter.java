@@ -1,6 +1,7 @@
 package com.urambank.uram.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.urambank.uram.dto.TokenDTO;
 import com.urambank.uram.repository.CustomUserDetails;
 import com.urambank.uram.util.JWTUtil;
 import jakarta.servlet.FilterChain;
@@ -21,11 +22,9 @@ import java.util.Map;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
-    @Autowired
     private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
     public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
@@ -66,20 +65,35 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         String username = customUserDetails.getUsername();
-        System.out.println("username : " + username);
-
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = authorities.iterator().next().getAuthority();
 
-        // 만료 시간 (10시간)
-        long tokenValidity = 60 * 60 * 10L;
+        // 만료 시간 (30분)
+        long tokenValidity = 10 * 60 * 1000L; // 30분을 밀리초로 설정
+
+        // JWT 토큰 생성
         String token = jwtUtil.createJwt(username, role, tokenValidity);
 
+        // 응답 헤더에 토큰을 추가
         response.addHeader("Authorization", "Bearer " + token);
-        System.out.println("token : " + token);
+
+        // TokenDTO 객체 생성
+        TokenDTO dto = new TokenDTO();
+        dto.setAccessToken(token);
+
+        // 응답을 JSON 형식으로 설정
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        // ObjectMapper를 이용해 JSON 응답
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(dto);
+
+        // 응답 본문에 accessToken을 JSON 형식으로 추가
+        response.getWriter().write(jsonResponse);
     }
 
     @Override
