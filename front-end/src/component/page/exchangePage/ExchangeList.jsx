@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Footer from '../../util/Footer';
 
-const ExchangeHistory = () => {
+
+const ExchangeList = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [exchangeData, setExchangeData] = useState([]);
@@ -11,36 +13,27 @@ const ExchangeHistory = () => {
     const itemsPerPage = 10;
     const navigate = useNavigate();
 
-    // 임시 데이터 설정
-    const tempData = [
-        { exchangeNumber: 1, currencyType: 'USD', exchangeAmount: 100, withdrawalAmount: 130000, exchangeDate: '2023-09-10', receivingBranch: '홍대점' },
-        { exchangeNumber: 2, currencyType: 'EUR', exchangeAmount: 200, withdrawalAmount: 260000, exchangeDate: '2023-09-11', receivingBranch: '강남점' },
-        { exchangeNumber: 3, currencyType: 'JPY', exchangeAmount: 300, withdrawalAmount: 390000, exchangeDate: '2023-09-12', receivingBranch: '명동점' },
-        { exchangeNumber: 4, currencyType: 'CNY', exchangeAmount: 400, withdrawalAmount: 520000, exchangeDate: '2023-09-13', receivingBranch: '종로점' },
-        { exchangeNumber: 5, currencyType: 'GBP', exchangeAmount: 500, withdrawalAmount: 650000, exchangeDate: '2023-09-14', receivingBranch: '서초점' },
-        { exchangeNumber: 6, currencyType: 'USD', exchangeAmount: 600, withdrawalAmount: 780000, exchangeDate: '2023-09-15', receivingBranch: '홍대점' },
-        { exchangeNumber: 7, currencyType: 'EUR', exchangeAmount: 700, withdrawalAmount: 910000, exchangeDate: '2023-09-16', receivingBranch: '강남점' },
-        { exchangeNumber: 8, currencyType: 'JPY', exchangeAmount: 800, withdrawalAmount: 1040000, exchangeDate: '2023-09-17', receivingBranch: '명동점' },
-        { exchangeNumber: 9, currencyType: 'CNY', exchangeAmount: 900, withdrawalAmount: 1170000, exchangeDate: '2023-09-18', receivingBranch: '종로점' },
-        { exchangeNumber: 10, currencyType: 'GBP', exchangeAmount: 1000, withdrawalAmount: 1300000, exchangeDate: '2023-09-19', receivingBranch: '서초점' },
-        { exchangeNumber: 11, currencyType: 'USD', exchangeAmount: 1100, withdrawalAmount: 1430000, exchangeDate: '2023-09-20', receivingBranch: '홍대점' },
-        { exchangeNumber: 12, currencyType: 'EUR', exchangeAmount: 1200, withdrawalAmount: 1560000, exchangeDate: '2023-09-21', receivingBranch: '강남점' },
-    ];
-
+    // 환전 내역을 가져오는 useEffect
     useEffect(() => {
-        setExchangeData(tempData);
-        setFilteredData(tempData); // 기본적으로 모든 데이터를 출력
+        axios.get('http://localhost:8081/exchangeList')
+            .then(response => {
+                setExchangeData(response.data);
+                setFilteredData(response.data);
+            })
+            .catch(error => {
+                console.error("환전 내역을 가져오는 중 오류 발생:", error);
+            });
     }, []);
 
     const fetchData = () => {
-        const filtered = tempData.filter(data => {
-            const exchangeDate = new Date(data.exchangeDate);
+        const filtered = exchangeData.filter(data => {
+            const exchangeDate = new Date(data.tradeDate);
             const start = new Date(startDate);
             const end = new Date(endDate);
             return exchangeDate >= start && exchangeDate <= end;
         });
         setFilteredData(filtered);
-        setCurrentPage(1); // 페이지를 첫 페이지로 초기화
+        setCurrentPage(1);
     };
 
     const handlePageChange = (pageNumber) => {
@@ -98,12 +91,12 @@ const ExchangeHistory = () => {
                         <tbody>
                             {currentItems.map((data, index) => (
                                 <tr key={index} style={{ padding: '15px 0' }}>
-                                    <td style={{ padding: '10px 0' }}>{data.exchangeNumber}</td>
-                                    <td style={{ padding: '10px 0' }}>{data.currencyType}</td>
-                                    <td style={{ padding: '10px 0' }}>{data.exchangeAmount}</td>
-                                    <td style={{ padding: '10px 0' }}>{data.withdrawalAmount}</td>
-                                    <td style={{ padding: '10px 0' }}>{data.exchangeDate}</td>
-                                    <td style={{ padding: '10px 0' }}>{data.receivingBranch}</td>
+                                    <td style={{ padding: '10px 0' }}>{data.tradeNo}</td>
+                                    <td style={{ padding: '10px 0' }}>{data.selectCountry}</td>
+                                    <td style={{ padding: '10px 0' }}>{data.tradeAmount}</td>
+                                    <td style={{ padding: '10px 0' }}>{data.tradePrice}</td>
+                                    <td style={{ padding: '10px 0' }}>{data.tradeDate}</td>
+                                    <td style={{ padding: '10px 0' }}>{data.pickupPlace}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -135,7 +128,7 @@ const ExchangeHistory = () => {
                 onClick={() => navigate('/exchange-rate')}
                 style={{
                     marginTop: '20px',
-                    marginBottom: '50px', // 푸터와의 간격을 100px로 설정
+                    marginBottom: '50px',
                     padding: '10px 20px',
                     backgroundColor: '#66b2b2',
                     color: 'white',
@@ -154,4 +147,4 @@ const ExchangeHistory = () => {
     );
 };
 
-export default ExchangeHistory;
+export default ExchangeList;

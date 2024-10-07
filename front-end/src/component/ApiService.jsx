@@ -2,6 +2,8 @@ import axios from 'axios';
 
 const API_BASE_URL = "http://localhost:8081";
 
+
+
 const apiSer = {
     login: (loginData) => {
         console.log("login");
@@ -23,7 +25,8 @@ const apiSer = {
         console.log("hp : " + hp);
         console.log("checkHp");
         return axios.get(`${API_BASE_URL}/checkHp` + '/' + hp);
-    }
+    },
+    
 
 };
 

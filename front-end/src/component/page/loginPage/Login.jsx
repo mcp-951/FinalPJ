@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import '../../../resource/css/Login.css'
 import apiSer from '../../ApiService'
+
 import {useNavigate} from 'react-router-dom';
 
 function Login() {
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    
+    
 
     const handleLogin = async () => {
     try {
@@ -17,6 +20,7 @@ function Login() {
         const response = await apiSer.login(form);
         console.log("Login successful:", response);
         // 로그인 성공 시 처리
+        
         navigate("/");
     } catch (error) {
         console.error("Login failed:", error);

@@ -27,7 +27,7 @@ public class UserDTO {
     private Date joinDate;
     private int ban;
     private int idCheck;
-    private int OCRCheck;
+    private String OCRCheck;
     private String token;
     private String refreshToken;
     private String expirationTime;

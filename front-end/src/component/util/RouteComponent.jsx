@@ -148,7 +148,7 @@ const RouteComponent = () => {
                         {/*여기는 에이스 클럽 원주민만 가능*/}
                         <Route path="/exchange-rate" exact={true} element={<ExchangeRate />} />
                         <Route path="/exchange" exact={true} element={<Exchange />} /> {/* Exchange 경로 추가 */}
-                        <Route path="/exchange-list" exact={true} element={<ExchangeList />} /> {/* ExchangeList 경로 추가 */}
+                        <Route path="/exchangeList" exact={true} element={<ExchangeList />} /> {/* ExchangeList 경로 추가 */}
                         <Route path="/detail-rate" exact={true} element={<DetailRate />} />
                         <Route path="/asset-calendar" exact={true} element={<AssetsCal />} />
                         <Route path="/myAsset" exact={true} element={<AssetsList />} />
