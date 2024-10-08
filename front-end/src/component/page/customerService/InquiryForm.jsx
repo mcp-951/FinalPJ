@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './InquiryForm.css';
+import '../../../resource/css/customerService/InquiryForm.css';
 
 function InquiryForm({ addInquiry }) {
   const navigate = useNavigate();
