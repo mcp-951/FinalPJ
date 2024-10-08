@@ -1,24 +1,34 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
-const EditLoanProduct = () => {
+const EditSavingsProduct = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { product } = state; // 전달된 상품 데이터
+  const { product } = state;
 
   const [productName, setProductName] = useState(product.productName);
   const [interestRate, setInterestRate] = useState(product.interestRate);
   const [period, setPeriod] = useState(product.period);
   const [amount, setAmount] = useState(product.amount);
 
-  const handleSave = () => {
-    const updatedProduct = { ...product, productName, interestRate, period, amount };
-    navigate('/loanProduct', { state: { updatedProduct } });
+  const handleSave = async () => {
+    try {
+      await axios.put(`/api/savings/update/${product.id}`, {
+        productName,
+        interestRate,
+        period,
+        amount,
+      });
+      navigate('/savingsProduct');
+    } catch (error) {
+      console.error('상품 수정에 실패했습니다.', error);
+    }
   };
 
   return (
     <div className="edit-product-container">
-      <h2>대출 상품 수정</h2>
+      <h2>예금 상품 수정</h2>
       <label>상품명:</label>
       <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)} />
       <label>금리:</label>
@@ -32,4 +42,4 @@ const EditLoanProduct = () => {
   );
 };
 
-export default EditLoanProduct;
+export default EditSavingsProduct;

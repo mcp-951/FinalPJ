@@ -16,4 +16,6 @@ public class ProductDTO {
     private int productPeriod;
     private String productContent;
     private String productIMG;
+    private String viewState;  // 추가된 필드
+    private String repaymentType;  // 추가된 필드
 }

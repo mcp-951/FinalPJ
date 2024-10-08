@@ -35,4 +35,10 @@ public class ProductEntity {
 
     @Column
     private String productIMG;
+
+    @Column
+    private String viewState;  // 추가된 필드
+
+    @Column
+    private String repaymentType;  // 추가된 필드
 }

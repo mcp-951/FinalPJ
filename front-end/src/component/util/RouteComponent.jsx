@@ -87,39 +87,36 @@ const RouteComponent = () => {
                         <Route path="/tax/water" exact={true} element={<TaxWMain/>} />
                         
                         {/* 어드민 관리자 */}
-                        <Route path="/" element={<Navigate to="/ba" />} />
-                        <Route path="/ba" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
-                        {isLoggedIn && (<>
-                            <Route path="*" element={<Sidebar />} />
-                            <Route path="/adminList" element={<AdminList />} />
-                            <Route path="/editAdmin" element={<EditAdmin />} />
+                        <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
+{/*                         <Route path="/adminList" element={<AdminList />} /> */}
+{/*                         <Route path="/editAdmin" element={<EditAdmin />} /> */}
 
-                            {/* 사용자 관리 페이지 */}
-                            <Route path="/memberList" element={<MemberList />} />
-                            <Route path="/retiredMember" element={<RetiredMember />} />
-                            <Route path="/editMember" element={<MemberEdit />} />
+                        {/* 사용자 관리 페이지 */}
+                        <Route path="/memberList" element={<MemberList />} />
+                        <Route path="/retiredMember" element={<RetiredMember />} />
+                        <Route path="/editMember" element={<MemberEdit />} />
 
-                            {/* 금융 상품 관리 페이지 */}
-                            <Route path="/financialProduct" element={<FinancialProduct />} />
-                            <Route path="/savingsProduct" element={<SavingsProduct />} />
-                            <Route path="/depositProduct" element={<DepositProduct />} />
-                            <Route path="/loanProduct" element={<LoanProduct />} />
+                        {/* 금융 상품 관리 페이지 */}
+                        <Route path="/financialProduct" element={<FinancialProduct />} />
+                        <Route path="/savingsProduct" element={<SavingsProduct />} />
+                        <Route path="/depositProduct" element={<DepositProduct />} />
+                        <Route path="/loanProduct" element={<LoanProduct />} />
 
-                            {/* 금융 상품 수정 페이지 */}
-                            <Route path="/editSavingsProduct" element={<EditSavingsProduct />} />
-                            <Route path="/editDepositProduct" element={<EditDepositProduct />} />
-                            <Route path="/editLoanProduct" element={<EditLoanProduct />} />
+                        {/* 금융 상품 수정 페이지 */}
+                        <Route path="/editSavingsProduct" element={<EditSavingsProduct />} />
+                        <Route path="/editDepositProduct" element={<EditDepositProduct />} />
+                        <Route path="/editLoanProduct" element={<EditLoanProduct />} />
 
-                            {/* 거래 내역 및 계좌 관리 페이지 */}
-                            <Route path="/transactionHistory" element={<TransactionHistory />} />
-                            <Route path="/accountClosure" element={<AccountClosure />} />
+                        {/* 거래 내역 및 계좌 관리 페이지 */}
+                        <Route path="/transactionHistory" element={<TransactionHistory />} />
+                        <Route path="/accountClosure" element={<AccountClosure />} />
 
-                            {/* 외환 거래 관리 페이지 */}
-                            <Route path="/exchangeHistory" element={<CurrencyExchangeHistory />} />
-                            <Route path="/exchangeLocation" element={<ExchangePickupLocation />} />
-                        </>)}
+                        {/* 외환 거래 관리 페이지 */}
+                        <Route path="/exchangeHistory" element={<CurrencyExchangeHistory />} />
+                        <Route path="/exchangeLocation" element={<ExchangePickupLocation />} />
+
                         {/* 로그인하지 않았을 때는 관리자 로그인 페이지로 리다이렉트 */}
-                        {/*<Route path="*" element={<Navigate to="/ba" />} />*/}
+
 
                         {/*상품 라우터_민우님*/}
                         {/* 예금 상품 관련 라우터 추가 */}

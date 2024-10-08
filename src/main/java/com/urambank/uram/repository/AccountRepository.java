@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-@Repository
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     // 'NORMAL' 상태의 모든 계좌와 관련된 정보를 조회

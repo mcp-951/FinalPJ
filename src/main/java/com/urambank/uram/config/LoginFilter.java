@@ -54,6 +54,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             System.out.println("userId : " + userId);
             System.out.println("userPw : " + userPw);
 
+
+
             // 인증 토큰 생성
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, userPw, null);
 
@@ -70,6 +72,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = customUserDetails.getUsername();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = authorities.iterator().next().getAuthority();
+        System.out.println(role);
 
         // 만료 시간 (30분)
         long tokenValidity = 10 * 60 * 1000L; // 30분을 밀리초로 설정

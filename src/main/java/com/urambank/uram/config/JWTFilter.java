@@ -42,6 +42,14 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        if (request.getRequestURI().equals("/adminLogin")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (request.getRequestURI().equals("/getAdminList")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
 
         //Authorization 헤더 검증

@@ -4,9 +4,9 @@ import '../../../resource/css/admin/Sidebar.css';
 
 const Sidebar = () => {
   const [showMemberDropdown, setShowMemberDropdown] = useState(false);
-  const [showFinancialDropdown, setShowFinancialDropdown] = useState(false); // 금융상품 관리 드롭다운 상태 추가
-  const [showAccountDropdown, setShowAccountDropdown] = useState(false); // 계좌 관리 드롭다운 상태 추가
-  const [showExchangeDropdown, setShowExchangeDropdown] = useState(false); // 환전 관리 드롭다운 상태 추가
+  const [showFinancialDropdown, setShowFinancialDropdown] = useState(false);
+  const [showAccountDropdown, setShowAccountDropdown] = useState(false);
+  const [showExchangeDropdown, setShowExchangeDropdown] = useState(false);
 
   return (
     <div className="sidebar">
@@ -31,7 +31,6 @@ const Sidebar = () => {
             )}
           </li>
 
-          {/* 금융상품 관리 */}
           <li
             onMouseEnter={() => setShowFinancialDropdown(true)}
             onMouseLeave={() => setShowFinancialDropdown(false)}
@@ -55,7 +54,6 @@ const Sidebar = () => {
             )}
           </li>
 
-          {/* 계좌 관리 */}
           <li
             onMouseEnter={() => setShowAccountDropdown(true)}
             onMouseLeave={() => setShowAccountDropdown(false)}
@@ -73,7 +71,6 @@ const Sidebar = () => {
             )}
           </li>
 
-          {/* 환전 관리 */}
           <li
             onMouseEnter={() => setShowExchangeDropdown(true)}
             onMouseLeave={() => setShowExchangeDropdown(false)}
@@ -94,12 +91,11 @@ const Sidebar = () => {
           <li>
             <NavLink to="/billingManagement">공과금 관리</NavLink>
           </li>
-
         </ul>
       </div>
 
       <div className="admin-manage">
-        <NavLink to="/adminManagement">관리자 관리</NavLink>
+        <NavLink to="/adminList">관리자 관리</NavLink>
       </div>
     </div>
   );

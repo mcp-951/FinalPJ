@@ -14,7 +14,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async () => {       // 로그인 로직
     try {
         const form = {
             "userId": id,      // id 값 전달

@@ -19,31 +19,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
-@RequiredArgsConstructor
+
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JWTUtil jwtUtil;
-    private final AuthenticationManager authenticationManager;
-    private DefaultMessageService messageService;
-
-    @PostConstruct
-    public void initMessageService() {
-        this.messageService = NurigoApp.INSTANCE.initialize(
-                "NCSWFN2OVSKW3MPS",
-                "P9YBFDGTRQNVQ2KXSP7NGF1BE7PLX5DP",
-                "https://api.coolsms.co.kr"
-        );
-    }
     @Autowired
-    public UserService(UserRepository userRepository, JWTUtil jwtUtil, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
-        this.authenticationManager = authenticationManager;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DefaultMessageService messageService;
 
     public String findByUserId(String userId) {
         System.out.println("<<< UserService - findByUserId() >>>");
@@ -112,7 +99,11 @@ public class UserService {
         message.setFrom("01055617726");
         message.setTo(hp);
         message.setText("인증번호를 입력해주세요. 인증번호는 " + i + " 입니다.");
-        NurigoApp.INSTANCE.initialize(api_key, api_secret, "https://api.coolsms.co.kr");
+        messageService = NurigoApp.INSTANCE.initialize(
+                "NCSWFN2OVSKW3MPS",
+                "P9YBFDGTRQNVQ2KXSP7NGF1BE7PLX5DP",
+                "https://api.coolsms.co.kr"
+        );
         SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
         System.out.println(response);
 

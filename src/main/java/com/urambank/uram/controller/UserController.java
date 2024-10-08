@@ -20,6 +20,7 @@ public class UserController {
     private final UserService userService;
 
     public UserController(UserService userService) {
+        super();
         this.userService = userService;
     }
 
