@@ -11,5 +11,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByUserId(String userId);
     // 특정 상태에 따른 회원 조회 (NORMAL, STOP, END)
-    List<User> findAllByState(String state); // 상태에 따라 조회하는 메서드
+    List<User> findAllByState(char state); // 상태에 따라 조회하는 메서드
 }

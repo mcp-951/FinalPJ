@@ -1,21 +1,25 @@
 // MemberList.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApiService from '../service/ApiService';  // ApiService 추가
+import axios from 'axios';
 import Sidebar from '../Sidebar';  // 좌측에 사이드바 컴포넌트 추가
 import '../../../../resource/css/admin/MemberList.css';  // CSS 파일 추가
 import localStorage from 'localStorage';
 
 const MemberList = () => {
-  const navigate = useNavigate();  // 페이지 이동을 위한 useNavigate hook 사용
-  const [members, setMembers] = useState([]);  // 회원 목록 상태 관리
-  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
-  const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
-  const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 회원 수 상태 관리
+    const navigate = useNavigate();  // 페이지 이동을 위한 useNavigate hook 사용
+    const [members, setMembers] = useState([]);  // 회원 목록 상태 관리
+    const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
+    const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
+    const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 회원 수 상태 관리
     const token = localStorage.getItem("token");
   // 백엔드에서 NORMAL 및 STOP 상태 회원 목록 가져오기
   useEffect(() => {
-    ApiService.get('/getUserList') // API 호출하여 전체 회원 목록 가져오기
+    const response = axios.get('http://localhost:8081/admin/getUserList',{
+            headers: {
+                'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+            }
+        }) // API 호출하여 전체 회원 목록 가져오기
       .then((response) => {
         const filteredMembers = response.data.filter(member => 
           member.state === 'y' || member.state === 'n'  // 상태가 NORMAL 또는 STOP인 회원만 필터링
@@ -35,9 +39,9 @@ const MemberList = () => {
 
   // 회원 정지 및 정지 해제 처리
   const handleStatusChange = (member) => {
-    const updatedMember = { ...member, state: member.state === 'NORMAL' ? 'STOP' : 'NORMAL' };  // 상태가 NORMAL이면 STOP으로, 반대의 경우 NORMAL로 변경
+    const updatedMember = { ...member, state: member.state === 'y' ? 'n' : 'y' };  // 상태가 NORMAL이면 STOP으로, 반대의 경우 NORMAL로 변경
 
-    ApiService.put(`/user/update/${member.userNo}`, updatedMember)  // API 호출로 회원 상태 업데이트
+    axios.put(`/user/update/${member.userNo}`, updatedMember)  // API 호출로 회원 상태 업데이트
       .then(() => {
         setMembers(prevMembers => 
           prevMembers.map(m => (m.userNo === member.userNo ? updatedMember : m))  // 업데이트된 회원 목록 상태 갱신
