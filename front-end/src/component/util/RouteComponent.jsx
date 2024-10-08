@@ -13,7 +13,6 @@ import InquiryForm from 'component/page/customerService/InquiryForm';
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
 
-
 // 투자 라우터 임포트
 import InvestmentMain from 'component/page/investment/InvestmentMain';
 
