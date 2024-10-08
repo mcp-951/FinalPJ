@@ -1,52 +1,72 @@
+/* InquiryForm.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
 .inquiry-form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 400px;
+  width: 50%; /* 중앙에 위치하게 하기 위한 폼 너비 */
+  max-width: 700px;
+  margin: 50px auto; /* 중앙 정렬 */
+  padding: 30px 40px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
 }
 
 .inquiry-form h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  font-weight: bold;
-}
-
-.inquiry-form div {
-  margin-bottom: 15px;
-  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 26px;
+  color: #333;
 }
 
 .inquiry-form label {
-  display: inline-block;
-  width: 100px;
+  display: block;
+  margin-bottom: 8px;
   font-weight: bold;
+  color: #555;
 }
 
 .inquiry-form input[type="text"],
-.inquiry-form textarea,
-.inquiry-form input[type="file"] {
-  width: calc(100% - 110px);
-  padding: 8px;
+.inquiry-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.inquiry-form input[type="text"]:focus,
+.inquiry-form textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
 .inquiry-form textarea {
+  resize: none;
   height: 150px;
 }
 
+.inquiry-form input[type="file"] {
+  display: block;
+  margin-top: 10px;
+}
+
 .inquiry-form button {
-  padding: 10px 20px;
+  width: 100%;
+  padding: 14px;
   background-color: #007bff;
-  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 18px;
+  color: #fff;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .inquiry-form button:hover {

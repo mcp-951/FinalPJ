@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './InquiryDetail.css'; // 필요한 경우 스타일링
+import '../../../resource/css/customerService/InquiryDetail.css';
 
 function InquiryDetail({ inquiries }) {
   const { id } = useParams(); // URL에서 id 가져옴

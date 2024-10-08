@@ -1,24 +1,40 @@
-.Carousel_div{
+.Carousel_div {
   width: 60%;
   display: flex;
   justify-content: flex-end;
 }
-.Carousel_Tab{
-    position: relative;
-    width: 720px;
-    height: 360px;
-    overflow: hidden;
-    border-radius: 15px;
+
+.Carousel_Tab {
+  position: relative;
+  width: 720px;
+  height: 360px;
+  overflow: hidden;
+  border-radius: 15px;
 }
 
 .Carousel_Tab img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
 
-  .carousel-control-prev, .carousel-control-next {
-    top: 50%;
-    transform: translateY(-50%);
-  }
+.carousel-caption {
+  color: black; /* 글씨 색상을 검정색으로 설정 */
+  background-color: rgba(255, 255, 255, 0.7); /* 배경색을 반투명 흰색으로 설정하여 글씨가 잘 보이도록 */
+  padding: 10px; /* 텍스트와 배경의 간격을 추가 */
+  border-radius: 5px; /* 배경을 둥글게 처리 */
+}
 
+.carousel-caption h3 {
+  font-size: 1.5em; /* 제목 글씨 크기를 키워서 강조 */
+}
+
+.carousel-caption p {
+  font-size: 1.2em; /* 본문 글씨 크기를 조절 */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  top: 50%;
+  transform: translateY(-50%);
+}
