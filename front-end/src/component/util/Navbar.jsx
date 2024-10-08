@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import { FaSearch } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineLogin } from "react-icons/md";
+import { CiLogout } from "react-icons/ci";
 import AccountDrop from './NavbarDropdownMenu/AccountDrop';
 import ProductDrop from './NavbarDropdownMenu/ProductDrop';
 import ExchangeDrop from './NavbarDropdownMenu/ExchangeDrop';
@@ -12,6 +13,13 @@ import InvestmentDrop from './NavbarDropdownMenu/InvestmentDrop';
 
 
 function Navbar(){
+    const token = localStorage.getItem('token');
+
+    const handleLogout = () => {
+        console.log(token);
+        localStorage.removeItem('token');
+        window.location.reload();
+    };
     const [menuOpen, setMenuOpen] = useState(false);
 
     const handleDropdown = (menu) => {
@@ -34,7 +42,9 @@ function Navbar(){
             <div className='nav_iconMenu'>
                 <button><div className="nav_search"><FaSearch className='nav_search_icon'/></div></button>
                 <button><div className="nav_allMenu"><GiHamburgerMenu className='nav_toggle_icon'/></div></button>
-                <button><div className="nav_login" ><a href='/login'><MdOutlineLogin className='nav_login_icon' /></a></div></button>
+                {token ? (<button onClick={handleLogout}><div className="nav_logout"><CiLogout className="nav_logout_icon"/></div></button>)
+                 : (<button><div className="nav_login" ><a href='/login'><MdOutlineLogin className='nav_login_icon' /></a></div></button>)}
+                
             </div>
         </div>
         {menuOpen === 'account' && (<AccountDrop/>)}
