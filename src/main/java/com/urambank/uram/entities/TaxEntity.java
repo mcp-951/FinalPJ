@@ -49,4 +49,6 @@ public class TaxEntity {
 
     @Column
     private int userNo;
+
+
 }

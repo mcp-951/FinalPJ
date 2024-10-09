@@ -17,7 +17,7 @@ function Navbar(){
 
     const handleLogout = () => {
         console.log(token);
-        localStorage.removeItem('token');
+        localStorage.clear();
         window.location.reload();
     };
     const [menuOpen, setMenuOpen] = useState(false);

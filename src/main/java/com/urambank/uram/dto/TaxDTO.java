@@ -20,6 +20,6 @@ public class TaxDTO {
     private int basicFee3;
     private char taxState;
     private Date taxDeadLine;
-    private Date taxWriteDate;
+        private Date taxWriteDate;
     private int userNo;
 }
