@@ -11,6 +11,9 @@ function TaxMain(){
     const [taxData, setTaxData] = useState(null);
     const [userName, setUserName] =useState(null);
     const [token, setToken] = useState(localStorage.getItem('token'));
+    const taxDetailGo = () =>{
+        navigate('/tax/Detail');
+    }
     
     useEffect(() => { 
         if(token == null){
@@ -57,7 +60,7 @@ function TaxMain(){
                 </div>
             </div>
             <div className="TaxBottom">
-                <button>납부하기</button>
+                <button onClick={taxDetailGo}>납부하기</button>
                 <button>납부내역</button>
             </div>
         </div>

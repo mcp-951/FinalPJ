@@ -19,6 +19,9 @@ import InvestmentMain from 'component/page/investment/InvestmentMain';
 // 공과금 라우터 임포트
 import TaxMain from 'component/page/tax/TaxMain';
 import TaxWMain from 'component/page/tax/TaxWMain';
+import TaxDetail from 'component/page/tax/TaxDetail';
+import TaxHistory from 'component/page/tax/TaxHistory';
+
 
 // 어드민 라우터 임포트
 import AdminList from '../page/adminPage/admin/AdminList';
@@ -92,7 +95,8 @@ const RouteComponent = () => {
                         {/*}공과금페이지{*/}
                         <Route path="/tax/elec" exact={true} element={<TaxMain/>} />
                         <Route path="/tax/water" exact={true} element={<TaxWMain/>} />
-                        
+                        <Route path="/tax/Detail" exact={true} element={<TaxDetail/>} />
+                        <Route path="/tax/History" exact={true} element={<TaxHistory/>} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
 {/*                         <Route path="/adminList" element={<AdminList />} /> */}
