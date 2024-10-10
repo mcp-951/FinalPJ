@@ -12,23 +12,28 @@ function CustomerServiceMain() {
 
   // 전체 문의글 가져오기
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if(token == null){
-      alert("로그인헤라")
-      navigate('/')
+    // 로컬 스토리지에서 JWT 토큰 가져오기
+    const token = localStorage.getItem('token');
+    if (token == null) {
+      alert("로그인해주세요.");
+      navigate('/');
       return;
-    }
-    else{
+    } else {
+      // 비동기 함수로 API 요청 수행
       const fetchInquiries = async () => {
         try {
-          setLoading(true); // 데이터 가져오는 중 로딩 상태로 설정
-          const response = await ApiService.getAllInquiries();
-          axios.get('http://localhost:8081/support/all', {
+          // console.log로 토큰 값 확인 (디버깅)
+          console.log("토큰 값:", token);
+          
+          // axios를 사용하여 API 요청
+          const response = await axios.get('http://localhost:8081/support/all', {
             headers: {
               'Authorization': `Bearer ${token}`,  // Bearer 토큰 형식으로 헤더에 추가
             }
-          })  // ApiService 사용
-          setInquiries(response.data);  // 가져온 데이터로 상태 설정
+          });
+          
+          // 가져온 데이터로 상태 설정
+          setInquiries(response.data);
           setLoading(false);  // 로딩 완료
         } catch (err) {
           console.error("문의글을 불러오는 중 오류가 발생했습니다:", err);  // 오류 로그 출력
@@ -36,11 +41,11 @@ function CustomerServiceMain() {
           setLoading(false);
         }
       };
-  
+
+      // 비동기 함수 호출
       fetchInquiries();
     }
-
-  }, []);  // 컴포넌트가 처음 렌더링될 때 한 번만 실행
+  }, [navigate]);  // 컴포넌트가 처음 렌더링될 때 한 번만 실행
 
   // 문의글 상세 페이지로 이동하는 함수
   const handleInquiryClick = (id) => {
