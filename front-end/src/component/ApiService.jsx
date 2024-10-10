@@ -73,11 +73,9 @@ const apiSer = {
   // 대출 상품 페이징 처리하여 가져오기
   fetchLoanProductsPaged: async (page, size) => {
     try {
-      return await axios.get(`${BASE_URL}/loans/page`, {
-        params: { page, size },
-        headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-        }
+      return await axios.get(`${BASE_URL}/products/loans/page`, {
+        "getPage" : page,
+        "getSize" : size
       });
     } catch (error) {
       console.error('대출 상품 페이징 조회 오류:', error);
@@ -88,7 +86,7 @@ const apiSer = {
   // 사용자 계좌 정보 가져오기 (토큰 필요)
   getUserAccounts: async () => {
     try {
-      return await axios.get(`${BASE_URL}/user`, {
+      return await axios.get(`${BASE_URL}/products/user`, {
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }

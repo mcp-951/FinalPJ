@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable());
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/signup", "/findById/**", "/checkHp/**","/admin/login","/kakaoLogin?**","/products").permitAll()
+                        .requestMatchers("/login", "/signup", "/findById/**", "/checkHp/**","/admin/login","/kakaoLogin?**","/products/**","/loans/page").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/uram/users/**").hasRole("USER") // 사용자 관련 경로 설정
                         .requestMatchers("/uram/product/**").hasRole("USER") // 제품 관련 경로 설정

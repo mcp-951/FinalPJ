@@ -50,6 +50,10 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        if (request.getRequestURI().equals("/loans/page")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
 
 

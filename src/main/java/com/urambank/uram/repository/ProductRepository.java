@@ -17,5 +17,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
 
     int countByProductCategoryAndViewState(String category, String y);
 
-    Page<ProductEntity> findByProductCategory(int i, Pageable pageable);
+    Page<ProductEntity> findByProductCategory(String i, Pageable pageable);
 }
