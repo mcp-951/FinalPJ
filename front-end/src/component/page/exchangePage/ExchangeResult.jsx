@@ -1,16 +1,25 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const ExchangeResult = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { date, branch } = location.state || {}; // 선택한 날짜와 지점을 가져옴
+    const { message } = location.state || {}; // 전달된 메세지에서 수령일과 지점정보를 받아옴
+
+    useEffect(() => {
+        const token = localStorage.getItem("token"); // 토큰 유지
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            navigate('/login');
+        }
+    }, [navigate]);
 
     return (
         <div className="exchange-result-container">
             <h1>환전 신청 완료</h1>
-            {date && branch ? (
-                <p>{date}에 {branch}에서 수령 가능합니다.</p>
+            {message ? (
+                <p>{message}</p>
             ) : (
                 <p>선택한 정보가 없습니다.</p>
             )}

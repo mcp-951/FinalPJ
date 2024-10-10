@@ -13,30 +13,30 @@ const AssetsCal = () => {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    // Fetch asset logs from the backend
-    axios.get('/api/assets/logs')
+    // 백엔드에서 로그 데이터를 가져오는 API 호출
+    axios.get('http://localhost:8081/asset-calendar/logs')
       .then(response => {
         const logs = response.data;
 
-        // Convert logs to FullCalendar events
+        // 로그 데이터를 FullCalendar 이벤트로 변환
         const eventsData = logs.map(log => ({
-          title: `${log.logState === 'deposit' ? '+' : '-'}${log.sendPrice}`,
+          title: `${log.logState === 'in' ? '+' : '-'}${log.sendPrice}`, // 입금이면 +, 출금이면 -
           date: log.sendDate,
-          color: log.logState === 'deposit' ? 'blue' : 'red'
+          color: log.logState === 'in' ? 'blue' : 'red' // 입금이면 파란색, 출금이면 빨간색
         }));
 
-        // Sort events so deposits come first if on the same day
+        // 날짜별로 정렬
         const sortedEvents = eventsData.sort((a, b) => {
           if (a.date === b.date) {
-            return a.color === 'blue' ? -1 : 1;
+            return a.color === 'blue' ? -1 : 1; // 같은 날이면 입금이 먼저 오도록
           }
-          return new Date(a.date) - new Date(b.date);
+          return new Date(a.date) - new Date(b.date); // 날짜순 정렬
         });
 
-        setEvents(sortedEvents);
+        setEvents(sortedEvents); // 이벤트 설정
       })
       .catch(error => {
-        console.error('Error fetching logs:', error);
+        console.error('로그 데이터를 가져오는 중 오류 발생:', error);
       });
   }, []);
 

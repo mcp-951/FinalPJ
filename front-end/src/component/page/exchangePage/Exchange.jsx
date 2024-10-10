@@ -3,10 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../../resource/css/exchange/Exchange.css';
 import Footer from '../../util/Footer';
+import { jwtDecode } from 'jwt-decode'; // default import로 변경
 
-const Exchange = ({ user }) => {
+const Exchange = () => {
+    const token = localStorage.getItem("token");
     const [branches, setBranches] = useState([]);
-    const [accountNumber, setAccountNumber] = useState('');
+    const [accountNumbers, setAccountNumbers] = useState([]);
+    const [selectedAccountNumber, setSelectedAccountNumber] = useState('');
     const [currency, setCurrency] = useState('');
     const [amount, setAmount] = useState('');
     const [rate, setRate] = useState(0);
@@ -15,48 +18,51 @@ const Exchange = ({ user }) => {
     const [branch, setBranch] = useState('');
     const [password, setPassword] = useState('');
     const [isPasswordConfirmed, setIsPasswordConfirmed] = useState(false);
+    const [userNo, setUserNo] = useState(null);
     const passwordInputRef = useRef(null);
     const navigate = useNavigate();
 
-    // 로그인된 사용자 정보 확인 및 데이터 가져오기
+    const handleSelectedAccountNumber = (event) => {
+        const selectedAccountNumber = event.target.value;
+        setSelectedAccountNumber(selectedAccountNumber);
+        console.log(selectedAccountNumber);
+
+    }
+    
+
+    // JWT 토큰 디코딩해서 username 가져오기
+    const decoded = jwtDecode(token);
+    const userId = decoded.username;
+
+    // 사용자 정보 및 계좌 정보 가져오기
     useEffect(() => {
-        if (!user || !user.userId) {
-            alert("로그인이 필요합니다.");
-        }
+        const fetchUserData = async () => {
+            try {
+                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`);
+                const userNo = userNoResponse.data;
+                setUserNo(userNo);
+                console.log("UserNo:", userNo); // 사용자 번호 확인
 
-        // 로그인된 사용자가 있으면 데이터 가져오기
-        if (user && user.userId) {
-            // userId로 userNo 가져오기
-            axios.get(`/api/exchange/user-no?userId=${user.userId}`)
-                .then(response => {
-                    const userNo = response.data;
+                const accountsResponse = await axios.get(`http://localhost:8081/exchange/account/${userNo}`);
+                const accounts = accountsResponse.data;
+                console.log("Accounts:", accounts); // 응답 데이터 확인
+                setAccountNumbers(accounts);
+            } catch (error) {
+                console.error("계좌 정보를 가져오는 중 오류 발생:", error);
+            }
 
-                    // userNo로 accountNo 가져오기
-                    return axios.get(`/api/exchange/account-no?userNo=${userNo}`);
-                })
-                .then(response => {
-                    const accountNo = response.data;
-
-                    // accountNo로 accountNumber 가져오기
-                    return axios.get(`/api/exchange/account-number?accountNo=${accountNo}`);
-                })
-                .then(response => {
-                    setAccountNumber(response.data);
-                })
-                .catch(error => {
-                    console.error("계좌 정보를 가져오는 중 오류 발생:", error);
-                });
-        }
-
-        // 지점 정보 가져오기 (로그인 여부와 상관없이 가능)
-        axios.get(`/api/exchange/pickup-places`)
-            .then(response => {
-                setBranches(response.data);
-            })
-            .catch(error => {
+            try {
+                const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`);
+                setBranches(branchesResponse.data);
+            } catch (error) {
                 console.error("지점 정보를 가져오는 중 오류 발생:", error);
-            });
-    }, [user]);
+            }
+        };
+
+        if (token && userId) {
+            fetchUserData();
+        }
+    }, [token, userId]);
 
     // 통화 종류 변경 시 환율 정보 가져오기
     useEffect(() => {
@@ -73,28 +79,45 @@ const Exchange = ({ user }) => {
     }, [currency, amount]);
 
     // 비밀번호 확인 처리
-    const PwdSubmit = () => {
-        if (!user || !user.userId) {
-            alert("로그인이 필요합니다.");
+    const PwdSubmit = async () => {
+
+        if (!selectedAccountNumber) {
+            alert("계좌를 선택하세요.");
             return;
         }
 
-        axios.post('/api/exchange/verify-password', null, {
-            params: { userId: user.userId, inputPassword: password }
-        })
-        .then(response => {
-            if (response.data) {
+        if (!password) {
+            alert("비밀번호를 입력하세요.");
+            passwordInputRef.current.focus();
+            return;
+        }
+        
+        try {
+            
+            // 선택한 계좌 번호와 입력한 비밀번호를 서버로 전송하여 비교
+            
+            const response = await axios.post(
+                `http://localhost:8081/exchange/verify-password/${selectedAccountNumber}/${password}`,  // URL과 요청 데이터
+                null,  // POST 요청에 보낼 데이터가 없으면 null을 전달
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                    }
+                }
+            );
+            console.log("가져온 값 : ",response)
+            if (response.data === 1) {
                 alert("비밀번호가 일치합니다");
                 setIsPasswordConfirmed(true);
             } else {
-                alert('비밀번호 불일치');
+                alert('비밀번호가 일치하지 않습니다.');
+                setIsPasswordConfirmed(false);
                 passwordInputRef.current.focus();
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('비밀번호 확인 중 오류 발생:', error);
-            alert('비밀번호 확인에 실패했습니다.');
-        });
+            alert('비밀번호 확인에 실패했습니다. 다시 시도해 주세요.');
+        }
     };
 
     // 환전 신청 처리
@@ -103,7 +126,7 @@ const Exchange = ({ user }) => {
             alert('비밀번호를 확인하세요.');
             return;
         }
-        if (!currency || !amount || !date || !branch || !accountNumber) {
+        if (!currency || !amount || !date || !branch || !selectedAccountNumber) {
             alert('모든 항목을 입력해주세요.');
             return;
         }
@@ -111,8 +134,8 @@ const Exchange = ({ user }) => {
         const confirmResult = window.confirm('환전 하시겠습니까?');
         if (confirmResult) {
             const exchangeDetails = {
-                userNo: user.userNo,
-                accountNo: accountNumber,
+                userNo,
+                accountNo: selectedAccountNumber,
                 selectCountry: currency,
                 exchangeRate: rate,
                 tradeDate: new Date().toISOString().split('T')[0],
@@ -122,34 +145,27 @@ const Exchange = ({ user }) => {
                 receiveDate: date
             };
 
-            axios.post('/exchange', exchangeDetails)
-                .then(response => {
-                    if (response.status === 200) {
-                        navigate('/exchange-result', {
-                            state: {
-                                message: `${date}에 ${branch}에 방문 해주세요.`
-                            }
-                        });
-                    } else {
-                        alert('환전 신청에 실패했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('환전 신청 중 오류 발생:', error);
+            axios.post('http://localhost:8081/exchange/submit-exchange', exchangeDetails, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    navigate('/exchange-result', {
+                        state: {
+                            message: `${date}에 ${branch}에 방문 해주세요.`
+                        }
+                    });
+                } else {
                     alert('환전 신청에 실패했습니다.');
-                });
+                }
+            })
+            .catch(error => {
+                console.error('환전 신청 중 오류 발생:', error);
+                alert('환전 신청에 실패했습니다.');
+            });
         }
-    };
-
-    // 통화 종류 변경 핸들러
-    const handleCurrencyChange = (e) => {
-        setCurrency(e.target.value);
-    };
-
-    // 환전 금액 변경 핸들러
-    const handleAmountChange = (e) => {
-        setAmount(e.target.value);
-        setRequiredWon(e.target.value * rate);
     };
 
     return (
@@ -158,7 +174,7 @@ const Exchange = ({ user }) => {
             <div className="exchange-row" style={{ marginTop: '50px' }}>
                 <div className="exchange-column">
                     <label className='exlabel'>통화 종류</label>
-                    <select className="ex" value={currency} onChange={handleCurrencyChange}>
+                    <select className="ex" value={currency} onChange={(e) => setCurrency(e.target.value)}>
                         <option value="">선택하세요</option>
                         <option value="USD">미국 (USD)</option>
                         <option value="JPY">일본 (JPY)</option>
@@ -168,7 +184,7 @@ const Exchange = ({ user }) => {
                 </div>
                 <div className="exchange-column">
                     <label className='exlabel'>환전 금액</label>
-                    <input className="ex" type="number" value={amount} onChange={handleAmountChange} />
+                    <input className="ex" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
                 </div>
                 <div className="exchange-column">
                     <label className='exlabel'>현재 환율</label>
@@ -195,7 +211,14 @@ const Exchange = ({ user }) => {
                 </div>
                 <div className="exchange-column-vertical">
                     <label className='exlabel'>출금 계좌</label>
-                    <input className="ex" type="text" value={accountNumber} readOnly />
+                    <select className="ex" value={selectedAccountNumber} onChange={handleSelectedAccountNumber}>
+                        <option value="">계좌를 선택하세요</option>
+                        {accountNumbers.map((account, index) => (
+                            <option key={index} value={account.accountNumber}>
+                                {account.accountNumber}
+                            </option>
+                        ))}
+                    </select>
                     <label className='exlabel' style={{ marginTop: '20px' }}>비밀번호</label>
                     <div className="password-container">
                         <input

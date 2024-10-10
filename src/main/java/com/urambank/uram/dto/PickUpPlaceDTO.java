@@ -13,8 +13,7 @@ public class PickUpPlaceDTO {
     private int pickUpPlaceNo;
     private String pickUpPlaceName;
     private String pickUpAddress;
-    private String pickUpPlacePic;
 
-    public PickUpPlaceDTO(String pickUpPlaceName) {
-    }
+
+
 }

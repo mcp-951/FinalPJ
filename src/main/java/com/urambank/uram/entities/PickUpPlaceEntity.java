@@ -25,8 +25,7 @@ public class PickUpPlaceEntity {
     @Column
     private String pickUpAddress;
 
-    @Column
-    private String pickUpPlacePic;
+
 
 
 }

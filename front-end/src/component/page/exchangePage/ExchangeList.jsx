@@ -2,29 +2,52 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../../util/Footer';
-
+import {jwtDecode} from 'jwt-decode'; // default import로 변경
 
 const ExchangeList = () => {
+    const token = localStorage.getItem("token");
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [exchangeData, setExchangeData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 10; // 한 페이지에 표시할 데이터 수
     const navigate = useNavigate();
 
-    // 환전 내역을 가져오는 useEffect
-    useEffect(() => {
-        axios.get('http://localhost:8081/exchangeList')
-            .then(response => {
-                setExchangeData(response.data);
-                setFilteredData(response.data);
-            })
-            .catch(error => {
-                console.error("환전 내역을 가져오는 중 오류 발생:", error);
-            });
-    }, []);
+    // JWT 토큰 디코딩해서 userId 가져오기
+    const decoded = jwtDecode(token);
+    const userId = decoded.username;
 
+    // 사용자 정보 및 환전 내역 가져오기
+    useEffect(() => {
+        const fetchUserDataAndExchangeList = async () => {
+            try {
+                console.log("Token:", token);
+                console.log("UserId:", userId);
+
+                // 1. userId로 userNo 가져오기
+                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`);
+                const userNo = userNoResponse.data;
+                console.log("UserNo: ", userNo);
+
+                // 2. userNo로 해당 사용자의 환전 내역 가져오기 (userNo 필터링)
+                const exchangeResponse = await axios.get(`http://localhost:8081/exchange/exchangeList/${userNo}`);
+                console.log("Filtered Exchange Data for UserNo:", exchangeResponse.data);
+
+                // 환전 내역을 state에 저장
+                setExchangeData(exchangeResponse.data);
+                setFilteredData(exchangeResponse.data); // 초기에는 전체 데이터를 필터링 데이터에 넣음
+            } catch (error) {
+                console.error("데이터 가져오기 오류:", error);
+            }
+        };
+
+        if (token) {
+            fetchUserDataAndExchangeList(); // 비동기 데이터 가져오기
+        }
+    }, [token, userId]);
+
+    // 필터링된 데이터를 가져오기 위한 함수
     const fetchData = () => {
         const filtered = exchangeData.filter(data => {
             const exchangeDate = new Date(data.tradeDate);
@@ -33,13 +56,15 @@ const ExchangeList = () => {
             return exchangeDate >= start && exchangeDate <= end;
         });
         setFilteredData(filtered);
-        setCurrentPage(1);
+        setCurrentPage(1); // 필터링 시 첫 페이지로 돌아가게 설정
     };
 
+    // 페이지 변경 핸들러
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
+    // 페이지네이션을 위한 계산
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
@@ -76,6 +101,7 @@ const ExchangeList = () => {
                         조회
                     </button>
                 </div>
+
                 {filteredData.length > 0 ? (
                     <table border="1" style={{ margin: '20px auto', width: '100%', fontSize: '20px', borderCollapse: 'collapse' }}>
                         <thead>
@@ -85,7 +111,7 @@ const ExchangeList = () => {
                                 <th>환전량</th>
                                 <th>출금액</th>
                                 <th>환전일</th>
-                                <th>수령점</th>
+                                <th>수령 지점</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -104,6 +130,7 @@ const ExchangeList = () => {
                 ) : (
                     <p style={{ marginTop: '20px', fontSize: '18px' }}>조회된 데이터가 없습니다.</p>
                 )}
+
                 <div style={{ marginTop: '20px', marginBottom: '20px' }}>
                     {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }, (_, index) => (
                         <button
@@ -124,6 +151,7 @@ const ExchangeList = () => {
                     ))}
                 </div>
             </div>
+
             <button
                 onClick={() => navigate('/exchange-rate')}
                 style={{

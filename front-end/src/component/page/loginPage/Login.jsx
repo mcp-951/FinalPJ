@@ -26,6 +26,8 @@ function Login() {
         const response = await apiSer.login(form);
         console.log("Login successful:", response);
         // 로그인 성공 시 처리
+        localStorage.setItem("token", response.data.accessToken);
+        console.log(response.data.accessToken)
         navigate("/");
     } catch (error) {
         console.error("Login failed:", error);

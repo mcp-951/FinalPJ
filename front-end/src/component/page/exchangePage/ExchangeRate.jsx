@@ -99,7 +99,7 @@ const ExchangeRate = () => {
                 <Link to="/exchange">
                     <button style={{ fontSize: '20px', backgroundColor: '#66b2b2', color: 'white', borderRadius: '10px', padding: '10px 70px' }}>환전 신청</button>
                 </Link>
-                <Link to="/exchange-list">
+                <Link to="/exchangeList">
                     <button style={{ fontSize: '20px', backgroundColor: '#66b2b2', color: 'white', borderRadius: '10px', padding: '10px 70px' }}>환전 내역</button>
                 </Link>
             </div>

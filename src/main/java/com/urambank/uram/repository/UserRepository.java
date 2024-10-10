@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    User findByUserId(String userId);
+    User findByUserId(String userId); // userId로 User 엔티티 찾기
 }

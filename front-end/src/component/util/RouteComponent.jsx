@@ -67,6 +67,7 @@ import AssetsAnalysis from '../page/assetsPage/AssetsAnalysis';
 
 //팝업
 import GetAddress from 'component/page/loginPage/GetAddress';
+import ExchangeResult from 'component/page/exchangePage/ExchangeResult';
 
 
 const RouteComponent = () => {
@@ -153,6 +154,7 @@ const RouteComponent = () => {
                         <Route path="/exchange" exact={true} element={<Exchange />} /> {/* Exchange 경로 추가 */}
                         <Route path="/exchangeList" exact={true} element={<ExchangeList />} /> {/* ExchangeList 경로 추가 */}
                         <Route path="/detail-rate" exact={true} element={<DetailRate />} />
+                        <Route path="/exchange-result" exact={true} element={<ExchangeResult />} />
                         <Route path="/asset-calendar" exact={true} element={<AssetsCal />} />
                         <Route path="/myAsset" exact={true} element={<AssetsList />} />
                         <Route path="/consumeAnalyse" exact={true} element={<AssetsAnalysis/>} />

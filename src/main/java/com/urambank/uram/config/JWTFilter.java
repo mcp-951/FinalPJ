@@ -44,12 +44,8 @@ public class JWTFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (request.getRequestURI().equals("/exchange/**")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
-        if (request.getRequestURI().equals("/exchangeList/**")) {
+        if (request.getRequestURI().equals("/exchange/**")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -58,6 +54,8 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
+
 
 
 
