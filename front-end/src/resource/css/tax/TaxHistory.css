@@ -1,0 +1,23 @@
+.HistoryContainer{
+    display: flex;
+    justify-content: center;
+}
+
+.HistoryList{
+    margin-top: 1rem;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+}
+
+.HistoryList table thead tr th {
+    width: 250px;
+    border: 1px black solid;
+    font-size: 20px;
+}
+
+.taxList table tbody tr td {
+    width: 250px;
+    border: 1px black solid;
+    height: 50px;
+}

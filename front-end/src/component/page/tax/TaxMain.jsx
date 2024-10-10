@@ -14,6 +14,9 @@ function TaxMain(){
     const taxDetailGo = () =>{
         navigate('/tax/Detail');
     }
+    const taxHistoryGo = () =>{
+        navigate('/tax/History');
+    }
     
     useEffect(() => { 
         if(token == null){
@@ -61,7 +64,7 @@ function TaxMain(){
             </div>
             <div className="TaxBottom">
                 <button onClick={taxDetailGo}>납부하기</button>
-                <button>납부내역</button>
+                <button onClick={taxHistoryGo}>납부내역</button>
             </div>
         </div>
     );

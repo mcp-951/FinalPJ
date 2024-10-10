@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from "axios";
 
+import '../../../resource/css/tax/TaxHistory.css'
+
 function TaxHistory(){
     const navigate = useNavigate();
     const [logData, setLogData] =useState([]);
