@@ -4,10 +4,14 @@ import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 // 메인 라우터 임포트
 import Main from '../mainPage/Main';
 
+// 고객센터 라우터 임포트
+import CustomerServiceMain from 'component/page/customerService/CustomerServiceMain';
+import InquiryDetail from 'component/page/customerService/InquiryDetail';
+import InquiryForm from 'component/page/customerService/InquiryForm'; 
+
 // 로그인 라우터 임포트
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
-
 
 // 투자 라우터 임포트
 import InvestmentMain from 'component/page/investment/InvestmentMain';
@@ -15,6 +19,9 @@ import InvestmentMain from 'component/page/investment/InvestmentMain';
 // 공과금 라우터 임포트
 import TaxMain from 'component/page/tax/TaxMain';
 import TaxWMain from 'component/page/tax/TaxWMain';
+import TaxDetail from 'component/page/tax/TaxDetail';
+import TaxHistory from 'component/page/tax/TaxHistory';
+
 
 // 어드민 라우터 임포트
 import AdminList from '../page/adminPage/admin/AdminList';
@@ -70,6 +77,9 @@ import GetAddress from 'component/page/loginPage/GetAddress';
 
 
 const RouteComponent = () => {
+    const [inquiries, setInquiries] = useState([]); // inquiries 상태 변수 정의
+  const addInquiry = (newInquiry) => setInquiries([...inquiries, newInquiry]); // addInquiry 함수 정의
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     return (
         <div>
@@ -85,12 +95,18 @@ const RouteComponent = () => {
                         {/*}공과금페이지{*/}
                         <Route path="/tax/elec" exact={true} element={<TaxMain/>} />
                         <Route path="/tax/water" exact={true} element={<TaxWMain/>} />
-                        
+                        <Route path="/tax/Detail" exact={true} element={<TaxDetail/>} />
+                        <Route path="/tax/History" exact={true} element={<TaxHistory/>} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
 {/*                         <Route path="/adminList" element={<AdminList />} /> */}
 {/*                         <Route path="/editAdmin" element={<EditAdmin />} /> */}
 
+                        {/* 고객센터 페이지 경로 설정 */}
+                        <Route path="/customer-service" element={<CustomerServiceMain />} />
+                        <Route path="/inquiry/:id" element={<InquiryDetail inquiries={inquiries} />} />
+                        <Route path="/inquiry-form" element={<InquiryForm addInquiry={addInquiry} />} /> {/* InquiryForm 라우팅 설정 */}
+                        
                         {/* 사용자 관리 페이지 */}
                         <Route path="/memberList" element={<MemberList />} />
                         <Route path="/retiredMember" element={<RetiredMember />} />

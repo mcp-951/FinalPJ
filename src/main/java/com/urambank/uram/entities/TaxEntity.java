@@ -49,4 +49,7 @@ public class TaxEntity {
 
     @Column
     private int userNo;
+
+    @Column
+    private String taxCtegory;
 }

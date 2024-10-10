@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ApiService from '../service/ApiService';  // ApiService 사용
 import '../../../../resource/css/admin/AdminLogin.css';
+import localStorage from 'localStorage';
 
 const AdminLogin = ({ setIsLoggedIn, isLoggedIn }) => {  // isLoggedIn과 상태 변경 함수 props로 전달
     const [adminID, setAdminID] = useState('');

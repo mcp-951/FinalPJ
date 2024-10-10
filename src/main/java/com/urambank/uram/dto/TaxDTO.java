@@ -22,4 +22,5 @@ public class TaxDTO {
     private Date taxDeadLine;
     private Date taxWriteDate;
     private int userNo;
+    private String taxCtegory;
 }

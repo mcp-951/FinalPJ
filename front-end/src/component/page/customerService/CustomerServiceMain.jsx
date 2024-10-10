@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CustomerServiceMain.css';
+import '../../../resource/css/customerService/CustomerServiceMain.css';
 
 function CustomerServiceMain({ inquiries }) {
   const navigate = useNavigate();
@@ -13,9 +13,9 @@ function CustomerServiceMain({ inquiries }) {
   return (
     <div className="customer-service-main">
       <h1>무엇을 도와드릴까요? <span>Q&A</span></h1>
-
+  
       {/* 문의글 리스트 테이블을 위쪽에 배치 */}
-      {inquiries.length === 0 ? (
+      {Array.isArray(inquiries) && inquiries.length === 0 ? (
         <p>문의한 내역이 없습니다.</p>
       ) : (
         <table className="inquiry-table">
@@ -28,11 +28,14 @@ function CustomerServiceMain({ inquiries }) {
             </tr>
           </thead>
           <tbody>
-            {inquiries.map((inquiry, index) => (
+            {inquiries && inquiries.map((inquiry, index) => (
               <tr key={inquiry.id}>
                 <td>{index + 1}</td>
                 <td>
-                  <button onClick={() => handleInquiryClick(inquiry.id)} style={{ background: "none", border: "none", color: "blue", textDecoration: "underline", cursor: "pointer" }}>
+                  <button
+                    onClick={() => handleInquiryClick(inquiry.id)}
+                    style={{ background: "none", border: "none", color: "blue", textDecoration: "underline", cursor: "pointer" }}
+                  >
                     {inquiry.title}
                   </button>
                 </td>

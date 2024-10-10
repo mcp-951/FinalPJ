@@ -69,6 +69,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        int userNo = customUserDetails.getUserNo();
+        String name = customUserDetails.getName();
         String username = customUserDetails.getUsername();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = authorities.iterator().next().getAuthority();
@@ -78,7 +80,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         long tokenValidity = 10 * 60 * 1000L; // 30분을 밀리초로 설정
 
         // JWT 토큰 생성
-        String token = jwtUtil.createJwt(username, role, tokenValidity);
+        String token = jwtUtil.createJwt(username, role, tokenValidity, userNo, name);
 
         // 응답 헤더에 토큰을 추가
         response.addHeader("Authorization", "Bearer " + token);

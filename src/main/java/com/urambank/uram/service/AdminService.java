@@ -1,15 +1,12 @@
 package com.urambank.uram.service;
 
-import com.urambank.uram.dto.AdminDTO;
 import com.urambank.uram.dto.ProductDTO;
 import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.entities.AdminEntity;
 import com.urambank.uram.entities.ProductEntity;
 import com.urambank.uram.entities.User;
-import com.urambank.uram.repository.AdminRepository;
 import com.urambank.uram.repository.ProductRepository;
 import com.urambank.uram.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -30,60 +27,36 @@ public class AdminService {
         this.userRepository = userRepository;
     }
 
-//    // 마지막 작업 기록 남기기
-//    public void logAdminAction(long adminNo, String action) {
-//        AdminEntity adminEntity = adminRepository.findById((int) adminNo)
-//                .orElseThrow(() -> new RuntimeException("관리자를 찾을 수 없습니다."));
-//
-//        adminEntity.setLastAction(action); // 마지막 작업 기록 업데이트
-//        adminEntity.setLastLogin(new Timestamp(System.currentTimeMillis())); // 마지막 로그인 시간 업데이트
-//        adminRepository.save(adminEntity); // 변경사항 저장
-//    }
-//
-//    // 마지막 작업 기록 조회
-//    public String getLastAction(long adminNo) {
-//        AdminEntity adminEntity = adminRepository.findById((int) adminNo)
-//                .orElseThrow(() -> new RuntimeException("관리자를 찾을 수 없습니다."));
-//        return adminEntity.getLastAction(); // 마지막 작업 기록 반환
-//    }
-
-    // 관리자 목록 가져오기 (DTO 사용)
-    public List<UserDTO> getAllAdmins() {
-        return userRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
-
     // DTO -> Entity 변환 메서드
-    private AdminEntity convertToEntity(AdminDTO adminDTO) {
-        if (adminDTO == null) {
+    private User convertToEntity(UserDTO userDTO) {
+        if (userDTO == null) {
             return null;
         }
-        AdminEntity adminEntity = new AdminEntity();
-        adminEntity.setAdminNo(adminDTO.getAdminNo());
-        adminEntity.setAdminID(adminDTO.getAdminID());
-        adminEntity.setAdminName(adminDTO.getAdminName());
-        adminEntity.setAdminPW(adminDTO.getAdminPW());
-        adminEntity.setROLE(adminDTO.getROLE()); // 권한 추가
-        adminEntity.setStateView(adminDTO.getStateView()); // 상태 추가
-        return adminEntity;
+        User user = new User();
+        user.setUserNo(userDTO.getUserNo());
+        user.setUserId(userDTO.getUserId());
+        user.setName(userDTO.getName());
+        user.setUserPw(userDTO.getUserPw());
+        user.setUser_role(userDTO.getUSER_ROLE()); // 권한 추가
+        user.setState(userDTO.getState()); // 상태 추가
+        return user;
     }
 
     // Entity -> DTO 변환 메서드
-    private AdminDTO convertToDTO(AdminEntity adminEntity) {
-        if (adminEntity == null) {
+    private UserDTO convertToDTO(User user) {
+        if (user == null) {
             return null;
         }
-        AdminDTO adminDTO = new AdminDTO();
-        adminDTO.setAdminNo(adminEntity.getAdminNo());
-        adminDTO.setAdminID(adminEntity.getAdminID());
-        adminDTO.setAdminName(adminEntity.getAdminName());
-        adminDTO.setAdminPW(adminEntity.getAdminPW());
-        adminDTO.setROLE(adminEntity.getROLE()); // 권한 추가
-        adminDTO.setStateView(adminEntity.getStateView()); // 상태 추가
-        adminDTO.setLastAction(adminEntity.getLastAction()); // 마지막 작업 추가
-        adminDTO.setLastLogin(adminEntity.getLastLogin()); // 마지막 로그인 추가
-        return adminDTO;
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserNo(user.getUserNo());
+        userDTO.setUserId(user.getUserId());
+        userDTO.setName(user.getName());
+        userDTO.setUserPw(user.getUserPw());
+        userDTO.setUSER_ROLE(user.getUser_role()); // 권한 추가
+        userDTO.setState(user.getState()); // 상태 추가
+        userDTO.setResidentNumber(user.getResidentNumber());
+        userDTO.setEmail(user.getEmail());
+        return userDTO;
     }
 
     // 모든 상품 조회 ('y' 상태인 상품만 반환)
@@ -94,7 +67,7 @@ public class AdminService {
                 .collect(Collectors.toList());
 
         return products.stream()
-                .map(this::convertToDTO)
+                .map(this::convertToProductDTO)
                 .collect(Collectors.toList());
     }
 
@@ -102,7 +75,7 @@ public class AdminService {
     public List<ProductDTO> getProductsByCategory(String category) {
         List<ProductEntity> products = productRepository.findByProductCategoryAndViewState(category, "y");
         return products.stream()
-                .map(this::convertToDTO)
+                .map(this::convertToProductDTO)
                 .collect(Collectors.toList());
     }
 
@@ -113,10 +86,10 @@ public class AdminService {
 
     // 상품 등록
     public ProductDTO addProduct(ProductDTO productDTO) {
-        ProductEntity productEntity = convertToEntity(productDTO);
+        ProductEntity productEntity = convertToProductEntity(productDTO);
         productEntity.setViewState("y");
         ProductEntity savedProduct = productRepository.save(productEntity);
-        return convertToDTO(savedProduct);
+        return convertToProductDTO(savedProduct);
     }
 
     // 상품 수정
@@ -134,7 +107,7 @@ public class AdminService {
         productEntity.setRepaymentType(productDTO.getRepaymentType());
 
         ProductEntity updatedProduct = productRepository.save(productEntity);
-        return convertToDTO(updatedProduct);
+        return convertToProductDTO(updatedProduct);
     }
 
     // 상품 상태 변경
@@ -146,7 +119,7 @@ public class AdminService {
     }
 
     // Entity -> DTO 변환
-    private ProductDTO convertToDTO(ProductEntity productEntity) {
+    private ProductDTO convertToProductDTO(ProductEntity productEntity) {
         return ProductDTO.builder()
                 .productNo(productEntity.getProductNo())
                 .productName(productEntity.getProductName())
@@ -161,7 +134,7 @@ public class AdminService {
     }
 
     // DTO -> Entity 변환
-    private ProductEntity convertToEntity(ProductDTO productDTO) {
+    private ProductEntity convertToProductEntity(ProductDTO productDTO) {
         return ProductEntity.builder()
                 .productNo(productDTO.getProductNo())
                 .productName(productDTO.getProductName())
@@ -177,8 +150,8 @@ public class AdminService {
 
     // 활성 회원 목록 조회 (NORMAL, STOP 상태의 유저를 조회)
     public List<UserDTO> getAllUsers() {
-        List<User> normalUsers = userRepository.findAllByState("y");
-        List<User> stopUsers = userRepository.findAllByState("n");
+        List<User> normalUsers = userRepository.findAllByState('y');
+        List<User> stopUsers = userRepository.findAllByState('n');
 
         // 두 리스트를 합친 후 DTO로 변환
         return Stream.concat(normalUsers.stream(), stopUsers.stream())
@@ -188,7 +161,7 @@ public class AdminService {
 
     // 탈퇴된 회원 조회 (END 상태의 유저만 조회)
     public List<UserDTO> getRetiredUsers() {
-        return userRepository.findAllByState("e").stream()
+        return userRepository.findAllByState('e').stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -226,21 +199,4 @@ public class AdminService {
         userRepository.save(userEntity);
     }
 
-    // Entity -> DTO 변환 메서드
-    private UserDTO convertToDTO(User userEntity) {
-        return UserDTO.builder()
-                .userNo(userEntity.getUserNo())
-                .userId(userEntity.getUserId())
-                .userPw(userEntity.getUserPw())
-                .email(userEntity.getEmail())
-                .name(userEntity.getName())
-                .residentNumber(userEntity.getResidentNumber())
-                .OCRCheck(userEntity.getOCRCheck())
-                .birth(userEntity.getBirth())
-                .hp(userEntity.getHp())
-                .address(userEntity.getAddress())
-                .state(userEntity.getState())
-                .joinDate(userEntity.getJoinDate())
-                .build();
-    }
 }

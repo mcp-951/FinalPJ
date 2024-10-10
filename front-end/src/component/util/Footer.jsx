@@ -9,6 +9,7 @@ function Footer() {
         <a href="/privacy-policy">Privacy Policy</a>
         <a href="/terms-of-service">Terms of Service</a>
         <a href="/contact-us">Contact Us</a>
+        <a href="/customer-service">고객센터</a>
       </div>
     </footer>
   );

@@ -1,76 +1,120 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import '../../../../resource/css/account/accountManagement/PasswordCheck.css'; // CSS 파일 적용
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import '../../../../resource/css/account/accountManagement/PasswordCheck.css';
+import axios from 'axios';
 
 const PasswordCheck = ({ title, instructions }) => {
+  const [accounts, setAccounts] = useState([]);  // 계좌 목록을 저장하는 상태
   const [selectedAccount, setSelectedAccount] = useState('');  // 선택된 계좌 번호
+  const [selectedProductName, setSelectedProductName] = useState('');  // 선택된 계좌의 상품명
   const [password, setPassword] = useState('');  // 입력된 비밀번호
   const [isPasswordValid, setIsPasswordValid] = useState(null);  // 비밀번호 유효성 상태
+  const [errorMessage, setErrorMessage] = useState('');  // 오류 메시지 상태
 
-  const navigate = useNavigate();  // 페이지 이동을 위한 navigate 함수
-  const [searchParams] = useSearchParams();  // URL의 쿼리 파라미터 확인
-  const purpose = searchParams.get('purpose');  // 쿼리 파라미터에서 'purpose' 값 가져오기
-  const accountNumberFromQuery = searchParams.get('accountNumber'); // URL 쿼리에서 accountNumber 가져오기
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();  // 모달에서 넘어온 state를 받기 위해 useLocation 사용
 
-  // 쿼리 파라미터 값을 로그로 출력
-  console.log("Purpose: ", purpose);
-  console.log("Account Number: ", accountNumberFromQuery);
+  // URL 쿼리 파라미터나 location.state에서 accountNumber 가져오기
+  const purpose = searchParams.get('purpose');
+  const accountNumberFromQuery = searchParams.get('accountNumber'); // URL 쿼리에서 가져오기
+  const { accountNumber: accountNumberFromState, productName: productNameFromState } = location.state || {}; // 모달에서 전달된 값
 
-  // URL 쿼리 파라미터에 계좌 번호가 있을 때 설정
-  useEffect(() => {
-    if (accountNumberFromQuery) {
-      setSelectedAccount(accountNumberFromQuery);
-    }
-  }, [accountNumberFromQuery]);
+  const accountNumber = accountNumberFromQuery || selectedAccount || accountNumberFromState; // 선택된 계좌 포함
+  const productName = selectedProductName || productNameFromState || ''; // productName도 전달받은 값 사용
 
-  // 비밀번호 확인 로직
-  const handlePasswordCheck = () => {
-    if (password.trim() !== "") {
-      setIsPasswordValid(true); // 비밀번호가 입력된 경우 유효성 통과
-      console.log("Password is valid");
-    } else {
-      setIsPasswordValid(false); // 비밀번호가 입력되지 않았을 경우
-      console.log("Password is invalid");
-      alert('비밀번호를 입력하세요.');
+  // 계좌 목록을 불러오는 함수
+  const fetchAccounts = async () => {
+    try {
+      const response = await axios.get('http://localhost:8081/uram/account');  // 계좌 목록을 불러오는 API 호출
+      setAccounts(response.data);  // 응답 데이터를 accounts 상태에 저장
+    } catch (error) {
+      console.error("Error fetching accounts: ", error);
+      setErrorMessage("계좌 목록을 불러오는 중 오류가 발생했습니다.");
     }
   };
 
-  // 계좌 선택 및 비밀번호 유효성 검증 후 페이지 이동 처리
+  useEffect(() => {
+    if (!accountNumber) {
+      fetchAccounts(); // accountNumber가 없을 때만 전체 계좌 목록을 불러옵니다.
+    }
+  }, [accountNumber]);
+
+  // 계좌 선택 시 처리
+  const handleAccountSelect = (event) => {
+    const selectedAccountNumber = event.target.value;
+    setSelectedAccount(selectedAccountNumber);
+
+    // 선택된 계좌에 맞는 상품명 설정
+    const selectedAccountData = accounts.find(account => account.accountNumber === parseInt(selectedAccountNumber));
+    if (selectedAccountData) {
+      setSelectedProductName(selectedAccountData.productName);
+    }
+  };
+
+  // 비밀번호 확인 로직
+  const handlePasswordCheck = async () => {
+    if (password.trim() !== "") {
+      try {
+        const parsedPassword = parseInt(password, 10);  // 비밀번호를 숫자로 변환
+        if (isNaN(parsedPassword)) {
+          setErrorMessage('비밀번호는 숫자여야 합니다.');
+          return;
+        }
+
+        if (!accountNumber) {
+          setErrorMessage('계좌를 선택하세요.');
+          return;
+        }
+
+        const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/check-password`, {
+          password: parsedPassword
+        });
+
+        if (response.status === 200) {
+          setIsPasswordValid(true);
+          setErrorMessage('비밀번호가 확인되었습니다.');
+        }
+      } catch (error) {
+        setIsPasswordValid(false);
+        if (error.response && error.response.status === 401) {
+          setErrorMessage('비밀번호가 올바르지 않습니다.');
+        } else {
+          setErrorMessage('비밀번호 확인 중 오류가 발생했습니다.');
+        }
+      }
+    } else {
+      setErrorMessage('비밀번호를 입력하세요.');
+    }
+  };
+
+  // 비밀번호 확인 후 다음 페이지로 이동하는 로직
   const handleSubmit = (e) => {
-    e.preventDefault(); // 기본 폼 제출 방지
+    e.preventDefault();
 
-    console.log("Submit button clicked");
-    console.log("Selected Account: ", selectedAccount);
-    console.log("Is Password Valid: ", isPasswordValid);
-    console.log("Purpose: ", purpose); // 목적 출력
-
-    if (!selectedAccount) {
-      alert('계좌를 선택하세요');
+    if (!accountNumber) {
+      alert('계좌를 선택하세요.');
       return;
     }
 
     if (isPasswordValid) {
       let targetUrl = "";
 
-      // 목적에 따라 경로 설정
       if (purpose === 'password-change') {
-        targetUrl = `/account/${selectedAccount}/password-change`;
+        targetUrl = `/account/${accountNumber}/password-change`;
       } else if (purpose === 'close-account') {
-        targetUrl = `/account/${selectedAccount}/close`;
+        targetUrl = `/account/${accountNumber}/close`;
       } else if (purpose === 'limit-inquiry') {
-        targetUrl = `/account/${selectedAccount}/limit-change`;
+        targetUrl = `/account/${accountNumber}/limit-inquiry`;
       }
 
-      // 경로가 정의되었는지 확인
       if (targetUrl) {
-        console.log("Navigating to: ", targetUrl);  // 경로 로그 출력
-        navigate(targetUrl);  // 선택된 계좌 번호와 함께 URL로 이동
+        navigate(targetUrl, { state: { productName, accountNumber } });
       } else {
-        console.error("Target URL is not defined. Purpose might be incorrect.");
         alert("올바른 목적이 설정되지 않았습니다.");
       }
     } else {
-      alert('비밀번호가 유효하지 않습니다.');
+      alert(errorMessage);
     }
   };
 
@@ -79,21 +123,26 @@ const PasswordCheck = ({ title, instructions }) => {
       <h2>{title}</h2>
       <p>{instructions}</p>
 
-      {/* 계좌 선택 */}
       <div className="account-select">
         <label>계좌 선택</label>
-        {accountNumberFromQuery ? (
-          <div>{accountNumberFromQuery}</div>
+        {accountNumber ? (
+          <div>
+            <p style={{ fontSize: '20px', fontWeight: 'bold' }}>
+              {accountNumber} ({productName}) {/* 크고 굵은 글씨로 표시 */}
+            </p>
+          </div>
         ) : (
-          <select value={selectedAccount} onChange={(e) => setSelectedAccount(e.target.value)}>
+          <select value={selectedAccount} onChange={handleAccountSelect}>
             <option value="">계좌를 선택하세요</option>
-            <option value="123-456-789">123-456-789</option>
-            <option value="987-654-321">987-654-321</option>
+            {accounts.map(account => (
+              <option key={account.accountNumber} value={account.accountNumber}>
+                {account.accountNumber} ({account.productName}) {/* 드롭다운에서도 계좌번호와 계좌명을 같이 표시 */}
+              </option>
+            ))}
           </select>
         )}
       </div>
 
-      {/* 비밀번호 입력 */}
       <div className="password-input">
         <label>비밀번호 입력</label>
         <input
@@ -104,15 +153,14 @@ const PasswordCheck = ({ title, instructions }) => {
         />
         <button onClick={handlePasswordCheck} className="password-check-button">확인</button>
 
-        {/* 비밀번호 유효성 여부 표시 */}
         <span className={`password-check-status ${isPasswordValid === false ? 'error' : isPasswordValid === true ? 'check-mark' : ''}`}>
-          {isPasswordValid === false && '비밀번호를 입력해주세요.'}
-          {isPasswordValid === true && '비밀번호가 확인되었습니다.'}
+          {errorMessage}
         </span>
       </div>
 
-      {/* 확인 버튼 */}
-      <button onClick={handleSubmit} className="password-submit-button">확인</button>
+      <button onClick={handleSubmit} className="password-submit-button" disabled={!isPasswordValid}>
+        확인
+      </button>
     </div>
   );
 };

@@ -24,7 +24,7 @@ function Login() {
         console.log("Login successful:", response);
         // 로그인 성공 시 처리
         const token = response.data.accessToken;
-        localStorage.setItem("token",token.data);
+        localStorage.setItem("token",token);
         //console.log("token:", token);
         navigate("/");
         window.location.reload();

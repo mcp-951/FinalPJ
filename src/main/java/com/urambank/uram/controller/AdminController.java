@@ -1,12 +1,8 @@
 package com.urambank.uram.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.urambank.uram.dto.AdminDTO;
 import com.urambank.uram.dto.ProductDTO;
 import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.service.AdminService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,20 +22,6 @@ public class AdminController {
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
     }
-
-//    // 관리자 목록 가져오기 (DTO 사용)
-//    @GetMapping("/getAdminList")
-//    public ResponseEntity<List<UserDTO>> getAllAdmins() {
-//        List<UserDTO> admins = adminService.getAllAdmins(); // DTO 리스트 반환
-//        return ResponseEntity.ok(admins);
-//    }
-//
-//    // 마지막 작업 기록 조회
-//    @GetMapping("/lastAction/{adminNo}")
-//    public ResponseEntity<String> getLastAction(@PathVariable int adminNo) {
-//        String lastAction = adminService.getLastAction(adminNo); // 마지막 작업 기록 가져오기
-//        return ResponseEntity.ok(lastAction);
-//    }
 
     // 모든 상품 조회
     @GetMapping("/productList")

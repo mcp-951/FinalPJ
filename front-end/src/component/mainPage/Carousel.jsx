@@ -1,55 +1,63 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import CarouselImg from './Carousel/CarouselImg'
-import '../../resource/css/main/Carousel.css'
+import '../../resource/css/main/Carousel.css';
+import product1 from '../../resource/img/a.png';  // 첫 번째 금융상품 이미지
+import product2 from '../../resource/img/b.png';  // 두 번째 금융상품 이미지
+import product3 from '../../resource/img/c.png';  // 세 번째 금융상품 이미지
 
-function Carouesl_Main() {
+function Carousel_Main() {
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
   };
+
   return (
     <div className='Carousel_div'>
       <div className='Carousel_Tab'>
-      <Carousel activeIndex={index} onSelect={handleSelect}>
-        <Carousel.Item>
-        <CarouselImg
-              src="https://via.placeholder.com/800x400?text=First+Slide"
-              alt="First slide"
+        <Carousel activeIndex={index} onSelect={handleSelect}>
+          <Carousel.Item>
+            <img
+              className="d-block w-100"
+              src={product1}
+              alt="주택청약종합저축"
+              style={{ maxHeight: '400px', objectFit: 'cover' }}
             />
-          <Carousel.Caption>
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <CarouselImg
-              src="https://via.placeholder.com/800x400?text=Second+Slide"
-              alt="Second slide"
-          />
-          <Carousel.Caption>
-            <h3>Second slide label</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <CarouselImg
-              src="https://via.placeholder.com/800x400?txt=Third+Slide"
-              alt="Third slide"
-          />
-          <Carousel.Caption>
-            <h3>Third slide label</h3>
-            <p>
-              Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-            </p>
-          </Carousel.Caption>
-        </Carousel.Item>
-      </Carousel>
+            <Carousel.Caption style={{ color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '5px' }}>
+              <h3>내 집 마련의 시작</h3>
+              <p>주택청약종합저축</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <img
+              className="d-block w-100"
+              src={product2}
+              alt="URAM 내맘대로 적금"
+              style={{ maxHeight: '400px', objectFit: 'cover' }}
+            />
+            <Carousel.Caption style={{ color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '5px' }}>
+              <h3>누구나 쉽게 우대받는 DIY</h3>
+              <p>URAM 내맘대로 적금</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <img
+              className="d-block w-100"
+              src={product3}
+              alt="URAM 직장인든든 신용대출"
+              style={{ maxHeight: '400px', objectFit: 'cover' }}
+            />
+            <Carousel.Caption style={{ color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '5px' }}>
+              <h3>직장인이라면</h3>
+              <p>URAM 직장인든든 신용대출</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
       </div>
     </div>
   );
 }
 
-export default Carouesl_Main;
+export default Carousel_Main;
