@@ -95,17 +95,14 @@ public class AdminService {
 
     // 상품 수정
     public ProductDTO updateProduct(int productNo, ProductDTO productDTO) {
-        ProductEntity productEntity = productRepository.findById(productNo)
-                .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
+        ProductEntity productEntity = productRepository.findById(productNo);
 
         productEntity.setProductName(productDTO.getProductName());
         productEntity.setProductCategory(productDTO.getProductCategory());
         productEntity.setProductRate(productDTO.getProductRate());
-        productEntity.setProductPeriod(productDTO.getProductPeriod());
         productEntity.setProductContent(productDTO.getProductContent());
         productEntity.setProductIMG(productDTO.getProductIMG());
         productEntity.setViewState(productDTO.getViewState());
-        productEntity.setRepaymentType(productDTO.getRepaymentType());
 
         ProductEntity updatedProduct = productRepository.save(productEntity);
         return convertToProductDTO(updatedProduct);
@@ -113,8 +110,7 @@ public class AdminService {
 
     // 상품 상태 변경
     public void updateViewState(int productNo, String viewState) {
-        ProductEntity product = productRepository.findById(productNo)
-                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+        ProductEntity product = productRepository.findById(productNo);
         product.setViewState(viewState);
         productRepository.save(product);
     }
@@ -126,27 +122,19 @@ public class AdminService {
                 .productName(productEntity.getProductName())
                 .productCategory(productEntity.getProductCategory())
                 .productRate(productEntity.getProductRate())
-                .productPeriod(productEntity.getProductPeriod())
                 .productContent(productEntity.getProductContent())
                 .productIMG(productEntity.getProductIMG())
                 .viewState(productEntity.getViewState())
-                .repaymentType(productEntity.getRepaymentType())
                 .build();
     }
 
     // DTO -> Entity 변환
     private ProductEntity convertToProductEntity(ProductDTO productDTO) {
-        return ProductEntity.builder()
-                .productNo(productDTO.getProductNo())
-                .productName(productDTO.getProductName())
-                .productCategory(productDTO.getProductCategory())
-                .productRate(productDTO.getProductRate())
-                .productPeriod(productDTO.getProductPeriod())
-                .productContent(productDTO.getProductContent())
-                .productIMG(productDTO.getProductIMG())
-                .viewState(productDTO.getViewState())
-                .repaymentType(productDTO.getRepaymentType())
-                .build();
+        ProductEntity entity = new ProductEntity();
+        entity.setProductNo(productDTO.getProductNo());
+        entity.setProductName(productDTO.getProductName());
+        entity.setProductCategory(productDTO.getProductCategory());
+        return entity;
     }
 
     // 활성 회원 목록 조회 (NORMAL, STOP 상태의 유저를 조회)

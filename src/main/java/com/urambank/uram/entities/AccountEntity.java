@@ -50,18 +50,5 @@ public class AccountEntity {
     @Column
     private Date accountOpen;
 
-    public static AccountEntity toAccountEntity(AccountDTO accountDTO) {
-        return AccountEntity.builder()
-                .accountNo(accountDTO.getAccountNo())
-                .accountNumber(accountDTO.getAccountNumber())
-                .userNo(accountDTO.getUserNo())
-                .product(ProductEntity.builder().productNo(accountDTO.getProductNo()).build()) // productNo만 설정
-                .accountBalance(accountDTO.getAccountBalance())
-                .accountLimit(accountDTO.getAccountLimit())
-                .accountMax(accountDTO.getAccountMax())
-                .accountPW(accountDTO.getAccountPW())
-                .accountState(accountDTO.getAccountState())
-                .accountOpen(accountDTO.getAccountOpen())
-                .build();
-    }
+
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './css/Repayment.css'; // 별도의 CSS 파일
+import '../../../../resource/css/product/Repayment.css'; // 별도의 CSS 파일
 
 const LoanRepaymentForm = () => {
   const [loanAccount, setLoanAccount] = useState('');

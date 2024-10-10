@@ -41,10 +41,16 @@ import EditLoanProduct from '../page/adminPage/product/EditLoanProduct';
 import Sidebar from '../page/adminPage/Sidebar';
 
 // 예금 적금
-import DepositMain from '../page/product/DepositMain'; // 예금 상품 메인 페이지
-import DepositList from '../page/product/DepositList'; // 예금 상품 리스트 페이지
-import SavingMain from '../page/product/SavingMain'; // 적금 상품 메인 페이지
-import SavingList from '../page/product/SavingList'; // 적금 상품 리스트 페이지
+import DepositMain from 'component/page/product/Deposit/DepositMain';
+import DepositList from 'component/page/product/Deposit/DepositList';
+import Calculatior from 'component/page/product/Loan/Calculatior';
+import LoanList from 'component/page/product/Loan/LoanList';
+import LoanMain from 'component/page/product/Loan/LoanMain';
+import ProductMain from 'component/page/product/ProductMain';
+import Repayment from 'component/page/product/Loan/Repayment';
+import Accession_chap1 from 'component/page/product/Accession/Accession_chap1';
+import Accession_chap2 from 'component/page/product/Accession/Accession_chap2';
+import Accession_chap3 from 'component/page/product/Accession/Accession_chap3';
 
 // 계좌 관련 (채림)
 import Account from '../page/account/accountView/Account';
@@ -131,13 +137,17 @@ const RouteComponent = () => {
 
 
                         {/*상품 라우터_민우님*/}
-                        {/* 예금 상품 관련 라우터 추가 */}
-                        <Route path="/DepositMain" exact={true} element={<DepositMain />} /> {/* 예금 메인 페이지 */}
-                        <Route path="/deposit-list" exact={true} element={<DepositList />} /> {/* 예금 리스트 페이지 */}
-
-                        {/* 적금 상품 관련 라우터 추가 */}
-                        <Route path="/SavingMain" exact={true} element={<SavingMain />} /> {/* 적금 메인 페이지 */}
-                        <Route path="/saving-list" exact={true} element={<SavingList />} /> {/* 적금 리스트 페이지 */}
+                        {/* 예금, 적금, 대출 상품 관련 */}
+                        <Route path="/DepositMain" exact={true} element={<DepositMain />} />
+                        <Route path="/deposit-list" exact={true} element={<DepositList />} />
+                        <Route path="/Calculatior" exact={true} element={<Calculatior />} />
+                        <Route path="/LoanList" exact={true} element={<LoanList />} />
+                        <Route path="/LoanMain" exact={true} element={<LoanMain />} />
+                        <Route path="/ProductMain" exact={true} element={<ProductMain />} />
+                        <Route path="/Repayment" exact={true} element={<Repayment />} />
+                        <Route path="/Accession_chap1" exact={true} element={<Accession_chap1 />} />
+                        <Route path="/Accession_chap2" exact={true} element={<Accession_chap2 />} />
+                        <Route path="/Accession_chap3" exact={true} element={<Accession_chap3 />} />
 
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/account" element={<Account />} />

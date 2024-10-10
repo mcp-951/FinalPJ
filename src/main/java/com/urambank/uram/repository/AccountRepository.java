@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
+public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
 
     // 'NORMAL' 상태의 모든 계좌와 관련된 정보를 조회
     @Query("SELECT a FROM AccountEntity a JOIN FETCH a.product p WHERE a.accountState = 'NORMAL'")
@@ -29,7 +29,7 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     // 'NORMAL' 상태의 계좌만 조회하여 필요한 정보 반환
     @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, " +
-            "a.product.productNo, a.product.productName, a.product.productPeriod " +
+            "a.product.productNo, a.product.productName " +
             "FROM AccountEntity a WHERE a.accountState = 'NORMAL'")
     List<Object[]> findAllAccountWithProductNameAndActive();
 
