@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -70,26 +69,25 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        int userNo =customUserDetails.getUserNo();
+        int userNo = customUserDetails.getUserNo();
+        String name = customUserDetails.getName();
         String username = customUserDetails.getUsername();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = authorities.iterator().next().getAuthority();
-        System.out.println("Role: " + role);
-        System.out.println("UserNo: " + userNo);
+        System.out.println(role);
 
         // 만료 시간 (30분)
         long tokenValidity = 10 * 60 * 1000L; // 30분을 밀리초로 설정
 
         // JWT 토큰 생성
-        String token = jwtUtil.createJwt(userNo, username, role, tokenValidity);
+        String token = jwtUtil.createJwt(username, role, tokenValidity, userNo, name);
 
         // 응답 헤더에 토큰을 추가
         response.addHeader("Authorization", "Bearer " + token);
 
-        // JSON 객체 직접 생성
-        Map<String, Object> responseBody = new HashMap<>();
-        responseBody.put("accessToken", token);
-        responseBody.put("userNo", userNo); // userNo 추가
+        // TokenDTO 객체 생성
+        TokenDTO dto = new TokenDTO();
+        dto.setAccessToken(token);
 
         // 응답을 JSON 형식으로 설정
         response.setContentType("application/json");
@@ -97,9 +95,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // ObjectMapper를 이용해 JSON 응답
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse = objectMapper.writeValueAsString(responseBody);
+        String jsonResponse = objectMapper.writeValueAsString(dto);
 
-        // 응답 본문에 accessToken과 userNo를 JSON 형식으로 추가
+        // 응답 본문에 accessToken을 JSON 형식으로 추가
         response.getWriter().write(jsonResponse);
     }
 

@@ -22,7 +22,7 @@
   margin-right: 10px;
 }
 
-button {
+.signUp-button {
   padding: 10px 20px;
   background-color: #444;
   color: white;
@@ -30,7 +30,7 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.signUp-button:hover {
   background-color: #555;
 }
 

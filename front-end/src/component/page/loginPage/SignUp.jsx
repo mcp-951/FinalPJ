@@ -222,7 +222,7 @@ function SignUp() {
             onChange={handleChange}
             placeholder="6-20자 영문, 숫자"
           />
-          <button type="button" onClick = {idCheck}>중복체크</button>
+          <button type="button" onClick = {idCheck} className='signUp-button'>중복체크</button>
           <p name= "checkingId" value = "0">{idCheckMessage}</p>
         </div>
 
@@ -321,7 +321,7 @@ function SignUp() {
             placeholder="010 1234 5678"
             required
           />
-          <button type="button" onClick = {hpCheck} >인증번호받기</button>
+          <button type="button" onClick = {hpCheck} className='signUp-button' >인증번호받기</button>
         </div>
 
         <div className="form-group">
@@ -336,7 +336,7 @@ function SignUp() {
                 {stateAuth &&(<>
                     <p> 인증 성공 </p>
                     </>)}
-                <button type="button" onClick={authingKey}>인증</button>
+                <button type="button" onClick={authingKey} className='signUp-button'>인증</button>
                 </>
             )}
         </div>
@@ -360,7 +360,7 @@ function SignUp() {
             onChange={handleChange}
             required
           />
-          <button>등록</button>
+          <button className='signUp-button'>등록</button>
         </div>
 
         <div className="form-group">
@@ -381,11 +381,11 @@ function SignUp() {
                 />
                 </>
             )}
-          <button type="button" onClick={openPopup}>검색</button>
+          <button type="button" onClick={openPopup} className='signUp-button'>검색</button>
         </div>
 
 
-        <button type="submit">가입완료</button>
+        <button type="submit" className='signUp-button'>가입완료</button>
       </div>
     </form>
     );
