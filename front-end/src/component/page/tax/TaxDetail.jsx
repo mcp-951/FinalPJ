@@ -4,10 +4,11 @@ import { jwtDecode } from 'jwt-decode';
 
 import '../../../resource/css/tax/TaxDetail.css'
 import axios from "axios";
+import TaxDetailAccount from "./TaxDetailAccount";
 
 function TaxDetail (){
     const navigate = useNavigate();
-    const [taxType, setTaxType] = useState('전기세')
+    const [category, setCategory] = useState('electro')
     const [taxMonth, setTaxMonth] = useState(null)
     const [taxYear, setTaxYear] = useState(null)
     const [token, setToken] = useState(null)
@@ -15,9 +16,11 @@ function TaxDetail (){
     const [basicSum, setBasciSum] = useState(null)
     const [feeSum, setFeeSum] = useState(null)
     const [sum, setSum] = useState(null);
+
+    const [showAccount, setShowAccount] = useState(false);
     
     const taxTypeChange = (event) =>{
-        setTaxType(event.target.value)
+        setCategory(event.target.value)
     }
     const taxMonthSelect = (event) =>{
         setTaxMonth(event.target.value)
@@ -43,7 +46,7 @@ function TaxDetail (){
     const SelectTax = async (event)=>{
         event.preventDefault();
         const taxData = {
-            taxType: taxType,
+            category: category,
             taxMonth: taxMonth,
             taxYear: taxYear,
         };
@@ -51,7 +54,7 @@ function TaxDetail (){
         try{
             const realToken = localStorage.getItem('token');
             console.log(taxData.taxMonth + '하이이')
-            const response = await axios.get(`http://localhost:8081/tax/taxSelectList/${token.userNo}/${taxData.taxYear}/${taxData.taxMonth}`, {
+            const response = await axios.get(`http://localhost:8081/tax/taxSelectList/${token.userNo}/${taxData.taxYear}/${taxData.taxMonth}/${taxData.category}`, {
                 headers: {
                     Authorization: `Bearer ${realToken}`
                 }})
@@ -65,6 +68,14 @@ function TaxDetail (){
             console.error("값을 못가져왔음", error);
         }
     }
+
+    const handleAccount = () => {
+        setShowAccount(true);
+    }
+
+    const cancelAccount = () => {
+        setShowAccount(false);
+    }
     
     return(
         <div className="Taxcontainer">
@@ -74,9 +85,9 @@ function TaxDetail (){
                         <label htmlFor="taxType">공과금 종류</label>
                     </div>
                     <div className="SelectTax_Type_Select">
-                        <select id="taxMenu" value={taxType} onChange={taxTypeChange} className="SelectTax_Type_Select_SelectBar">
-                            <option value="전기세">전기세</option>
-                            <option value="수도세">수도세</option>
+                        <select id="taxMenu" value={category} onChange={taxTypeChange} className="SelectTax_Type_Select_SelectBar">
+                            <option value="electro">전기세</option>
+                            <option value="warter">수도세</option>
                         </select>
                     </div>
                 </div>
@@ -133,14 +144,22 @@ function TaxDetail (){
                     </tr>
                     <tr>{taxData ? (<>
                             <td>{taxData.taxNo}</td>
-                            <td>{taxType}</td>
+                            <td>{taxData.taxCategory == 'electro' ? ('전기세') : ('수도세')}</td>
                             <td>{basicSum}</td>
                             <td>{feeSum}</td>
                             <td>{sum}</td>
                             <td>{taxData.taxDeadLine}</td>
-                            {taxData.taxState == 'N' ? (
-                            <td><button>납부하기</button></td>) 
-                            :(<td>납부완료</td>)}
+                            <td>
+                                {taxData.taxState === 'N' ? (
+                                    showAccount ? (
+                                        <button onClick={cancelAccount}>취소</button>
+                                    ) : (
+                                        <button onClick={handleAccount}>납부하기</button>
+                                    )
+                                ) : (
+                                    '납부완료'
+                                )}
+                            </td>
                         </>)
                         : (<>
                             <td>-</td>
@@ -154,7 +173,9 @@ function TaxDetail (){
                     </tr>
                 </table>
             </div>
+            {showAccount &&(<TaxDetailAccount />)}
         </div>
+                    
     );
 }
 

@@ -36,6 +36,10 @@ function TaxHistory(){
             taxUserLog();
         }
     }, []);
+
+    const goPage = () =>{
+        navigate('/tax/Detail')
+    }
     return(
         <div className="HistoryContainer">
             <div className="HistoryList">
@@ -56,12 +60,12 @@ function TaxHistory(){
                             logData.map((item) => ( // logData의 각 항목을 반복하여 렌더링
                                 <tr key={item.taxNo}>
                                     <td>{item.taxNo || '-'}</td>
-                                    <td>{item.taxType || '-'}</td>
-                                    <td>{item.basicFee1 || '-'}</td>
-                                    <td>{item.usageFee || '-'}</td>
-                                    <td>{item.billingFee || '-'}</td>
-                                    <td>{item.billingDate || '-'}</td>
-                                    <td>{item.payment || '-'}</td>
+                                    <td>{item.taxCategory =='electro' ? ('전기세') : ('수도세') || '-'}</td>
+                                    <td>{item.basicFee1 + item.basicFee2 + item.basicFee3 || '-'}</td>
+                                    <td>{item.fee1 + item.fee2 + item.fee3 || '-'}</td>
+                                    <td>{item.basicFee1 + item.basicFee2 + item.basicFee3 + item.fee1 + item.fee2 + item.fee3 || '-'}</td>
+                                    <td>{item.taxDeadLine || '-'}</td>
+                                    <td>{item.taxState == 'N' ? (<button onClick={goPage}>납부하기</button>) : ('납부완료') || '-'}</td>
                                 </tr>
                             ))
                         ) : (
