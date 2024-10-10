@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './css/Calculatior.css'; // 별도의 CSS 파일
+import '../../../../resource/css/product/Calculatior.css'; // 별도의 CSS 파일
 
 const LoanInterestCalculator = () => {
   const [loanAmount, setLoanAmount] = useState('');

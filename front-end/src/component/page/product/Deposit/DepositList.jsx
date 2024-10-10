@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../../util/Footer'; // Footer 컴포넌트 임포트
-import '../../../resource/css/product/DepositList.css'; // 예금 상품 관련 CSS 파일
+import Footer from '../../../util/Footer'; // Footer 컴포넌트 임포트
+import '../../../../resource/css/product/DepositList.css'; // 예금 상품 관련 CSS 파일
 
 // 예금 상품 항목 컴포넌트 (DepositItem)
 const DepositItem = ({ title, description, rate }) => {

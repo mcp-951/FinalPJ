@@ -1,6 +1,7 @@
 package com.urambank.uram.controller;
 
 import com.urambank.uram.dto.UserDTO;
+import com.urambank.uram.service.KakaoService;
 import com.urambank.uram.service.UserService;
 import jakarta.servlet.ServletException;
 import org.slf4j.Logger;
@@ -19,11 +20,13 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final KakaoService kakaoService;
+
+    public UserController(UserService userService, KakaoService kakaoService) {
         super();
         this.userService = userService;
+        this.kakaoService = kakaoService;
     }
-
 
     //id 중복조회
     @GetMapping("/findById/{userId}")
@@ -33,17 +36,27 @@ public class UserController {
         return userService.findByUserId(userId);
     }
 
+    //회원가입
     @PostMapping("/signup")
     public ResponseEntity<UserDTO> register(@RequestBody UserDTO dto){
         logger.info("<<< signUp >>>");
         return ResponseEntity.ok(userService.register(dto));
     }
 
+    //핸드폰 인증
     @GetMapping("/checkHp/{hp}")
     public int checkHp(@PathVariable("hp") String hp){
         logger.info("<<< checkHp >>>");
         return userService.checkHp(hp);
     }
+
+    @GetMapping("/kakaoLogin?code={code}")
+    public ResponseEntity<?> kakaoLogin(@RequestParam("code") String code){
+        logger.info("<<< kakaoLogin >>>");
+        String accessToken = kakaoService.getAccessTokenFromKakao(code);
+        return ResponseEntity.ok(accessToken);
+    }
+
 
 
 //    @PostMapping("/refresh")

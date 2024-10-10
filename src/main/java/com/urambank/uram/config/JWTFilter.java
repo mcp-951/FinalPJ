@@ -46,6 +46,11 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        if (request.getRequestURI().equals("/kakaoLogin?**")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
 
 
 
@@ -82,7 +87,7 @@ public class JWTFilter extends OncePerRequestFilter {
         User userEntity = new User();
         userEntity.setUserId(username);
         userEntity.setUserPw("temppassword");
-        userEntity.setUser_role(role);
+        userEntity.setUserRole(role);
 
         //UserDetails에 회원 정보 객체 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);

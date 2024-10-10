@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../../util/Footer'; // Footer 컴포넌트 임포트
-import '../../../resource/css/product/DepositMain.css';
+import Footer from '../../../util/Footer'; // Footer 컴포넌트 임포트
+import '../../../../resource/css/product/DepositMain.css';
 
 // 예금 상품 상세 페이지 컴포넌트 (DepositMain)
 const DepositMain = () => {

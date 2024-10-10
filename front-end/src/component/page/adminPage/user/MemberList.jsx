@@ -40,8 +40,15 @@ const MemberList = () => {
   // 회원 정지 및 정지 해제 처리
   const handleStatusChange = (member) => {
     const updatedMember = { ...member, state: member.state === 'y' ? 'n' : 'y' };  // 상태가 NORMAL이면 STOP으로, 반대의 경우 NORMAL로 변경
-
-    axios.put(`/user/update/${member.userNo}`, updatedMember)  // API 호출로 회원 상태 업데이트
+    axios.put(
+    `http://localhost:8081/admin/setState/${member.userNo}`,
+    updatedMember,  // 이 부분은 실제로 백엔드로 보낼 데이터
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`  // Authorization 헤더에 JWT 추가
+      }
+    }
+  )
       .then(() => {
         setMembers(prevMembers => 
           prevMembers.map(m => (m.userNo === member.userNo ? updatedMember : m))  // 업데이트된 회원 목록 상태 갱신
@@ -118,7 +125,7 @@ const MemberList = () => {
             {filteredList.map((member, index) => (
               <tr key={member.userNo}>  {/* 회원별 데이터를 행으로 표시 */}
                 <td>{index + 1}</td>  {/* 회원 번호 */}
-                <td>{member.userID}</td>  {/* 회원 아이디 */}
+                <td>{member.userId}</td>  {/* 회원 아이디 */}
                 <td>{member.name}</td>  {/* 회원 이름 */}
                 <td>{member.email}</td>  {/* 회원 이메일 */}
                 <td>{member.hp}</td>  {/* 회원 핸드폰 번호 */}
@@ -129,7 +136,7 @@ const MemberList = () => {
                 <td><button onClick={() => handleEdit(member)}>수정</button></td>  {/* 수정 버튼 */}
                 <td>
                   <button onClick={() => handleStatusChange(member)}>  {/* 정지/정지 해제 버튼 */}
-                    {member.state === 'NORMAL' ? '정지' : '정지 해제'}  {/* 상태에 따라 버튼 텍스트 변경 */}
+                    {member.state === 'y' ? '정지' : '정지 해제'}  {/* 상태에 따라 버튼 텍스트 변경 */}
                   </button>
                 </td>
               </tr>

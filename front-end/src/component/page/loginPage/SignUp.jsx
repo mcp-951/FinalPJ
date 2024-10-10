@@ -11,6 +11,8 @@ function SignUp() {
         confirmPassword: '',
         name: '',
         email: '',
+        email1: '',
+        email2: '',
         hp: '',
         birth: '',
         residentNumber1 : '',
@@ -30,6 +32,8 @@ function SignUp() {
     const navigate = useNavigate();
     const [hpAuthKey, setHpAuthKey] = useState('');
     const [authHp, setAuthHp] = useState('');
+    const [resNoError1, setResNoError1] = useState('');
+    const [resNoError2, setResNoError2] = useState('');
     // 정규식
     const reg_id = /^(?=.*?[a-zA-Z0-9]).{6,16}$/;   //아이디 판별을 위한 정규식 영문자숫자만 입력 가능 6~16 자
     const reg_password = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,20}$/;	//비밀번호 판별을 위한 정규식 문자(소문자, 대문자)+숫자로 구성된 8~20 자
@@ -80,6 +84,7 @@ function SignUp() {
         checkingPw();
     }, [form.userPw, form.confirmPassword]);
 
+
     const checkingPw = () => {
         if(form.userPw != null && form.confirmPassword != null) {
             if(form.userPw === form.confirmPassword){
@@ -89,6 +94,35 @@ function SignUp() {
             }
         }
     };
+
+    //이메일 셀렉트 박스 자동 입력
+    const handleChangeEmail2 = (e) => {
+      const selectedEmail = e.target.value;
+      setForm({ ...form, email2: selectedEmail });
+    };
+
+    // 주민등록번호 앞자리 체크
+    const checkResNo1 = () => {
+        if (form.residentNumber1.length !== 6) {
+            setResNoError1('주민등록번호 앞자리는 6자리여야 합니다.');
+    } else {
+            setResNoError1('');
+    }
+};
+
+// 주민등록번호 뒷자리 체크
+    const checkResNo2 = () => {
+        if (form.residentNumber2.length !== 7) {
+            setResNoError2('주민등록번호 뒷자리는 7자리여야 합니다.');
+        } else {
+        setResNoError2('');
+        }
+};
+
+    useEffect(() => {
+        checkResNo1();
+        checkResNo2();
+        },[form.residentNumber1, form.residentNumber2]);
 
     // 휴대폰
     const hpCheck = () => {
@@ -164,9 +198,7 @@ function SignUp() {
                 }else if(authHp === 'false' || authHp === ''){
                     alert("휴대폰 인증이 되지 않았습니다.")
                     }else {
-                        const fullAddress = form.address1 + form.address2;
-                        setForm({...form, address: fullAddress})
-                        //form.address == form.address1 + form.address2;
+
                         console.log(form.address)
                         console.log({...form})
                         apiSer.signUp({...form});
@@ -190,7 +222,7 @@ function SignUp() {
             onChange={handleChange}
             placeholder="6-20자 영문, 숫자"
           />
-          <button type="button" onClick = {idCheck}>중복체크</button>
+          <button type="button" onClick = {idCheck} className='signUp-button'>중복체크</button>
           <p name= "checkingId" value = "0">{idCheckMessage}</p>
         </div>
 
@@ -241,6 +273,7 @@ function SignUp() {
             onChange={handleChange}
             required
           />
+          {resNoError1 && <p style={{ color: 'red' }}>{resNoError1}</p>}
           -
           <input
             type="password"
@@ -249,23 +282,31 @@ function SignUp() {
             onChange={handleChange}
             required
           />
+          {resNoError2 && <p style={{ color: 'red' }}>{resNoError2}</p>}
         </div>
 
         <div className="form-group">
           <label>이메일</label>
           <input
-            type="email"
-            name="email"
-            value={form.email}
+            type="text"
+            name="email1"
+            value={form.email1}
             onChange={handleChange}
             required
           />
           @
-          <select>
+          <input
+            type="text"
+            name="email2"
+            value={form.email2}
+            onChange={handleChange}
+            required
+          />
+          <select onChange={handleChangeEmail2}>
             <option value="">직접입력</option>
             <option value="gmail.com">gmail.com</option>
             <option value="naver.com">naver.com</option>
-            <option value="daum.co.kr">daum..co.kr</option>
+            <option value="daum.co.kr">daum.co.kr</option>
             <option value="nate.com">nate.com</option>
           </select>
         </div>
@@ -280,7 +321,7 @@ function SignUp() {
             placeholder="010 1234 5678"
             required
           />
-          <button type="button" onClick = {hpCheck} >인증번호받기</button>
+          <button type="button" onClick = {hpCheck} className='signUp-button' >인증번호받기</button>
         </div>
 
         <div className="form-group">
@@ -295,7 +336,7 @@ function SignUp() {
                 {stateAuth &&(<>
                     <p> 인증 성공 </p>
                     </>)}
-                <button type="button" onClick={authingKey}>인증</button>
+                <button type="button" onClick={authingKey} className='signUp-button'>인증</button>
                 </>
             )}
         </div>
@@ -319,7 +360,7 @@ function SignUp() {
             onChange={handleChange}
             required
           />
-          <button>등록</button>
+          <button className='signUp-button'>등록</button>
         </div>
 
         <div className="form-group">
@@ -340,11 +381,11 @@ function SignUp() {
                 />
                 </>
             )}
-          <button type="button" onClick={openPopup}>검색</button>
+          <button type="button" onClick={openPopup} className='signUp-button'>검색</button>
         </div>
 
 
-        <button type="submit">가입완료</button>
+        <button type="submit" className='signUp-button'>가입완료</button>
       </div>
     </form>
     );

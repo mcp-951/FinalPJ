@@ -7,6 +7,10 @@ plugins {
 group = 'com.urambank'
 version = '0.0.1-SNAPSHOT'
 
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-parameters'
+}
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
@@ -33,6 +37,7 @@ dependencies {
 	implementation 'commons-codec:commons-codec:1.5'
 	implementation 'com.auth0:java-jwt:3.13.0'
 	implementation 'net.nurigo:sdk:4.3.0'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

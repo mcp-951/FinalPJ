@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApiService from '../service/ApiService';  // ApiService 사용
+import axios from 'axios';  // ApiService 사용
 import '../../../../resource/css/admin/AdminLogin.css';
 import localStorage from 'localStorage';
 
@@ -18,7 +18,7 @@ const AdminLogin = ({ setIsLoggedIn, isLoggedIn }) => {  // isLoggedIn과 상태
       });
 
       // ApiService 요청으로 로그인 API 호출
-      const response = await ApiService.post('/login', {
+      const response = await axios.post('http://localhost:8081/login', {
         userId : adminID,
         userPw : adminPW
       });

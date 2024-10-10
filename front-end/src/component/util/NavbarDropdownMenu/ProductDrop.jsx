@@ -8,7 +8,7 @@ function ProductDrop(){
                     <ul>
                         <li className="section-title">예금</li>
                         <li className="small-text"><a href='/deposit-list'>예금상품 리스트</a></li>
-                        <li className="small-text"><a href='/deposit-main'>예금상품 메인</a></li>
+                        <li className="small-text"><a href='/DepositMain'>예금상품 메인</a></li>
                     </ul>
                 </div>
                 <div className="dropdown_menu_2">

@@ -3,6 +3,13 @@ import {LineChart, Line, XAxis, YAxis,ResponsiveContainer} from 'recharts';
 import '../../../resource/css/investment/StockMain.css'
 
 function StockMain(props){
+
+    const socket = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@ticker');
+
+    socket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    const price = data.c;
+    };
     const stockData = [
         { date: '1월', price: props.p1 },
         { date: '2월', price: props.p2 },
