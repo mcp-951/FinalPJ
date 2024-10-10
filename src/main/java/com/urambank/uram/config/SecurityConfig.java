@@ -57,6 +57,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/signup", "/findById/**", "/checkHp/**","/admin/login").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/uram/users/**").hasRole("USER") // 사용자 관련 경로 설정
+                        .requestMatchers("/uram/product/**").hasRole("USER") // 제품 관련 경로 설정
+                        .requestMatchers("/uram/account/**").hasRole("USER") // 계좌 관련 경로 설정
+                        .requestMatchers("/uram/transfer").hasRole("USER") // 이체 관련 경로 설정
+                        .requestMatchers("/uram/banks/**").hasRole("USER") // 외부 계좌 관련 경로 설정
                         .anyRequest().authenticated());
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);

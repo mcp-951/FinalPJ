@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../../../../resource/css/account/accountTransfer/AccountTransfer.css'; // 이체 페이지 전용 CSS
 
 const AccountTransfer = () => {
@@ -19,6 +20,10 @@ const AccountTransfer = () => {
   const [accounts, setAccounts] = useState([]); // 사용자의 계좌 목록
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 사용
 
+  // 로컬 스토리지에서 JWT 토큰과 userNo 가져오기
+  const token = localStorage.getItem("token");
+  const userNo = localStorage.getItem("userNo");
+
   // 초기 계좌 목록 로드 및 이체 한도 정보 로드
   useEffect(() => {
     fetchAccounts();
@@ -31,22 +36,42 @@ const AccountTransfer = () => {
   // 백엔드에서 계좌 목록 가져오기
   const fetchAccounts = async () => {
     try {
-      const response = await fetch('http://localhost:8081/uram/account'); // 계좌 목록 API 호출
-      const data = await response.json();
-      setAccounts(data); // 사용자의 계좌 목록 설정
+      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      // 응답에서 accounts 배열을 추출
+      const { accounts } = response.data;
+
+      if (Array.isArray(accounts)) {
+        setAccounts(accounts); // 사용자의 계좌 목록 설정
+      } else {
+        setAccounts([]); // 배열이 아닐 경우 빈 배열로 설정
+        setErrorMessages({ general: '계좌 목록을 불러오는 중 오류가 발생했습니다.' });
+      }
     } catch (error) {
       console.error('계좌 목록 불러오기 실패:', error);
+      setErrorMessages({ general: '계좌 목록을 불러오는 중 오류가 발생했습니다.' });
+      setAccounts([]);
     }
   };
 
   // 이체 한도 정보를 받아오는 함수
   const fetchTransferLimits = async (accountNumber) => {
     try {
-      const response = await fetch(`http://localhost:8081/uram/account/${accountNumber}`);
-      const data = await response.json();
+      const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        params: {
+          userNo: userNo // userNo를 쿼리 파라미터로 추가
+        }
+      });
       setTransferLimit({
-        dailyLimit: data.accountMax, // 1일 이체 한도
-        onceLimit: data.accountLimit   // 1회 이체 한도
+        dailyLimit: response.data.accountMax, // 1일 이체 한도
+        onceLimit: response.data.accountLimit   // 1회 이체 한도
       });
     } catch (error) {
       console.error('이체 한도 정보를 불러오는 중 오류 발생:', error);
@@ -80,15 +105,16 @@ const AccountTransfer = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8081/uram/account/${selectedAccount}/check-password`, {
-        method: 'POST',
+      const response = await axios.post(`http://localhost:8081/uram/account/${selectedAccount}/check-password`, {
+        password: parseInt(password, 10),
+        userNo: parseInt(userNo, 10) // userNo를 숫자로 변환하여 요청 본문에 포함
+      }, {
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ password: parseInt(password, 10) }), // 비밀번호는 숫자형으로 변환
+          'Authorization': `Bearer ${token}`
+        }
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         setIsPasswordValid(true);
         setErrorMessages({ ...errorMessages, password: '' });
       } else {
@@ -98,6 +124,7 @@ const AccountTransfer = () => {
     } catch (error) {
       console.error('비밀번호 확인 실패:', error);
       setIsPasswordValid(false);
+      setErrorMessages({ ...errorMessages, password: '비밀번호 확인 중 오류가 발생했습니다.' });
     }
   };
 
@@ -109,10 +136,18 @@ const AccountTransfer = () => {
     }
 
     try {
-      // 계좌 유효성 확인 API 호출 (은행명과 계좌번호 함께 전달)
-      const response = await fetch(`http://localhost:8081/uram/account/validate?accountNumber=${targetAccountNumber}&bankName=${selectedBank}`);
-      const isValid = await response.json();
+      const response = await axios.get(`http://localhost:8081/uram/account/validate`, {
+        params: {
+          accountNumber: targetAccountNumber,
+          bankName: selectedBank,
+          userNo: parseInt(userNo, 10) // userNo를 숫자로 변환하여 쿼리 파라미터로 추가
+        },
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
 
+      const isValid = response.data;
       if (isValid) {
         setIsAccountValid(true);
         setErrorMessages({ ...errorMessages, targetAccountNumber: '' });
@@ -164,7 +199,7 @@ const AccountTransfer = () => {
     if (!transferAmount) {
       newErrorMessages.transferAmount = '이체 금액을 입력하세요.';
       hasError = true;
-    } else if (parseInt(transferAmount) > availableBalance) {
+    } else if (parseInt(transferAmount, 10) > availableBalance) {
       newErrorMessages.transferAmount = '이체 금액이 잔액보다 큽니다.';
       hasError = true;
     }

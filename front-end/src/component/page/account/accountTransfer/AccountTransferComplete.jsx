@@ -1,10 +1,17 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../../../../resource/css/account/accountTransfer/AccountTransferComplete.css';
 
 const AccountTransferComplete = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // 로컬 스토리지에서 JWT 토큰과 userNo 가져오기
+  const token = localStorage.getItem("token");
+  const userNo = localStorage.getItem("userNo");
+
+  // location.state로부터 전달된 상태값들
   const { 
     selectedAccount, 
     selectedBank, 
@@ -12,7 +19,7 @@ const AccountTransferComplete = () => {
     transferAmount, 
     remainingBalance, 
     recipientName 
-  } = location.state;
+  } = location.state || {};
 
   const handleRetry = () => {
     navigate('/account/transfer');
@@ -46,7 +53,7 @@ const AccountTransferComplete = () => {
             <td>{selectedBank}</td>
             <td>{targetAccountNumber}</td>
             <td>{transferAmount.toLocaleString()}원</td>
-            <td>{recipientName}</td>
+            <td>{recipientName || '정보 없음'}</td> {/* 수신자 이름 출력 */}
           </tr>
         </tbody>
       </table>

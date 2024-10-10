@@ -1,14 +1,20 @@
 import React from "react";
 import '../../../resource/css/util/Dropdown_Menu.css';
+import localStorage from 'localStorage';
+
 
 function AccountDrop(){
+    const userNo = localStorage.getItem("userNo"); // localStorage에서 userNo 가져오기
+
     return(
         <div className='dropdow_menu'>
             <div className="dropdown_menu_div">
                 <div className="dropdown_menu_1">
                     <ul className="dropdown-content">
                         <h4>계좌조회</h4>
-                        <li className="small-text"><a href='/account'>전체계좌조회</a></li>
+                        <li className="small-text">
+                            <a href={`/users/${userNo}/accounts`}>전체계좌조회</a>
+                        </li>
                         {/* <li className="small-text"><a href='/transfer/other'>해지계좌조회</a></li> */}
                     </ul>
                 </div>
@@ -37,7 +43,7 @@ function AccountDrop(){
                     <ul>
                         <h4>자동이체</h4>
                         <li className="small-text"><a href='/auto-transfer-register'>자동이체 등록</a></li> {/* 등록 페이지 경로 추가 */}
-                        <li className="small-text"><a href='/transfer/other'>자동이체 조회</a></li>
+                        <li className="small-text"><a href='/auto-transfers'>자동이체 조회</a></li>
                         <li className="small-text"><a href='/transfer/other'>자동이체 변경</a></li>
                         <li className="small-text"><a href='/transfer/other'>자동이체 해지</a></li>
                     </ul>

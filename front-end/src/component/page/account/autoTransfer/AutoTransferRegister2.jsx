@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../../../resource/css/account/autoTransfer/AutoTransferRegister2.css'; // 자동이체 등록 페이지 전용 CSS
+import axios from 'axios';
 
 const AutoTransferRegisterStep2 = () => {
   const [selectedAutoAccount, setSelectedAutoAccount] = useState(''); // 선택된 자동이체 계좌
@@ -17,28 +18,57 @@ const AutoTransferRegisterStep2 = () => {
   const [transferDay, setTransferDay] = useState('1'); // 자동 이체일
   const [startDate, setStartDate] = useState(''); // 시작년월
   const [endDate, setEndDate] = useState(''); // 종료년월
+  const [userNo, setUserNo] = useState(null); // userNo 상태
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 사용
 
-  // 초기 계좌 목록 로드 및 이체 한도 정보 로드
+  // 초기 계좌 목록 로드 및 userNo 설정
   useEffect(() => {
-    fetchAccounts();
-  }, []);
+    const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+    const storedUserNo = localStorage.getItem('userNo'); // 로컬 스토리지에서 userNo 가져오기
+
+    if (token && storedUserNo) {
+      setUserNo(storedUserNo); // userNo 상태 설정
+      fetchAccounts(token, storedUserNo); // userNo 전달
+    } else {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [navigate]);
 
   // 백엔드에서 계좌 목록 가져오기
-  const fetchAccounts = async () => {
+  const fetchAccounts = async (token, userNo) => {
     try {
-      const response = await fetch('http://localhost:8081/uram/account'); // 계좌 목록 API 호출
-      const data = await response.json();
-      setAccounts(data); // 사용자의 계좌 목록 설정
+      const response = await axios.get(`http://localhost:8081/users/${userNo}/accounts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const { accounts } = response.data; // 응답에서 accounts 배열 추출
+
+      if (Array.isArray(accounts)) {
+        setAccounts(accounts); // 사용자의 계좌 목록 설정
+      } else {
+        setAccounts([]); // 배열이 아닐 경우 빈 배열로 설정
+        setErrorMessages({ general: '계좌 목록을 불러오는 중 오류가 발생했습니다.' });
+      }
     } catch (error) {
       console.error('계좌 목록 불러오기 실패:', error);
+      setErrorMessages({ general: '계좌 목록을 불러오는 중 오류가 발생했습니다.' });
+      setAccounts([]);
     }
   };
+
 
   // 이체 한도 정보를 받아오는 함수
   const fetchAutoTransferLimits = async (accountNumber) => {
     try {
-      const response = await fetch(`http://localhost:8081/uram/account/${accountNumber}`);
+      const token = localStorage.getItem('token'); // 토큰을 가져옴
+      const response = await fetch(`http://localhost:8081/uram/account/${accountNumber}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       setAutoTransferLimit({
         dailyLimit: data.accountMax, // 1일 이체 한도
@@ -66,18 +96,24 @@ const AutoTransferRegisterStep2 = () => {
   const handleAutoAccountCheck = async () => {
     console.log('입금 은행:', selectedAutoBank);
     console.log('입금 계좌번호:', autoTargetAccount);
-  
+
     if (!selectedAutoBank || !autoTargetAccount) {
       setErrorMessages({ ...errorMessages, autoTargetAccount: '은행명과 입금 계좌번호를 입력하세요.' });
       return;
     }
-  
+
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(
-        `http://localhost:8081/uram/account/validate?accountNumber=${autoTargetAccount}&bankName=${selectedAutoBank}`
+        `http://localhost:8081/uram/account/validate?accountNumber=${autoTargetAccount}&bankName=${selectedAutoBank}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const isValid = await response.json();
-  
+
       if (isValid) {
         setIsAutoAccountValid(true);
         setErrorMessages({ ...errorMessages, autoTargetAccount: '' });
@@ -107,14 +143,16 @@ const AutoTransferRegisterStep2 = () => {
     }
 
     try {
+      const token = localStorage.getItem('token');
       const response = await fetch(
         `http://localhost:8081/uram/account/${selectedAutoAccount}/check-password`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ password: parseInt(autoTransferPassword, 10) }), // 비밀번호는 숫자형으로 변환
+          body: JSON.stringify({ password: parseInt(autoTransferPassword, 10) }),
         }
       );
 
@@ -135,26 +173,26 @@ const AutoTransferRegisterStep2 = () => {
     e.preventDefault();
     let hasError = false;
     const newErrorMessages = {};
-  
+
     console.log('선택된 출금 계좌번호 (selectedAutoAccount):', selectedAutoAccount);
     console.log('선택된 입금 계좌번호 (autoTargetAccount):', autoTargetAccount);
-  
+
     // 필드 검증 로직
     if (!selectedAutoAccount) {
       newErrorMessages.selectedAutoAccount = '계좌를 선택하세요.';
       hasError = true;
     }
-  
+
     if (availableAutoBalance === null) {
       newErrorMessages.availableAutoBalance = '출금 가능 금액을 확인하세요.';
       hasError = true;
     }
-  
+
     if (!selectedAutoBank) {
       newErrorMessages.selectedAutoBank = '입금 은행을 선택하세요.';
       hasError = true;
     }
-  
+
     if (!autoTargetAccount) {
       newErrorMessages.autoTargetAccount = '입금 계좌번호를 입력하세요.';
       hasError = true;
@@ -162,12 +200,12 @@ const AutoTransferRegisterStep2 = () => {
       newErrorMessages.autoTargetAccount = '유효하지 않은 입금 계좌번호입니다.';
       hasError = true;
     }
-  
+
     if (selectedAutoAccount === autoTargetAccount) {
       newErrorMessages.autoTargetAccount = '출금 계좌와 입금 계좌가 동일할 수 없습니다.';
       hasError = true;
     }
-  
+
     if (!autoTransferAmount) {
       newErrorMessages.autoTransferAmount = '이체 금액을 입력하세요.';
       hasError = true;
@@ -175,19 +213,19 @@ const AutoTransferRegisterStep2 = () => {
       newErrorMessages.autoTransferAmount = '이체 금액이 잔액보다 큽니다.';
       hasError = true;
     }
-  
+
     if (!isAutoPasswordValid) {
       newErrorMessages.autoTransferPassword = '비밀번호를 확인해주세요.';
       hasError = true;
     }
-  
+
     if (!startDate || !endDate) {
       newErrorMessages.transferPeriod = '이체 기간을 설정하세요.';
       hasError = true;
     }
-  
+
     setErrorMessages(newErrorMessages);
-  
+
     if (!hasError) {
       // 시작년월과 이체일을 합쳐서 yyyy-MM-dd 형식으로 변환
       const startYearMonth = startDate.split('-');
@@ -198,29 +236,32 @@ const AutoTransferRegisterStep2 = () => {
       const formattedEndDate = `${endYearMonth[0]}-${endYearMonth[1]}-${String(
         transferDay
       ).padStart(2, '0')}`;
-  
+
       // 자동이체 등록을 위한 데이터 구성
       const autoTransferData = {
-        accountNo: selectedAutoAccount,          // 수정된 필드 이름
-        receiveAccountNo: autoTargetAccount,     // 수정된 필드 이름
-        autoSendPrice: parseInt(autoTransferAmount, 10), // 수정된 필드 이름
+        accountNo: selectedAutoAccount,
+        receiveAccountNo: autoTargetAccount,
+        autoSendPrice: parseInt(autoTransferAmount, 10),
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         transferDay: parseInt(transferDay, 10),
-        toBankName: selectedAutoBank,            // 수정된 필드 이름
+        toBankName: selectedAutoBank,
+        userNo: userNo,
       };
-  
+
       console.log('자동이체 등록 요청 데이터:', autoTransferData);
-  
+
       try {
+        const token = localStorage.getItem('token');
         const response = await fetch('http://localhost:8081/uram/auto-transfer', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(autoTransferData),
         });
-  
+
         if (response.ok) {
           alert('자동이체가 등록되었습니다.');
           navigate(`/auto-transfers`);
@@ -234,7 +275,6 @@ const AutoTransferRegisterStep2 = () => {
       }
     }
   };
-  
 
   return (
     <div className="transfer-container">

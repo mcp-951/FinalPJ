@@ -18,6 +18,11 @@ public class CustomUserDetails implements UserDetails {
         this.user = user;
     }
 
+    // userNo를 반환하는 메서드 추가
+    public int getUserNo() {
+        return user.getUserNo(); // User 객체에서 userNo를 가져와 반환
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

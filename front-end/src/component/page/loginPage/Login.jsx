@@ -1,45 +1,44 @@
 import React, { useState } from 'react';
-import '../../../resource/css/Login.css'
-import apiSer from '../../ApiService'
-import {useNavigate} from 'react-router-dom';
-import localStorage from 'localStorage';
+import '../../../resource/css/Login.css';
+import apiSer from '../../ApiService';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
-//     if(localStorage.getItem('token') !== null || localStorage.getItem('token') !== ''){
-//         alert('이미 로그인된 상태입니다.')
-//         navigate('/')
-//         }
-
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async () => {       // 로그인 로직
-    try {
-        const form = {
-            "userId": id,      // id 값 전달
-            "userPw": password // pw 값 전달
-        };
-        const response = await apiSer.login(form);
-        console.log("Login successful:", response);
-        // 로그인 성공 시 처리
-        const token = response.data.accessToken;
-        localStorage.setItem("token",token);
-        //console.log("token:", token);
-        navigate("/");
-        window.location.reload();
-    } catch (error) {
-        console.error("Login failed:", error);
-        // 로그인 실패 시 처리
-        if(error.message == 'Request failed with status code 403') {
-            alert("일치하는 아이디가 존재하지 않습니다.");
-            } else if(error.message == 'Request failed with status code 401') {
+    const handleLogin = async () => {
+        try {
+            const form = {
+                "userId": id,
+                "userPw": password
+            };
+            const response = await apiSer.login(form);
+            console.log("Login successful:", response);
+            
+            // 로그인 성공 시 처리
+            const token = response.data.accessToken;
+            const userNo = response.data.userNo; // userNo 받아오기
+            
+            localStorage.setItem("token", token);
+            localStorage.setItem("userNo", userNo); // userNo 저장
+            console.log("Stored token:", localStorage.getItem("token")); 
+            console.log("Stored userNo:", localStorage.getItem("userNo")); 
+            
+            navigate("/");
+            window.location.reload();
+        } catch (error) {
+            console.error("Login failed:", error);
+            if (error.message === 'Request failed with status code 403') {
+                alert("일치하는 아이디가 존재하지 않습니다.");
+            } else if (error.message === 'Request failed with status code 401') {
                 alert("비밀번호가 일치하지 않습니다.");
-                }else{
-                    alert("로그인에 실패했습니다.");
-                    }
-    }
-};
+            } else {
+                alert("로그인에 실패했습니다.");
+            }
+        }
+    };
 
     return (
         <div className="login-container">

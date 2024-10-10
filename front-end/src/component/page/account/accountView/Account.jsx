@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import '../../../../resource/css/account/accountView/Account.css'
+import '../../../../resource/css/account/accountView/Account.css';
 import Total from './Total';
 import AccountList from './AccountList';
 import Tabs from './Tabs'; // 고정된 상단 탭 컴포넌트
 
 function Account() {
   const [selectedTab, setSelectedTab] = useState("전체");
+  const userNo = localStorage.getItem("userNo"); // localStorage에서 userNo 가져오기
 
   const renderContent = () => {
     switch (selectedTab) {
       case "전체":
-        return <Total />;
+        return <Total userNo={userNo} />; // userNo를 Total 컴포넌트에 전달
       case "예금":
         return <AccountList type="예금" />;
       case "적금":
@@ -18,7 +19,7 @@ function Account() {
       case "대출":
         return <AccountList type="대출" />;
       default:
-        return <Total />;
+        return <Total userNo={userNo} />; // 기본적으로 userNo를 Total 컴포넌트에 전달
     }
   };
 

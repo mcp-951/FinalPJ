@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom'; // useLocation 추가
-import axios from 'axios'; // axios 임포트 추가
-import '../../../../resource/css/account/accountManagement/PasswordChange.css'; // CSS 파일
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import '../../../../resource/css/account/accountManagement/PasswordChange.css';
 
 const PasswordChange = () => {
-  const { accountNumber } = useParams(); // URL 파라미터에서 계좌번호 가져오기
-  const location = useLocation();  // 이전 페이지에서 전달된 데이터를 받기 위한 useLocation 사용
+  const { accountNumber } = useParams();
+  const location = useLocation();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isVerified, setIsVerified] = useState(false); // 휴대폰 인증 여부
+  const [isVerified, setIsVerified] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+  const navigate = useNavigate();
+
+  // 로컬 스토리지에서 JWT 토큰과 userNo를 가져오기
+  const token = localStorage.getItem("token");
+  const userNo = localStorage.getItem("userNo");
 
   // 전달된 계좌명 (productName)
-  const productName = location.state?.productName || 'Unknown';  // 이전 페이지에서 전달된 계좌명 확인
+  const productName = location.state?.productName || 'Unknown';
 
   // 전달된 데이터 확인
   console.log('Received accountNumber:', accountNumber);
@@ -31,7 +35,12 @@ const PasswordChange = () => {
       setError('');
       try {
         const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/change-password`, {
+          userNo: parseInt(userNo, 10), // userNo를 전송
           newPassword: parseInt(newPassword, 10) // 비밀번호를 숫자로 변환하여 전송
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
         });
 
         if (response.status === 200) {
@@ -52,11 +61,11 @@ const PasswordChange = () => {
         <tbody>
           <tr>
             <th>계좌번호</th>
-            <td>{accountNumber}</td> {/* URL에서 가져온 계좌번호를 표시 */}
+            <td>{accountNumber}</td>
           </tr>
           <tr>
             <th>계좌명</th>
-            <td>{productName}</td> {/* 이전 페이지에서 가져온 계좌명 표시 */}
+            <td>{productName}</td>
           </tr>
           <tr>
             <th>변경후 비밀번호</th>
@@ -96,7 +105,6 @@ const PasswordChange = () => {
         </tbody>
       </table>
 
-      {/* 비밀번호 변경 버튼 */}
       <div className="submit-button-container">
         <button onClick={handlePasswordChange} className="submit-button" disabled={!isVerified}>
           확인

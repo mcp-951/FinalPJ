@@ -16,12 +16,23 @@ const LimitInquiry = () => {
   const accountNumber = location.state?.accountNumber;
   const productName = location.state?.productName;
 
+  // 로컬 스토리지에서 JWT 토큰과 userNo를 가져오기
+  const token = localStorage.getItem("token");
+  const userNo = localStorage.getItem("userNo");
+
   // 이체 한도 조회 API 호출 함수
   useEffect(() => {
     const fetchLimits = async () => {
       try {
         setIsLoading(true); // 로딩 상태 시작
-        const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`);
+        const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
+          },
+          params: {
+            userNo: userNo // userNo를 쿼리 파라미터로 추가
+          }
+        });
 
         // 백엔드에서 전달받은 데이터 확인
         setDailyLimit(response.data.accountMax);  // 1일 이체한도 (accountMax)
@@ -37,7 +48,7 @@ const LimitInquiry = () => {
     if (accountNumber) {
       fetchLimits();  // 계좌번호가 있으면 이체한도 조회
     }
-  }, [accountNumber]);
+  }, [accountNumber, userNo, token]);
 
   const handleLimitChange = () => {
     navigate(`/account/${accountNumber}/limit-change`, { state: { accountNumber, productName } });

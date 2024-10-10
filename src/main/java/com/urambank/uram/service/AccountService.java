@@ -1,18 +1,17 @@
 package com.urambank.uram.service;
 
 import com.urambank.uram.dto.AccountDTO;
+import com.urambank.uram.dto.AutoTransferDTO;
 import com.urambank.uram.dto.LogDTO;
 import com.urambank.uram.dto.OutAccountDTO;
-import com.urambank.uram.entities.AccountEntity;
-import com.urambank.uram.entities.LogEntity;
-import com.urambank.uram.entities.OutAccountEntity;
-import com.urambank.uram.repository.AccountRepository;
-import com.urambank.uram.repository.LogRepository;
-import com.urambank.uram.repository.OutAccountRepository;
+import com.urambank.uram.entities.*;
+import com.urambank.uram.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,10 +22,13 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final LogRepository logRepository;
     private final OutAccountRepository outAccountRepository;
+    private final UserRepository userRepository;
+    private final AutoTransferRepository autoTransferRepository;
+
 
     // 'NORMAL' 상태의 모든 계좌와 관련된 정보 조회
-    public List<Map<String, Object>> getAllAccountWithProductName() {
-        List<Object[]> results = accountRepository.findAllAccountWithProductNameAndActive();
+    public List<Map<String, Object>> getAllAccountWithProductName(int userNo) {
+        List<Object[]> results = accountRepository.findAllAccountWithProductNameAndActive(userNo);
         List<Map<String, Object>> accountDataList = new ArrayList<>();
 
         for (Object[] result : results) {
@@ -45,6 +47,15 @@ public class AccountService {
         return accountDataList;
     }
 
+    public String getUserNameByUserNo(int userNo) {
+        User user = userRepository.findByUserNo(userNo);
+        return user != null ? user.getName() : null;
+    }
+
+
+
+
+
     // productNo로 'NORMAL' 상태의 계좌만 조회
     public List<AccountDTO> listCategory(int productNo) {
         List<AccountEntity> eList = accountRepository.findByProductProductNoAndActive(productNo);
@@ -57,8 +68,8 @@ public class AccountService {
         return list;
     }
 
-    public Map<String, Object> getAccountDetail(int accountNumber) {
-        AccountEntity accountEntity = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL");
+    public Map<String, Object> getAccountDetail(int accountNumber, int userNo) {
+        AccountEntity accountEntity = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL", userNo);
         if (accountEntity != null) {
             Map<String, Object> accountData = new HashMap<>();
             accountData.put("accountNumber", accountEntity.getAccountNumber());
@@ -66,12 +77,12 @@ public class AccountService {
             accountData.put("accountLimit", accountEntity.getAccountLimit());
             accountData.put("accountMax", accountEntity.getAccountMax());
             accountData.put("productName", accountEntity.getProduct().getProductName());
-            // 추가적인 데이터가 필요하다면 여기에 포함
             return accountData;
         } else {
             return null;
         }
     }
+
 
 
     // 계좌의 거래 내역 조회 (성공한 거래만)
@@ -88,9 +99,11 @@ public class AccountService {
                 .collect(Collectors.toList());
     }
 
+
+
     // 계좌 비밀번호 확인
-    public boolean checkAccountPassword(int accountNumber, int inputPassword) {
-        AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL");
+    public boolean checkAccountPassword(int userNo, int accountNumber, int inputPassword) {
+        AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL", userNo);
         if (account != null && account.getAccountPW() != 0) {
             return account.getAccountPW() == inputPassword;
         }
@@ -98,8 +111,8 @@ public class AccountService {
     }
 
     // 계좌 비밀번호 변경
-    public boolean changeAccountPassword(int accountNumber, int newPassword) {
-        AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL");
+    public boolean changeAccountPassword(int userNo, int accountNumber, int newPassword) {
+        AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL", userNo);
         if (account != null) {
             account.setAccountPW(newPassword); // 새 비밀번호 설정
             accountRepository.save(account); // 변경 사항 저장
@@ -109,8 +122,8 @@ public class AccountService {
     }
 
     // 계좌 해지
-    public boolean terminateAccount(int accountNumber) {
-        AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL");
+    public boolean terminateAccount(int userNo, int accountNumber) {
+        AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL", userNo);
         if (account != null) {
             account.setAccountState("TERMINATION"); // 계좌 상태를 'TERMINATION'으로 변경
             accountRepository.save(account); // 변경 사항 저장
@@ -120,9 +133,8 @@ public class AccountService {
     }
 
     // 이체한도 변경 로직
-    public boolean changeTransferLimits(int accountNumber, int newDailyLimit, int newOnceLimit) {
-        AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL");
-
+    public boolean changeTransferLimits(int userNo, int accountNumber, int newDailyLimit, int newOnceLimit) {
+        AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL", userNo);
         if (account != null) {
             account.setAccountMax(newDailyLimit);   // 1일 이체한도 변경
             account.setAccountLimit(newOnceLimit);  // 1회 이체한도 변경
@@ -133,10 +145,11 @@ public class AccountService {
     }
 
 
+
     @Transactional
-    public boolean transferAccount(int fromAccountNumber, int toAccountNumber, int transferAmount, int password, String toBankName) {
+    public boolean transferAccount(int userNo, int fromAccountNumber, int toAccountNumber, int transferAmount, int password, String toBankName) {
         // 출금 계좌 유효성 확인
-        AccountEntity fromAccount = accountRepository.findAccountDetailWithProduct(fromAccountNumber, "NORMAL");
+        AccountEntity fromAccount = accountRepository.findAccountDetailWithProduct(fromAccountNumber, "NORMAL", userNo);
         if (fromAccount == null) {
             System.out.println("출금 계좌가 존재하지 않음: " + fromAccountNumber);
             return false;
@@ -169,7 +182,7 @@ public class AccountService {
 
         // 외부 계좌 확인 및 처리
         if (toBankName.equals("우람은행")) {  // 내부 계좌일 경우
-            AccountEntity toAccount = accountRepository.findAccountDetailWithProduct(toAccountNumber, "NORMAL");
+            AccountEntity toAccount = accountRepository.findAccountDetailWithProduct(toAccountNumber, "NORMAL", userNo);
             if (toAccount == null) {
                 System.out.println("입금 계좌가 존재하지 않음: " + toAccountNumber);
                 return false;
@@ -210,6 +223,7 @@ public class AccountService {
 
 
 
+
     public String getRecipientName(int toAccountNumber, String toBankName) {
         OutAccountEntity outAccount = outAccountRepository.findByOAccountNumberAndOBankNameAndOAccountState(toAccountNumber, toBankName, "NORMAL");
         return outAccount != null ? outAccount.getOUserName() : null; // 수신자 이름 반환
@@ -230,10 +244,10 @@ public class AccountService {
                 .collect(Collectors.toList());
     }
 
-    public boolean validateAccountNumberWithBank(int accountNumber, String bankName) {
+    public boolean validateAccountNumberWithBank(int userNo, int accountNumber, String bankName) {
         // 같은 은행인 경우 Account 테이블에서 유효성 확인
         if ("우람은행".equals(bankName)) { // 우람은행(자사은행)의 계좌일 경우
-            AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL");
+            AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL", userNo);
             return account != null; // 계좌가 존재하면 true, 아니면 false 반환
         }
         // 외부 은행일 경우 OutAccount 테이블에서 확인
@@ -241,5 +255,212 @@ public class AccountService {
         return outAccount != null; // 외부 계좌가 존재하면 true, 아니면 false 반환
     }
 
+    @Scheduled(cron = "0 0 0 * * ?")
+    @Transactional
+    public void processAutoTransfers() {
+        List<AutoTransferEntity> autoTransfers = autoTransferRepository.findAllActiveAutoTransfers();
+        LocalDate today = LocalDate.now();
+
+        for (AutoTransferEntity autoTransfer : autoTransfers) {
+            // startDate와 endDate를 고려하여 해당 날짜에 이체할지 결정
+            if (!autoTransfer.getStartDate().isAfter(today) && !autoTransfer.getEndDate().isBefore(today)) {
+                // transferDay가 오늘의 날짜와 일치하는지 확인
+                if (autoTransfer.getTransferDay() == today.getDayOfMonth()) {
+                    System.out.println("자동이체 수행: " + autoTransfer.getAccountNo() + " -> " + autoTransfer.getReceiveAccountNo());
+                    executeAutoTransfer(autoTransfer);
+                }
+            }
+        }
+    }
+
+
+    public void executeAutoTransfer(AutoTransferEntity autoTransfer) {
+        try {
+            // 출금 계좌의 accountNumber와 상태로 조회 (우람은행 계좌는 상태가 "NORMAL"이라고 가정)
+            AccountEntity fromAccount = accountRepository.findByAccountNoAndState(autoTransfer.getAccountNo(), "NORMAL");
+            if (fromAccount == null) {
+                System.out.println("출금 계좌가 존재하지 않음");
+                return;
+            }
+
+            // 입금 계좌의 accountNo와 bankName을 사용해 조회
+            AccountEntity toAccount = accountRepository.findByAccountNoAndBankName(
+                    autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
+            OutAccountEntity toOutAccount = null;
+
+            if (toAccount == null) {
+                // Account 테이블에서 입금 계좌를 찾지 못하면 OutAccountEntity에서 외부 계좌 조회
+                toOutAccount = outAccountRepository.findByOAccountNoAndOBankName(
+                        autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
+                if (toOutAccount == null) {
+                    System.out.println("입금 계좌가 존재하지 않음");
+                    return;
+                }
+            }
+
+            int transferAmount = autoTransfer.getAutoSendPrice();
+
+            // 출금 계좌 잔액 확인
+            if (fromAccount.getAccountBalance() < transferAmount) {
+                System.out.println("자동이체 실패: 잔액 부족");
+                autoTransfer.setReservationState("FAILED");
+                autoTransferRepository.save(autoTransfer);
+                return;
+            }
+
+            // 출금 계좌의 잔액 업데이트
+            fromAccount.setAccountBalance(fromAccount.getAccountBalance() - transferAmount);
+            accountRepository.save(fromAccount);
+
+            if (toAccount != null) {
+                // 입금 계좌가 내부 계좌인 경우, 잔액 업데이트
+                toAccount.setAccountBalance(toAccount.getAccountBalance() + transferAmount);
+                accountRepository.save(toAccount);
+
+                // 로그 기록 (내부 계좌 이체)
+                logRepository.save(LogEntity.builder()
+                        .sendAccountNo(fromAccount.getAccountNumber())
+                        .receiveAccountNo(toAccount.getAccountNumber())
+                        .sendPrice(transferAmount)
+                        .sendDate(new java.sql.Date(System.currentTimeMillis()))
+                        .logState("SUCCESS")
+                        .build());
+
+                System.out.println("자동이체 성공: " + fromAccount.getAccountNumber() + " -> " + toAccount.getAccountNumber());
+            } else if (toOutAccount != null) {
+                // 외부 계좌로 입금 처리 로직 추가
+                // 외부 계좌는 단순히 로그 기록만 하거나, 외부 API 호출 등 추가 로직이 필요할 수 있음
+
+                // 로그 기록 (외부 계좌 이체)
+                logRepository.save(LogEntity.builder()
+                        .sendAccountNo(fromAccount.getAccountNumber())
+                        .receiveAccountNo(toOutAccount.getOAccountNumber())
+                        .sendPrice(transferAmount)
+                        .sendDate(new java.sql.Date(System.currentTimeMillis()))
+                        .logState("SUCCESS")
+                        .build());
+
+                System.out.println("외부 계좌로 자동이체 성공: " + fromAccount.getAccountNumber() + " -> " + toOutAccount.getOAccountNumber());
+            }
+
+            // 종료일에 이체가 완료된 경우 상태를 "COMPLETED"로 업데이트
+            LocalDate today = LocalDate.now();
+            if (autoTransfer.getEndDate().isEqual(today)) {
+                autoTransfer.setReservationState("COMPLETED");
+                System.out.println("자동이체 완료: 종료일(" + autoTransfer.getEndDate() + ")에 도달하여 상태를 COMPLETED로 변경");
+            }
+
+            // 자동이체 상태 저장
+            autoTransferRepository.save(autoTransfer);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            autoTransfer.setReservationState("ERROR");
+            autoTransferRepository.save(autoTransfer);
+        }
+    }
+
+
+
+
+
+
+
+
+
+    public boolean registerAutoTransfer(AutoTransferDTO autoTransferDTO) {
+        try {
+            // DTO의 필드가 잘 매핑되는지 로그 추가
+            System.out.println("AccountNo: " + autoTransferDTO.getAccountNo());
+            System.out.println("ReceiveAccountNo: " + autoTransferDTO.getReceiveAccountNo());
+            System.out.println("AutoSendPrice: " + autoTransferDTO.getAutoSendPrice());
+            System.out.println("은행명 (toBankName): " + autoTransferDTO.getToBankName());
+
+            AutoTransferEntity autoTransfer = AutoTransferEntity.builder()
+                    .accountNo(autoTransferDTO.getAccountNo())
+                    .receiveAccountNo(autoTransferDTO.getReceiveAccountNo())
+                    .autoSendPrice(autoTransferDTO.getAutoSendPrice())
+                    .reservationDate(autoTransferDTO.getReservationDate() != null ?
+                            autoTransferDTO.getReservationDate() : LocalDate.now())
+                    .startDate(autoTransferDTO.getStartDate())
+                    .endDate(autoTransferDTO.getEndDate())
+                    .reservationState("ACTIVE")
+                    .autoShow(autoTransferDTO.getAutoShow())
+                    .transferDay(autoTransferDTO.getTransferDay())
+                    .toBankName(autoTransferDTO.getToBankName()) // toBankName 저장
+                    .build();
+
+            autoTransferRepository.save(autoTransfer);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
+
+    public List<AutoTransferDTO> getAllAutoTransfers() {
+        List<AutoTransferEntity> autoTransferEntities = autoTransferRepository.findAll();
+        return autoTransferEntities.stream()
+                .map(autoTransfer -> AutoTransferDTO.builder()
+                        .autoTransNo(autoTransfer.getAutoTransNo())
+                        .accountNo(autoTransfer.getAccountNo())
+                        .receiveAccountNo(autoTransfer.getReceiveAccountNo())
+                        .autoSendPrice(autoTransfer.getAutoSendPrice())
+                        .reservationDate(autoTransfer.getReservationDate()) // reservationDate 포함
+                        .startDate(autoTransfer.getStartDate())
+                        .endDate(autoTransfer.getEndDate())
+                        .transferDay(autoTransfer.getTransferDay())
+                        .reservationState(autoTransfer.getReservationState())
+                        .autoShow(autoTransfer.getAutoShow())
+                        .deleteDate(autoTransfer.getDeleteDate())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+
+    public Integer getAccountNoByAccountNumber(int accountNumber) {
+        // accountNumber로 Account 테이블에서 accountNo 조회
+        AccountEntity accountEntity = accountRepository.findByAccountNumber(accountNumber);
+        if (accountEntity != null) {
+            System.out.println("조회된 출금 계좌의 AccountNo: " + accountEntity.getAccountNo());
+            return accountEntity.getAccountNo();
+        }
+        System.out.println("해당 accountNumber에 대한 출금 계좌가 존재하지 않습니다.");
+        return null; // 계좌가 없는 경우 null 반환
+    }
+
+    public Integer getReceiveAccountNoByAccountNumberAndBank(int receiveAccountNumber, String bankName) {
+        System.out.println("조회하려는 입금 계좌번호: " + receiveAccountNumber + ", 은행 이름: " + bankName);
+
+        // Account 테이블에서 조회
+        AccountEntity accountEntity = accountRepository.findByAccountNumberAndBankName(receiveAccountNumber, bankName);
+        if (accountEntity != null) {
+            System.out.println("조회된 입금 계좌의 ReceiveAccountNo (Account): " + accountEntity.getAccountNo());
+            return accountEntity.getAccountNo();
+        }
+
+        System.out.println("Account 테이블에 일치하는 입금 계좌가 없습니다.");
+        return null;
+    }
+
+    public Integer getExternalAccountNoByAccountNumberAndBank(int receiveAccountNumber, String bankName) {
+        // OutAccount 테이블에서 조회
+        OutAccountEntity outAccountEntity = outAccountRepository.findByOAccountNumberAndOBankName(receiveAccountNumber, bankName);
+        if (outAccountEntity != null) {
+            System.out.println("조회된 입금 계좌의 ReceiveAccountNo (OutAccount): " + outAccountEntity.getOAccountNo());
+            return outAccountEntity.getOAccountNo();
+        }
+
+        System.out.println("OutAccount 테이블에 일치하는 외부 계좌가 없습니다.");
+        return null;
+    }
+
+    public List<AutoTransferEntity> getAllActiveAutoTransfers() {
+        return autoTransferRepository.findAllActiveAutoTransfers();
+    }
 
 }

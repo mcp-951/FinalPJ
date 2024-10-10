@@ -20,17 +20,37 @@ const PasswordCheck = ({ title, instructions }) => {
   const accountNumberFromQuery = searchParams.get('accountNumber'); // URL 쿼리에서 가져오기
   const { accountNumber: accountNumberFromState, productName: productNameFromState } = location.state || {}; // 모달에서 전달된 값
 
-  const accountNumber = accountNumberFromQuery || selectedAccount || accountNumberFromState; // 선택된 계좌 포함
+  // accountNumber를 숫자로 변환하여 사용
+  const accountNumber = parseInt(accountNumberFromQuery, 10) || parseInt(selectedAccount, 10) || parseInt(accountNumberFromState, 10);
   const productName = selectedProductName || productNameFromState || ''; // productName도 전달받은 값 사용
+
+  // JWT 토큰과 userNo를 로컬 스토리지에서 가져오기
+  const token = localStorage.getItem("token");
+  const userNo = parseInt(localStorage.getItem("userNo"), 10); // userNo를 숫자로 변환
 
   // 계좌 목록을 불러오는 함수
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/uram/account');  // 계좌 목록을 불러오는 API 호출
-      setAccounts(response.data);  // 응답 데이터를 accounts 상태에 저장
+      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });  // 계좌 목록을 불러오는 API 호출
+
+      // 응답에서 accounts 배열을 추출
+      const { accounts } = response.data;
+      
+      // accounts가 배열인지 확인 후 설정
+      if (Array.isArray(accounts)) {
+        setAccounts(accounts);
+      } else {
+        setAccounts([]); // 배열이 아닐 경우 빈 배열로 설정
+        setErrorMessage("계좌 목록을 불러오는 중 오류가 발생했습니다.");
+      }
     } catch (error) {
       console.error("Error fetching accounts: ", error);
       setErrorMessage("계좌 목록을 불러오는 중 오류가 발생했습니다.");
+      setAccounts([]); // 오류 발생 시 빈 배열로 설정
     }
   };
 
@@ -42,11 +62,11 @@ const PasswordCheck = ({ title, instructions }) => {
 
   // 계좌 선택 시 처리
   const handleAccountSelect = (event) => {
-    const selectedAccountNumber = event.target.value;
+    const selectedAccountNumber = parseInt(event.target.value, 10); // 숫자로 변환
     setSelectedAccount(selectedAccountNumber);
 
     // 선택된 계좌에 맞는 상품명 설정
-    const selectedAccountData = accounts.find(account => account.accountNumber === parseInt(selectedAccountNumber));
+    const selectedAccountData = accounts.find(account => account.accountNumber === selectedAccountNumber);
     if (selectedAccountData) {
       setSelectedProductName(selectedAccountData.productName);
     }
@@ -61,16 +81,21 @@ const PasswordCheck = ({ title, instructions }) => {
           setErrorMessage('비밀번호는 숫자여야 합니다.');
           return;
         }
-
+  
         if (!accountNumber) {
           setErrorMessage('계좌를 선택하세요.');
           return;
         }
-
+  
         const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/check-password`, {
-          password: parsedPassword
+          userNo: userNo,  // userNo를 요청에 포함
+          password: parsedPassword,
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
         });
-
+  
         if (response.status === 200) {
           setIsPasswordValid(true);
           setErrorMessage('비밀번호가 확인되었습니다.');

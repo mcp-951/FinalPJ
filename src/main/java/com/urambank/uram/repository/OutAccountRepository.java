@@ -19,4 +19,13 @@ public interface OutAccountRepository extends JpaRepository<OutAccountEntity, In
             @Param("oBankName") String oBankName,
             @Param("oAccountState") String oAccountState);
 
+    // OutAccountRepository.java
+    @Query("SELECT o FROM OutAccountEntity o WHERE o.oAccountNumber = :oAccountNumber AND o.oBankName = :oBankName AND o.oAccountState = 'NORMAL'")
+    OutAccountEntity findByOAccountNumberAndOBankName(@Param("oAccountNumber") int oAccountNumber, @Param("oBankName") String oBankName);
+
+    // OAccountNo와 OBankName으로 OutAccountEntity를 조회하는 메서드 정의
+    @Query("SELECT o FROM OutAccountEntity o WHERE o.oAccountNo = :oAccountNo AND o.oBankName = :oBankName")
+    OutAccountEntity findByOAccountNoAndOBankName(@Param("oAccountNo") int oAccountNo, @Param("oBankName") String oBankName);
+
+
 }

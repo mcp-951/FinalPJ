@@ -2,29 +2,34 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../../../../resource/css/account/accountManagement/AccountClose.css';
-import localStorage from 'localStorage';
 
 const AccountClose = () => {
   const navigate = useNavigate();
-  const location = useLocation();  // 이전 페이지에서 전달된 계좌번호와 계좌명을 받기 위한 useLocation 사용
-  const [balance, setBalance] = useState(null); // 잔액 상태
-  const [isVerified, setIsVerified] = useState(false); // 휴대폰 인증 여부
-  const [errorMessage, setErrorMessage] = useState(''); // 오류 메시지 상태
+  const location = useLocation();
+  const [balance, setBalance] = useState(null); 
+  const [isVerified, setIsVerified] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const accountNumber = location.state?.accountNumber || 'Unknown';  // 전달된 계좌번호 확인
-  const productName = location.state?.productName || 'Unknown';  // 전달된 계좌명 확인
+  const accountNumber = location.state?.accountNumber || 'Unknown';
+  const productName = location.state?.productName || 'Unknown';
 
-    const token = localStorage.getItem("token");
+  // 로컬 스토리지에서 JWT 토큰과 userNo를 가져오기
+  const token = localStorage.getItem("token");
+  const userNo = localStorage.getItem("userNo");
+
   // 잔액 조회 API 호출
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`,{
-            headers: {
-                'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-            }
-        })
-        setBalance(response.data.accountBalance);  // 잔액 상태에 반영
+        const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
+          },
+          params: {
+            userNo: userNo // userNo를 쿼리 파라미터로 추가
+          }
+        });
+        setBalance(response.data.accountBalance);
       } catch (error) {
         setErrorMessage('잔액 정보를 불러오는 중 오류가 발생했습니다.');
         console.error('Error fetching balance:', error);
@@ -32,12 +37,12 @@ const AccountClose = () => {
     };
 
     if (accountNumber !== 'Unknown') {
-      fetchBalance();  // 계좌번호가 있으면 잔액 조회
+      fetchBalance();
     }
-  }, [accountNumber]);
+  }, [accountNumber, userNo, token]);
 
   const handleTransfer = () => {
-    navigate('/account/transfer'); // 이체 페이지로 이동
+    navigate('/account/transfer');
   };
 
   const handlePhoneVerification = () => {
@@ -47,10 +52,21 @@ const AccountClose = () => {
 
   const confirmClose = async () => {
     try {
-      const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/terminate`);
+      const response = await axios.post(
+        `http://localhost:8081/uram/account/${accountNumber}/terminate`,
+        {
+          userNo: userNo, // userNo를 요청 본문에 포함
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
+          },
+        }
+      );
+
       if (response.status === 200) {
         alert('계좌가 성공적으로 해지되었습니다.');
-        navigate('/'); // 메인 페이지로 이동
+        navigate('/'); 
       }
     } catch (error) {
       setErrorMessage('계좌 해지 중 오류가 발생했습니다.');
@@ -75,17 +91,17 @@ const AccountClose = () => {
         <tbody>
           <tr>
             <th>해지 계좌번호</th>
-            <td>{accountNumber}</td> {/* 전달받은 계좌번호 표시 */}
+            <td>{accountNumber}</td>
           </tr>
           <tr>
             <th>계좌명</th>
-            <td>{productName}</td> {/* 전달받은 계좌명 표시 */}
+            <td>{productName}</td>
           </tr>
           <tr>
             <th>잔액</th>
             <td>
               <div className="balance-section">
-                {balance !== null ? `${balance.toLocaleString()}원` : '로딩 중...'} {/* 조회한 잔액 표시 */}
+                {balance !== null ? `${balance.toLocaleString()}원` : '로딩 중...'}
                 {balance > 0 && (
                   <>
                     <span className="balance-warning">잔액이 0원이 아닙니다.</span>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TermsModal from './TermsModal'; // 모달 컴포넌트를 약관 모달로 변경
 import '../../../../resource/css/account/autoTransfer/AutoTransferRegister.css'; // 고유 스타일링을 위한 CSS 파일
@@ -9,6 +9,14 @@ const AutoTransferRegister = () => {
   const [isMandatoryChecked, setIsMandatoryChecked] = useState(false); // 필수 약관 동의 상태
   const [isOptionalChecked, setIsOptionalChecked] = useState(false); // 선택 약관 동의 상태
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
+
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [navigate]);
 
   const handleViewDetails = (type) => {
     if (type === 'full') {
@@ -26,7 +34,9 @@ const AutoTransferRegister = () => {
       alert('필수 약관에 동의하셔야 합니다.');
       return;
     }
-    navigate('/auto-transfer-step2'); // '예' 클릭 시 AutoTransferRegisterStep2로 이동
+
+    // '예' 클릭 시 AutoTransferRegisterStep2로 이동
+    navigate('/auto-transfer-step2');
   };
 
   const handleNoClick = () => {
