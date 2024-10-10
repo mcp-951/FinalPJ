@@ -21,10 +21,10 @@ public class TaxContoller {
         return taxService.taxTomonth(userNo, category);
     }
 
-    @GetMapping("/taxSelectList/{userNo}/{taxYear}/{taxMonth}")
-    public TaxDTO taxSelectList(@PathVariable("userNo") int userNo, @PathVariable("taxYear") String taxYear, @PathVariable("taxMonth") String taxMonth){
-        System.out.println(taxService.taxSelectList(userNo, taxYear, taxMonth)+ "하이이");
-        return taxService.taxSelectList(userNo, taxYear, taxMonth);
+    @GetMapping("/taxSelectList/{userNo}/{taxYear}/{taxMonth}/{category}")
+    public TaxDTO taxSelectList(@PathVariable("userNo") int userNo, @PathVariable("taxYear") String taxYear, @PathVariable("taxMonth") String taxMonth, @PathVariable("category") String category){
+        System.out.println(taxService.taxSelectList(userNo, taxYear, taxMonth, category)+ "하이이");
+        return taxService.taxSelectList(userNo, taxYear, taxMonth, category);
     }
 
     @GetMapping("/taxHistory/{userNo}")

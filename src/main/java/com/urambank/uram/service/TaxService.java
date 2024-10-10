@@ -45,9 +45,9 @@ public class TaxService {
         return dto;
     }
 
-    public TaxDTO taxSelectList(int userNo, String taxYear, String taxMonth){
+    public TaxDTO taxSelectList(int userNo, String taxYear, String taxMonth, String category){
         TaxDTO dto = null;
-        List<TaxEntity> eList =  taxRepository.findByUserNo(userNo);
+        List<TaxEntity> eList =  taxRepository.findByUserNoAndTaxCategory(userNo, category);
 
         for (TaxEntity eDTO : eList){
             String eDTOYear = eDTO.getTaxDeadLine().toString().substring(0,4);
@@ -66,6 +66,7 @@ public class TaxService {
                             .basicFee2(eDTO.getBasicFee2())
                             .basicFee3(eDTO.getBasicFee3())
                             .taxDeadLine(eDTO.getTaxDeadLine())
+                            .taxCategory(eDTO.getTaxCategory())
                             .build();
                 }
             }
@@ -90,6 +91,7 @@ public class TaxService {
                     .basicFee2(eDTO.getBasicFee2())
                     .basicFee3(eDTO.getBasicFee3())
                     .taxDeadLine(eDTO.getTaxDeadLine())
+                    .taxCategory(eDTO.getTaxCategory())
                     .build();
             list.add(dto);
         }
