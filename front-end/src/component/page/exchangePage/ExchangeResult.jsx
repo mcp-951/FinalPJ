@@ -1,15 +1,31 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const ExchangeResult = () => {
     const location = useLocation();
-    const {date, branch} = location.state || {}; // 빈 객체를 기본값으로 설정
+    const navigate = useNavigate();
+    const { message } = location.state || {}; // 전달된 메세지에서 수령일과 지점정보를 받아옴
+
+    useEffect(() => {
+        const token = localStorage.getItem("token"); // 토큰 유지
+        if (!token) {
+            alert("로그인이 필요합니다.");
+            navigate('/login');
+        }
+    }, [navigate]);
 
     return (
-        <div>
-            <h1>신청이 완료되었습니다</h1>
-           
-            {date && branch && <p>{date}에 {branch}에 방문 해주세요.</p>}
+        <div className="exchange-result-container">
+            <h1>환전 신청 완료</h1>
+            {message ? (
+                <p>{message}</p>
+            ) : (
+                <p>선택한 정보가 없습니다.</p>
+            )}
+            <button onClick={() => navigate('/exchange-rate')} className="main-button">
+                메인으로
+            </button>
         </div>
     );
 };

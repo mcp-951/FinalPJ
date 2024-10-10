@@ -1,72 +1,171 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../../resource/css/exchange/Exchange.css'; // CSS 파일 추가
+import axios from 'axios';
+import '../../../resource/css/exchange/Exchange.css';
 import Footer from '../../util/Footer';
+import { jwtDecode } from 'jwt-decode'; // default import로 변경
 
 const Exchange = () => {
+    const token = localStorage.getItem("token");
+    const [branches, setBranches] = useState([]);
+    const [accountNumbers, setAccountNumbers] = useState([]);
+    const [selectedAccountNumber, setSelectedAccountNumber] = useState('');
     const [currency, setCurrency] = useState('');
     const [amount, setAmount] = useState('');
     const [rate, setRate] = useState(0);
     const [requiredWon, setRequiredWon] = useState(0);
     const [date, setDate] = useState('');
     const [branch, setBranch] = useState('');
-    const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
+    const [isPasswordConfirmed, setIsPasswordConfirmed] = useState(false);
+    const [userNo, setUserNo] = useState(null);
     const passwordInputRef = useRef(null);
     const navigate = useNavigate();
 
+    const handleSelectedAccountNumber = (event) => {
+        const selectedAccountNumber = event.target.value;
+        setSelectedAccountNumber(selectedAccountNumber);
+        console.log(selectedAccountNumber);
+
+    }
+    
+
+    // JWT 토큰 디코딩해서 username 가져오기
+    const decoded = jwtDecode(token);
+    const userId = decoded.username;
+
+    // 사용자 정보 및 계좌 정보 가져오기
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`);
+                const userNo = userNoResponse.data;
+                setUserNo(userNo);
+                console.log("UserNo:", userNo); // 사용자 번호 확인
+
+                const accountsResponse = await axios.get(`http://localhost:8081/exchange/account/${userNo}`);
+                const accounts = accountsResponse.data;
+                console.log("Accounts:", accounts); // 응답 데이터 확인
+                setAccountNumbers(accounts);
+            } catch (error) {
+                console.error("계좌 정보를 가져오는 중 오류 발생:", error);
+            }
+
+            try {
+                const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`);
+                setBranches(branchesResponse.data);
+            } catch (error) {
+                console.error("지점 정보를 가져오는 중 오류 발생:", error);
+            }
+        };
+
+        if (token && userId) {
+            fetchUserData();
+        }
+    }, [token, userId]);
+
+    // 통화 종류 변경 시 환율 정보 가져오기
     useEffect(() => {
         if (currency) {
-            // 환율 정보 API 호출
-            fetch(`https://api.exchangerate-api.com/v4/latest/${currency}`)
-                .then(response => response.json())
-                .then(data => {
-                    setRate(data.rates.KRW);
+            axios.get(`https://api.exchangerate-api.com/v4/latest/${currency}`)
+                .then(response => {
+                    setRate(response.data.rates.KRW);
+                    setRequiredWon(amount * response.data.rates.KRW);
+                })
+                .catch(error => {
+                    console.error('환율 정보를 가져오는 중 오류 발생:', error);
                 });
         }
-    }, [currency]);
+    }, [currency, amount]);
 
-    const handleSubmit = () => {
-        if (!currency) {
-            alert('통화 종류를 입력해주세요.');
+    // 비밀번호 확인 처리
+    const PwdSubmit = async () => {
+
+        if (!selectedAccountNumber) {
+            alert("계좌를 선택하세요.");
             return;
         }
-        if (!amount) {
-            alert('환전 금액을 입력해주세요.');
-            return;
-        }
-        if (!date) {
-            alert('수령일을 입력해주세요.');
-            return;
-        }
-        if (!branch) {
-            alert('수령 지점을 입력해주세요.');
-            return;
-        }
-        if (!account) {
-            alert('출금 계좌를 입력해주세요.');
-            return;
-        }
+
         if (!password) {
-            alert('비밀번호를 입력해주세요.');
+            alert("비밀번호를 입력하세요.");
+            passwordInputRef.current.focus();
             return;
         }
-        if (password === '12345') {
-            alert(`${date}에 ${branch}에 방문 해주세요.`);
-            navigate('/exchange-rate');
-        } else {
-            alert('비밀번호 불일치');
-            passwordInputRef.current.focus();
+        
+        try {
+            
+            // 선택한 계좌 번호와 입력한 비밀번호를 서버로 전송하여 비교
+            
+            const response = await axios.post(
+                `http://localhost:8081/exchange/verify-password/${selectedAccountNumber}/${password}`,  // URL과 요청 데이터
+                null,  // POST 요청에 보낼 데이터가 없으면 null을 전달
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                    }
+                }
+            );
+            console.log("가져온 값 : ",response)
+            if (response.data === 1) {
+                alert("비밀번호가 일치합니다");
+                setIsPasswordConfirmed(true);
+            } else {
+                alert('비밀번호가 일치하지 않습니다.');
+                setIsPasswordConfirmed(false);
+                passwordInputRef.current.focus();
+            }
+        } catch (error) {
+            console.error('비밀번호 확인 중 오류 발생:', error);
+            alert('비밀번호 확인에 실패했습니다. 다시 시도해 주세요.');
         }
     };
 
-    const handleCurrencyChange = (e) => {
-        setCurrency(e.target.value);
-    };
+    // 환전 신청 처리
+    const handleSubmit = () => {
+        if (!isPasswordConfirmed) {
+            alert('비밀번호를 확인하세요.');
+            return;
+        }
+        if (!currency || !amount || !date || !branch || !selectedAccountNumber) {
+            alert('모든 항목을 입력해주세요.');
+            return;
+        }
 
-    const handleAmountChange = (e) => {
-        setAmount(e.target.value);
-        setRequiredWon(e.target.value * rate);
+        const confirmResult = window.confirm('환전 하시겠습니까?');
+        if (confirmResult) {
+            const exchangeDetails = {
+                userNo,
+                accountNo: selectedAccountNumber,
+                selectCountry: currency,
+                exchangeRate: rate,
+                tradeDate: new Date().toISOString().split('T')[0],
+                pickupPlace: branch,
+                tradePrice: requiredWon,
+                tradeAmount: amount,
+                receiveDate: date
+            };
+
+            axios.post('http://localhost:8081/exchange/submit-exchange', exchangeDetails, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    navigate('/exchange-result', {
+                        state: {
+                            message: `${date}에 ${branch}에 방문 해주세요.`
+                        }
+                    });
+                } else {
+                    alert('환전 신청에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                console.error('환전 신청 중 오류 발생:', error);
+                alert('환전 신청에 실패했습니다.');
+            });
+        }
     };
 
     return (
@@ -74,8 +173,8 @@ const Exchange = () => {
             <h2>환전 신청</h2>
             <div className="exchange-row" style={{ marginTop: '50px' }}>
                 <div className="exchange-column">
-                    <label>통화 종류</label>
-                    <select value={currency} onChange={handleCurrencyChange}>
+                    <label className='exlabel'>통화 종류</label>
+                    <select className="ex" value={currency} onChange={(e) => setCurrency(e.target.value)}>
                         <option value="">선택하세요</option>
                         <option value="USD">미국 (USD)</option>
                         <option value="JPY">일본 (JPY)</option>
@@ -84,41 +183,43 @@ const Exchange = () => {
                     </select>
                 </div>
                 <div className="exchange-column">
-                    <label>환전 금액</label>
-                    <input type="number" value={amount} onChange={handleAmountChange} />
+                    <label className='exlabel'>환전 금액</label>
+                    <input className="ex" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
                 </div>
                 <div className="exchange-column">
-                    <label>현재 환율</label>
-                    <input type="text" value={rate} readOnly />
+                    <label className='exlabel'>현재 환율</label>
+                    <input className="ex" type="text" value={rate} readOnly />
                 </div>
                 <div className="exchange-column">
-                    <label>필요 원화</label>
-                    <input type="text" value={requiredWon} readOnly />
+                    <label className='exlabel'>필요 원화</label>
+                    <input className="ex" type="text" value={requiredWon} readOnly />
                 </div>
             </div>
             <div className="exchange-row" style={{ marginTop: '50px' }}>
                 <div className="exchange-column-vertical">
-                    <label>수령일</label>
-                    <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                    <label style={{ marginTop: '20px' }}>수령 지점</label>
-                    <select value={branch} onChange={(e) => setBranch(e.target.value)}>
-                        <option value="">지점 선택</option>
-                        <option value="마포점">마포점</option>
-                        <option value="여의도점">여의도점</option>
-                        <option value="홍대점">홍대점</option>
+                    <label className='exlabel'>수령일</label>
+                    <input className="ex" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                    <label className='exlabel' style={{ marginTop: '20px' }}>수령 지점</label>
+                    <select className="ex" value={branch} onChange={(e) => setBranch(e.target.value)}>
+                        <option value="">지점을 선택하세요</option>
+                        {branches.map((branch, index) => (
+                            <option key={index} value={branch.pickUpPlaceName}>
+                                {branch.pickUpPlaceName}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div className="exchange-column-vertical">
-                    <label>출금 계좌</label>
-                    <select value={account} onChange={(e) => setAccount(e.target.value)}>
-                        <option value="">계좌 선택</option>
-                        <option value="계좌1">계좌1</option>
-                        <option value="계좌2">계좌2</option>
-                        <option value="계좌3">계좌3</option>
-                        <option value="계좌4">계좌4</option>
-                        <option value="계좌5">계좌5</option>
+                    <label className='exlabel'>출금 계좌</label>
+                    <select className="ex" value={selectedAccountNumber} onChange={handleSelectedAccountNumber}>
+                        <option value="">계좌를 선택하세요</option>
+                        {accountNumbers.map((account, index) => (
+                            <option key={index} value={account.accountNumber}>
+                                {account.accountNumber}
+                            </option>
+                        ))}
                     </select>
-                    <label style={{ marginTop: '20px' }}>비밀번호</label>
+                    <label className='exlabel' style={{ marginTop: '20px' }}>비밀번호</label>
                     <div className="password-container">
                         <input
                             type="password"
@@ -127,11 +228,11 @@ const Exchange = () => {
                             className="password-input"
                             ref={passwordInputRef}
                         />
+                        <button className='password-button' onClick={PwdSubmit}>확인</button>
                     </div>
                 </div>
             </div>
-            <button onClick={handleSubmit} style={{ marginBottom: '50px' }}>신청</button>
-            
+            <button className='OkBtn' onClick={handleSubmit} style={{ marginTop: '20px' }}>환전 신청</button>
             <Footer />
         </div>
     );

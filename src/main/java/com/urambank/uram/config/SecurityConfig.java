@@ -1,6 +1,7 @@
 package com.urambank.uram.config;
 
 import com.urambank.uram.util.JWTUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +33,6 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -55,16 +55,11 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable());
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/signup", "/findById/**", "/checkHp/**","/admin/login","/kakaoLogin?**","/products/**","/loans/page").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/uram/users/**").hasRole("USER") // 사용자 관련 경로 설정
-                        .requestMatchers("/uram/product/**").hasRole("USER") // 제품 관련 경로 설정
-                        .requestMatchers("/uram/account/**").hasRole("USER") // 계좌 관련 경로 설정
-                        .requestMatchers("/uram/transfer").hasRole("USER") // 이체 관련 경로 설정
-                        .requestMatchers("/uram/banks/**").hasRole("USER") // 외부 계좌 관련 경로 설정
+                        .requestMatchers("/login", "/signup", "/findById/**", "/checkHp/**").permitAll()
+                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
         http
-                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+                .addFilterAfter(new JWTFilter(jwtUtil), LoginFilter.class);
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
 

@@ -14,7 +14,7 @@ function ExchangeDrop(){
                     <ul>
                         <h4>환전</h4>
                         <li><a href="exchange">환전 신청</a></li>
-                        <li><a href="exchange-list">환전 내역</a></li>
+                        <li><a href="exchangeList">환전 내역</a></li>
                     </ul>
                 </div>
             </div>
