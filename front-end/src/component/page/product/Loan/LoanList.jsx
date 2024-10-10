@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ApiService from '../../../ApiService'; // API 서비스 임포트
+import ApiService from 'component/ApiService'; // API 서비스 임포트
 import '../../../../resource/css/product/LoanList.css';
 
 // 상품 항목 컴포넌트 (ProductItem)

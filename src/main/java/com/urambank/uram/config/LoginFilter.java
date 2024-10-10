@@ -88,6 +88,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         // TokenDTO 객체 생성
         TokenDTO dto = new TokenDTO();
         dto.setAccessToken(token);
+        dto.setUserNo(userNo);
+
 
         // 응답을 JSON 형식으로 설정
         response.setContentType("application/json");

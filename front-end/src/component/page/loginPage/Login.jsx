@@ -43,7 +43,8 @@ function Login() {
         // 로그인 성공 시 처리
         const token = response.data.accessToken;
         localStorage.setItem("token",token);
-        //console.log("token:", token);
+        const userNo =
+        localStorage.setItem("userNo", response.data.userNo);
         navigate("/");
         window.location.reload();
     } catch (error) {

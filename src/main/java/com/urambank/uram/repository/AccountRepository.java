@@ -35,7 +35,7 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     // 'NORMAL' 상태의 계좌만 조회하여 필요한 정보 반환
     @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, " +
-            "a.product.productNo, a.product.productName, a.product.productPeriod " +
+            "a.product.productNo, a.product.productName " +
             "FROM AccountEntity a WHERE a.accountState = 'NORMAL' AND a.userNo = :userNo")
     List<Object[]> findAllAccountWithProductNameAndActive(@Param("userNo") int userNo);
 

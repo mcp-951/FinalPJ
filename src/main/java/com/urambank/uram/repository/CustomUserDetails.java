@@ -41,10 +41,6 @@ public class CustomUserDetails implements UserDetails {
     }
 
 
-    public Integer getUserNo(){
-        return user.getUserNo();
-    }
-
     public String getName(){
         return user.getName();
     }
@@ -61,9 +57,6 @@ public class CustomUserDetails implements UserDetails {
         return user.getUserId();
     }
 
-    public int getUserNo() {
-        return user.getUserNo();
-    }
 
     @Override
     public boolean isAccountNonExpired() {
