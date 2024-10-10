@@ -44,22 +44,22 @@ public class ProductService {
 //                .map(ProductDTO::toProductDTO)
 //                .collect(Collectors.toList());
 //    }
-//
-//    // 대출 상품 3개 가져오기
-//    public List<ProductDTO> getLoanProducts() {
-//        Pageable pageable = PageRequest.of(0, 3);
-//        List<ProductEntity> loanProducts = productRepository.findByProductCategory(3, pageable).getContent();
-//        return loanProducts.stream()
-//                .map(ProductDTO::toProductDTO)
-//                .collect(Collectors.toList());
-//    }
-//
-//    // 대출 상품 페이징 처리하여 가져오기
-//    public Page<ProductDTO> getLoanProductsPaged(int page, int size) {
-//        Pageable pageable = PageRequest.of(page, size);
-//        Page<ProductEntity> loanProductsPage = productRepository.findByProductCategory(3, pageable);
-//        return loanProductsPage.map(ProductDTO::toProductDTO);
-//    }
+
+    // 대출 상품 3개 가져오기
+    public List<ProductDTO> getLoanProducts() {
+        Pageable pageable = PageRequest.of(0, 3);
+        List<ProductEntity> loanProducts = productRepository.findByProductCategory(3, pageable).getContent();
+        return loanProducts.stream()
+                .map(ProductDTO::toProductDTO)
+                .collect(Collectors.toList());
+    }
+
+    // 대출 상품 페이징 처리하여 가져오기
+    public Page<ProductDTO> getLoanProductsPaged(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductEntity> loanProductsPage = productRepository.findByProductCategory(3, pageable);
+        return loanProductsPage.map(ProductDTO::toProductDTO);
+    }
 
     // 사용자 계좌 정보 가져오기
     public List<UserAccountDTO> getUserAccounts(String token) {

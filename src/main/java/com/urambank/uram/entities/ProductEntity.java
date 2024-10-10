@@ -29,6 +29,9 @@ public class ProductEntity {
     @Column(nullable = false, length = 255)
     private String productContent;  // 상품 소개
 
+    @Column(nullable = false)
+    private int productPeriod;
+
     @Column(nullable = false, length = 1, columnDefinition = "CHAR(1) DEFAULT 'y'")
     private String viewState;  // 상품 상태 (기본값 'y')
 

@@ -30,20 +30,20 @@ public class ProductController {
 //    public List<ProductDTO> getDepositProducts() {
 //        return productService.getDepositProducts();
 //    }
-//
-//    // 대출 상품 3개 가져오기
-//    @GetMapping("/loans")
-//    public List<ProductDTO> getLoanProducts() {
-//        return productService.getLoanProducts();
-//    }
 
-//    // 대출 상품 페이징 처리하여 가져오기
-//    @GetMapping("/loans/page")
-//    public Page<ProductDTO> getLoanProductsPaged(
-//            @RequestParam(name = "page", defaultValue = "0") int page,
-//            @RequestParam(name = "size", defaultValue = "3") int size) {
-//        return productService.getLoanProductsPaged(page, size);
-//    }
+    // 대출 상품 3개 가져오기
+    @GetMapping("/loans")
+    public List<ProductDTO> getLoanProducts() {
+        return productService.getLoanProducts();
+    }
+
+    // 대출 상품 페이징 처리하여 가져오기
+    @GetMapping("/loans/page")
+    public Page<ProductDTO> getLoanProductsPaged(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "3") int size) {
+        return productService.getLoanProductsPaged(page, size);
+    }
 
     // 사용자 계좌 정보 조회
     @GetMapping("/user")

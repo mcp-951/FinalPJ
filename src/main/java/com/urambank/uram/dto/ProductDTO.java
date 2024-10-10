@@ -15,6 +15,7 @@ public class ProductDTO {
     private String productCategory;  // 예금, 적금, 대출 구분 (int 타입으로 변경)
     private float productRate;  // 이자율
     private String productContent;  // 상품 소개
+    private int productPeriod;
     private String viewState;  // 상품 상태 (기본값 'y')
     private String productIMG;  // 상품 이미지 URL
 
