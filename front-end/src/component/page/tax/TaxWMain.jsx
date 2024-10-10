@@ -8,6 +8,7 @@ import axios from "axios";
 import '../../../resource/css/tax/TaxMain.css'
 function TaxWMain(){
     const navigate = useNavigate();
+    const category = 'warter';
     const [sum, setSum] = useState(null);
     const [taxData, setTaxData] = useState(null);
     const [userName, setUserName] =useState(null);
@@ -30,7 +31,7 @@ function TaxWMain(){
 
             const fetchTaxData = async () => {
                 try{
-                    const response = await axios.get(`http://localhost:8081/tax/electroTaxMain/${decodedToken.userNo}`, {
+                    const response = await axios.get(`http://localhost:8081/tax/TaxMain/${decodedToken.userNo}/${category}`, {
                         headers: {
                             Authorization: `Bearer ${token}` // JWT를 헤더에 추가
                         }})

@@ -15,8 +15,8 @@ import java.time.LocalDate;
 public class TaxService {
     final TaxRepository taxRepository;
 
-    public TaxDTO electroTaxTomonth(int userNo){
-        List<TaxEntity> eList =  taxRepository.findByUserNo(userNo);
+    public TaxDTO taxTomonth(int userNo, String category){
+        List<TaxEntity> eList =  taxRepository.findByUserNoAndTaxCategory(userNo, category);
         TaxDTO dto = null;
         LocalDate localTime = LocalDate.now();
         String month = localTime.toString().substring(5,7);
@@ -36,6 +36,7 @@ public class TaxService {
                        .basicFee2(eDTO.getBasicFee2())
                        .basicFee3(eDTO.getBasicFee3())
                        .taxDeadLine(eDTO.getTaxDeadLine())
+                       .taxCategory(eDTO.getTaxCategory())
                        .build();
            }
 

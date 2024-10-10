@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface TaxRepository extends JpaRepository<TaxEntity, Integer> {
     List<TaxEntity> findByUserNo(int userNo);
+    List<TaxEntity> findByUserNoAndTaxCategory(int userNo, String taxCategory);
 }
