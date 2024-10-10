@@ -32,8 +32,6 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     @Query("SELECT a FROM AccountEntity a JOIN FETCH a.product p WHERE a.accountNumber = :accountNumber AND a.accountState = :accountState AND a.userNo = :userNo")
     AccountEntity findAccountDetailWithProduct(@Param("accountNumber") int accountNumber, @Param("accountState") String accountState, @Param("userNo") int userNo);
 
-
-    // 'NORMAL' 상태의 계좌만 조회하여 필요한 정보 반환
     @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, " +
             "a.product.productNo, a.product.productName, a.product.productPeriod " +
             "FROM AccountEntity a WHERE a.accountState = 'NORMAL' AND a.userNo = :userNo")

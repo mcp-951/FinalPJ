@@ -26,7 +26,6 @@ public class AccountService {
     private final AutoTransferRepository autoTransferRepository;
 
 
-    // 'NORMAL' 상태의 모든 계좌와 관련된 정보 조회
     public List<Map<String, Object>> getAllAccountWithProductName(int userNo) {
         List<Object[]> results = accountRepository.findAllAccountWithProductNameAndActive(userNo);
         List<Map<String, Object>> accountDataList = new ArrayList<>();

@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableScheduling
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.urambank.uram.repository")
+@EnableJpaRepositories(basePackages = {"com.urambank.uram", "com.urambank.uram.config"})
 public class UramApplication {
 
 	public static void main(String[] args) {

@@ -154,7 +154,7 @@ public class AccountController {
         }
     }
 
-    // 계좌 해지 API
+    // 계좌 해지
     @PostMapping("/account/{accountNumber}/terminate")
     public ResponseEntity<String> terminateAccount(
             @PathVariable("accountNumber") int accountNumber,
@@ -162,7 +162,6 @@ public class AccountController {
             @RequestHeader("Authorization") String authorizationHeader) {
 
         try {
-            // JWT에서 유저 정보 추출 (예: userNo 추출)
             Integer userNo = Integer.parseInt(request.get("userNo").toString());
 
             // 계좌 해지 로직 호출
@@ -355,7 +354,7 @@ public class AccountController {
 
 
     // 모든 자동이체 정보 조회
-    @GetMapping("/auto-transfers")
+    @GetMapping("/auto-transfer/list")
     public ResponseEntity<List<AutoTransferDTO>> getAllAutoTransfers() {
         try {
             List<AutoTransferDTO> autoTransfers = accountService.getAllAutoTransfers();
