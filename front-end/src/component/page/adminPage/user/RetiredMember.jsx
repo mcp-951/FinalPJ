@@ -3,16 +3,22 @@ import React, { useState, useEffect } from 'react';
 import ApiService from '../service/ApiService';  // ApiService 추가
 import Sidebar from '../Sidebar';
 import '../../../../resource/css/admin/RetiredMember.css'; // CSS 추가
+import localStorage from 'localStorage';
 
 const RetiredMember = () => {
   const [retiredMembers, setRetiredMembers] = useState([]);
   const [searchField, setSearchField] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
   const [displayCount, setDisplayCount] = useState(10);
+  const token = localStorage.getItem("token");
 
   // 탈퇴 회원 목록 가져오기
   useEffect(() => {
-    ApiService.get('/admin/retired')  // 탈퇴 회원 목록 조회
+    ApiService.get('/retired',{
+      headers: {
+        'Authorization': `Bearer ${token}`  // Authorization 헤더에 JWT 추가
+      }
+    })  // 탈퇴 회원 목록 조회
       .then((response) => {
         const filteredMembers = response.data.filter(member => member.state === 'e');
         setRetiredMembers(filteredMembers);  // 데이터 설정

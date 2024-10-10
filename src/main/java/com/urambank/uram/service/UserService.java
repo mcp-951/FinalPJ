@@ -3,34 +3,29 @@ package com.urambank.uram.service;
 import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.repository.UserRepository;
-import com.urambank.uram.util.JWTUtil;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Random;
 
-
+@RequiredArgsConstructor
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private DefaultMessageService messageService;
+    private final DefaultMessageService messageService;
 
     public String findByUserId(String userId) {
         System.out.println("<<< UserService - findByUserId() >>>");
@@ -49,7 +44,9 @@ public class UserService {
         System.out.println("Pw : " + userDTO.getUserPw());
 
         UserDTO dto = new UserDTO();
-        userDTO.setResidentNumber(userDTO.getResidentNumber1() + userDTO.getResidentNumber2());
+        userDTO.setResidentNumber(userDTO.getResidentNumber1() + "-" + userDTO.getResidentNumber2());
+        userDTO.setAddress(userDTO.getAddress1() + userDTO.getAddress2());
+        userDTO.setEmail(userDTO.getEmail1()+ "@" + userDTO.getEmail2());
 
         try {
             // 사용자 정보 설정 및 비밀번호 암호화
@@ -65,7 +62,8 @@ public class UserService {
             user.setUserPw(encodingPw);  // 비밀번호 암호화
             user.setBirth(userDTO.getBirth());
             user.setAddress(userDTO.getAddress());
-            user.setUser_role("USER");
+            user.setUserRole("USER");
+            user.setState('y');
 
             // 사용자 저장
             User savedUser = userRepository.save(user);
@@ -99,7 +97,7 @@ public class UserService {
         message.setFrom("01055617726");
         message.setTo(hp);
         message.setText("인증번호를 입력해주세요. 인증번호는 " + i + " 입니다.");
-        messageService = NurigoApp.INSTANCE.initialize(
+        NurigoApp.INSTANCE.initialize(
                 "NCSWFN2OVSKW3MPS",
                 "P9YBFDGTRQNVQ2KXSP7NGF1BE7PLX5DP",
                 "https://api.coolsms.co.kr"
@@ -114,4 +112,5 @@ public class UserService {
         sendSMS(hp,authKey);
         return authKey;
     }
+
 }

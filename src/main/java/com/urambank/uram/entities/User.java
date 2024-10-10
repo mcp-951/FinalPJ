@@ -24,22 +24,22 @@ public class User {
     @Column(unique = true, length = 100, nullable = false)
     private String userId;
 
-    @Column(length = 100, nullable = false, unique = false)
+    @Column(length = 100, nullable = true, unique = false)
     private String userPw;
 
-    @Column(length = 10, nullable = false, unique = false)
+    @Column(length = 10, nullable = true, unique = false)
     private String name;
 
-    @Column(length = 100, nullable = false, unique = false)
+    @Column(length = 100, nullable = true, unique = false)
     private Date birth;
 
-    @Column(length = 100, nullable = false, unique = false)
+    @Column(length = 100, nullable = true, unique = false)
     private String hp;
 
-    @Column(length = 100, nullable = false, unique = false)
+    @Column(length = 100, nullable = true, unique = false)
     private String email;
 
-    @Column(length = 100, nullable = false, unique = false)
+    @Column(length = 100, nullable = true, unique = false)
     private String address;
 
     @Column(length = 100, nullable = true, unique = false)
@@ -51,10 +51,10 @@ public class User {
     @Column(length = 100, nullable = true, unique = false)
     private int OCRCheck;
 
-    @Column(length = 20, nullable = false, unique = false)
-    private String user_role;
+    @Column(name = "user_role",length = 20, nullable = true, unique = false)
+    private String userRole;
 
-    @Column(length = 100, nullable = false, unique = false)
+    @Column(length = 100, nullable = true, unique = false)
     private String residentNumber;
 
     @Builder

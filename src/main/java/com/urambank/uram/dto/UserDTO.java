@@ -21,8 +21,12 @@ public class UserDTO {
     private String name;
     private Date birth;
     private String email;
+    private String email1;
+    private String email2;
     private String hp;
     private String address;
+    private String address1;
+    private String address2;
     private String residentNumber;
     private Date joinDate;
     private char state;

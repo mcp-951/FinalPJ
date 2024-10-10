@@ -33,6 +33,7 @@ dependencies {
 	implementation 'commons-codec:commons-codec:1.5'
 	implementation 'com.auth0:java-jwt:3.13.0'
 	implementation 'net.nurigo:sdk:4.3.0'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

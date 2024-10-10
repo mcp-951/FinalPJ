@@ -1,7 +1,6 @@
 package com.urambank.uram.repository;
 
 import com.urambank.uram.entities.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -29,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
             @Override
             public String getAuthority() {
 
-                return user.getUser_role();
+                return user.getUserRole();
             }
         });
 
@@ -46,6 +45,10 @@ public class CustomUserDetails implements UserDetails {
     public String getUsername() {
 
         return user.getUserId();
+    }
+
+    public int getUserNo() {
+        return user.getUserNo();
     }
 
     @Override

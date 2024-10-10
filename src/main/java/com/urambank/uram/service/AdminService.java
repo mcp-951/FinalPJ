@@ -2,14 +2,12 @@ package com.urambank.uram.service;
 
 import com.urambank.uram.dto.ProductDTO;
 import com.urambank.uram.dto.UserDTO;
-import com.urambank.uram.entities.AdminEntity;
 import com.urambank.uram.entities.ProductEntity;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.repository.ProductRepository;
 import com.urambank.uram.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,7 +35,7 @@ public class AdminService {
         user.setUserId(userDTO.getUserId());
         user.setName(userDTO.getName());
         user.setUserPw(userDTO.getUserPw());
-        user.setUser_role(userDTO.getUSER_ROLE()); // 권한 추가
+        user.setUserRole(userDTO.getUSER_ROLE()); // 권한 추가
         user.setState(userDTO.getState()); // 상태 추가
         return user;
     }
@@ -52,10 +50,13 @@ public class AdminService {
         userDTO.setUserId(user.getUserId());
         userDTO.setName(user.getName());
         userDTO.setUserPw(user.getUserPw());
-        userDTO.setUSER_ROLE(user.getUser_role()); // 권한 추가
+        userDTO.setUSER_ROLE(user.getUserRole()); // 권한 추가
         userDTO.setState(user.getState()); // 상태 추가
         userDTO.setResidentNumber(user.getResidentNumber());
         userDTO.setEmail(user.getEmail());
+        userDTO.setHp(user.getHp());
+        userDTO.setAddress(user.getAddress());
+        userDTO.setBirth(user.getBirth());
         return userDTO;
     }
 
@@ -150,8 +151,8 @@ public class AdminService {
 
     // 활성 회원 목록 조회 (NORMAL, STOP 상태의 유저를 조회)
     public List<UserDTO> getAllUsers() {
-        List<User> normalUsers = userRepository.findAllByState('y');
-        List<User> stopUsers = userRepository.findAllByState('n');
+        List<User> normalUsers = userRepository.findAllByStateAndUserRole('y',"ROLE_USER");
+        List<User> stopUsers = userRepository.findAllByStateAndUserRole('n',"ROLE_USER");
 
         // 두 리스트를 합친 후 DTO로 변환
         return Stream.concat(normalUsers.stream(), stopUsers.stream())
@@ -161,7 +162,7 @@ public class AdminService {
 
     // 탈퇴된 회원 조회 (END 상태의 유저만 조회)
     public List<UserDTO> getRetiredUsers() {
-        return userRepository.findAllByState('e').stream()
+        return userRepository.findAllByStateAndUserRole('e',"ROLE_USER").stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
@@ -199,4 +200,10 @@ public class AdminService {
         userRepository.save(userEntity);
     }
 
+    public void setState(int userNo, char userState) {
+        User userEntity = userRepository.findById(userNo)
+                .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
+        userEntity.setState(userState); // 상태를 '정상'가 아닌 '정지'로 변경
+        userRepository.save(userEntity);
+    }
 }

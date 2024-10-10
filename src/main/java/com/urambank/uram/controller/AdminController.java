@@ -3,6 +3,8 @@ package com.urambank.uram.controller;
 import com.urambank.uram.dto.ProductDTO;
 import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.service.AdminService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +47,7 @@ public class AdminController {
     }
 
     // 상품 수정
-    @PutMapping("/update/{productNo}")
+    @PutMapping("/updateProduct/{productNo}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable int productNo, @RequestBody ProductDTO productDTO) {
         ProductDTO updatedProduct = adminService.updateProduct(productNo, productDTO);
         return ResponseEntity.ok(updatedProduct);
@@ -83,8 +85,18 @@ public class AdminController {
     }
 
     // 회원 정보 수정 (DTO 사용)
-    @PutMapping("/update/{userNo}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable int userNo, @RequestBody UserDTO userDTO) {
+    @PutMapping("/setState/{userNo}")
+    public ResponseEntity<String> setState(@PathVariable("userNo") int userNo,@RequestBody UserDTO dto) {
+
+        adminService.setState(userNo, dto.getState());
+        return ResponseEntity.ok("변경 완료");
+    }
+
+    // 회원 정보 수정 (DTO 사용)
+    @PutMapping("/updateUser/{userNo}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable("userNo") int userNo, @RequestBody UserDTO userDTO) {
+        System.out.println("<<< updateUser >>>");
+
         UserDTO updatedUser = adminService.updateUser(userNo, userDTO);
         return ResponseEntity.ok(updatedUser);
     }

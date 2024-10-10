@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import ApiService from '../service/ApiService';  // ApiService 추가
+import axios from 'axios';  // ApiService 추가
+import localStorage from 'localStorage';
 
 const MemberEdit = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { memberData } = location.state;
+  const token = localStorage.getItem("token");
 
   // formData 초기값 설정
   const [formData, setFormData] = useState({
-    userID: memberData.userID,
+    userId: memberData.userId,
     userPw: memberData.userPw || '',  // userPw 필드 추가 (기본값 설정)
     name: memberData.name,
     email: memberData.email,
@@ -37,7 +39,11 @@ const MemberEdit = () => {
     console.log('수정할 데이터:', formData);  // 수정할 데이터 확인용
 
     // 백엔드로 PUT 요청 전송
-    ApiService.put(`/user/update/${memberData.userNo}`, formData)
+    axios.put(`http://localhost:8081/admin/updateUser/${memberData.userNo}`, formData,{
+      headers: {
+        'Authorization': `Bearer ${token}`  // Authorization 헤더에 JWT 추가
+      }
+    })
       .then(() => {
         console.log('회원 정보 수정 성공');
         navigate('/memberList');  // 수정 후 회원 리스트로 돌아감
@@ -52,7 +58,7 @@ const MemberEdit = () => {
       <h2>회원 수정</h2>
       <form onSubmit={handleSubmit}>
         <label>아이디</label>
-        <input type="text" value={formData.userID} disabled />
+        <input type="text" value={formData.userId} disabled />
 
         <label>비밀번호</label> {/* 비밀번호 입력 필드 추가 */}
         <input type="password" name="userPw" value={formData.userPw} onChange={handleInputChange} />
