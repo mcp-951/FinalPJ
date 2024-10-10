@@ -1,9 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ApiService from '../../../ApiService';  // ApiService import
+import axios from 'axios';
 import '../../../resource/css/customerService/CustomerServiceMain.css';
 
-function CustomerServiceMain({ inquiries }) {
+function CustomerServiceMain() {
   const navigate = useNavigate();
+  const [inquiries, setInquiries] = useState([]);  // 문의글 상태 관리
+  const [loading, setLoading] = useState(true);    // 로딩 상태 관리
+  const [error, setError] = useState(null);        // 오류 상태 관리
+
+  // 전체 문의글 가져오기
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if(token == null){
+      alert("로그인헤라")
+      navigate('/')
+      return;
+    }
+    else{
+      const fetchInquiries = async () => {
+        try {
+          setLoading(true); // 데이터 가져오는 중 로딩 상태로 설정
+          const response = await ApiService.getAllInquiries();
+          axios.get('http://localhost:8081/support/all', {
+            headers: {
+              'Authorization': `Bearer ${token}`,  // Bearer 토큰 형식으로 헤더에 추가
+            }
+          })  // ApiService 사용
+          setInquiries(response.data);  // 가져온 데이터로 상태 설정
+          setLoading(false);  // 로딩 완료
+        } catch (err) {
+          console.error("문의글을 불러오는 중 오류가 발생했습니다:", err);  // 오류 로그 출력
+          setError('문의글을 불러오는 중 오류가 발생했습니다.');
+          setLoading(false);
+        }
+      };
+  
+      fetchInquiries();
+    }
+
+  }, []);  // 컴포넌트가 처음 렌더링될 때 한 번만 실행
 
   // 문의글 상세 페이지로 이동하는 함수
   const handleInquiryClick = (id) => {
@@ -13,38 +50,50 @@ function CustomerServiceMain({ inquiries }) {
   return (
     <div className="customer-service-main">
       <h1>무엇을 도와드릴까요? <span>Q&A</span></h1>
-  
-      {/* 문의글 리스트 테이블을 위쪽에 배치 */}
-      {Array.isArray(inquiries) && inquiries.length === 0 ? (
-        <p>문의한 내역이 없습니다.</p>
+
+      {/* 로딩 중 상태 처리 */}
+      {loading ? (
+        <p>로딩 중...</p>
+      ) : error ? (
+        <p>{error}</p>
       ) : (
-        <table className="inquiry-table">
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>문의 날짜</th>
-              <th>진행상황</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inquiries && inquiries.map((inquiry, index) => (
-              <tr key={inquiry.id}>
-                <td>{index + 1}</td>
-                <td>
-                  <button
-                    onClick={() => handleInquiryClick(inquiry.id)}
-                    style={{ background: "none", border: "none", color: "blue", textDecoration: "underline", cursor: "pointer" }}
-                  >
-                    {inquiry.title}
-                  </button>
-                </td>
-                <td>{inquiry.date}</td>
-                <td>{inquiry.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div>
+          {inquiries.length === 0 ? (
+            <p>문의한 내역이 없습니다.</p>
+          ) : (
+            <table className="inquiry-table">
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>문의 날짜</th>
+                  <th>진행상황</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inquiries.map((inquiry, index) => (
+                  <tr key={inquiry.qnaNo}> {/* 문의글의 고유 ID (qnaNo) 사용 */}
+                    <td>{index + 1}</td>
+                    <td>
+                      <button
+                        onClick={() => handleInquiryClick(inquiry.qnaNo)}  // 고유 ID로 클릭 이벤트 설정
+                        style={{ background: "none", border: "none", color: "blue", textDecoration: "underline", cursor: "pointer" }}
+                      >
+                        {inquiry.qnaTitle}  {/* 제목 표시 */}
+                      </button>
+                    </td>
+                    <td>
+                      {inquiry.createdAt 
+                        ? new Date(inquiry.createdAt).toLocaleDateString() 
+                        : "날짜 정보 없음"} {/* 날짜를 형식에 맞게 표시 */}
+                    </td>
+                    <td>{inquiry.status || "상태 정보 없음"}</td>  {/* 상태 표시 */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       )}
 
       <button className="inquiry-button" onClick={() => navigate('/inquiry-form')}>1:1 문의하기</button>

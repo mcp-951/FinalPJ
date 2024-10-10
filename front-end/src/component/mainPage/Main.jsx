@@ -2,7 +2,6 @@ import React from "react";
 import Carouesl_Main from './Carousel';
 import RightMenu from'./RightMenu';
 import Middlebar from './Middlebar';
-import BottomNoticeBoard from './BottomNoticeBoard';
 import BottomNewsBoard from './BottomNewsBoard';
 import Footer from '../util/Footer';
 
@@ -19,7 +18,6 @@ function Main() {
             <Middlebar />
         </div>
         <div className='Board_main'>
-            <BottomNoticeBoard/>
             <BottomNewsBoard/>
         </div>
         <Footer/>

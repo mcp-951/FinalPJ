@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ApiService from '../../../ApiService';  // ApiService import
 import '../../../resource/css/customerService/InquiryForm.css';
 
-function InquiryForm({ addInquiry }) {
+function InquiryForm() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    title: '',
-    content: '',
+    qnaTitle: '',   // 제목 필드를 qnaTitle로 변경
+    message: '',    // 내용 필드를 message로 변경
     file: null,
   });
 
+  // 입력 값 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({
@@ -18,6 +20,7 @@ function InquiryForm({ addInquiry }) {
     });
   };
 
+  // 파일 첨부 핸들러
   const handleFileChange = (e) => {
     setForm({
       ...form,
@@ -25,26 +28,39 @@ function InquiryForm({ addInquiry }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  // 폼 전송 핸들러
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (form.title === '' || form.content === '') {
+    // 제목과 내용이 없는 경우 경고
+    if (form.qnaTitle === '' || form.message === '') {
       alert('제목과 내용을 입력해주세요.');
       return;
     }
 
-    const newInquiry = {
-      id: Date.now(), // 유니크한 id 생성
-      title: form.title,
-      date: new Date().toISOString().slice(0, 10), // 날짜를 YYYY-MM-DD 형식으로 생성
-      status: '처리 중',
-    };
+    try {
+      // FormData 객체 생성 (파일 업로드가 있는 경우)
+      const formData = new FormData();
+      formData.append('userNo', 1);  // 사용자 번호를 하드코딩 (로그인 구현 시 변경 필요)
+      formData.append('qnaTitle', form.qnaTitle);
+      formData.append('message', form.message);
+      formData.append('status', '답변전');  // 초기 상태는 '답변전'으로 설정
+      if (form.file) {
+        formData.append('file', form.file); // 파일이 있는 경우 파일 추가
+      }
 
-    // 문의글 추가
-    addInquiry(newInquiry);
+      // 백엔드로 POST 요청 (FormData 전송)
+      const response = await ApiService.createInquiryWithFile(formData);
 
-    alert('문의가 등록되었습니다!');
-    navigate('/customer-service');
+      // 문의글이 성공적으로 등록된 경우
+      if (response.status === 201) {
+        alert('문의가 성공적으로 등록되었습니다!');
+        navigate('/customer-service'); // 문의글 등록 후 고객센터 메인 페이지로 이동
+      }
+    } catch (error) {
+      console.error('문의글 등록 중 오류가 발생했습니다.', error);
+      alert('문의글 등록 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -54,8 +70,8 @@ function InquiryForm({ addInquiry }) {
         <label>제목 :</label>
         <input
           type="text"
-          name="title"
-          value={form.title}
+          name="qnaTitle"
+          value={form.qnaTitle}
           onChange={handleChange}
           required
         />
@@ -63,8 +79,8 @@ function InquiryForm({ addInquiry }) {
       <div>
         <label>문의 내용 :</label>
         <textarea
-          name="content"
-          value={form.content}
+          name="message"
+          value={form.message}
           onChange={handleChange}
           required
         ></textarea>

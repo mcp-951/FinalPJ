@@ -1,47 +1,67 @@
 .boardTable {
-    width: 80%; /* 테이블 너비를 지정하여 균형을 맞춤 */
-    margin: 20px auto; /* 테이블을 화면의 중앙에 배치 */
-    border-collapse: collapse; /* 셀 간의 경계선 겹침 해제 */
-    table-layout: fixed; /* 셀 너비를 균일하게 설정 */
-  }
-  
-  .boardTable th, .boardTable td {
-    padding: 12px 15px; /* 셀 내부 여백 설정 */
-    text-align: left; /* 기본 텍스트 정렬 */
-    vertical-align: middle; /* 수직 중앙 정렬 */
-  }
-  
-  .title {
-    width: 70%; /* 제목 셀의 너비 */
-  }
-  
-  .date {
-    width: 30%; /* 날짜 셀의 너비 */
-    text-align: right; /* 날짜를 오른쪽 정렬 */
-  }
-  
-  .boardPlus {
-    border: none; 
-    background: none; 
-    color: blue; 
-    text-decoration: underline; 
-    cursor: pointer;
-  }
-  
-  .newsItem {
-    display: flex; /* 이미지와 텍스트를 가로로 배치 */
-    align-items: center; /* 이미지와 텍스트의 수직 중앙 정렬 */
-  }
-  
-  .newsItem img {
-    width: 60px; /* 이미지 너비 */
-    height: 60px; /* 이미지 높이 */
-    margin-right: 15px; /* 이미지와 텍스트 간격 */
-    border-radius: 5px; /* 이미지 모서리 둥글게 */
-    object-fit: cover; /* 이미지가 고정된 크기에 맞도록 비율 조정 */
-  }
-  
-  .boardTable tbody tr:hover {
-    background-color: #f0f8ff; /* 마우스 오버 시 행 배경색 변경 */
-  }
-  
+  width: 80%; /* 테이블 너비를 지정하여 균형을 맞춤 */
+  margin: 20px auto; /* 테이블을 화면의 중앙에 배치 */
+  border-collapse: collapse; /* 셀 간의 경계선 겹침 해제 */
+  table-layout: fixed; /* 셀 너비를 균일하게 설정 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 테두리에 부드러운 그림자 추가 */
+}
+
+.boardTable thead {
+  background-color: #f5f5f5; /* 헤더 배경색 */
+}
+
+.boardTable th, .boardTable td {
+  padding: 15px 20px; /* 셀 내부 여백 설정 */
+  text-align: left; /* 기본 텍스트 정렬 */
+  vertical-align: middle; /* 수직 중앙 정렬 */
+  border-bottom: 1px solid #ddd; /* 셀 하단 경계선 */
+}
+
+.boardTable th {
+  font-weight: 600; /* 헤더 셀의 글자 굵기 설정 */
+  text-transform: uppercase; /* 헤더 텍스트를 대문자로 변환 */
+  color: #333; /* 텍스트 색상 */
+}
+
+.boardTable tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* 짝수 행의 배경색 */
+}
+
+.boardTable tbody tr:hover {
+  background-color: #e6f7ff; /* 마우스 오버 시 행 배경색 변경 */
+}
+
+.title {
+  width: 70%; /* 제목 셀의 너비 */
+}
+
+.date {
+  width: 30%; /* 날짜 셀의 너비 */
+  text-align: right; /* 날짜를 오른쪽 정렬 */
+}
+
+.boardPlus {
+  border: none; 
+  background: none; 
+  color: #007bff; /* 버튼 텍스트 색상 */
+  text-decoration: underline; 
+  cursor: pointer;
+}
+
+.newsItem {
+  display: flex; /* 이미지와 텍스트를 가로로 배치 */
+  align-items: center; /* 이미지와 텍스트의 수직 중앙 정렬 */
+}
+
+.newsItem img {
+  width: 100px; /* 이미지 너비 */
+  height: 80px; /* 이미지 높이 */
+  margin-right: 15px; /* 이미지와 텍스트 간격 */
+  border-radius: 8px; /* 이미지 모서리 둥글게 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* 이미지에 그림자 효과 */
+  object-fit: cover; /* 이미지가 고정된 크기에 맞도록 비율 조정 */
+}
+
+.boardTable tbody td {
+  transition: background-color 0.3s ease; /* 셀 배경색 전환 애니메이션 */
+}
