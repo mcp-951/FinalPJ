@@ -65,6 +65,7 @@ import AccountTransferConfirmation from '../page/account/accountTransfer/Account
 import AccountTransferComplete from '../page/account/accountTransfer/AccountTransferComplete'; 
 import AutoTransferRegister from '../page/account/autoTransfer/AutoTransferRegister'; // 자동이체 등록 페이지
 import AutoTransferRegister2 from '../page/account/autoTransfer/AutoTransferRegister2'; // 자동이체 등록 2단계 페이지
+import AutoTransferList from '../page/account/autoTransfer/AutoTransferList';
 
 // 에이스 동명
 import ExchangeRate from '../page/exchangePage/ExchangeRate';
@@ -150,7 +151,7 @@ const RouteComponent = () => {
                         <Route path="/Accession_chap3" exact={true} element={<Accession_chap3 />} />
 
                         {/* 계좌 페이지 시작_채림님*/}
-                        {/* 계좌 목록 페이지 */}<Route path="/account" element={<Account />} />
+                        {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
                         
                         {/* 비밀번호 확인 페이지 */}
@@ -166,6 +167,7 @@ const RouteComponent = () => {
                         {/* 이체 완료 페이지 */}<Route path="/account/transfer-complete" element={<AccountTransferComplete />} />
                         {/* 자동이체 등록 페이지 */}<Route path="/auto-transfer-register" element={<AutoTransferRegister />} /> {/* 자동이체 등록 페이지 경로 추가 */}
                         {/* 자동이체 등록 2단계 페이지 */}<Route path="/auto-transfer-step2" element={<AutoTransferRegister2 />} /> {/* 자동이체 등록 2단계 페이지 추가 */}
+                        <Route path="/auto-transfers" element={<AutoTransferList />} />
 
                         {/*여기는 에이스 클럽 원주민만 가능*/}
                         <Route path="/exchange-rate" exact={true} element={<ExchangeRate />} />

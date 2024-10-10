@@ -1,9 +1,6 @@
 package com.urambank.uram.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
@@ -16,8 +13,10 @@ import java.sql.Date;
 @Entity
 @Table(name = "Log_TB")
 public class LogEntity {
+
     @Id
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int logNo;
 
     @Column

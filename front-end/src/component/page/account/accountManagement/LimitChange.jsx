@@ -15,10 +15,21 @@ const LimitChange = () => {
   // LimitInquiry에서 전달된 accountNumber와 productName (화면에 표시되지 않음)
   const { accountNumber, productName } = location.state || {};
 
+  // 로컬 스토리지에서 JWT 토큰과 userNo를 가져오기
+  const token = localStorage.getItem("token");
+  const userNo = localStorage.getItem("userNo");
+
   // 이체 한도 정보를 받아오는 함수
   const fetchLimits = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`);
+      const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
+        },
+        params: {
+          userNo: userNo // userNo를 쿼리 파라미터로 추가
+        }
+      });
       setCurrentDailyLimit(response.data.accountMax);  // 1일 이체한도 설정
       setCurrentOnceLimit(response.data.accountLimit); // 1회 이체한도 설정
     } catch (error) {
@@ -29,8 +40,10 @@ const LimitChange = () => {
 
   useEffect(() => {
     // 컴포넌트가 마운트되면 현재 이체한도 데이터를 불러옴
-    fetchLimits();
-  }, [accountNumber]);
+    if (accountNumber) {
+      fetchLimits();
+    }
+  }, [accountNumber, userNo, token]);
 
   const handleLimitChange = async () => {
     if (!newDailyLimit || !newOnceLimit) {
@@ -44,10 +57,19 @@ const LimitChange = () => {
     }
   
     try {
-      const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/change-limits`, {
-        dailyLimit: parseInt(newDailyLimit, 10),
-        onceLimit: parseInt(newOnceLimit, 10),
-      });
+      const response = await axios.post(
+        `http://localhost:8081/uram/account/${accountNumber}/change-limits`,
+        {
+          dailyLimit: parseInt(newDailyLimit, 10),
+          onceLimit: parseInt(newOnceLimit, 10),
+          userNo: userNo // userNo를 요청 본문에 포함
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
+          },
+        }
+      );
   
       if (response.status === 200) {
         alert('이체 한도가 성공적으로 변경되었습니다.');
@@ -57,10 +79,9 @@ const LimitChange = () => {
       }
     } catch (error) {
       setErrorMessage('이체 한도 변경 중 오류가 발생했습니다.');
-      console.error(error);
+      console.error('Error during limit change:', error);
     }
   };
-  
 
   return (
     <div className="limit-change-container">

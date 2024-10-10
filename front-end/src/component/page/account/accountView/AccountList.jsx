@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ApiService from '../../../../ApiService';
+import axios from 'axios';
 import '../../../../resource/css/account/accountView/AccountList.css';
 import Modal from './Modal';
 import { FaEllipsisV } from 'react-icons/fa';
-import axios from 'axios';
-import localStorage from 'localStorage';
 
 const AccountList = ({ type }) => {
   const [showModal, setShowModal] = useState(false);
@@ -14,23 +12,35 @@ const AccountList = ({ type }) => {
   const [error, setError] = useState(null); // 에러 상태 추가
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const userNo = localStorage.getItem("userNo"); // localStorage에서 userNo 가져오기
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8081/uram/account",{
-            headers: {
-                'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-            }
-        })
-        setAccounts(response.data); 
+        const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+          headers: {
+            'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+          }
+        });
+
+        // 응답 데이터에서 사용자 이름과 계좌 목록을 추출
+        const { userName, accounts } = response.data;
+
+        // accounts가 배열인지 확인하고 설정
+        if (Array.isArray(accounts)) {
+          setAccounts(accounts);
+        } else {
+          setAccounts([]); // 배열이 아닐 경우 빈 배열로 설정
+          setError('데이터를 가져오는 중 오류가 발생했습니다.');
+        }
       } catch (error) {
         setError('데이터를 가져오는 중 오류가 발생했습니다.');
+        setAccounts([]); // 오류 발생 시 빈 배열로 설정
       }
     };
 
-    fetchData(); 
-  }, []);
+    fetchData();
+  }, [userNo, token]);
 
   const filteredAccounts = accounts.filter(account => {
     if (type === '예금') {
@@ -92,7 +102,7 @@ const AccountList = ({ type }) => {
         <Modal
           show={showModal}
           onClose={() => setShowModal(false)}
-          account={selectedAccount} 
+          account={selectedAccount}
         />
       )}
     </div>

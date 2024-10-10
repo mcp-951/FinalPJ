@@ -32,7 +32,7 @@ public class UserController {
     @GetMapping("/findById/{userId}")
     public String findById(@PathVariable("userId") String userId) throws ServletException, IOException {
         logger.info("<<< findById >>>");
-        System.out.println("userId : " + userId);
+//        System.out.println("userId : " + userId);
         return userService.findByUserId(userId);
     }
 
