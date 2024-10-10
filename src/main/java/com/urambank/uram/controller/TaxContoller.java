@@ -15,10 +15,10 @@ public class TaxContoller {
     final TaxService taxService;
 
 
-    @GetMapping("/electroTaxMain/{userNo}")
-    public TaxDTO electroTax(@PathVariable("userNo") int userNo){
-        System.out.println(taxService.electroTaxTomonth(userNo) + "값임");
-        return taxService.electroTaxTomonth(userNo);
+    @GetMapping("/TaxMain/{userNo}/{category}")
+    public TaxDTO electroTax(@PathVariable("userNo") int userNo, @PathVariable("category") String category){
+        System.out.println(taxService.taxTomonth(userNo, category) + "값임");
+        return taxService.taxTomonth(userNo, category);
     }
 
     @GetMapping("/taxSelectList/{userNo}/{taxYear}/{taxMonth}")

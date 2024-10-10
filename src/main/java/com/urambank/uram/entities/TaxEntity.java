@@ -51,5 +51,5 @@ public class TaxEntity {
     private int userNo;
 
     @Column
-    private String taxCtegory;
+    private String taxCategory;
 }
