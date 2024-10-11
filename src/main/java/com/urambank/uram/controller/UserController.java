@@ -50,12 +50,18 @@ public class UserController {
         return userService.checkHp(hp);
     }
 
-    @GetMapping("/kakaoLogin?code={code}")
+    @GetMapping("/kakaoLogin")
     public ResponseEntity<?> kakaoLogin(@RequestParam("code") String code){
         logger.info("<<< kakaoLogin >>>");
         String accessToken = kakaoService.getAccessTokenFromKakao(code);
         return ResponseEntity.ok(accessToken);
     }
+
+//    @GetMapping("/getUserId")
+//    public ResponseEntity<?> getUserId(@RequestParam("kakaoId") String kakaoId){
+//        logger.info("<<< getUserId >>>");=
+//        return ResponseEntity.ok(accessToken);
+   // }
 
 
 

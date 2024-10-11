@@ -28,6 +28,12 @@ const apiSer = {
         console.log("checkHp");
         return axios.get(`${API_BASE_URL}/checkHp` + '/' + hp);
     },
+    kakaoLogin : (kakaoId) => {
+        console.log("info : " + kakaoId)
+        console.log("kakaoLogin")
+        return axios.put(`${API_BASE_URL}/putKakaoInfo`,kakaoId)
+    },
+
     // 예금 상품 3개 조회
   fetchSavingProducts: async () => {
     try {

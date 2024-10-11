@@ -31,7 +31,7 @@ public class UserDTO {
     private Date joinDate;
     private char state;
     private int idCheck;
-    private String OCRCheck;
+    private int OCRCheck;
     private String token;
     private String refreshToken;
     private String expirationTime;

@@ -68,6 +68,10 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        if (request.getRequestURI().equals("/kakaoLogin")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
 
 

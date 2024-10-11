@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
+public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
 
 //    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, " +
 //            "a.product.productNo, a.product.productName, a.product.productPeriod " +
@@ -58,11 +58,5 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     AccountEntity findByAccountNoAndBankName(@Param("accountNo") int accountNo, @Param("bankName") String bankName);
 
 
-
-
-
-
-
-
-
+    List<AccountEntity> findByUserNo(int userNo);
 }

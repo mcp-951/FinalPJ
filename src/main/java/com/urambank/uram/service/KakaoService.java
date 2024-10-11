@@ -1,7 +1,9 @@
 package com.urambank.uram.service;
 
+import com.urambank.uram.dto.KakaoAccount;
 import com.urambank.uram.dto.KakaoGetUserInfoDTO;
 import com.urambank.uram.dto.KakaoLoginDTO;
+import com.urambank.uram.dto.UserDTO;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +40,10 @@ public class KakaoService {
                 .block();
 
         log.info(" [Kakao Service] Access Token ------> {}", dto.getAccessToken());
-        return dto.getAccessToken();
+        KakaoAccount kakaoDTO = getUserInfo(dto.getAccessToken()).getKakaoAccount();
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserId(kakaoDTO.getEmail());
+        return kakaoDTO.getEmail();
     }
 
 
