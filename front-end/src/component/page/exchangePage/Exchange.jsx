@@ -45,7 +45,7 @@ const Exchange = () => {
         try {
             jwtDecode(token); // 토큰 디코딩 시도
         } catch (error) {
-            alert("유효하지 않은 토큰입니다. 다시 로그인하세요.");
+            alert("로그인이 필요합니다.");
             localStorage.removeItem("token"); // 유효하지 않은 토큰 제거
             navigate('/login'); // 로그인 페이지로 리다이렉트
             return;
@@ -53,7 +53,7 @@ const Exchange = () => {
 
         // 토큰 만료 체크
         if (isTokenExpired(token)) {
-            alert("토큰이 만료되었습니다. 다시 로그인하세요.");
+            alert(" 로그인이 필요합니다.");
             localStorage.removeItem("token"); // 만료된 토큰 제거
             navigate('/login'); // 로그인 페이지로 리다이렉트
             return;
