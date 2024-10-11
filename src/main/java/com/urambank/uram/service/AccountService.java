@@ -83,6 +83,22 @@ public class AccountService {
         }
     }
 
+//    public Map<String, Object> getAccount(int accountNumber) {
+//        AccountEntity accountEntity = accountRepository.findAccount(accountNumber, "NORMAL");
+//        if (accountEntity != null) {
+//            Map<String, Object> accountData = new HashMap<>();
+//            accountData.put("accountNumber", accountEntity.getAccountNumber());
+//            accountData.put("accountBalance", accountEntity.getAccountBalance());
+//            accountData.put("accountLimit", accountEntity.getAccountLimit());
+//            accountData.put("accountMax", accountEntity.getAccountMax());
+//            accountData.put("productName", accountEntity.getProduct().getProductName());
+//            // 추가적인 데이터가 필요하다면 여기에 포함
+//            return accountData;
+//        } else {
+//            return null;
+//        }
+//    }
+
 
 
     // 계좌의 거래 내역 조회 (성공한 거래만)
@@ -182,7 +198,7 @@ public class AccountService {
 
         // 외부 계좌 확인 및 처리
         if (toBankName.equals("우람은행")) {  // 내부 계좌일 경우
-            AccountEntity toAccount = accountRepository.findAccountDetailWithProduct(toAccountNumber, "NORMAL", userNo);
+            AccountEntity toAccount = accountRepository.findAccount(toAccountNumber, "NORMAL");
             if (toAccount == null) {
                 System.out.println("입금 계좌가 존재하지 않음: " + toAccountNumber);
                 return false;
@@ -244,10 +260,10 @@ public class AccountService {
                 .collect(Collectors.toList());
     }
 
-    public boolean validateAccountNumberWithBank(int userNo, int accountNumber, String bankName) {
+    public boolean validateAccountNumberWithBank(int accountNumber, String bankName) {
         // 같은 은행인 경우 Account 테이블에서 유효성 확인
         if ("우람은행".equals(bankName)) { // 우람은행(자사은행)의 계좌일 경우
-            AccountEntity account = accountRepository.findAccountDetailWithProduct(accountNumber, "NORMAL", userNo);
+            AccountEntity account = accountRepository.findAccount(accountNumber, "NORMAL");
             return account != null; // 계좌가 존재하면 true, 아니면 false 반환
         }
         // 외부 은행일 경우 OutAccount 테이블에서 확인
@@ -361,13 +377,6 @@ public class AccountService {
     }
 
 
-
-
-
-
-
-
-
     public boolean registerAutoTransfer(AutoTransferDTO autoTransferDTO) {
         try {
             // DTO의 필드가 잘 매핑되는지 로그 추가
@@ -397,8 +406,6 @@ public class AccountService {
             return false;
         }
     }
-
-
 
 
 

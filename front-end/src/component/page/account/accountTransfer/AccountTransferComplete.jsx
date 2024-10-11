@@ -26,7 +26,7 @@ const AccountTransferComplete = () => {
   };
 
   const handleGoToAccountList = () => {
-    navigate('/account');
+    navigate('/users/:userNo/accounts');
   };
 
   return (

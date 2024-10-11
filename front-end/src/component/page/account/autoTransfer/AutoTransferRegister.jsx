@@ -36,7 +36,7 @@ const AutoTransferRegister = () => {
     }
 
     // '예' 클릭 시 AutoTransferRegisterStep2로 이동
-    navigate('/auto-transfer-step2');
+    navigate('/auto-transfer/step2');
   };
 
   const handleNoClick = () => {

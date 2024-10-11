@@ -5,6 +5,10 @@ const AutoTransferList = () => {
   const [autoTransfers, setAutoTransfers] = useState([]); // 자동이체 목록 상태
   const [error, setError] = useState(null); // 에러 상태
 
+  // 로컬 스토리지에서 토큰과 userNo 가져오기
+  const token = localStorage.getItem('token');
+  const userNo = localStorage.getItem('userNo');
+
   useEffect(() => {
     fetchAutoTransfers();
   }, []);
@@ -12,7 +16,13 @@ const AutoTransferList = () => {
   // 자동이체 목록 가져오기
   const fetchAutoTransfers = async () => {
     try {
-      const response = await fetch(`http://localhost:8081/uram/auto-transfers`); // 모든 자동이체 조회
+      const response = await fetch(`http://localhost:8081/uram/auto-transfer/list?userNo=${userNo}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
       if (response.ok) {
         const data = await response.json();
         setAutoTransfers(data);
