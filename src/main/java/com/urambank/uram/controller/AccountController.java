@@ -292,11 +292,11 @@ public class AccountController {
     // 계좌와 은행명으로 계좌 유효성 확인
     @GetMapping("/account/validate")
     public ResponseEntity<Boolean> validateAccountNumber(
-            @RequestParam("userNo") int userNo,
+//            @RequestParam("userNo") int userNo,
             @RequestParam("accountNumber") int accountNumber,
             @RequestParam("bankName") String bankName) {
         try {
-            boolean isValid = accountService.validateAccountNumberWithBank(userNo, accountNumber, bankName);
+            boolean isValid = accountService.validateAccountNumberWithBank(accountNumber, bankName);
             return ResponseEntity.ok(isValid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -355,7 +355,7 @@ public class AccountController {
 
 
     // 모든 자동이체 정보 조회
-    @GetMapping("/auto-transfers")
+    @GetMapping("/auto-transfer/list")
     public ResponseEntity<List<AutoTransferDTO>> getAllAutoTransfers() {
         try {
             List<AutoTransferDTO> autoTransfers = accountService.getAllAutoTransfers();

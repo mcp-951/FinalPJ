@@ -168,9 +168,9 @@ const RouteComponent = () => {
                         {/* 계좌 이체 페이지 */}<Route path="/account/transfer" element={<AccountTransfer />} />
                         {/* 이체 확인 페이지 */}<Route path="/account/transfer-confirmation" element={<AccountTransferConfirmation />} />
                         {/* 이체 완료 페이지 */}<Route path="/account/transfer-complete" element={<AccountTransferComplete />} />
-                        {/* 자동이체 등록 페이지 */}<Route path="/auto-transfer-register" element={<AutoTransferRegister />} /> {/* 자동이체 등록 페이지 경로 추가 */}
-                        {/* 자동이체 등록 2단계 페이지 */}<Route path="/auto-transfer-step2" element={<AutoTransferRegister2 />} /> {/* 자동이체 등록 2단계 페이지 추가 */}
-                        <Route path="/auto-transfers" element={<AutoTransferList />} />
+                        {/* 자동이체 등록 페이지 */}<Route path="/auto-transfer/register" element={<AutoTransferRegister />} /> {/* 자동이체 등록 페이지 경로 추가 */}
+                        {/* 자동이체 등록 2단계 페이지 */}<Route path="/auto-transfer/step2" element={<AutoTransferRegister2 />} /> {/* 자동이체 등록 2단계 페이지 추가 */}
+                        <Route path="/auto-transfer/list" element={<AutoTransferList />} />
 
                         {/*여기는 에이스 클럽 원주민만 가능*/}
                         <Route path="/exchange-rate" exact={true} element={<ExchangeRate />} />

@@ -16,6 +16,7 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 //            "FROM AccountEntity a WHERE a.accountState = 'NORMAL' AND a.user.userId = :userId")
 //    List<Object[]> findAllAccountWithProductNameAndActiveByUserId(@Param("userId") Long userId);
 
+    List<AccountEntity> findByUserNo(int userNo);
 
     // 'NORMAL' 상태의 모든 계좌와 관련된 정보를 조회
     @Query("SELECT a FROM AccountEntity a JOIN FETCH a.product p WHERE a.accountState = 'NORMAL'")
@@ -31,6 +32,9 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     @Query("SELECT a FROM AccountEntity a JOIN FETCH a.product p WHERE a.accountNumber = :accountNumber AND a.accountState = :accountState AND a.userNo = :userNo")
     AccountEntity findAccountDetailWithProduct(@Param("accountNumber") int accountNumber, @Param("accountState") String accountState, @Param("userNo") int userNo);
+
+    @Query("SELECT a FROM AccountEntity a JOIN FETCH a.product p WHERE a.accountNumber = :accountNumber AND a.accountState = :accountState")
+    AccountEntity findAccount(@Param("accountNumber") int accountNumber, @Param("accountState") String accountState);
 
 
     // 'NORMAL' 상태의 계좌만 조회하여 필요한 정보 반환
