@@ -38,12 +38,20 @@ const Exchange = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`);
+                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                    }
+                });
                 const userNo = userNoResponse.data;
                 setUserNo(userNo);
                 console.log("UserNo:", userNo); // 사용자 번호 확인
 
-                const accountsResponse = await axios.get(`http://localhost:8081/exchange/account/${userNo}`);
+                const accountsResponse = await axios.get(`http://localhost:8081/exchange/account/${userNo}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                    }
+                });
                 const accounts = accountsResponse.data;
                 console.log("Accounts:", accounts); // 응답 데이터 확인
                 setAccountNumbers(accounts);
@@ -52,7 +60,11 @@ const Exchange = () => {
             }
 
             try {
-                const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`);
+                const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                    }
+                });
                 setBranches(branchesResponse.data);
             } catch (error) {
                 console.error("지점 정보를 가져오는 중 오류 발생:", error);

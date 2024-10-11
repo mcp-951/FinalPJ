@@ -170,7 +170,6 @@ public class AdminService {
         userEntity.setEmail(userDTO.getEmail());
         userEntity.setName(userDTO.getName());
         userEntity.setResidentNumber(userDTO.getResidentNumber());
-        userEntity.setOCRCheck(userDTO.getOCRCheck());
         userEntity.setBirth(userDTO.getBirth());
         userEntity.setHp(userDTO.getHp());
         userEntity.setAddress(userDTO.getAddress());

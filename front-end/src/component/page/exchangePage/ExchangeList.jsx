@@ -26,12 +26,20 @@ const ExchangeList = () => {
                 console.log("UserId:", userId);
 
                 // 1. userId로 userNo 가져오기
-                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`);
+                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                    }
+                });
                 const userNo = userNoResponse.data;
                 console.log("UserNo: ", userNo);
 
                 // 2. userNo로 해당 사용자의 환전 내역 가져오기 (userNo 필터링)
-                const exchangeResponse = await axios.get(`http://localhost:8081/exchange/exchangeList/${userNo}`);
+                const exchangeResponse = await axios.get(`http://localhost:8081/exchange/exchangeList/${userNo}`,{
+                    headers: {
+                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                    }
+                });
                 console.log("Filtered Exchange Data for UserNo:", exchangeResponse.data);
 
                 // 환전 내역을 state에 저장

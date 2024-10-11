@@ -4,10 +4,7 @@ import com.urambank.uram.dto.LoanJoinDTO;
 import com.urambank.uram.dto.ProductDTO;
 import com.urambank.uram.dto.UserAccountDTO;
 import com.urambank.uram.entities.*;
-import com.urambank.uram.repository.AutoTransferRepository;
-import com.urambank.uram.repository.LoanJoinRepository;
-import com.urambank.uram.repository.ProductRepository;
-import com.urambank.uram.repository.UserAccountRepository;
+import com.urambank.uram.repository.*;
 import com.urambank.uram.util.JWTUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +23,10 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final UserAccountRepository accountRepository;
     private final LoanJoinRepository loanJoinRepository;
     private final JWTUtil jwtUtil;
     private final AutoTransferRepository autoTransferRepository;
+    private final AccountRepository accountRepository;
 
     // 대출 상품 페이징 처리하여 가져오기
     public Page<ProductDTO> getLoanProductsPaged(int page, int size) {
@@ -42,14 +39,13 @@ public class ProductService {
     public List<UserAccountDTO> getUserAccounts(String token) {
         // JWT에서 userNo를 추출
         Integer userNo = jwtUtil.getUserNo(token);  // userNo를 추출하는 메서드를 추가
-        List<UserAccountEntity> accounts = accountRepository.findByUser_UserNo(userNo);
+        int getUserNo = userNo.intValue();
+        List<AccountEntity> accounts = accountRepository.findByUserNo(getUserNo);
         return accounts.stream()
                 .map(account -> {
                     UserAccountDTO dto = new UserAccountDTO();
-                    dto.setAccountNumber(account.getAccountNumber());
                     dto.setAccountBalance(account.getAccountBalance());
                     dto.setAccountState(account.getAccountState());
-                    dto.setAccountPW(account.getAccountPW());
                     dto.setBankName(account.getBankName());
                     return dto;
                 })
@@ -120,48 +116,48 @@ public class ProductService {
 
     // 자동이체 실행 로직v
 
-    public void executeLoanAutoTransfer(LoanJoinEntity loanJoinEntity) {
-        AccountEntity fromAccount = accountRepository.findByAccountNoAndState(loanJoinEntity.getTransferAccount(), "NORMAL");
-
-        if (fromAccount == null || fromAccount.getAccountBalance() < calculateAutoTransferAmount(loanJoinEntity)) {
-            System.out.println("자동이체 실패: 잔액 부족 또는 출금 계좌가 유효하지 않음");
-            return;
-        }
-
-        // 상환 금액 계산 및 잔액 차감
-        int transferAmount = calculateAutoTransferAmount(loanJoinEntity);
-        fromAccount.setAccountBalance(fromAccount.getAccountBalance() - transferAmount);
-        accountRepository.save(fromAccount);
-
-        // 입금 계좌로 금액 추가
-        AccountEntity toAccount = accountRepository.findByAccountNo(loanJoinEntity.getLoanAccount());
-        if (toAccount != null) {
-            toAccount.setAccountBalance(toAccount.getAccountBalance() + transferAmount);
-            accountRepository.save(toAccount);
-        }
-
-        // 남은 대출 금액 감소
-        loanJoinEntity.setRemainingLoanAmount(loanJoinEntity.getRemainingLoanAmount() - transferAmount);
-        loanJoinRepository.save(loanJoinEntity);
-
-        System.out.println("자동이체 성공: " + loanJoinEntity.getTransferAccount() + " -> " + loanJoinEntity.getLoanAccount());
-    }
+//    public void executeLoanAutoTransfer(LoanJoinEntity loanJoinEntity) {
+//        AccountEntity fromAccount = accountRepository.findByAccountNoAndState(loanJoinEntity.getTransferAccount(), "NORMAL");
+//
+//        if (fromAccount == null || fromAccount.getAccountBalance() < calculateAutoTransferAmount(loanJoinEntity)) {
+//            System.out.println("자동이체 실패: 잔액 부족 또는 출금 계좌가 유효하지 않음");
+//            return;
+//        }
+//
+//        // 상환 금액 계산 및 잔액 차감
+//        int transferAmount = calculateAutoTransferAmount(loanJoinEntity);
+//        fromAccount.setAccountBalance(fromAccount.getAccountBalance() - transferAmount);
+//        accountRepository.save(fromAccount);
+//
+//        // 입금 계좌로 금액 추가
+//        AccountEntity toAccount = accountRepository.findByAccountNo(loanJoinEntity.getLoanAccount());
+//        if (toAccount != null) {
+//            toAccount.setAccountBalance(toAccount.getAccountBalance() + transferAmount);
+//            accountRepository.save(toAccount);
+//        }
+//
+//        // 남은 대출 금액 감소
+//        loanJoinEntity.setRemainingLoanAmount(loanJoinEntity.getRemainingLoanAmount() - transferAmount);
+//        loanJoinRepository.save(loanJoinEntity);
+//
+//        System.out.println("자동이체 성공: " + loanJoinEntity.getTransferAccount() + " -> " + loanJoinEntity.getLoanAccount());
+//    }
 
     // 스케줄러: 매달 이체일에 맞춰 자동으로 실행되도록 설정 (매일 0시에 확인)
-    @Scheduled(cron = "0 0 0 * * ?")
-    @Transactional
-    public void processLoanAutoTransfers() {
-        List<LoanJoinEntity> loanJoinEntities = loanJoinRepository.findAllActiveLoanJoins(); // 활성화된 대출 조회
-        LocalDate today = LocalDate.now();
-
-        for (LoanJoinEntity loanJoin : loanJoinEntities) {
-            // 오늘이 상환일(transferDay)인지 확인
-            if (loanJoin.getTransferDay() == today.getDayOfMonth()) {
-                System.out.println("대출 자동이체 실행: " + loanJoin.getLoanAccount() + " -> 상환 계좌");
-
-                // 상환 금액 계산 및 자동이체 실행
-                executeLoanAutoTransfer(loanJoin);
-            }
-        }
-    }
+//    @Scheduled(cron = "0 0 0 * * ?")
+//    @Transactional
+//    public void processLoanAutoTransfers() {
+//        List<LoanJoinEntity> loanJoinEntities = loanJoinRepository.findAllActiveLoanJoins(); // 활성화된 대출 조회
+//        LocalDate today = LocalDate.now();
+//
+//        for (LoanJoinEntity loanJoin : loanJoinEntities) {
+//            // 오늘이 상환일(transferDay)인지 확인
+//            if (loanJoin.getTransferDay() == today.getDayOfMonth()) {
+//                System.out.println("대출 자동이체 실행: " + loanJoin.getLoanAccount() + " -> 상환 계좌");
+//
+//                // 상환 금액 계산 및 자동이체 실행
+//                executeLoanAutoTransfer(loanJoin);
+//            }
+//        }
+//    }
 }

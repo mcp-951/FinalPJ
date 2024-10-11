@@ -61,6 +61,4 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     @Query("SELECT a FROM AccountEntity a WHERE a.accountNo = :accountNo AND a.bankName = :bankName AND a.accountState = 'NORMAL'")
     AccountEntity findByAccountNoAndBankName(@Param("accountNo") int accountNo, @Param("bankName") String bankName);
 
-
-    List<AccountEntity> findByUserNo(int userNo);
 }
