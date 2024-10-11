@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../../resource/css/exchange/Exchange.css';
 import Footer from '../../util/Footer';
-import { jwtDecode } from 'jwt-decode'; // default import로 변경
+import {jwtDecode} from 'jwt-decode'; // default import로 변경
 
 const Exchange = () => {
     const token = localStorage.getItem("token");
@@ -22,34 +22,70 @@ const Exchange = () => {
     const passwordInputRef = useRef(null);
     const navigate = useNavigate();
 
+    // 토큰 만료 여부 체크 함수
+    const isTokenExpired = (token) => {
+        try {
+            const decodedToken = jwtDecode(token);
+            const currentTime = Math.floor(Date.now() / 1000); // 현재 시간을 초 단위로 변환
+            return decodedToken.exp < currentTime; // 토큰의 exp가 현재 시간보다 작으면 만료된 것
+        } catch (error) {
+            return true; // 토큰 디코딩 중 에러가 발생하면 만료된 것으로 간주
+        }
+    };
+
+    // 페이지 렌더링 전에 토큰 체크
+    useEffect(() => {
+        // 토큰이 없거나 잘못된 경우 알러트 창을 띄우고 로그인 페이지로 리다이렉트
+        if (!token || token === null) {
+            alert("로그인이 필요합니다.");
+            navigate('/login'); // 로그인 페이지로 리다이렉트
+            return;
+        }
+
+        try {
+            jwtDecode(token); // 토큰 디코딩 시도
+        } catch (error) {
+            alert("유효하지 않은 토큰입니다. 다시 로그인하세요.");
+            localStorage.removeItem("token"); // 유효하지 않은 토큰 제거
+            navigate('/login'); // 로그인 페이지로 리다이렉트
+            return;
+        }
+
+        // 토큰 만료 체크
+        if (isTokenExpired(token)) {
+            alert("토큰이 만료되었습니다. 다시 로그인하세요.");
+            localStorage.removeItem("token"); // 만료된 토큰 제거
+            navigate('/login'); // 로그인 페이지로 리다이렉트
+            return;
+        }
+    }, [token, navigate]);
+
     const handleSelectedAccountNumber = (event) => {
         const selectedAccountNumber = event.target.value;
         setSelectedAccountNumber(selectedAccountNumber);
         console.log(selectedAccountNumber);
-
-    }
-    
+    };
 
     // JWT 토큰 디코딩해서 username 가져오기
-    const decoded = jwtDecode(token);
-    const userId = decoded.username;
+    const decoded = token ? jwtDecode(token) : null;
+    const userId = decoded ? decoded.username : null;
 
     // 사용자 정보 및 계좌 정보 가져오기
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`,{
+                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                        Authorization: `Bearer ${token}`,
                     }
                 });
                 const userNo = userNoResponse.data;
                 setUserNo(userNo);
                 console.log("UserNo:", userNo); // 사용자 번호 확인
 
-                const accountsResponse = await axios.get(`http://localhost:8081/exchange/account/${userNo}`,{
+                const accountsResponse = await axios.get(`http://localhost:8081/exchange/account/${userNo}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                        Authorization: `Bearer ${token}`,
                     }
                 });
                 const accounts = accountsResponse.data;
@@ -60,7 +96,7 @@ const Exchange = () => {
             }
 
             try {
-                const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`,{
+                const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`, {
                     headers: {
                         Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
                     }
@@ -92,7 +128,6 @@ const Exchange = () => {
 
     // 비밀번호 확인 처리
     const PwdSubmit = async () => {
-
         if (!selectedAccountNumber) {
             alert("계좌를 선택하세요.");
             return;
@@ -103,13 +138,11 @@ const Exchange = () => {
             passwordInputRef.current.focus();
             return;
         }
-        
+
         try {
-            
             // 선택한 계좌 번호와 입력한 비밀번호를 서버로 전송하여 비교
-            
             const response = await axios.post(
-                `http://localhost:8081/exchange/verify-password/${selectedAccountNumber}/${password}`,  // URL과 요청 데이터
+                `http://localhost:8081/exchange/verify-password/${selectedAccountNumber}/${password}`,
                 null,  // POST 요청에 보낼 데이터가 없으면 null을 전달
                 {
                     headers: {
@@ -117,7 +150,7 @@ const Exchange = () => {
                     }
                 }
             );
-            console.log("가져온 값 : ",response)
+            console.log("가져온 값 : ", response);
             if (response.data === 1) {
                 alert("비밀번호가 일치합니다");
                 setIsPasswordConfirmed(true);
@@ -162,21 +195,21 @@ const Exchange = () => {
                     Authorization: `Bearer ${token}`
                 }
             })
-            .then(response => {
-                if (response.status === 200) {
-                    navigate('/exchange-result', {
-                        state: {
-                            message: `${date}에 ${branch}에 방문 해주세요.`
-                        }
-                    });
-                } else {
+                .then(response => {
+                    if (response.status === 200) {
+                        navigate('/exchange-result', {
+                            state: {
+                                message: `${date}에 ${branch}에 방문 해주세요.`
+                            }
+                        });
+                    } else {
+                        alert('환전 신청에 실패했습니다.');
+                    }
+                })
+                .catch(error => {
+                    console.error('환전 신청 중 오류 발생:', error);
                     alert('환전 신청에 실패했습니다.');
-                }
-            })
-            .catch(error => {
-                console.error('환전 신청 중 오류 발생:', error);
-                alert('환전 신청에 실패했습니다.');
-            });
+                });
         }
     };
 
