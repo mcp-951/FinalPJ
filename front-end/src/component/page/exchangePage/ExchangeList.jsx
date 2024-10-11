@@ -14,9 +14,55 @@ const ExchangeList = () => {
     const itemsPerPage = 10; // 한 페이지에 표시할 데이터 수
     const navigate = useNavigate();
 
+    // 토큰 만료 여부 체크 함수
+    const isTokenExpired = (token) => {
+        try {
+            const decodedToken = jwtDecode(token);
+            const currentTime = Math.floor(Date.now() / 1000); // 현재 시간을 초 단위로 변환
+            return decodedToken.exp < currentTime; // 토큰의 exp가 현재 시간보다 작으면 만료된 것
+        } catch (error) {
+            return true; // 토큰 디코딩 중 에러가 발생하면 만료된 것으로 간주
+        }
+    };
+
     // JWT 토큰 디코딩해서 userId 가져오기
-    const decoded = jwtDecode(token);
-    const userId = decoded.username;
+    let userId = null;
+    if (token) {
+        try {
+            const decoded = jwtDecode(token);
+            userId = decoded.username;
+        } catch (error) {
+            // 유효하지 않은 토큰인 경우 처리
+        }
+    }
+
+    // 페이지 렌더링 전에 토큰 체크
+    useEffect(() => {
+        // 토큰이 없거나 null인 경우
+        if (!token || token === null) {
+            alert("로그인이 필요합니다.");
+            navigate('/login'); // 로그인 페이지로 리다이렉트
+            return;
+        }
+
+        // 유효하지 않은 토큰인 경우
+        try {
+            jwtDecode(token); // 토큰 디코딩 시도
+        } catch (error) {
+            alert("유효하지 않은 토큰입니다. 다시 로그인하세요.");
+            localStorage.removeItem("token"); // 유효하지 않은 토큰 제거
+            navigate('/login'); // 로그인 페이지로 리다이렉트
+            return;
+        }
+
+        // 토큰 만료 체크
+        if (isTokenExpired(token)) {
+            alert("토큰이 만료되었습니다. 다시 로그인하세요.");
+            localStorage.removeItem("token"); // 만료된 토큰 제거
+            navigate('/login'); // 로그인 페이지로 리다이렉트
+            return;
+        }
+    }, [token, navigate]);
 
     // 사용자 정보 및 환전 내역 가져오기
     useEffect(() => {
@@ -42,7 +88,7 @@ const ExchangeList = () => {
             }
         };
 
-        if (token) {
+        if (token && userId) {
             fetchUserDataAndExchangeList(); // 비동기 데이터 가져오기
         }
     }, [token, userId]);
