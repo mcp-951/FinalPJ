@@ -40,8 +40,13 @@ const ConfirmPage = () => {
 
   const handleCompleteClick = () => {
     const token = localStorage.getItem('token');
+    const userNo = localStorage.getItem('userNo'); // localStorage에서 userNo 값 가져오기
+    
+    // 추가된 로그를 통해 token과 userNo를 확인
+    console.log("Token: ", token);  // 토큰 값 확인
+    console.log("UserNo: ", userNo);  // userNo 값 확인
 
-    if (token) {
+    if (token && userNo) {
       const loanData = {
         productName: data.productName,
         repaymentMethod: data.repaymentMethod,
@@ -51,6 +56,7 @@ const ConfirmPage = () => {
         transferAccount: data.transferAccount,
         transferDay: data.transferDay,
         interestRate: data.interestRate,
+        userNo: userNo, // userNo 추가
       };
 
       ApiService.saveLoanJoin(loanData, token)
@@ -59,7 +65,8 @@ const ConfirmPage = () => {
           navigate('/');
         })
         .catch((error) => {
-          console.error('LoanJoin 저장 실패:', error);
+          console.error('LoanJoin 저장 실패:', error.response?.data || error.message);
+          alert('가입에 실패하였습니다. 다시 시도해주세요.');
         });
     } else {
       alert('가입에 실패하였습니다. 로그인이 필요합니다.');

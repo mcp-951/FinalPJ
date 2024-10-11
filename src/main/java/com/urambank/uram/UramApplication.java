@@ -13,5 +13,4 @@ public class UramApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UramApplication.class, args);
 	}
-
 }
