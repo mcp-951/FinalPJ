@@ -28,13 +28,12 @@ const apiSer = {
         console.log("checkHp");
         return axios.get(`${API_BASE_URL}/checkHp` + '/' + hp);
     },
+
+
     // 예금 상품 3개 조회
   fetchSavingProducts: async () => {
     try {
       return await axios.get(`${BASE_URL}/savings`, {
-        headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-        }
       });
     } catch (error) {
       console.error('예금 상품 조회 오류:', error);
@@ -46,9 +45,6 @@ const apiSer = {
   fetchDepositProducts: async () => {
     try {
       return await axios.get(`${BASE_URL}/deposits`, {
-        headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-        }
       });
     } catch (error) {
       console.error('적금 상품 조회 오류:', error);
@@ -60,9 +56,6 @@ const apiSer = {
   fetchLoanProducts: async () => {
     try {
       return await axios.get(`${BASE_URL}/loans`, {
-        headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-        }
       });
     } catch (error) {
       console.error('대출 상품 조회 오류:', error);
@@ -98,10 +91,10 @@ const apiSer = {
   },
 
   // LoanJoin 데이터 저장
-  saveLoanJoin: async (loanData) => {
+  saveLoanJoin: async (loanData, token) => {
     try {
       console.log("Saving Loan Data:", loanData);  // 콘솔 로그 추가
-      return await axios.post(`${BASE_URL}/loan/join`, loanData, {
+      return await axios.post(`${API_BASE_URL}/products/loan/join`, loanData, {
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }

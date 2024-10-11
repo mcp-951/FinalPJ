@@ -25,8 +25,8 @@ const AutoTransferRegisterStep2 = () => {
   // 계좌 번호 자동 생성 (랜덤 9자리 생성 후 형식에 맞추기)
   useEffect(() => {
     const generateAccountNumber = () => {
-      const randomNumber = Math.floor(100000000 + Math.random() * 900000000); // 9자리 랜덤 숫자 생성
-      const formattedNumber = `${randomNumber.toString().slice(0, 3)}-${randomNumber.toString().slice(3, 6)}-${randomNumber.toString().slice(6, 9)}`;
+      const randomNumber = Math.floor(10000000 + Math.random() * 90000000); // 8자리 랜덤 숫자 생성
+      const formattedNumber = `9${randomNumber}`; // 앞자리를 9로 고정
       setInputAccountNumber(formattedNumber);
     };
 
@@ -187,21 +187,20 @@ const AutoTransferRegisterStep2 = () => {
             </tr>
 
             {/* 자동 이체일 */}
-              <tr>
-                <th>자동 이체일</th>
-                <td>
-                  <select
-                    value={transferDay}
-                    onChange={(e) => setTransferDay(e.target.value)}
-                    className="transfer-day-select"
-                  >
-                    <option value="1">1일</option>
-                    <option value="10">10일</option>
-                    <option value="20">20일</option>
-                  </select>
-                </td>
-              </tr>
-
+            <tr>
+              <th>자동 이체일</th>
+              <td>
+                <select
+                  value={transferDay}
+                  onChange={(e) => setTransferDay(e.target.value)}
+                  className="transfer-day-select"
+                >
+                  <option value="1">1일</option>
+                  <option value="10">10일</option>
+                  <option value="20">20일</option>
+                </select>
+              </td>
+            </tr>
           </tbody>
         </table>
         <button type="submit" className="auto-transfer-step2-submit-button">다음</button>

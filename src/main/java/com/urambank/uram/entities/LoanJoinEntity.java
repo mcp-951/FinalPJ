@@ -11,31 +11,23 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "loanJoin_TB")  // 테이블 이름이 맞는지 확인하세요
+@Table(name = "loanJoin_TB")
 public class LoanJoinEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long loanId;
+    private Long loanJoinNo;  // loanId 필드를 loanJoinNo로 변경
 
     private String productName;
-
     private String repaymentMethod;
-
     private Integer loanAmount;
-
     private Integer loanPeriod;
-
     private Double interestRate;
-
-    private String loanAccount;
-
-    private String transferAccount;
-
+    private Integer loanAccount;
+    private Integer transferAccount;
     private LocalDate joinDay;
-
     private LocalDate finishDay;
-
-    private String userId;
-
+    private Integer userNo;  // userNo는 외래 키로 참조
+    private Integer transferDay;
+    private Integer remainingLoanAmount;
 }

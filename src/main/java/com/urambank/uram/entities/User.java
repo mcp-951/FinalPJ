@@ -74,4 +74,7 @@ public class User {
 
     public User(String subject, String s, Collection<? extends GrantedAuthority> authorities) {
     }
+
+    public void setOCRCheck(String ocrCheck) {
+    }
 }

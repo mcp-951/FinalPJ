@@ -48,7 +48,6 @@ import DepositList from 'component/page/product/Deposit/DepositList';
 import Calculatior from 'component/page/product/Loan/Calculatior';
 import LoanList from 'component/page/product/Loan/LoanList';
 import LoanMain from 'component/page/product/Loan/LoanMain';
-import ProductMain from 'component/page/product/ProductMain';
 import Repayment from 'component/page/product/Loan/Repayment';
 import Accession_chap1 from 'component/page/product/Accession/Accession_chap1';
 import Accession_chap2 from 'component/page/product/Accession/Accession_chap2';
@@ -147,7 +146,6 @@ const RouteComponent = () => {
                         <Route path="/Calculatior" exact={true} element={<Calculatior />} />
                         <Route path="/LoanList" exact={true} element={<LoanList />} />
                         <Route path="/LoanMain" exact={true} element={<LoanMain />} />
-                        <Route path="/ProductMain" exact={true} element={<ProductMain />} />
                         <Route path="/Repayment" exact={true} element={<Repayment />} />
                         <Route path="/Accession_chap1" exact={true} element={<Accession_chap1 />} />
                         <Route path="/Accession_chap2" exact={true} element={<Accession_chap2 />} />

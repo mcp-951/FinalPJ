@@ -15,11 +15,14 @@ public class LoanJoinDTO {
     private Integer loanAmount;
     private Double interestRate;
     private Integer loanPeriod;
-    private String loanAccount;
-    private String transferAccount;
+    private Integer loanAccount;
+    private Integer transferAccount;
     private LocalDate joinDay;
     private LocalDate finishDay;
-    private String userId;
+    private Integer userNo;
+    private Integer transferDay; // 추가 필요
+    private Integer remainingLoanAmount; // 추가 필요
+    private Integer repaymentAccount;
 
 
 }
