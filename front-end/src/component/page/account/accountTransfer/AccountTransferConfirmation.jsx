@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../../../resource/css/account/accountTransfer/AccountTransferConfirmation.css';
@@ -6,21 +6,50 @@ import '../../../../resource/css/account/accountTransfer/AccountTransferConfirma
 const AccountTransferConfirmation = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // 로컬 스토리지에서 JWT 토큰과 userNo 가져오기
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");
 
   // location.state로부터 전달된 상태값들
   const { 
-    selectedAccount,  // 선택된 출금 계좌 번호
-    selectedBank,     // 선택된 입금 기관
-    targetAccountNumber, // 입금 계좌 번호
-    transferAmount,    // 이체할 금액
-    availableBalance,  // 출금 가능 잔액
-    recipientName,     // 수신자 이름
-    password           // 비밀번호
+    selectedAccount,
+    selectedBank,
+    targetAccountNumber,
+    transferAmount,
+    availableBalance,
+    password,
   } = location.state || {};
+
+  const [recipientName, setRecipientName] = useState(null); // 수신자 이름 상태
+
+  useEffect(() => {
+    // 수신자 이름을 가져오는 API 호출
+    const fetchRecipientName = async () => {
+      try {
+        const response = await axios.get('http://localhost:8081/uram/recipient-name', {
+          params: {
+            accountNumber: targetAccountNumber, // String 타입
+            bankName: selectedBank,
+          },
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+
+        if (response.status === 200) {
+          setRecipientName(response.data.recipientName);
+        } else {
+          setRecipientName('정보 없음');
+        }
+      } catch (error) {
+        console.error('수신자 이름 불러오기 실패:', error);
+        setRecipientName('정보 없음');
+      }
+    };
+
+    fetchRecipientName();
+  }, [targetAccountNumber, selectedBank, token]);
 
   const handleConfirm = async () => {
     if (availableBalance == null) {
@@ -33,12 +62,12 @@ const AccountTransferConfirmation = () => {
   
     // 서버로 전송할 데이터 확인 (디버깅용 로그)
     console.log('전송할 데이터:', {
-      fromAccountNumber: parseInt(selectedAccount, 10),
+      fromAccountNumber: selectedAccount, // String 타입
       toBankName: selectedBank,
-      toAccountNumber: parseInt(targetAccountNumber, 10),
-      transferAmount: parseInt(transferAmount, 10),
-      password: parseInt(password, 10),
-      userNo: parseInt(userNo, 10),
+      toAccountNumber: targetAccountNumber, // String 타입
+      transferAmount: transferAmount, // String 그대로 사용
+      password: password, // String 타입
+      userNo: userNo, // String 타입
     });
   
     // 이체 처리 API 호출
@@ -46,12 +75,12 @@ const AccountTransferConfirmation = () => {
       const response = await axios.post(
         'http://localhost:8081/uram/transfer',
         {
-          fromAccountNumber: parseInt(selectedAccount, 10),
+          fromAccountNumber: selectedAccount, // String 타입 유지
           toBankName: selectedBank,
-          toAccountNumber: parseInt(targetAccountNumber, 10),
-          transferAmount: parseInt(transferAmount, 10),
-          password: parseInt(password, 10), // 비밀번호 전송
-          userNo: parseInt(userNo, 10), // userNo 전송
+          toAccountNumber: targetAccountNumber, // String 타입 유지
+          transferAmount: transferAmount, // String 타입
+          password: password, // String 타입으로 전송
+          userNo: userNo, // String 타입으로 전송
         },
         {
           headers: {
@@ -85,7 +114,6 @@ const AccountTransferConfirmation = () => {
     }
   };
   
-
 
   // 취소 버튼 클릭 시 메인 페이지로 이동
   const handleCancel = () => {

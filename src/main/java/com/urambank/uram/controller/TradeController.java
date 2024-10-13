@@ -68,17 +68,17 @@ public class TradeController {
         return ResponseEntity.ok(pickUpPlaces);
     }
     //4. 비밀번호 확인
-    @PostMapping("/verify-password/{selectedAccountNumber}/{password}")
-    public int passwordCheck(@PathVariable("selectedAccountNumber") int selectedAccountNumber, @PathVariable("password") int password){
-        AccountEntity account = accountRepository.findByAccountNumber(selectedAccountNumber);
-        int success = 0;
-
-        if(account.getAccountPW() == password){
-            success = 1;
-        }
-        System.out.println(success + "aksjdlkadjaksd");
-        return success;
-    }
+//    @PostMapping("/verify-password/{selectedAccountNumber}/{password}")
+//    public int passwordCheck(@PathVariable("selectedAccountNumber") int selectedAccountNumber, @PathVariable("password") int password){
+//        AccountEntity account = accountRepository.findByAccountNumber(selectedAccountNumber);
+//        int success = 0;
+//
+//        if(account.getAccountPW() == password){
+//            success = 1;
+//        }
+//        System.out.println(success + "aksjdlkadjaksd");
+//        return success;
+//    }
 
 
 

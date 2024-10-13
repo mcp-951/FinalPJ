@@ -57,6 +57,7 @@ import Accession_chap3 from 'component/page/product/Accession/Accession_chap3';
 // 계좌 관련 (채림)
 import Account from '../page/account/accountView/Account';
 import AccountDetail from '../page/account/accountView/AccountDetail'; 
+import TransactionCalendar from '../page/account/accountView/TransactionCalendar';
 import PasswordCheck from '../page/account/accountManagement/PasswordCheck'; 
 import PasswordChange from '../page/account/accountManagement/PasswordChange'; 
 import AccountClose from '../page/account/accountManagement/AccountClose'; 
@@ -68,6 +69,7 @@ import AccountTransferComplete from '../page/account/accountTransfer/AccountTran
 import AutoTransferRegister from '../page/account/autoTransfer/AutoTransferRegister'; // 자동이체 등록 페이지
 import AutoTransferRegister2 from '../page/account/autoTransfer/AutoTransferRegister2'; // 자동이체 등록 2단계 페이지
 import AutoTransferList from '../page/account/autoTransfer/AutoTransferList';
+import AutoTransferCancelPasswordCheck from '../page/account/autoTransfer/AutoTransferCancelPasswordCheck';
 
 // 에이스 동명
 import ExchangeRate from '../page/exchangePage/ExchangeRate';
@@ -156,6 +158,8 @@ const RouteComponent = () => {
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
+                        <Route path="/account/transaction-history" element={<TransactionCalendar />} />
+
                         
                         {/* 비밀번호 확인 페이지 */}
                         <Route path="/account/:accountNumber/password-check" element={<PasswordCheck title="비밀번호 확인" instructions="비밀번호를 확인해주세요." />} />
@@ -171,6 +175,9 @@ const RouteComponent = () => {
                         {/* 자동이체 등록 페이지 */}<Route path="/auto-transfer/register" element={<AutoTransferRegister />} /> {/* 자동이체 등록 페이지 경로 추가 */}
                         {/* 자동이체 등록 2단계 페이지 */}<Route path="/auto-transfer/step2" element={<AutoTransferRegister2 />} /> {/* 자동이체 등록 2단계 페이지 추가 */}
                         <Route path="/auto-transfer/list" element={<AutoTransferList />} />
+                        <Route path="/new-transfer-modify/:autoTransNo" element={<AutoTransferRegister2 />} />
+                        {/* 자동이체 해지 비밀번호 확인 페이지 */}
+                        <Route path="/auto-transfer-password-check" element={<AutoTransferCancelPasswordCheck />} />
 
                         {/*여기는 에이스 클럽 원주민만 가능*/}
                         <Route path="/exchange-rate" exact={true} element={<ExchangeRate />} />

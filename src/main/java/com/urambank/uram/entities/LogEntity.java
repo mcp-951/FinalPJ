@@ -20,10 +20,10 @@ public class LogEntity {
     private int logNo;
 
     @Column
-    private int sendAccountNo;
+    private String sendAccountNumber;
 
     @Column
-    private int receiveAccountNo;
+    private String receiveAccountNumber;
 
     @Column
     private int sendPrice;
