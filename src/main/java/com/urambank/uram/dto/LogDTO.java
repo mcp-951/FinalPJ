@@ -12,8 +12,8 @@ import java.sql.Date;
 @ToString
 public class LogDTO {
     private int logNo;
-    private int sendAccountNo;
-    private int receiveAccountNo;
+    private String sendAccountNo;
+    private String receiveAccountNo;
     private int sendPrice;
     private Date sendDate;
     private String logState;

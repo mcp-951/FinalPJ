@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class AutoTransferDTO {
     private int autoTransNo;
     private int accountNo;
-    private int receiveAccountNo;
+    private String receiveAccountNo;
     private int autoSendPrice;
     private LocalDate reservationDate;
     private String reservationState;

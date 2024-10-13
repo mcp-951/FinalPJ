@@ -20,17 +20,13 @@ public class AccountEntity {
     private int accountNo;
 
     @Column
-    private int accountNumber;
+    private String accountNumber;
 
     @Column
     private int userNo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productNo", referencedColumnName = "productNo")
-    private ProductEntity product;
-
     @Column
-    private String bankName;
+    private int depositNo;
 
     @Column
     private int accountBalance;
@@ -39,16 +35,24 @@ public class AccountEntity {
     private int accountLimit;
 
     @Column
-    private int accountMax;
-
-    @Column
-    private int accountPW;
+    private String accountPW;
 
     @Column
     private String accountState;
 
     @Column
     private Date accountOpen;
+
+    @Column
+    private String bankName;
+
+
+
+
+
+
+
+
 
 
 }

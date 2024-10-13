@@ -10,7 +10,7 @@ import lombok.*;
 @ToString
 public class OutAccountDTO {
     private int oAccountNo;
-    private int oAccountNumber;
+    private String oAccountNumber;
     private String oUserName;
     private String oAccountState;
     private String oBankName;
