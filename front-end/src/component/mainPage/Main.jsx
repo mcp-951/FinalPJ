@@ -14,7 +14,7 @@ function Main() {
                     <RightMenu />
                 </div>
             </div>
-<<<<<<< HEAD
+
             <div className='Menu_bar'>
                 <Middlebar />
             </div>
@@ -24,19 +24,6 @@ function Main() {
                 <BottomNewsBoard /> }
             </div>
             <Footer />
-<<<<<<< HEAD
-=======
-=======
-        </div>
-        <div className='Menu_bar'>
-            <Middlebar />
-        </div>
-        <div className='Board_main'>
-            <BottomNewsBoard/>
-        </div>
-        <Footer/>
->>>>>>> 50b13222d0394431ef705665178103e286840219
->>>>>>> origin/minwoo
         </div>
     );
 }

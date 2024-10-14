@@ -10,15 +10,6 @@ const api = axios.create({
 
 // 고객 센터 및 계좌 관련 API 서비스
 const ApiService = {
-<<<<<<< HEAD
-  // 특정 유저의 모든 계좌 정보 가져오기 (예금, 적금, 대출 등 모두 포함)
-  getAllAccounts: (userNo, token) => {
-    return api.get(`/users/${userNo}/accounts`, {
-      headers: {
-        'Authorization': `Bearer ${token}`, // JWT 토큰 추가
-      },
-    });
-=======
   // 전체 문의글 가져오기
   getAllInquiries: () => {
     return api.get('/support/all');
@@ -41,7 +32,6 @@ const ApiService = {
   // 모든 계좌 정보 가져오기 (예금, 적금, 대출 등 모두 포함)
   getAllAccounts: () => {
     return api.get('/account');  // "/account" API 호출
->>>>>>> 50b13222d0394431ef705665178103e286840219
   },
 
   // 특정 계좌 번호로 계좌 상세 정보 가져오기

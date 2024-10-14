@@ -1,38 +1,20 @@
 package com.urambank.uram.controller;
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 import com.urambank.uram.dto.SupportDTO;
 import com.urambank.uram.service.SupportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+
+
+
 @RequiredArgsConstructor
-=======
->>>>>>> origin/minwoo
-import com.urambank.uram.entities.SupportEntity;
-import com.urambank.uram.service.SupportService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-@CrossOrigin(origins = "http://localhost:3000")  // CORS 설정
-<<<<<<< HEAD
-=======
->>>>>>> 50b13222d0394431ef705665178103e286840219
->>>>>>> origin/minwoo
 @RestController
 @RequestMapping("/support")
 public class SupportController {
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
     private final SupportService supportService;
 
     // 특정 사용자 ID로 문의글 목록 조회
@@ -81,33 +63,7 @@ public class SupportController {
             return ResponseEntity.ok("문의글이 삭제되었습니다.");
         } else {
             return ResponseEntity.status(404).body("해당 문의글을 찾을 수 없습니다.");
-=======
->>>>>>> origin/minwoo
-    @Autowired
-    private SupportService supportService;
-
-    // 전체 문의글 조회
-    @GetMapping("/all")
-    public ResponseEntity<List<SupportEntity>> getAllSupports() {
-        List<SupportEntity> supports = supportService.getAllSupports();
-        if (supports.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(supports, HttpStatus.OK);
-    }
-
-    // 문의글 등록
-    @PostMapping("/create")
-    public ResponseEntity<SupportEntity> createSupport(@RequestBody SupportEntity support) {
-        try {
-            SupportEntity createdSupport = supportService.saveSupport(support);
-            return new ResponseEntity<>(createdSupport, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-<<<<<<< HEAD
-=======
->>>>>>> 50b13222d0394431ef705665178103e286840219
->>>>>>> origin/minwoo
         }
     }
+
 }
