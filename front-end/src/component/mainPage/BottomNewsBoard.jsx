@@ -114,4 +114,8 @@ function BottomNewsBoard() {
     );
 }
 
+<<<<<<< HEAD
 export default BottomNewsBoard;
+=======
+export default BottomNewsBoard;
+>>>>>>> 50b13222d0394431ef705665178103e286840219
