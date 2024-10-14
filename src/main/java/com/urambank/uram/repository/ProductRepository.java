@@ -10,12 +10,12 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, Integer> {
 
-    ProductEntity findById(int productNo);
-
-
-    List<ProductEntity> findByProductCategoryAndViewState(String category, String y);
-
-    int countByProductCategoryAndViewState(String category, String y);
-
-    Page<ProductEntity> findByProductCategory(String i, Pageable pageable);
+//    ProductEntity findById(int productNo);
+//
+//
+//    List<ProductEntity> findByProductCategoryAndViewState(String category, String y);
+//
+//    int countByProductCategoryAndViewState(String category, String y);
+//
+//    Page<ProductEntity> findByProductCategory(String i, Pageable pageable);
 }

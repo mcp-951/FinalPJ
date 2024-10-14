@@ -19,18 +19,18 @@ public class ProductDTO {
     private String viewState;  // 상품 상태 (기본값 'y')
     private String productIMG;  // 상품 이미지 URL
 
-    public ProductDTO(ProductEntity productEntity) {
-        this.productNo = productEntity.getProductNo();
-        this.productName = productEntity.getProductName();
-        this.productCategory = productEntity.getProductCategory();
-        this.productRate = productEntity.getProductRate();
-        this.productContent = productEntity.getProductContent();
-        this.viewState = productEntity.getViewState();
-        this.productIMG = productEntity.getProductIMG();
-    }
+//    public ProductDTO(ProductEntity productEntity) {
+//        this.productNo = productEntity.getProductNo();
+//        this.productName = productEntity.getProductName();
+//        this.productCategory = productEntity.getProductCategory();
+//        this.productRate = productEntity.getProductRate();
+//        this.productContent = productEntity.getProductContent();
+//        this.viewState = productEntity.getViewState();
+//        this.productIMG = productEntity.getProductIMG();
+//    }
 
-    // 정적 메서드로 변환하는 방식 유지
-    public static ProductDTO toProductDTO(ProductEntity productEntity) {
-        return new ProductDTO(productEntity);
-    }
+//    // 정적 메서드로 변환하는 방식 유지
+//    public static ProductDTO toProductDTO(ProductEntity productEntity) {
+//        return new ProductDTO(productEntity);
+//    }
 }
