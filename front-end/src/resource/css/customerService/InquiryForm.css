@@ -1,74 +1,104 @@
-/* InquiryForm.css */
-
+/* 공통 스타일 */
 body, html {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  background-color: #f2f2f2; /* 전체 배경색 */
 }
 
+/* 폼 레이아웃 */
 .inquiry-form {
-  width: 50%; /* 중앙에 위치하게 하기 위한 폼 너비 */
+  width: 50%;
   max-width: 700px;
-  margin: 50px auto; /* 중앙 정렬 */
-  padding: 30px 40px;
+  margin: 60px auto;
+  padding: 40px;
   border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  transition: transform 0.3s ease;
 }
 
+.inquiry-form:hover {
+  transform: scale(1.02); /* 폼에 마우스 오버 시 살짝 확대 */
+}
+
+/* 폼 제목 스타일 */
 .inquiry-form h1 {
   text-align: center;
   margin-bottom: 30px;
-  font-size: 26px;
+  font-size: 28px;
+  font-weight: 700;
   color: #333;
 }
 
+/* 입력 필드 라벨 */
 .inquiry-form label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
+  margin-bottom: 10px;
+  font-weight: 600;
   color: #555;
 }
 
+/* 입력 필드 및 텍스트 영역 */
 .inquiry-form input[type="text"],
 .inquiry-form textarea {
   width: 100%;
-  padding: 12px;
+  padding: 15px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 16px;
   transition: all 0.3s ease;
+  background-color: #f9f9f9;
 }
 
 .inquiry-form input[type="text"]:focus,
 .inquiry-form textarea:focus {
   border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+  background-color: #ffffff;
 }
 
+/* 텍스트 영역 크기 고정 */
 .inquiry-form textarea {
   resize: none;
   height: 150px;
 }
 
+/* 파일 입력 필드 */
 .inquiry-form input[type="file"] {
   display: block;
-  margin-top: 10px;
+  margin-top: 15px;
+  font-size: 16px;
 }
 
+/* 버튼 스타일 */
 .inquiry-form button {
   width: 100%;
-  padding: 14px;
+  padding: 15px;
   background-color: #007bff;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 18px;
-  color: #fff;
+  font-weight: 600;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .inquiry-form button:hover {
   background-color: #0056b3;
+  transform: scale(1.03); /* 버튼 클릭 시 살짝 확대 */
+}
+
+/* 반응형 레이아웃 */
+@media (max-width: 768px) {
+  .inquiry-form {
+    width: 90%; /* 작은 화면에서는 너비 확대 */
+  }
+
+  .inquiry-form button {
+    font-size: 16px;
+  }
 }
