@@ -25,6 +25,8 @@ import TaxMain from 'component/page/tax/TaxMain';
 import TaxDetail from 'component/page/tax/TaxDetail';
 import TaxHistory from 'component/page/tax/TaxHistory';
 
+// OCR 데이터
+import ImgSelect from 'component/page/ocrPage/ImgSelect';
 
 // 어드민 라우터 임포트
 import AdminList from '../page/adminPage/admin/AdminList';
@@ -115,6 +117,8 @@ const RouteComponent = () => {
                         <Route path="/tax/elec" exact={true} element={<TaxMain/>} />
                         <Route path="/tax/Detail" exact={true} element={<TaxDetail/>} />
                         <Route path="/tax/History" exact={true} element={<TaxHistory/>} />
+                        {/*OCR데이터*/}
+                        <Route path="/ocr" exact={true} element={<ImgSelect />} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
 {/*                         <Route path="/adminList" element={<AdminList />} /> */}
