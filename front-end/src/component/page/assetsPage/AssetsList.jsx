@@ -136,7 +136,7 @@ const AssetsList = () => {
       </div>
 
       <div className="button-container">
-       
+        <Link to="/AssetsAnalysis" className="button">자산 분석</Link>
         <Link to="/asset-calendar" className="button">자산 캘린더</Link>
       </div>
 
