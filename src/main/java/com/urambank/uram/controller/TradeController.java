@@ -69,11 +69,11 @@ public class TradeController {
     }
     //4. 비밀번호 확인
     @PostMapping("/verify-password/{selectedAccountNumber}/{password}")
-    public int passwordCheck(@PathVariable("selectedAccountNumber") int selectedAccountNumber, @PathVariable("password") int password){
+    public int passwordCheck(@PathVariable("selectedAccountNumber") String selectedAccountNumber, @PathVariable("password") String password){
         AccountEntity account = accountRepository.findByAccountNumber(selectedAccountNumber);
         int success = 0;
 
-        if(account.getAccountPW() == password){
+        if(account.getAccountPW()) {
             success = 1;
         }
         System.out.println(success + "aksjdlkadjaksd");
