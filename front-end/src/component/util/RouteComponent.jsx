@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
+import {BrowserRouter, Route, Router, Routes} from 'react-router-dom';
 
 // 메인 라우터 임포트
 import Main from '../mainPage/Main';
+import Navbar from 'component/util/Navbar';
 
 // 고객센터 라우터 임포트
 import CustomerServiceMain from 'component/page/customerService/CustomerServiceMain';
@@ -12,6 +13,9 @@ import InquiryForm from 'component/page/customerService/InquiryForm';
 // 로그인 라우터 임포트
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
+
+// 검색바 라우터 임포트
+import SearchResult from './searchBar/SearchResult';
 
 // 투자 라우터 임포트
 import InvestmentMain from 'component/page/investment/InvestmentMain';
@@ -82,20 +86,27 @@ import GetAddress from 'component/page/loginPage/GetAddress';
 import ExchangeResult from 'component/page/exchangePage/ExchangeResult';
 
 
+
 const RouteComponent = () => {
+    
     const [inquiries, setInquiries] = useState([]); // inquiries 상태 변수 정의
-  const addInquiry = (newInquiry) => setInquiries([...inquiries, newInquiry]); // addInquiry 함수 정의
+    const addInquiry = (newInquiry) => setInquiries([...inquiries, newInquiry]); // addInquiry 함수 정의
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     return (
         <div>
             <BrowserRouter>
+                <header>
+                    <Navbar/>
+                </header>
                 <div style={style}>
                     <Routes>
                         <Route path="/" exact={true} element={<Main />} />
-                        {/*}로그인 페이지{*/}
+                        {/*로그인 페이지*/}
                         <Route path="/login" exact={true} element={<Login />} />
                         <Route path="/signup" exact={true} element={<Signup />} />
+                        {/*검색바 리스트 이동*/}
+                        <Route path="/searchresult" exact={true} element={<SearchResult/>} />
                         {/*}투자 페이지{*/}
                         <Route path="/investment" exact={true} element={<InvestmentMain/>} />
                         {/*}공과금페이지{*/}

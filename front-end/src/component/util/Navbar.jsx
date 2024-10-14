@@ -4,12 +4,15 @@ import { FaSearch } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineLogin } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
+import { IoCloseSharp } from "react-icons/io5";
 import AccountDrop from './NavbarDropdownMenu/AccountDrop';
 import ProductDrop from './NavbarDropdownMenu/ProductDrop';
 import ExchangeDrop from './NavbarDropdownMenu/ExchangeDrop';
 import TaxDrop from './NavbarDropdownMenu/TaxDrop';
 import ManageDrop from './NavbarDropdownMenu/ManageDrop';
 import InvestmentDrop from './NavbarDropdownMenu/InvestmentDrop';
+import SearchBar from './searchBar/SearchBar';
+
 
 
 function Navbar(){
@@ -54,7 +57,10 @@ function Navbar(){
                 </div>
             </div>
 
-        ) : (<></>)
+        ) : (<div className='SearchBar_div'>
+                <button onClick={handleSearchBar}><IoCloseSharp /></button>
+                <SearchBar onSearch={handleSearchBar} />
+            </div>)
         }
             {menuOpen === 'account' && (<AccountDrop/>)}
             {menuOpen === 'product' && (<ProductDrop/>)}
