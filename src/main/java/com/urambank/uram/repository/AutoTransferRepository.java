@@ -17,7 +17,10 @@ public interface AutoTransferRepository extends JpaRepository<AutoTransferEntity
     @Query("SELECT a FROM AutoTransferEntity a WHERE a.accountNo = :accountNo")
     List<AutoTransferEntity> findByAccountNo(@Param("accountNo") int accountNo);
 
+<<<<<<< HEAD
     // 매월 이체일과 자동이체 활성 상태('Y')인 항목들을 찾는 메서드
     List<AutoTransferEntity> findByTransferDayAndAutoShow(int transferDay, char autoShow);
 
+=======
+>>>>>>> origin/cr
 }

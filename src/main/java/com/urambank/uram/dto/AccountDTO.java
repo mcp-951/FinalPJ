@@ -13,30 +13,36 @@ import java.util.Date;
 @ToString
 public class AccountDTO {
     private int accountNo;
-    private int accountNumber;
+    private String accountNumber;
     private int userNo;
-    private int productNo;
+    private int depositNo;
     private String bankName;
     private int accountBalance;
     private int accountLimit;
-    private int accountMax;
-    private int accountPW;
+    private String accountPW;
     private String accountState;
     private Date accountOpen;
+    private Date accountClose;
 
     public static AccountDTO toAccountDTO(AccountEntity accountEntity) {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setAccountNo(accountEntity.getAccountNo());
         accountDTO.setAccountNumber(accountEntity.getAccountNumber());
         accountDTO.setUserNo(accountEntity.getUserNo());
-        accountDTO.setProductNo(accountEntity.getProduct().getProductNo());
+
+        // depositNo는 accountEntity에서 바로 가져오지 않고, DepositEntity에서 참조
+        if (accountEntity.getDeposit() != null) {
+            accountDTO.setDepositNo(accountEntity.getDeposit().getDepositNo());
+        }
+
         accountDTO.setAccountBalance(accountEntity.getAccountBalance());
         accountDTO.setAccountLimit(accountEntity.getAccountLimit());
-        accountDTO.setAccountMax(accountEntity.getAccountMax());
         accountDTO.setAccountPW(accountEntity.getAccountPW());
         accountDTO.setAccountState(accountEntity.getAccountState());
         accountDTO.setAccountOpen(accountEntity.getAccountOpen());
+        accountDTO.setAccountClose(accountEntity.getAccountClose());
 
         return accountDTO;
     }
+
 }

@@ -10,13 +10,8 @@ import java.util.List;
 
 public interface LogRepository extends JpaRepository<LogEntity, Integer> {
 
-    @Query("SELECT COALESCE(SUM(l.sendPrice), 0) FROM LogEntity l WHERE l.sendAccountNo = :accountNumber AND l.sendDate = :today AND l.logState = 'SUCCESS'")
-    Integer sumTodayTransfers(@Param("accountNumber") int accountNumber, @Param("today") Date today);
-
-    @Query("SELECT l FROM LogEntity l WHERE (l.sendAccountNo = :accountNumber OR l.receiveAccountNo = :accountNumber) AND l.logState = 'SUCCESS'")
-    List<LogEntity> findByAccountNumberAndLogState(@Param("accountNumber") int accountNumber);
-
-
+    @Query("SELECT l FROM LogEntity l WHERE (l.sendAccountNumber = :accountNumber OR l.receiveAccountNumber = :accountNumber) AND l.logState = 'SUCCESS'")
+    List<LogEntity> findByAccountNumberAndLogState(@Param("accountNumber") String accountNumber);  // accountNumber를 String으로 변경
 
 
 }
