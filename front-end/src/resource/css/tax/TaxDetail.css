@@ -1,0 +1,101 @@
+.Taxcontainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.SelectTax_bar{
+    background-color: beige;
+    width: 80%;
+}
+
+.SelectTax_Type{
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.SelectTax_Date{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.SelectTax_Type_Label{
+    width: 20%;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border: 1px black solid;
+    background-color: antiquewhite;
+    font-size: 20px;
+}
+
+.SelectTax_Date_Laber{
+    width: 20%;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border: 1px black solid;
+    background-color: antiquewhite;
+    font-size: 20px;
+}
+
+.SelectTax_Type_Select{
+    width: 60%;
+    height: 5rem;
+    display: flex;
+    align-items: center; 
+    border: 1px black solid;
+}
+
+.SelectTax_Date_Select{
+    width: 60%;
+    height: 5rem;
+    display: flex;
+    align-items: center; 
+    border: 1px black solid;
+    font-size: 20px;
+}
+
+.SelectTax_Type_Select_SelectBar{
+    margin-left: 3rem;
+    width: 200px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.SelectTax_Type_Date_SelectBar{
+    margin-left: 3rem;
+    width: 200px;
+    height: 30px;
+    font-size: 20px;
+}
+
+.SelectTax_button{
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.taxList{
+    margin-top: 1rem;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.taxList table tr th {
+    width: 250px;
+    border: 1px black solid;
+    font-size: 20px;
+}
+
+.taxList table tr td {
+    width: 250px;
+    border: 1px black solid;
+    height: 50px;
+}
+

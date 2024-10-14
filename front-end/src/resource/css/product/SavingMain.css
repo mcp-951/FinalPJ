@@ -1,0 +1,72 @@
+.saving-main {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.saving-main h1 {
+  color: #333;
+}
+
+.saving-main p {
+  color: #666;
+  margin: 10px 0;
+}
+
+.saving-main strong {
+  color: #007bff; /* 적금 상품의 강조된 텍스트 색상 */
+}
+
+.saving-main .join-button {
+  margin: 20px 0;
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.saving-main .join-button:hover {
+  background-color: #0056b3;
+}
+
+.saving-calculator {
+  margin: 20px 0;
+}
+
+.saving-calculator h2 {
+  margin-bottom: 10px;
+}
+
+.saving-calculator .input-group {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.saving-calculator .input-group input {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.saving-calculator .calculate-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.saving-calculator .calculate-button:hover {
+  background-color: #0056b3;
+}
+
+.calculation-result {
+  margin: 20px 0;
+  color: #28a745;
+  font-weight: bold;
+}

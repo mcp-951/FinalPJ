@@ -1,0 +1,62 @@
+.member-container {
+  display: flex;
+}
+
+.member-list-content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.member-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.member-table th,
+.member-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.member-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+/* 검색 바와 페이지 당 표시 항목 수를 같은 줄에 배치 */
+.search-controls {
+  display: flex;
+  justify-content: space-between; /* 좌우로 나누기 */
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 검색 바 스타일 */
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar select,
+.search-bar input,
+.search-bar button {
+  margin-right: 10px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.search-bar input {
+  flex-grow: 1;
+}
+
+/* 페이지당 표시 항목 수 선택 스타일 */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+}
+
+.pagination-controls select {
+  padding: 8px;
+  font-size: 14px;
+}

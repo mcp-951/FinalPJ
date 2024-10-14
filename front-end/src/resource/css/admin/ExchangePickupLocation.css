@@ -1,0 +1,44 @@
+.exchange-pickup-location-container {
+  padding: 20px;
+}
+
+.search-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar select,
+.search-bar input,
+.search-bar button {
+  margin-right: 10px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.pagination-controls select {
+  padding: 8px;
+  font-size: 14px;
+}
+
+.pickup-location-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pickup-location-table th,
+.pickup-location-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.pickup-location-table th {
+  background-color: #f4f4f4;
+}

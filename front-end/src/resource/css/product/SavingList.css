@@ -1,0 +1,137 @@
+/* 전체 애플리케이션 스타일 */
+.app {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f7f9fc; /* 배경색을 약간 부드러운 색으로 변경 */
+  color: #333; /* 기본 텍스트 색상 */
+}
+
+/* 적금 상품 리스트 스타일 */
+.saving-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 각 적금 항목 사이 간격 */
+  padding: 0;
+  list-style: none;
+}
+
+/* 적금 상품 항목 스타일 */
+.saving-item {
+  padding: 20px 30px; /* 패딩을 조절하여 더 여유롭게 */
+  border-radius: 8px; /* 각진 모서리를 둥글게 처리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 박스 그림자를 추가하여 강조 */
+  background-color: #ffffff; /* 흰색 배경 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.3s ease; /* 마우스를 올렸을 때 부드럽게 변화 */
+}
+
+.saving-item:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 마우스를 올렸을 때 그림자 진하게 */
+}
+
+/* 적금 항목의 제목 스타일 */
+.saving-item h3 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333; /* 텍스트 색상 */
+  transition: color 0.3s ease; /* 마우스 오버 시 색상 변경 */
+}
+
+.saving-item h3:hover {
+  color: #007bff; /* 마우스를 올렸을 때 색상 변화 */
+}
+
+/* 적금 항목의 설명 스타일 */
+.saving-item p {
+  margin: 5px 0;
+  color: #777; /* 설명 텍스트 색상 */
+  font-size: 0.9rem;
+}
+
+/* 적금 항목의 강조 텍스트 스타일 */
+.saving-item strong {
+  font-size: 1.1rem;
+  color: #007bff; /* 강조된 텍스트 색상 */
+  font-weight: 600; /* 폰트 굵기 조정 */
+}
+
+/* 버튼 컨테이너 */
+.buttons {
+  display: flex;
+  gap: 15px; /* 버튼 간격을 조금 넓게 설정 */
+}
+
+/* 버튼 스타일 */
+.buttons button {
+  padding: 10px 20px;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease; /* 부드러운 색상 변화 */
+}
+
+.buttons button:hover {
+  background-color: #0056b3; /* 마우스 오버 시 색상 변화 */
+  border-color: #0056b3;
+}
+
+/* 페이징 컨테이너 스타일 */
+.pagination {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
+}
+
+.pagination button {
+  margin: 0 5px; /* 버튼 사이 간격 추가 */
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.3s ease, border 0.3s ease, color 0.3s ease;
+  border-radius: 4px; /* 버튼을 살짝 둥글게 */
+}
+
+.pagination button:hover {
+  background-color: #f1f1f1;
+  border-color: #ccc;
+}
+
+.pagination button.active {
+  background-color: #007bff; /* 활성화된 페이지 버튼 */
+  border-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+/* 반응형 디자인: 모바일 환경에서의 스타일 조정 */
+@media (max-width: 768px) {
+  .saving-item {
+    flex-direction: column; /* 세로 정렬로 변경 */
+    align-items: flex-start;
+    padding: 15px 20px;
+  }
+
+  .buttons {
+    margin-top: 15px;
+    width: 100%;
+    justify-content: space-between; /* 버튼을 가로로 배치 */
+  }
+
+  .buttons button {
+    width: calc(50% - 7.5px); /* 두 개의 버튼이 각각 절반씩 차지하도록 설정 */
+  }
+
+  .pagination button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
