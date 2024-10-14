@@ -1,10 +1,15 @@
 import pytesseract
 import re
 import cv2
+import os
+import sys
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
+sys.stdout.reconfigure(encoding='utf-8')
 #이미지 전처리 시작하기
-img_ori=cv2.imread('d:\\dev\\workspace_intellij\\1223\\urambank\\python\\js.jpg')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+image_path = os.path.join(script_dir, 'ocr.png')
+img_ori=cv2.imread(image_path)
 height, width, channel = img_ori.shape
 gray = cv2.cvtColor(img_ori, cv2.COLOR_BGR2GRAY)
 
@@ -23,5 +28,5 @@ last = data[-1]
 
 firstNo = first[-6:]
 lastNo = last[0:7]
-print(data)
-print(firstNo +"-"+ lastNo)
+print(firstNo)
+print(lastNo)

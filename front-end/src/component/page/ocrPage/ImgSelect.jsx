@@ -37,7 +37,7 @@ const ImgSelect = () => {
           })
           .then((response) => {
             console.log('Upload success:', response.data);
-            setMessage('Upload successful!'); // 성공 메시지
+            setMessage(response.data); // 성공 메시지
             setImage(null); // 이미지 초기화
           })
           .catch((error) => {
