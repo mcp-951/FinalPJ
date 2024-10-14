@@ -20,6 +20,15 @@ const AccountTransfer = () => {
   const [accounts, setAccounts] = useState([]); // 사용자의 계좌 목록
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 사용
 
+  // 로그인 확인 추가 부분
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // 토큰 확인
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [navigate]);
+
   // 로컬 스토리지에서 JWT 토큰과 userNo 가져오기
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");

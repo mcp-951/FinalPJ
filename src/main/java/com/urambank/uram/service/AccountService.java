@@ -89,24 +89,6 @@ public class AccountService {
         }
     }
 
-
-//    public Map<String, Object> getAccount(int accountNumber) {
-//        AccountEntity accountEntity = accountRepository.findAccount(accountNumber, "NORMAL");
-//        if (accountEntity != null) {
-//            Map<String, Object> accountData = new HashMap<>();
-//            accountData.put("accountNumber", accountEntity.getAccountNumber());
-//            accountData.put("accountBalance", accountEntity.getAccountBalance());
-//            accountData.put("accountLimit", accountEntity.getAccountLimit());
-//            accountData.put("accountMax", accountEntity.getAccountMax());
-//            accountData.put("productName", accountEntity.getProduct().getProductName());
-//            // 추가적인 데이터가 필요하다면 여기에 포함
-//            return accountData;
-//        } else {
-//            return null;
-//        }
-//    }
-
-
     // 계좌의 거래 내역 조회 (성공한 거래만)
     public List<LogDTO> getTransactionLogs(String accountNumber) {
         List<LogEntity> logEntities = logRepository.findByAccountNumberAndLogState(accountNumber);
@@ -408,7 +390,6 @@ public class AccountService {
         }
     }
 
-
     public boolean registerAutoTransfer(AutoTransferDTO autoTransferDTO) throws Exception {
         try {
             // 출금 계좌 조회
@@ -417,19 +398,36 @@ public class AccountService {
 
             // 입금 계좌 조회
             AccountEntity toAccount = null;
+            Integer receiveAccountNo = null; // 입금 계좌 번호
             String toBankName = autoTransferDTO.getToBankName();  // 은행명 설정
 
             // 내부 계좌인 경우 처리
             if (autoTransferDTO.getToAccountDTO() != null && autoTransferDTO.getToAccountDTO().getAccountNumber() != null) {
                 toAccount = accountRepository.findByAccountNumber(autoTransferDTO.getToAccountDTO().getAccountNumber())
                         .orElseThrow(() -> new Exception("입금 계좌를 찾을 수 없습니다."));
+                receiveAccountNo = toAccount.getAccountNo(); // 내부 계좌일 때 계좌 번호 설정
                 toBankName = "우람은행";  // 내부 계좌일 때 은행명 설정
+            }
+            // 외부 계좌인 경우 처리
+            else if (autoTransferDTO.getOutAccountDTO() != null && autoTransferDTO.getOutAccountDTO().getOAccountNumber() != null) {
+                // 외부 계좌 처리 로직
+                OutAccountEntity outAccount = outAccountRepository.findByOAccountNumberAndOBankName(
+                        autoTransferDTO.getOutAccountDTO().getOAccountNumber(),
+                        autoTransferDTO.getOutAccountDTO().getOBankName());
+
+                if (outAccount == null) {
+                    throw new Exception("외부 입금 계좌를 찾을 수 없습니다.");
+                }
+
+                // 여기서부터 외부 계좌 처리를 진행
+                receiveAccountNo = outAccount.getOAccountNo();  // 외부 계좌의 경우 계좌 번호 설정
+                toBankName = outAccount.getOBankName();  // 외부 계좌 은행명 설정
             }
 
             // 자동이체 엔티티 생성 및 저장
             AutoTransferEntity autoTransferEntity = AutoTransferEntity.builder()
                     .accountNo(fromAccount.getAccountNo())
-                    .receiveAccountNo(toAccount != null ? toAccount.getAccountNo() : null)  // 내부 계좌의 경우 처리
+                    .receiveAccountNo(receiveAccountNo)  // 내부 또는 외부 계좌의 경우 처리
                     .autoSendPrice(autoTransferDTO.getAutoSendPrice())
                     .reservationDate(LocalDate.now())  // 예약일
                     .startDate(autoTransferDTO.getStartDate())
@@ -451,6 +449,7 @@ public class AccountService {
             return false;
         }
     }
+
 
 
 
@@ -526,9 +525,10 @@ public class AccountService {
         return null;
     }
 
-    // receiveAccountNumber와 bankName으로 OutAccount 테이블에서 receiveAccountNo 조회
-    public Integer getExternalAccountNoByAccountNumberAndBank(String receiveAccountNumber, String bankName) {  // receiveAccountNumber를 String으로 처리
-        OutAccountEntity outAccountEntity = outAccountRepository.findByOAccountNumberAndOBankName(receiveAccountNumber, bankName);  // String으로 처리
+    public Integer getExternalAccountNoByAccountNumberAndBank(String receiveAccountNumber, String bankName) {
+        System.out.println("외부 계좌 조회 시도: receiveAccountNumber = " + receiveAccountNumber + ", bankName = " + bankName);
+
+        OutAccountEntity outAccountEntity = outAccountRepository.findByOAccountNumberAndOBankName(receiveAccountNumber, bankName);
         if (outAccountEntity != null) {
             System.out.println("조회된 입금 계좌의 ReceiveAccountNo (OutAccount): " + outAccountEntity.getOAccountNo());
             return outAccountEntity.getOAccountNo();
@@ -537,6 +537,7 @@ public class AccountService {
         System.out.println("OutAccount 테이블에 일치하는 외부 계좌가 없습니다.");
         return null;
     }
+
 
     // 모든 활성화된 자동이체 목록 조회
     public List<AutoTransferEntity> getAllActiveAutoTransfers() {

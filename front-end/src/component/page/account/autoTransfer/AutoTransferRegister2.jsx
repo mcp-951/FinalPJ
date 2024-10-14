@@ -268,6 +268,9 @@ const AutoTransferRegister2 = () => {
         userNo: parseInt(userNo, 10),
       };
 
+      // 백엔드로 보내는 데이터 로그 출력
+      console.log('Sending autoTransferData to backend:', autoTransferData);
+
       try {
         let response;
         if (autoTransNo) {
@@ -300,7 +303,8 @@ const AutoTransferRegister2 = () => {
         setErrorMessages({ general: '자동이체 처리 중 오류가 발생했습니다.' });
       }
     }
-  };
+};
+
 
   return (
     <div className="transfer-container">

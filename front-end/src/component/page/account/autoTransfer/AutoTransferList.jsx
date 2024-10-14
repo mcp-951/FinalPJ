@@ -6,6 +6,16 @@ const AutoTransferList = () => {
   const [autoTransfers, setAutoTransfers] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // 로그인 확인 추가 부분
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // 토큰 확인
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [navigate]);
+  
   const token = localStorage.getItem('token');
   const userNo = localStorage.getItem('userNo');
 

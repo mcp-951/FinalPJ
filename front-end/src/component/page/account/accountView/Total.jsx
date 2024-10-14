@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // useNavigate 추가
 import axios from 'axios';
 import '../../../../resource/css/account/accountView/Total.css';
 
@@ -8,6 +8,15 @@ const Total = () => {
   const [userName, setUserName] = useState(''); // 사용자 이름을 저장할 상태
   const token = localStorage.getItem("token"); // localStorage에서 token 가져오기
   const userNo = localStorage.getItem("userNo"); // localStorage에서 userNo 가져오기
+  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 추가
+
+  // 로그인 여부 확인
+  useEffect(() => {
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [token, navigate]);
 
   // 계좌 정보 및 사용자 이름을 가져오는 함수
   const fetchData = async () => {

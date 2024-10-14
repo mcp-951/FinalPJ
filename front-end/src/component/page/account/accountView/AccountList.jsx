@@ -14,6 +14,14 @@ const AccountList = ({ type }) => {
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo"); // localStorage에서 userNo 가져오기
 
+  // 로그인 확인
+  useEffect(() => {
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [token, navigate]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
