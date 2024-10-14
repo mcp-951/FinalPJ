@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Carouesl_Main from './Carousel';
 import RightMenu from './RightMenu';
 import Middlebar from './Middlebar';
-import BottomNoticeBoard from './BottomNoticeBoard';
 import BottomNewsBoard from './BottomNewsBoard';
 import Footer from '../util/Footer';
 
@@ -34,14 +33,10 @@ function Main() {
             </div>
             <div className='Board_main'>
                 {/* 필요한 경우 공지사항과 뉴스 보드를 사용 */}
-                {/* <BottomNoticeBoard />
-                <BottomNewsBoard /> */}
+                {/* <BottomNoticeBoard />*/
+                <BottomNewsBoard /> }
             </div>
             <Footer />
-            
-            {/* 토큰과 userNo 출력 */}
-            {token ? <p>토큰: {token}</p> : <p>로그인이 필요합니다.</p>}
-            {userNo ? <p>유저 번호: {userNo}</p> : <p>유저 번호를 찾을 수 없습니다.</p>}
         </div>
     );
 }

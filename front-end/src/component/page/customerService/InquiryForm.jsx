@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../../resource/css/customerService/InquiryForm.css';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; // JWT 디코딩 함수 가져오기
 
-function InquiryForm({ addInquiry }) {
+function InquiryForm() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     title: '',
     content: '',
-    file: null,
   });
 
   const handleChange = (e) => {
@@ -18,14 +19,8 @@ function InquiryForm({ addInquiry }) {
     });
   };
 
-  const handleFileChange = (e) => {
-    setForm({
-      ...form,
-      file: e.target.files[0],
-    });
-  };
-
-  const handleSubmit = (e) => {
+  // 문의 글 등록 함수
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (form.title === '' || form.content === '') {
@@ -33,18 +28,41 @@ function InquiryForm({ addInquiry }) {
       return;
     }
 
-    const newInquiry = {
-      id: Date.now(), // 유니크한 id 생성
-      title: form.title,
-      date: new Date().toISOString().slice(0, 10), // 날짜를 YYYY-MM-DD 형식으로 생성
-      status: '처리 중',
+    // JWT 토큰 디코딩을 통해 userId를 가져옴
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/');
+      return;
+    }
+
+    const decoded = jwtDecode(token); // 디코딩하여 사용자 정보 추출
+    const userId = decoded.userNo; // 사용자 ID 추출
+
+    // JSON 데이터 객체로 전송
+    const requestBody = {
+      userId: userId,
+      qnaTitle: form.title,
+      message: form.content,
     };
 
-    // 문의글 추가
-    addInquiry(newInquiry);
+    try {
+      const response = await axios.post('http://localhost:8081/support/boardInsert', requestBody, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // JWT 토큰 설정
+        },
+        withCredentials: true,
+      });
 
-    alert('문의가 등록되었습니다!');
-    navigate('/customer-service');
+      if (response.status === 200) {
+        alert('문의가 등록되었습니다!');
+        navigate('/customer-service'); // 등록 후 문의글 리스트 페이지로 이동
+      }
+    } catch (error) {
+      console.error('문의 등록 실패:', error);
+      alert('문의 등록에 실패했습니다.');
+    }
   };
 
   return (
@@ -68,10 +86,6 @@ function InquiryForm({ addInquiry }) {
           onChange={handleChange}
           required
         ></textarea>
-      </div>
-      <div>
-        <label>파일 첨부 :</label>
-        <input type="file" name="file" onChange={handleFileChange} />
       </div>
       <button type="submit">문의하기</button>
     </form>
