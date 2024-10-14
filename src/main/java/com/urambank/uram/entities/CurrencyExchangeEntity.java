@@ -37,7 +37,7 @@ public class CurrencyExchangeEntity {
     private Date tradeDate;
 
     @Column
-    private String pickUpPlace;
+    private String pickupPlace;
 
     @Column
     private int tradePrice;

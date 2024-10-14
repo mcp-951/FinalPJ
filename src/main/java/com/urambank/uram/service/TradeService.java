@@ -41,21 +41,12 @@ public class TradeService {
         return account.getAccountNo();
     }
 
-<<<<<<< HEAD
-//    // 3. accountNo로 accountNumber 가져오기
-//    public Integer getAccountNumberByAccountNo(int accountNo) {
-=======
     // 3. accountNo로 accountNumber 가져오기
-//    public String getAccountNumberByAccountNo(int accountNo) {
->>>>>>> origin/main
-//        AccountEntity account = accountRepository.findByAccountNo(accountNo);
-//        if (account == null) {
-//            throw new RuntimeException("Account not found for accountNo: " + accountNo);
-//        }
-////        AccountEntity account = accountRepository.findById(accountNo)
-////                .orElseThrow(() -> new RuntimeException("Account not found for accountNo: " + accountNo));
-//        return account.getAccountNumber();
-//    }
+    public Integer getAccountNumberByAccountNo(int accountNo) {
+        AccountEntity account = accountRepository.findById(accountNo)
+                .orElseThrow(() -> new RuntimeException("Account not found for accountNo: " + accountNo));
+        return account.getAccountNumber();
+    }
 
     // 4. 지점 정보 가져오기
     public List<PickUpPlaceEntity> getAllPickUpPlaces() {

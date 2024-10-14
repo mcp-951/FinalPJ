@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Builder
 @ToString
 public class AutoTransferDTO {
-<<<<<<< HEAD
     private int autoTransNo;                // 자동이체 번호
     private int accountNo;                  // 출금 계좌 번호 (출금 계좌)
     private int receiveAccountNo;           // 입금 계좌 번호 (내부 또는 외부 계좌)
@@ -28,18 +27,4 @@ public class AutoTransferDTO {
     private AccountDTO fromAccountDTO;      // 출금 계좌 정보
     private AccountDTO toAccountDTO;        // 내부 입금 계좌 정보 (선택적)
     private OutAccountDTO outAccountDTO;    // 외부 입금 계좌 정보 (선택적)
-=======
-    private int autoTransNo;
-    private int accountNo;
-    private String receiveAccountNo;
-    private int autoSendPrice;
-    private LocalDate reservationDate;
-    private String reservationState;
-    private char autoShow;
-    private LocalDate deleteDate;
-    private LocalDate startDate; // 변경
-    private LocalDate endDate;  // 이체 종료 날짜
-    private int transferDay; // 이체일 (예: 매달 며칠에 이체할지)
-    private String toBankName;
->>>>>>> origin/main
 }

@@ -20,17 +20,10 @@ public class LogEntity {
     private int logNo;
 
     @Column
-<<<<<<< HEAD
     private String sendAccountNumber;
 
     @Column
     private String receiveAccountNumber;
-=======
-    private String sendAccountNo;
-
-    @Column
-    private String receiveAccountNo;
->>>>>>> origin/main
 
     @Column
     private int sendPrice;
