@@ -20,13 +20,21 @@ const PasswordCheck = ({ title, instructions }) => {
   const accountNumberFromQuery = searchParams.get('accountNumber'); // URL 쿼리에서 가져오기
   const { accountNumber: accountNumberFromState, productName: productNameFromState } = location.state || {}; // 모달에서 전달된 값
 
-  // accountNumber를 숫자로 변환하여 사용
-  const accountNumber = parseInt(accountNumberFromQuery, 10) || parseInt(selectedAccount, 10) || parseInt(accountNumberFromState, 10);
+  // accountNumber를 최종적으로 결정
+  const accountNumber = accountNumberFromQuery || selectedAccount || accountNumberFromState;
   const productName = selectedProductName || productNameFromState || ''; // productName도 전달받은 값 사용
 
   // JWT 토큰과 userNo를 로컬 스토리지에서 가져오기
   const token = localStorage.getItem("token");
-  const userNo = parseInt(localStorage.getItem("userNo"), 10); // userNo를 숫자로 변환
+  const userNo = localStorage.getItem("userNo");
+
+  // 로그인 여부 확인
+  useEffect(() => {
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [token, navigate]);
 
   // 계좌 목록을 불러오는 함수
   const fetchAccounts = async () => {
@@ -37,38 +45,29 @@ const PasswordCheck = ({ title, instructions }) => {
         },
       });  // 계좌 목록을 불러오는 API 호출
 
-      // 응답에서 accounts 배열을 추출
       const { accounts } = response.data;
-      
-      // accounts가 배열인지 확인 후 설정
-      if (Array.isArray(accounts)) {
-        setAccounts(accounts);
-      } else {
-        setAccounts([]); // 배열이 아닐 경우 빈 배열로 설정
-        setErrorMessage("계좌 목록을 불러오는 중 오류가 발생했습니다.");
-      }
+      setAccounts(accounts);
     } catch (error) {
       console.error("Error fetching accounts: ", error);
       setErrorMessage("계좌 목록을 불러오는 중 오류가 발생했습니다.");
-      setAccounts([]); // 오류 발생 시 빈 배열로 설정
     }
   };
 
   useEffect(() => {
     if (!accountNumber) {
-      fetchAccounts(); // accountNumber가 없을 때만 전체 계좌 목록을 불러옵니다.
+      fetchAccounts(); // accountNumber가 없을 때만 전체 계좌 목록을 불러옴
     }
   }, [accountNumber]);
 
   // 계좌 선택 시 처리
   const handleAccountSelect = (event) => {
-    const selectedAccountNumber = parseInt(event.target.value, 10); // 숫자로 변환
+    const selectedAccountNumber = event.target.value;
     setSelectedAccount(selectedAccountNumber);
 
     // 선택된 계좌에 맞는 상품명 설정
     const selectedAccountData = accounts.find(account => account.accountNumber === selectedAccountNumber);
     if (selectedAccountData) {
-      setSelectedProductName(selectedAccountData.productName);
+      setSelectedProductName(selectedAccountData.depositName);  // 상품명 설정 (depositName 사용)
     }
   };
 
@@ -76,20 +75,9 @@ const PasswordCheck = ({ title, instructions }) => {
   const handlePasswordCheck = async () => {
     if (password.trim() !== "") {
       try {
-        const parsedPassword = parseInt(password, 10);  // 비밀번호를 숫자로 변환
-        if (isNaN(parsedPassword)) {
-          setErrorMessage('비밀번호는 숫자여야 합니다.');
-          return;
-        }
-  
-        if (!accountNumber) {
-          setErrorMessage('계좌를 선택하세요.');
-          return;
-        }
-  
         const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/check-password`, {
           userNo: userNo,  // userNo를 요청에 포함
-          password: parsedPassword,
+          password: password,  // 비밀번호를 그대로 문자열로 전달
         }, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -161,7 +149,7 @@ const PasswordCheck = ({ title, instructions }) => {
             <option value="">계좌를 선택하세요</option>
             {accounts.map(account => (
               <option key={account.accountNumber} value={account.accountNumber}>
-                {account.accountNumber} ({account.productName}) {/* 드롭다운에서도 계좌번호와 계좌명을 같이 표시 */}
+                {account.accountNumber} ({account.depositName}) {/* 드롭다운에서도 계좌번호와 계좌명을 같이 표시 */}
               </option>
             ))}
           </select>

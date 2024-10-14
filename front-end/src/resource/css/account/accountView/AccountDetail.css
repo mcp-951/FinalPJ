@@ -135,3 +135,93 @@
 .account-detail-page-button:hover {
   background-color: #444;
 }
+
+/* 달력 전체 크기 조정 */
+.react-calendar {
+  width: 100%;
+  max-width: 1200px; /* 원하는 최대 크기로 조정 */
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+}
+
+/* 년도와 월 스타일 */
+.react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.react-calendar__navigation button {
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.react-calendar__navigation button:disabled {
+  color: #ccc;
+}
+
+/* 요일 스타일 */
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  font-weight: bold;
+  color: #555;
+  font-size: 1.2rem; /* 요일 크기 조정 */
+}
+
+/* 날짜 타일 크기 및 스타일 */
+.react-calendar__tile {
+  padding: 0.5rem; /* 날짜 타일 안쪽 여백을 줄여서 타일 크기 조정 */
+  text-align: center;
+  font-size: 0.8rem; /* 날짜 크기 조정 */
+  border-radius: 8px;
+  height: 80px; /* 타일의 세로 크기를 키워서 전체 상하 폭 조정 */
+  width: 80px; /* 타일의 가로 크기도 동일하게 설정 */
+  color: #333;  /* 기본 날짜 색상을 검은색으로 유지 */
+}
+
+/* 현재 날짜 스타일 */
+.react-calendar__tile--now {
+  background: #ffffe0; /* 현재 날짜 배경색 */
+}
+
+/* 선택된 날짜 스타일 */
+.react-calendar__tile--active {
+  background: #ffd700; /* 선택된 날짜 배경색 */
+}
+
+/* 호버 시 선택 가능한 날짜 배경색 */
+.react-calendar__tile--hasActive:hover {
+  background: #ffa500;
+}
+
+/* 입금(파란색), 출금(빨간색) 스타일 */
+.react-calendar__tile.deposit {
+  color: blue; /* 입금일 파란색 */
+}
+
+.react-calendar__tile.withdraw {
+  color: red; /* 출금일 빨간색 */
+}
+
+/* 토요일은 파란색, 일요일은 빨간색 */
+.react-calendar__tile.saturday {
+  color: blue !important; /* 토요일 파란색 */
+}
+
+.react-calendar__tile.sunday {
+  color: red !important; /* 일요일 빨간색 */
+}
+
+/* 텍스트 색상 변경 */
+.red-text {
+  color: red;
+}
+
+.blue-text {
+  color: blue;
+}
+

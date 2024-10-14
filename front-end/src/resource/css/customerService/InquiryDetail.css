@@ -1,47 +1,157 @@
+/* 전체 레이아웃 */
 .inquiry-detail {
   width: 60%;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
+  margin: 50px auto;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
+.inquiry-detail:hover {
+  transform: scale(1.02); /* 마우스 오버 시 살짝 확대 */
+}
+
+/* 제목 스타일 */
 h1 {
-  font-size: 24px;
+  font-size: 30px;
   text-align: center;
-  margin-bottom: 20px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
 }
 
+/* 필드 그룹 간격 */
 .inquiry-detail div {
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
+/* 필드 라벨 스타일 */
 .inquiry-detail label {
   display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #444;
 }
 
-.inquiry-detail p {
-  background-color: #f0f0f0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  min-height: 40px;
-}
-
-button {
-  display: inline-block;
-  padding: 10px 20px;
+/* 입력 필드 및 텍스트 스타일 */
+.inquiry-detail p,
+.inquiry-detail input,
+.inquiry-detail textarea {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
   font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  margin-top: 5px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-button:hover {
+.inquiry-detail input:focus,
+.inquiry-detail textarea:focus {
+  background-color: #ffffff;
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+/* 텍스트 영역 스타일 */
+.inquiry-detail textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* 버튼 그룹 스타일 */
+.button-group {
+  margin-top: 30px;
+  text-align: center;
+}
+
+/* 버튼 공통 스타일 */
+.detail-button,
+.edit-button,
+.delete-button,
+.save-button,
+.cancel-button {
+  display: inline-block;
+  padding: 14px 35px;
+  font-size: 18px;
+  margin: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 각 버튼별 색상 */
+.detail-button {
+  background-color: #007bff;
+}
+
+.detail-button:hover {
   background-color: #0056b3;
+}
+
+.edit-button {
+  background-color: #007bff;
+}
+
+.edit-button:hover {
+  background-color: #45a049;
+}
+
+.delete-button {
+  background-color: #007bff;
+}
+
+.delete-button:hover {
+  background-color: #e53935;
+}
+
+.save-button {
+  background-color: #007bff;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+/* 버튼 클릭 시 살짝 눌리는 효과 */
+.detail-button:active,
+.edit-button:active,
+.delete-button:active,
+.save-button:active,
+.cancel-button:active {
+  transform: scale(0.98); /* 클릭 시 살짝 눌림 효과 */
+}
+
+/* 미디어 쿼리: 작은 화면에 맞춘 레이아웃 조정 */
+@media (max-width: 768px) {
+  .inquiry-detail {
+    width: 90%;
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .button-group button {
+    width: 100%; /* 버튼이 작은 화면에서 가득 채우도록 설정 */
+    margin-right: 0;
+  }
 }
