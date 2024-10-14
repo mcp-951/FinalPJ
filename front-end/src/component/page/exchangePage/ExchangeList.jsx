@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../../util/Footer';
-import {jwtDecode} from 'jwt-decode'; // default import로 변경
+import { jwtDecode } from 'jwt-decode'; // default import로 변경
+import { Map, MapMarker } from 'react-kakao-maps-sdk'; // 카카오 맵 임포트
+import mapIcon from './free-icon-map-3082365.png'; // 지도 아이콘 이미지 임포트
 
 const ExchangeList = () => {
     const token = localStorage.getItem("token");
@@ -11,6 +13,8 @@ const ExchangeList = () => {
     const [exchangeData, setExchangeData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [showMapIndex, setShowMapIndex] = useState(null); // 지도가 열릴 인덱스 저장
+    const [coordinates, setCoordinates] = useState(null); // 좌표 상태 저장
     const itemsPerPage = 10; // 한 페이지에 표시할 데이터 수
     const navigate = useNavigate();
 
@@ -18,10 +22,10 @@ const ExchangeList = () => {
     const isTokenExpired = (token) => {
         try {
             const decodedToken = jwtDecode(token);
-            const currentTime = Math.floor(Date.now() / 1000); // 현재 시간을 초 단위로 변환
-            return decodedToken.exp < currentTime; // 토큰의 exp가 현재 시간보다 작으면 만료된 것
+            const currentTime = Math.floor(Date.now() / 1000);
+            return decodedToken.exp < currentTime;
         } catch (error) {
-            return true; // 토큰 디코딩 중 에러가 발생하면 만료된 것으로 간주
+            return true;
         }
     };
 
@@ -38,28 +42,25 @@ const ExchangeList = () => {
 
     // 페이지 렌더링 전에 토큰 체크
     useEffect(() => {
-        // 토큰이 없거나 null인 경우
         if (!token || token === null) {
             alert("로그인이 필요합니다.");
-            navigate('/login'); // 로그인 페이지로 리다이렉트
+            navigate('/login');
             return;
         }
 
-        // 유효하지 않은 토큰인 경우
         try {
-            jwtDecode(token); // 토큰 디코딩 시도
+            jwtDecode(token);
         } catch (error) {
             alert("유효하지 않은 토큰입니다. 다시 로그인하세요.");
-            localStorage.removeItem("token"); // 유효하지 않은 토큰 제거
-            navigate('/login'); // 로그인 페이지로 리다이렉트
+            localStorage.removeItem("token");
+            navigate('/login');
             return;
         }
 
-        // 토큰 만료 체크
         if (isTokenExpired(token)) {
             alert("토큰이 만료되었습니다. 다시 로그인하세요.");
-            localStorage.removeItem("token"); // 만료된 토큰 제거
-            navigate('/login'); // 로그인 페이지로 리다이렉트
+            localStorage.removeItem("token");
+            navigate('/login');
             return;
         }
     }, [token, navigate]);
@@ -71,7 +72,6 @@ const ExchangeList = () => {
                 console.log("Token:", token);
                 console.log("UserId:", userId);
 
-                // 1. userId로 userNo 가져오기
                 const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -80,23 +80,23 @@ const ExchangeList = () => {
                 const userNo = userNoResponse.data;
                 console.log("UserNo: ", userNo);
 
-                // 2. userNo로 해당 사용자의 환전 내역 가져오기 (userNo 필터링)
-                const exchangeResponse = await axios.get(`http://localhost:8081/exchange/exchangeList/${userNo}`,{
+                const exchangeResponse = await axios.get(`http://localhost:8081/exchange/exchangeList/${userNo}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
-                    }});
+                    }
+                });
                 console.log("Filtered Exchange Data for UserNo:", exchangeResponse.data);
 
-                // 환전 내역을 state에 저장
-                setExchangeData(exchangeResponse.data);
-                setFilteredData(exchangeResponse.data); // 초기에는 전체 데이터를 필터링 데이터에 넣음
+                const sortedData = exchangeResponse.data.sort((a, b) => new Date(b.tradeDate) - new Date(a.tradeDate));
+                setExchangeData(sortedData);
+                setFilteredData(sortedData); // 초기에는 전체 데이터를 필터링 데이터에 넣음
             } catch (error) {
                 console.error("데이터 가져오기 오류:", error);
             }
         };
 
         if (token && userId) {
-            fetchUserDataAndExchangeList(); // 비동기 데이터 가져오기
+            fetchUserDataAndExchangeList();
         }
     }, [token, userId]);
 
@@ -109,12 +109,37 @@ const ExchangeList = () => {
             return exchangeDate >= start && exchangeDate <= end;
         });
         setFilteredData(filtered);
-        setCurrentPage(1); // 필터링 시 첫 페이지로 돌아가게 설정
+        setCurrentPage(1);
     };
 
     // 페이지 변경 핸들러
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
+    };
+
+    // 지도 좌표를 가져오는 함수
+    const loadKakaoMap = async (branch, index) => {
+        try {
+            const response = await axios.get(`http://localhost:8081/exchange/pickup-address/${branch}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            const pickUpAddress = response.data;
+            const geocoder = new window.kakao.maps.services.Geocoder();
+
+            geocoder.addressSearch(pickUpAddress, (result, status) => {
+                if (status === window.kakao.maps.services.Status.OK) {
+                    const coords = { lat: parseFloat(result[0].y), lng: parseFloat(result[0].x) };
+                    setCoordinates(coords);
+                    setShowMapIndex(showMapIndex === index ? null : index); // 지도 토글
+                } else {
+                    console.error('Geocode 실패: ' + status);
+                }
+            });
+        } catch (error) {
+            console.error('주소 정보를 가져오는 중 오류 발생:', error);
+        }
     };
 
     // 페이지네이션을 위한 계산
@@ -159,23 +184,44 @@ const ExchangeList = () => {
                     <table border="1" style={{ margin: '20px auto', width: '100%', fontSize: '20px', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ backgroundColor: '#66b2b2', color: 'white' }}>
-                                <th>환전 번호</th>
-                                <th>통화 종류</th>
+                                <th> 통화 </th>
                                 <th>환전량</th>
-                                <th>출금액</th>
-                                <th>환전일</th>
+                                <th>출금 원화</th>
+                                <th>환전 신청일</th>
+                                <th>수령 예정일</th>
                                 <th>수령 지점</th>
+                                <th>지점 위치</th> {/* 지점 위치 열 추가 */}
                             </tr>
                         </thead>
                         <tbody>
                             {currentItems.map((data, index) => (
                                 <tr key={index} style={{ padding: '15px 0' }}>
-                                    <td style={{ padding: '10px 0' }}>{data.tradeNo}</td>
                                     <td style={{ padding: '10px 0' }}>{data.selectCountry}</td>
                                     <td style={{ padding: '10px 0' }}>{data.tradeAmount}</td>
                                     <td style={{ padding: '10px 0' }}>{data.tradePrice}</td>
                                     <td style={{ padding: '10px 0' }}>{data.tradeDate}</td>
-                                    <td style={{ padding: '10px 0' }}>{data.pickupPlace}</td>
+                                    <td style={{ padding: '10px 0' }}>{data.receiveDate}</td>
+                                    <td style={{ padding: '10px 0' }}>{data.pickUpPlace}</td>
+                                    <td style={{ padding: '10px 0', position: 'relative' }}>
+                                        <img
+                                            src={mapIcon}
+                                            alt="지도 아이콘"
+                                            style={{ width: '30px', cursor: 'pointer' }}
+                                            onClick={() => loadKakaoMap(data.pickUpPlace, index)}
+                                        />
+                                        {/* 지도가 표시될 부분 */}
+                                        {showMapIndex === index && coordinates && (
+                                            <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', zIndex: '100' }}>
+                                                <Map
+                                                    center={coordinates}
+                                                    style={{ width: '400px', height: '300px', marginTop: '10px', borderRadius: '10px', zIndex: '100' }}
+                                                    level={3}
+                                                >
+                                                    <MapMarker position={coordinates} />
+                                                </Map>
+                                            </div>
+                                        )}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

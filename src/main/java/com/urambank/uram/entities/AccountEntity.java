@@ -25,12 +25,15 @@ public class AccountEntity {
     @Column
     private int userNo;
 
+<<<<<<< HEAD
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "depositNo")  // deposit 테이블과의 FK 관계 설정
     private DepositEntity deposit;
 
+=======
+>>>>>>> origin/main
     @Column
-    private String bankName;
+    private int depositNo;
 
     @Column
     private int accountBalance;
@@ -48,6 +51,19 @@ public class AccountEntity {
     private Date accountOpen;
 
     @Column
+<<<<<<< HEAD
     private Date accountClose;
+=======
+    private String bankName;
+
+
+
+
+
+
+
+
+
+>>>>>>> origin/main
 
 }

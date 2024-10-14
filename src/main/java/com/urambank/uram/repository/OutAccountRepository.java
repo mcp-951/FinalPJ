@@ -16,7 +16,11 @@ public interface OutAccountRepository extends JpaRepository<OutAccountEntity, In
     // 외부 은행 계좌 유효성 확인
     @Query("SELECT o FROM OutAccountEntity o WHERE o.oAccountNumber = :oAccountNumber AND o.oBankName = :oBankName AND o.oAccountState = :oAccountState")
     OutAccountEntity findByOAccountNumberAndOBankNameAndOAccountState(
+<<<<<<< HEAD
             @Param("oAccountNumber") String oAccountNumber,  // oAccountNumber를 String으로 변경
+=======
+            @Param("oAccountNumber") String oAccountNumber,
+>>>>>>> origin/main
             @Param("oBankName") String oBankName,
             @Param("oAccountState") String oAccountState);
 

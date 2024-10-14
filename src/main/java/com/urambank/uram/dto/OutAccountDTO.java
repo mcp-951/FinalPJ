@@ -13,11 +13,15 @@ public class OutAccountDTO {
 
     @JsonProperty("oAccountNo")  // JSON 필드와 DTO 필드가 일치하는지 명확히 함
     private int oAccountNo;
+<<<<<<< HEAD
 
     @JsonProperty("oAccountNumber")  // JSON 필드 이름과 DTO 필드 이름이 정확히 매핑되도록 지정
     private String oAccountNumber;
 
     @JsonProperty("oUserName")  // JSON 필드와 DTO 필드가 일치하도록 지정
+=======
+    private String oAccountNumber;
+>>>>>>> origin/main
     private String oUserName;
 
     @JsonProperty("oAccountState")  // JSON 필드와 DTO 필드가 일치하도록 지정
