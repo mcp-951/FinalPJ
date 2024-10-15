@@ -322,20 +322,30 @@ public class AccountController {
         }
     }
 
-    // 계좌와 은행명으로 계좌 유효성 확인
     @GetMapping("/account/validate")
-    public ResponseEntity<Boolean> validateAccountNumber(
-//            @RequestParam("userNo") int userNo,
+    public ResponseEntity<Map<String, Object>> validateAccountNumber(
             @RequestParam("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
             @RequestParam("bankName") String bankName) {
         try {
+            // 계좌 유효성 검사
             boolean isValid = accountService.validateAccountNumberWithBank(accountNumber, bankName);  // String으로 변경된 accountNumber 처리
-            return ResponseEntity.ok(isValid);
+
+            // 유효한 계좌일 경우 계좌주명 조회
+            if (isValid) {
+                String recipientName = accountService.getRecipientName(accountNumber, bankName);
+                Map<String, Object> response = new HashMap<>();
+                response.put("isValid", true);
+                response.put("recipientName", recipientName);
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("isValid", false));
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("message", "서버 오류 발생"));
         }
     }
+
 
 
     @PostMapping("/auto-transfer")
@@ -428,15 +438,20 @@ public class AccountController {
 
 
 
-    // 모든 자동이체 정보 조회
     @GetMapping("/auto-transfer/list")
     public ResponseEntity<List<Map<String, Object>>> getAllAutoTransfers() {
         try {
+            // 서비스에서 모든 자동이체 데이터와 계좌 정보를 한 번에 가져옴
             List<Map<String, Object>> autoTransfers = accountService.getAllAutoTransfers();
+
+            // 자동이체 목록이 비어 있을 경우 204 응답
             if (autoTransfers.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);  // 데이터가 없을 경우 204 처리
             }
+
+            // 이미 서비스에서 계좌주명까지 가져왔기 때문에 추가적인 작업 없이 데이터 반환
             return ResponseEntity.ok(autoTransfers);  // 정상 처리
+
         } catch (Exception e) {
             e.printStackTrace();  // 예외 로그 기록
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 서버 오류 처리

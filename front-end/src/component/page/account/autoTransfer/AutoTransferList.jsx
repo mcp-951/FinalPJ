@@ -15,7 +15,7 @@ const AutoTransferList = () => {
       navigate('/login'); // 로그인 페이지로 리다이렉트
     }
   }, [navigate]);
-  
+
   const token = localStorage.getItem('token');
   const userNo = localStorage.getItem('userNo');
 
@@ -72,6 +72,7 @@ const AutoTransferList = () => {
               <th>자동이체 번호</th>
               <th>출금 계좌 번호</th>
               <th>입금 계좌 번호</th>
+              <th>입금 계좌주명</th> {/* 예금주명 추가 */}
               <th>이체 금액</th>
               <th>예약 날짜</th>
               <th>자동이체 시작일</th>
@@ -86,12 +87,14 @@ const AutoTransferList = () => {
               const transfer = transferData.autoTransfer;
               const fromAccountNumber = transferData.fromAccountNumber;
               const receiveAccountNumber = transferData.receiveAccountNumber;
+              const recipientName = transferData.recipientName; // 예금주명 가져오기
 
               return (
                 <tr key={transfer.autoTransNo}>
                   <td>{transfer.autoTransNo}</td>
                   <td>{fromAccountNumber !== -1 ? fromAccountNumber : 'N/A'}</td>
                   <td>{receiveAccountNumber !== -1 ? receiveAccountNumber : 'N/A'}</td>
+                  <td>{recipientName ? recipientName : 'N/A'}</td> {/* 예금주명 표시 */}
                   <td>{transfer.autoSendPrice ? transfer.autoSendPrice.toLocaleString() : 'N/A'}원</td>
                   <td>{transfer.reservationDate ? new Date(transfer.reservationDate).toLocaleDateString() : 'N/A'}</td>
                   <td>{transfer.startDate ? new Date(transfer.startDate).toLocaleDateString() : 'N/A'}</td>

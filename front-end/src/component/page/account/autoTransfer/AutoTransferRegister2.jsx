@@ -8,7 +8,6 @@ const AutoTransferRegister2 = () => {
   const location = useLocation();
   const { fromAccountNumber: initialAccount } = location.state || {}; // 출금 계좌번호를 초기값으로 받기
 
-
   const [selectedAutoAccount, setSelectedAutoAccount] = useState(initialAccount || ''); // 선택된 자동이체 계좌
   const [availableAutoBalance, setAvailableAutoBalance] = useState(null); // 출금 가능 금액
   const [autoTransferAmount, setAutoTransferAmount] = useState(''); // 자동이체 금액
@@ -17,6 +16,7 @@ const AutoTransferRegister2 = () => {
   const [selectedAutoBank, setSelectedAutoBank] = useState(''); // 선택된 은행
   const [autoTargetAccount, setAutoTargetAccount] = useState(''); // 입금 계좌번호
   const [isAutoAccountValid, setIsAutoAccountValid] = useState(null); // 입금 계좌번호 유효성 체크
+  const [recipientName, setRecipientName] = useState(''); // 계좌주명 상태 추가
   const [autoTransferLimit, setAutoTransferLimit] = useState({ onceLimit: null }); // 1회 이체 한도
   const [errorMessages, setErrorMessages] = useState({}); // 각 필드에 대한 에러 메시지 상태
   const [accounts, setAccounts] = useState([]); // 사용자의 계좌 목록
@@ -39,7 +39,6 @@ const AutoTransferRegister2 = () => {
     }
   }, [initialAccount, autoTransNo]);
   
-
   const fetchAccounts = async () => {
     try {
       const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
@@ -133,17 +132,22 @@ const AutoTransferRegister2 = () => {
         }
       });
 
-      const isValid = response.data;
+      const { recipientName } = response.data; // 계좌주명 가져오기
+      const isValid = recipientName !== null;
+
       if (isValid) {
         setIsAutoAccountValid(true);
+        setRecipientName(recipientName); // 계좌주명 상태에 저장
         setErrorMessages({ ...errorMessages, autoTargetAccount: '' });
       } else {
         setIsAutoAccountValid(false);
+        setRecipientName(''); // 유효하지 않으면 계좌주명 초기화
         setErrorMessages({ ...errorMessages, autoTargetAccount: '유효하지 않은 계좌입니다.' });
       }
     } catch (error) {
       console.error('계좌 확인 실패:', error);
       setIsAutoAccountValid(false);
+      setRecipientName(''); // 오류 발생 시 계좌주명 초기화
       setErrorMessages({ ...errorMessages, autoTargetAccount: '계좌 확인 중 오류가 발생했습니다.' });
     }
   };
@@ -305,7 +309,6 @@ const AutoTransferRegister2 = () => {
     }
 };
 
-
   return (
     <div className="transfer-container">
       <h2>{autoTransNo ? '자동이체 수정' : '자동이체 등록'}</h2>
@@ -384,6 +387,7 @@ const AutoTransferRegister2 = () => {
                 />
                 <button type="button" onClick={handleAutoAccountCheck}>계좌 확인</button>
                 {isAutoAccountValid === true && <span className="valid-check">✔ 계좌 유효</span>}
+                {recipientName && <span className="recipient-name">계좌주: {recipientName}</span>} {/* 계좌주명 표시 */}
                 {errorMessages.autoTargetAccount && <span className="error-message">{errorMessages.autoTargetAccount}</span>}
               </td>
             </tr>
