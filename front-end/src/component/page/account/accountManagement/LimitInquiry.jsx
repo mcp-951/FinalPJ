@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../../../../resource/css/account/accountManagement/LimitInquiry.css'; // 스타일 적용
 
 const LimitInquiry = () => {
+  const [dailyLimit, setDailyLimit] = useState(null); // 1일 이체한도
   const [onceLimit, setOnceLimit] = useState(null);   // 1회 이체한도
   const [errorMessage, setErrorMessage] = useState(''); // 오류 메시지
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
@@ -34,6 +35,7 @@ const LimitInquiry = () => {
         });
 
         // 백엔드에서 전달받은 데이터 확인
+        setDailyLimit(response.data.accountMax);  // 1일 이체한도 (accountMax)
         setOnceLimit(response.data.accountLimit); // 1회 이체한도 (accountLimit)
         setIsLoading(false); // 로딩 완료
       } catch (error) {
@@ -73,8 +75,12 @@ const LimitInquiry = () => {
             <td>{productName}</td> {/* 전달된 계좌명 표시 */}
           </tr>
           <tr>
+            <th>1일 이체한도</th>
+            <td>{dailyLimit !== null ? `${dailyLimit.toLocaleString()}원` : '이체 한도를 불러올 수 없습니다.'}</td> {/* 조회한 이체한도 */}
+          </tr>
+          <tr>
             <th>1회 이체한도</th>
-            <td>{onceLimit !== null ? `${onceLimit.toLocaleString()}원` : '이체 한도를 불러올 수 없습니다.'}</td> {/* 조회한 1회 이체한도 */}
+            <td>{onceLimit !== null ? `${onceLimit.toLocaleString()}원` : '이체 한도를 불러올 수 없습니다.'}</td> {/* 조회한 이체한도 */}
           </tr>
         </tbody>
       </table>

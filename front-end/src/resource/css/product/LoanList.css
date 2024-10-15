@@ -6,8 +6,8 @@
   color: #333; /* 기본 텍스트 색상 */
 }
 
-/* 상품 리스트 스타일 */
-.product-list {
+/* 대출 상품 리스트 스타일 */
+.loan-list {
   display: flex;
   flex-direction: column;
   gap: 20px; /* 각 상품 항목 사이 간격 */
@@ -15,8 +15,8 @@
   list-style: none;
 }
 
-/* 상품 항목 스타일 */
-.product-item {
+/* 대출 상품 항목 스타일 */
+.loan-item {
   padding: 20px 30px; /* 패딩을 조절하여 더 여유롭게 */
   border-radius: 8px; /* 각진 모서리를 둥글게 처리 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 박스 그림자를 추가하여 강조 */
@@ -27,12 +27,12 @@
   transition: box-shadow 0.3s ease; /* 마우스를 올렸을 때 부드럽게 변화 */
 }
 
-.product-item:hover {
+.loan-item:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* 마우스를 올렸을 때 그림자 진하게 */
 }
 
-/* 상품 항목의 제목 스타일 */
-.product-item h3 {
+/* 대출 상품 항목의 제목 스타일 */
+.loan-item h3 {
   margin: 0 0 8px;
   font-size: 1.4rem;
   font-weight: bold;
@@ -40,19 +40,19 @@
   transition: color 0.3s ease; /* 마우스 오버 시 색상 변경 */
 }
 
-.product-item h3:hover {
+.loan-item h3:hover {
   color: #007bff; /* 마우스를 올렸을 때 색상 변화 */
 }
 
-/* 상품 항목의 설명 스타일 */
-.product-item p {
+/* 대출 상품 항목의 설명 스타일 */
+.loan-item p {
   margin: 5px 0;
   color: #777; /* 설명 텍스트 색상 */
   font-size: 0.9rem;
 }
 
-/* 상품 항목의 강조 텍스트 스타일 */
-.product-item strong {
+/* 대출 상품 항목의 강조 텍스트 스타일 */
+.loan-item strong {
   font-size: 1.1rem;
   color: #ff4500; /* 강조된 텍스트 색상 */
   font-weight: 600; /* 폰트 굵기 조정 */
@@ -114,7 +114,7 @@
 
 /* 반응형 디자인: 모바일 환경에서의 스타일 조정 */
 @media (max-width: 768px) {
-  .product-item {
+  .loan-item {
     flex-direction: column; /* 세로 정렬로 변경 */
     align-items: flex-start;
     padding: 15px 20px;

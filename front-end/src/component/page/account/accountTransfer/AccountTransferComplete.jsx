@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../../../../resource/css/account/accountTransfer/AccountTransferComplete.css';
 
 const AccountTransferComplete = () => {
@@ -12,20 +13,20 @@ const AccountTransferComplete = () => {
 
   // location.state로부터 전달된 상태값들
   const { 
-    selectedAccount,  // String 타입으로 계좌번호 처리
+    selectedAccount, 
     selectedBank, 
-    targetAccountNumber,  // String 타입으로 입금 계좌번호 처리
-    transferAmount,  // Number 타입으로 이체 금액 처리
-    remainingBalance,  // Number 타입으로 잔액 처리
+    targetAccountNumber, 
+    transferAmount, 
+    remainingBalance, 
     recipientName 
   } = location.state || {};
 
   const handleRetry = () => {
-    navigate('/account/transfer');  // 이체 다시하기
+    navigate('/account/transfer');
   };
 
   const handleGoToAccountList = () => {
-    navigate(`/users/${userNo}/accounts`);  // 계좌 목록으로 이동
+    navigate('/users/:userNo/accounts');
   };
 
   return (
@@ -48,11 +49,11 @@ const AccountTransferComplete = () => {
         <tbody>
           <tr>
             <td>1</td>
-            <td>{selectedAccount}</td>  {/* 출금 계좌번호 출력 */}
-            <td>{selectedBank}</td>  {/* 입금 기관 출력 */}
-            <td>{targetAccountNumber}</td>  {/* 입금 계좌번호 출력 */}
-            <td>{transferAmount.toLocaleString()}원</td>  {/* 이체 금액을 숫자로 변환 후 출력 */}
-            <td>{recipientName || '정보 없음'}</td>  {/* 수신자 이름 출력 */}
+            <td>{selectedAccount}</td>
+            <td>{selectedBank}</td>
+            <td>{targetAccountNumber}</td>
+            <td>{transferAmount.toLocaleString()}원</td>
+            <td>{recipientName || '정보 없음'}</td> {/* 수신자 이름 출력 */}
           </tr>
         </tbody>
       </table>

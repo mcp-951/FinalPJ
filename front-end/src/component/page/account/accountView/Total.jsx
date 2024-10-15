@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // useNavigate 추가
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../../../../resource/css/account/accountView/Total.css';
 
@@ -8,15 +8,13 @@ const Total = () => {
   const [userName, setUserName] = useState(''); // 사용자 이름을 저장할 상태
   const token = localStorage.getItem("token"); // localStorage에서 token 가져오기
   const userNo = localStorage.getItem("userNo"); // localStorage에서 userNo 가져오기
-  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 추가
 
-  // 로그인 여부 확인
-  useEffect(() => {
-    if (!token) {
-      alert('로그인이 필요합니다.');
-      navigate('/login'); // 로그인 페이지로 리다이렉트
-    }
-  }, [token, navigate]);
+  // 만기일 계산 함수
+  const calculateExpiryDate = (accountOpen, productPeriod) => {
+    const openDate = new Date(accountOpen);
+    openDate.setMonth(openDate.getMonth() + (productPeriod || 0));
+    return openDate;
+  };
 
   // 계좌 정보 및 사용자 이름을 가져오는 함수
   const fetchData = async () => {
@@ -36,8 +34,14 @@ const Total = () => {
         index === self.findIndex((acc) => acc.accountNumber === account.accountNumber)
       );
 
+      // productPeriod를 가져와서 만기일 계산을 추가
+      const updatedAccounts = uniqueAccounts.map(account => {
+        const accountExpiry = calculateExpiryDate(account.accountOpen, account.productPeriod);
+        return { ...account, accountExpiry }; // accountExpiry 필드를 추가
+      });
+
       setUserName(userName); // 사용자 이름 설정
-      setAccounts(uniqueAccounts); // 계좌 목록 설정
+      setAccounts(updatedAccounts); // 계좌 목록 설정
     } catch (error) {
       console.error('데이터를 가져오는 중 오류 발생:', error);
     }
@@ -68,7 +72,7 @@ const Total = () => {
           <thead>
             <tr>
               <th>계좌번호</th>
-              <th>예금명</th> {/* productName 대신 deposit 테이블의 depositName 사용 */}
+              <th>계좌명</th>
               <th>개설일</th>
               <th>만기일</th>
               <th>잔액</th>
@@ -78,9 +82,9 @@ const Total = () => {
             {accounts.map((account) => (
               <tr key={account.accountNumber}>
                 <td><Link to={`/account/detail/${account.accountNumber}`}>{account.accountNumber}</Link></td>
-                <td>{account.depositName}</td> {/* deposit 테이블의 depositName 사용 */}
+                <td>{account.productName}</td> {/* productName 정상적으로 사용 */}
                 <td>{formatDate(account.accountOpen)}</td>
-                <td>{formatDate(account.accountClose)}</td> {/* accountClose 필드 사용 */}
+                <td>{formatDate(account.accountExpiry)}</td> {/* 만기일 계산 후 표시 */}
                 <td>{(account.accountBalance || 0).toLocaleString()}원</td>
               </tr>
             ))}

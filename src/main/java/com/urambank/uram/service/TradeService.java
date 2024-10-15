@@ -41,8 +41,8 @@ public class TradeService {
         return account.getAccountNo();
     }
 
-//    // 3. accountNo로 accountNumber 가져오기
-//    public Integer getAccountNumberByAccountNo(int accountNo) {
+    // 3. accountNo로 accountNumber 가져오기
+//    public String getAccountNumberByAccountNo(int accountNo) {
 //        AccountEntity account = accountRepository.findByAccountNo(accountNo);
 //        if (account == null) {
 //            throw new RuntimeException("Account not found for accountNo: " + accountNo);

@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../../../resource/css/account/autoTransfer/AutoTransferRegister2.css'; // 자동이체 등록 페이지 전용 CSS
 
-const AutoTransferRegister2 = () => {
-  const { autoTransNo } = useParams(); // 수정 모드 시 URL에서 자동이체 번호 가져오기
+const AutoTransferRegisterStep2 = () => {
   const location = useLocation();
-  const { fromAccountNumber: initialAccount } = location.state || {}; // 출금 계좌번호를 초기값으로 받기
+  const { selectedAccount: initialAccount } = location.state || {};
 
-
-  const [selectedAutoAccount, setSelectedAutoAccount] = useState(initialAccount || ''); // 선택된 자동이체 계좌
+  const [selectedAutoAccount, setSelectedAutoAccount] = useState(''); // 선택된 자동이체 계좌
   const [availableAutoBalance, setAvailableAutoBalance] = useState(null); // 출금 가능 금액
   const [autoTransferAmount, setAutoTransferAmount] = useState(''); // 자동이체 금액
   const [autoTransferPassword, setAutoTransferPassword] = useState(''); // 비밀번호 입력
@@ -17,7 +15,7 @@ const AutoTransferRegister2 = () => {
   const [selectedAutoBank, setSelectedAutoBank] = useState(''); // 선택된 은행
   const [autoTargetAccount, setAutoTargetAccount] = useState(''); // 입금 계좌번호
   const [isAutoAccountValid, setIsAutoAccountValid] = useState(null); // 입금 계좌번호 유효성 체크
-  const [autoTransferLimit, setAutoTransferLimit] = useState({ onceLimit: null }); // 1회 이체 한도
+  const [autoTransferLimit, setAutoTransferLimit] = useState({ dailyLimit: null, onceLimit: null }); // 이체 한도
   const [errorMessages, setErrorMessages] = useState({}); // 각 필드에 대한 에러 메시지 상태
   const [accounts, setAccounts] = useState([]); // 사용자의 계좌 목록
   const [transferDay, setTransferDay] = useState('1'); // 자동 이체일
@@ -29,16 +27,12 @@ const AutoTransferRegister2 = () => {
   const userNo = localStorage.getItem("userNo");
 
   useEffect(() => {
-    console.log('Location State:', location.state); // 전달된 state 값 확인
     fetchAccounts(); 
-    if (autoTransNo) {
-      fetchAutoTransferDetails(autoTransNo);
-    } else if (initialAccount) {
+    if (initialAccount) {
       setSelectedAutoAccount(initialAccount);
-      fetchAutoTransferLimits(initialAccount);
+      fetchAutoTransferLimits(initialAccount); // 이체 한도 정보를 가져옴
     }
-  }, [initialAccount, autoTransNo]);
-  
+  }, [initialAccount]);
 
   const fetchAccounts = async () => {
     try {
@@ -74,38 +68,16 @@ const AutoTransferRegister2 = () => {
         }
       });
       setAutoTransferLimit({
-        onceLimit: response.data.accountLimit // 1회 이체 한도만 가져옴
+        dailyLimit: response.data.accountMax,
+        onceLimit: response.data.accountLimit
       });
     } catch (error) {
       console.error('이체 한도 정보를 불러오는 중 오류 발생:', error);
     }
   };
 
-  const fetchAutoTransferDetails = async (autoTransNo) => {
-    try {
-      const response = await axios.get(`http://localhost:8081/uram/auto-transfer/${autoTransNo}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (response.data) {
-        const transfer = response.data;
-        setAutoTransferAmount(transfer.autoSendPrice);
-        setSelectedAutoBank(transfer.toBankName);
-        setAutoTargetAccount(transfer.receiveAccountNumber);
-        setStartDate(transfer.startDate);
-        setEndDate(transfer.endDate);
-        setTransferDay(transfer.transferDay);
-        setSelectedAutoAccount(transfer.fromAccountNumber); // 출금 계좌번호
-      }
-    } catch (error) {
-      console.error('자동이체 정보를 가져오는 중 오류 발생:', error);
-    }
-  };
-
   const handleCheckAutoBalance = () => {
-    const account = accounts.find((acc) => acc.accountNumber === selectedAutoAccount);
+    const account = accounts.find((acc) => acc.accountNumber === parseInt(selectedAutoAccount));
     if (account) {
       setAvailableAutoBalance(account.accountBalance);
       setErrorMessages({ ...errorMessages, selectedAutoAccount: '' });
@@ -120,7 +92,7 @@ const AutoTransferRegister2 = () => {
       setErrorMessages({ ...errorMessages, autoTargetAccount: '은행명과 입금 계좌번호를 입력하세요.' });
       return;
     }
-
+  
     try {
       const response = await axios.get('http://localhost:8081/uram/account/validate', {
         params: {
@@ -162,7 +134,7 @@ const AutoTransferRegister2 = () => {
 
     try {
       const response = await axios.post(`http://localhost:8081/uram/account/${selectedAutoAccount}/check-password`, {
-        password: autoTransferPassword,
+        password: parseInt(autoTransferPassword, 10),
         userNo: parseInt(userNo, 10)
       }, {
         headers: {
@@ -182,19 +154,6 @@ const AutoTransferRegister2 = () => {
       setIsAutoPasswordValid(false);
       setErrorMessages({ ...errorMessages, autoTransferPassword: '비밀번호 확인 중 오류가 발생했습니다.' });
     }
-  };
-
-  // 계좌번호 포맷팅 함수 (111-22-33333 형식으로 변경)
-  const formatAccountNumber = (value) => {
-    const cleanValue = value.replace(/\D+/g, ''); // 숫자가 아닌 문자는 제거
-    const formattedValue = cleanValue.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3'); // 111-22-33333 형식으로 변환
-    return formattedValue;
-  };
-
-  const handleAutoTargetAccountChange = (e) => {
-    const inputValue = e.target.value;
-    setAutoTargetAccount(formatAccountNumber(inputValue));
-    setErrorMessages({ ...errorMessages, autoTargetAccount: '' });
   };
 
   const handleSubmit = async (e) => {
@@ -256,73 +215,49 @@ const AutoTransferRegister2 = () => {
       const formattedStartDate = `${startYearMonth[0]}-${startYearMonth[1]}-${String(transferDay).padStart(2, '0')}`;
       const formattedEndDate = `${endYearMonth[0]}-${endYearMonth[1]}-${String(transferDay).padStart(2, '0')}`;
 
-      // 내부 계좌와 외부 계좌 분리
       const autoTransferData = {
-        fromAccountDTO: { accountNumber: selectedAutoAccount },
-        toAccountDTO: selectedAutoBank === '우람은행' ? { accountNumber: autoTargetAccount, bankName: selectedAutoBank } : null,
-        outAccountDTO: selectedAutoBank !== '우람은행' ? { oAccountNumber: autoTargetAccount, oBankName: selectedAutoBank } : null,
+        accountNo: selectedAutoAccount,
+        receiveAccountNo: autoTargetAccount,
         autoSendPrice: parseInt(autoTransferAmount, 10),
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         transferDay: parseInt(transferDay, 10),
+        toBankName: selectedAutoBank,
         userNo: parseInt(userNo, 10),
       };
 
-      // 백엔드로 보내는 데이터 로그 출력
-      console.log('Sending autoTransferData to backend:', autoTransferData);
-
       try {
-        let response;
-        if (autoTransNo) {
-          // 수정일 경우 PUT 요청
-          response = await axios.put(`http://localhost:8081/uram/auto-transfer/${autoTransNo}/update`, autoTransferData, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            }
-          });
-        } else {
-          // 등록일 경우 POST 요청
-          response = await axios.post('http://localhost:8081/uram/auto-transfer', autoTransferData, {
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            }
-          });
-        }
+        const response = await axios.post('http://localhost:8081/uram/auto-transfer', autoTransferData, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        });
 
         if (response.status === 200) {
-          alert(autoTransNo ? '자동이체가 수정되었습니다.' : '자동이체가 등록되었습니다.');
+          alert('자동이체가 등록되었습니다.');
           navigate('/auto-transfer/list');
         } else {
-          const errorMessage = response.data || '이체 처리 실패';
-          setErrorMessages({ general: `자동이체 처리 실패: ${errorMessage}` });
+          const errorMessage = response.data || '이체 등록 실패';
+          setErrorMessages({ general: `자동이체 등록 실패: ${errorMessage}` });
         }
       } catch (error) {
-        console.error('자동이체 처리 실패:', error);
-        setErrorMessages({ general: '자동이체 처리 중 오류가 발생했습니다.' });
+        console.error('자동이체 등록 실패:', error);
+        setErrorMessages({ general: '자동이체 등록 중 오류가 발생했습니다.' });
       }
     }
-};
-
+  };
 
   return (
     <div className="transfer-container">
-      <h2>{autoTransNo ? '자동이체 수정' : '자동이체 등록'}</h2>
+      <h2>자동이체 등록</h2>
       <form onSubmit={handleSubmit}>
         <table className="transfer-table">
           <tbody>
-          <tr>
-            <th>출금계좌번호</th>
-            <td>
-              <div className="account-balance-section">
-                {initialAccount ? ( // 수정 모드일 경우 (출금 계좌번호가 전달된 경우)
-                  <input
-                    type="text"
-                    value={initialAccount} // 리스트에서 넘어온 출금 계좌번호를 고정
-                    disabled // 수정할 수 없도록 비활성화
-                  />
-                ) : ( // 등록 모드일 경우
+            <tr>
+              <th>출금계좌번호</th>
+              <td>
+                <div className="account-balance-section">
                   <select
                     value={selectedAutoAccount}
                     onChange={(e) => {
@@ -339,26 +274,17 @@ const AutoTransferRegister2 = () => {
                       </option>
                     ))}
                   </select>
-                )}
-
-                {/* 수정 모드에서도 출금 가능 금액 확인을 활성화 상태로 유지 */}
-                <button
-                  type="button"
-                  onClick={handleCheckAutoBalance}
-                  className="balance-button"
-                >
-                  출금가능금액
-                </button>
-
-                {availableAutoBalance !== null ? (
-                  <span className="balance-info">{availableAutoBalance.toLocaleString()}원</span>
-                ) : (
-                  <span className="error-message">{errorMessages.selectedAutoAccount}</span>
-                )}
-              </div>
-            </td>
-          </tr>
-
+                  <button type="button" onClick={handleCheckAutoBalance} className="balance-button">
+                    출금가능금액
+                  </button>
+                  {availableAutoBalance !== null ? (
+                    <span className="balance-info">{availableAutoBalance.toLocaleString()}원</span>
+                  ) : (
+                    <span className="error-message">{errorMessages.selectedAutoAccount}</span>
+                  )}
+                </div>
+              </td>
+            </tr>
             <tr>
               <th>입금기관</th>
               <td>
@@ -379,7 +305,10 @@ const AutoTransferRegister2 = () => {
                 <input
                   type="text"
                   value={autoTargetAccount}
-                  onChange={handleAutoTargetAccountChange}
+                  onChange={(e) => {
+                    setAutoTargetAccount(e.target.value);
+                    setErrorMessages({ ...errorMessages, autoTargetAccount: '' });
+                  }}
                   placeholder="입금 계좌번호 입력"
                 />
                 <button type="button" onClick={handleAutoAccountCheck}>계좌 확인</button>
@@ -435,6 +364,7 @@ const AutoTransferRegister2 = () => {
                   className="transfer-day-select"
                 >
                   <option value="1">1일</option>
+                  <option value="8">8일</option>
                   <option value="10">10일</option>
                   <option value="20">20일</option>
                 </select>
@@ -470,4 +400,4 @@ const AutoTransferRegister2 = () => {
   );
 };
 
-export default AutoTransferRegister2;
+export default AutoTransferRegisterStep2;

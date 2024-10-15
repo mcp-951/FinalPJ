@@ -16,8 +16,8 @@ function Account() {
         return <AccountList type="예금" />;
       case "적금":
         return <AccountList type="적금" />;
-      case "외환":
-        return <AccountList type="외환" />;
+      case "대출":
+        return <AccountList type="대출" />;
       default:
         return <Total userNo={userNo} />; // 기본적으로 userNo를 Total 컴포넌트에 전달
     }

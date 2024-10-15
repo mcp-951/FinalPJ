@@ -23,25 +23,20 @@ const PasswordChange = () => {
   console.log('Received accountNumber:', accountNumber);
   console.log('Received productName from state:', productName);
 
-  // 휴대폰 인증 핸들러
   const handlePhoneVerification = () => {
     setIsVerified(true);
     alert('휴대폰 인증이 완료되었습니다.');
   };
 
-  // 비밀번호 변경 요청 핸들러
   const handlePasswordChange = async () => {
     if (newPassword !== confirmPassword) {
       setError('변경할 비밀번호가 일치하지 않습니다.');
-    } else if (!isVerified) {
-      setError('휴대폰 인증을 먼저 완료해주세요.');
     } else {
       setError('');
       try {
-        // 비밀번호 변경 요청
         const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/change-password`, {
           userNo: parseInt(userNo, 10), // userNo를 전송
-          newPassword: newPassword  // 비밀번호를 그대로 String으로 전송
+          newPassword: parseInt(newPassword, 10) // 비밀번호를 숫자로 변환하여 전송
         }, {
           headers: {
             'Authorization': `Bearer ${token}`,

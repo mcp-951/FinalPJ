@@ -103,7 +103,7 @@ function SignUp() {
 
     // 주민등록번호 앞자리 체크
     const checkResNo1 = () => {
-        if (form.residentNumber1.length !== 6 && form.residentNumber1.length !== 0) {
+        if (form.residentNumber1.length !== 6) {
             setResNoError1('주민등록번호 앞자리는 6자리여야 합니다.');
     } else {
             setResNoError1('');
@@ -112,7 +112,7 @@ function SignUp() {
 
 // 주민등록번호 뒷자리 체크
     const checkResNo2 = () => {
-        if (form.residentNumber2.length !== 7 && form.residentNumber2.length !== 0) {
+        if (form.residentNumber2.length !== 7) {
             setResNoError2('주민등록번호 뒷자리는 7자리여야 합니다.');
         } else {
         setResNoError2('');

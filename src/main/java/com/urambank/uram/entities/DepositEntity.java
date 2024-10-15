@@ -1,33 +1,33 @@
 package com.urambank.uram.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
+
 @Getter
-@Builder
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "deposit_TB")
 public class DepositEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int depositNo;  // 상품 번호 (자동 증가)
-
-    @Column(nullable = false, length = 100)
-    private String depositName;  // 상품 이름
+    private int depositNo;
 
     @Column(nullable = false)
-    private int depositCategory;  // 상품 카테고리 (1: 예금, 2: 적금)
+    private String depositName;
 
     @Column(nullable = false)
-    private float depositRate;  // 이자율
+    private float depositRate;
 
     @Column(columnDefinition = "TEXT")
-    private String depositContent;  // 상품 설명
+    private String depositContent;
 
-    @Column(length = 255)
-    private String depositIMG;  // 상품 이미지 URL
+    @Column(nullable = false)
+    private int depositCategory;
+
+    @Column(nullable = false, columnDefinition = "CHAR(1) DEFAULT 'Y'")
+    private char depositState;
 }

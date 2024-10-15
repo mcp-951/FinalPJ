@@ -39,10 +39,6 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (request.getRequestURI().equals("/ocr/upload")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         if (request.getRequestURI().equals("/checkHp/**")) {
             filterChain.doFilter(request, response);
             return;
@@ -72,18 +68,15 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (request.getRequestURI().equals("/doKakaoLogin/**")) {
+        if (request.getRequestURI().equals("/kakaoLogin")) {
             filterChain.doFilter(request, response);
             return;
         }
-        if (request.getRequestURI().equals("/findUserId")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-        if (request.getRequestURI().equals("/resetPassword")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+
+
+
+
+
 
         //Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {

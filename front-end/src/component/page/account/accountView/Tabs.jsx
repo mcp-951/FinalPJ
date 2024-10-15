@@ -21,10 +21,10 @@ const Tabs = ({ selectedTab, onSelectTab }) => (
       적금
     </button>
     <button
-      className={selectedTab === "외환" ? "active" : ""}
-      onClick={() => onSelectTab("외환")}
+      className={selectedTab === "대출" ? "active" : ""}
+      onClick={() => onSelectTab("대출")}
     >
-      외환
+      대출
     </button>
   </div>
 );
