@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByNameAndHp(@Param("name")String name, @Param("hp")String hp);
 
+    List<User> findByUserRole(String userRole);
+
+    User findByName(String name);
 }

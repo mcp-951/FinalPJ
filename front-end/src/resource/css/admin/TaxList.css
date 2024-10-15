@@ -1,0 +1,76 @@
+.tax-list-container {
+  padding: 20px;
+}
+
+.tax-list-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tax-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tax-table-header th {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.tax-table-row td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+.edit-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background-color: #45a049;
+}
+
+
+
+/* 공과금 생성 버튼 컨테이너 스타일 */
+.create-button-container {
+  text-align: right; /* 우측 정렬 */
+  margin-top: 20px; /* 버튼과 상단 요소 사이의 간격 */
+}
+
+/* 공과금 생성 버튼 스타일 */
+.create-button {
+  background-color: blue;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.create-button:hover {
+  background-color: red;
+}
+
+
+.submit-button {
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: red;
+}
+
+
+

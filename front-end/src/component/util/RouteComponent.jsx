@@ -49,7 +49,9 @@ import EditSavingsProduct from '../page/adminPage/product/EditSavingsProduct';
 import EditDepositProduct from '../page/adminPage/product/EditDepositProduct';
 import EditLoanProduct from '../page/adminPage/product/EditLoanProduct';
 import Sidebar from '../page/adminPage/Sidebar';
-
+import TaxList from '../page/adminPage/tax/taxList';
+import TaxEdit from '../page/adminPage/tax/taxEdit';
+import TaxInsert from '../page/adminPage/tax/taxInsert';
 // 예금 적금
 import DepositMain from 'component/page/product/Deposit/DepositMain';
 import DepositList from 'component/page/product/Deposit/DepositList';
@@ -122,6 +124,10 @@ const RouteComponent = () => {
                         <Route path="/ocr" exact={true} element={<ImgSelect />} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
+                        {/* 공과금 관리자 페이지 */}
+                        <Route path="/taxList" exact={true} element={<TaxList />} /> {/* TaxList 경로 추가 */}
+                        <Route path="/taxEdit/:taxNo" exact={true} element={<TaxEdit />} /> {/* TaxEdit 경로 추가 */}
+                        <Route path="/taxInsert" exact={true} element={<TaxInsert />} />
 {/*                         <Route path="/adminList" element={<AdminList />} /> */}
 {/*                         <Route path="/editAdmin" element={<EditAdmin />} /> */}
 
