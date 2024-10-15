@@ -451,28 +451,35 @@ public class AccountService {
     }
 
 
-
-
     public List<Map<String, Object>> getAllAutoTransfers() {
-        // 'ACTIVE' 상태의 자동이체만 조회
         List<AutoTransferEntity> autoTransferEntities = autoTransferRepository.findAllActiveAutoTransfers();
 
         return autoTransferEntities.stream()
                 .map(autoTransfer -> {
-                    // 출금 계좌의 accountNo를 이용해 accountNumber 조회
+                    // 출금 계좌 번호 조회
                     String fromAccountNumber = accountRepository.findAccountNumberByAccountNo(autoTransfer.getAccountNo());
 
-                    // receiveAccountNo와 bankName을 이용해 입금 계좌의 accountNumber 조회
+                    // 입금 계좌 번호 조회 (내부 계좌일 경우)
                     String receiveAccountNumber = accountRepository.findAccountNumberByAccountNoAndBankName(
                             autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
 
-                    // 입금 계좌가 Account 테이블에 없을 경우, OutAccount 테이블에서 조회
+                    // 외부 계좌일 경우 OutAccount 테이블에서 조회
                     if (receiveAccountNumber == null) {
                         receiveAccountNumber = outAccountRepository.findOAccountNumberByOAccountNoAndOBankName(
                                 autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
                     }
 
-                    // DTO와 함께 추가 정보인 계좌 번호들을 프론트엔드로 전달할 객체 생성
+                    // 계좌주명 조회
+                    String recipientName;
+                    if ("우람은행".equals(autoTransfer.getToBankName())) { // 내부 계좌일 경우
+                        AccountEntity account = accountRepository.findByAccountNo(autoTransfer.getReceiveAccountNo());
+                        recipientName = account != null ? userRepository.findByUserNo(account.getUserNo()).getName() : "사용자 이름 없음";
+                    } else { // 외부 계좌일 경우
+                        OutAccountEntity outAccount = outAccountRepository.findByOAccountNoAndOBankName(autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
+                        recipientName = outAccount != null ? outAccount.getOUserName() : "외부 계좌 사용자 이름 없음";
+                    }
+
+                    // 결과 맵 구성
                     Map<String, Object> responseMap = new HashMap<>();
                     responseMap.put("autoTransfer", AutoTransferDTO.builder()
                             .autoTransNo(autoTransfer.getAutoTransNo())
@@ -486,14 +493,19 @@ public class AccountService {
                             .reservationState(autoTransfer.getReservationState())
                             .autoShow(autoTransfer.getAutoShow())
                             .deleteDate(autoTransfer.getDeleteDate())
+                            .toBankName(autoTransfer.getToBankName()) // toBankName 추가
                             .build());
+
                     responseMap.put("fromAccountNumber", fromAccountNumber);
                     responseMap.put("receiveAccountNumber", receiveAccountNumber);
+                    responseMap.put("recipientName", recipientName); // 계좌주명 추가
 
                     return responseMap;
                 })
                 .collect(Collectors.toList());
     }
+
+
 
 
     // accountNumber로 Account 테이블에서 accountNo 조회
