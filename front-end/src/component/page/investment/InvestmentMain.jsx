@@ -2,16 +2,25 @@ import InvestmentRight from'./InvestmentRight';
 import StockMain from "./StockMain";
 import'../../../resource/css/investment/InvestmentMain.css'
 import React, { useEffect, useState } from 'react';
-function InvestmentMain(){
-  const [prices, setPrices] = useState({});
 
+function InvestmentMain(){
+  const API_KEY = 'H1CKZCZJ76G0MZ5S';
+  const [prices, setPrices] = useState({});
+  const [stock, setStock] = useState({});
   const coins = [
       { name: '비트코인', symbol: 'BTCUSDT' },
       { name: '이더리움', symbol: 'ETHUSDT' },
       { name: '솔라나', symbol: 'SOLUSDT' },
       { name: '리플', symbol: 'XRPUSDT' },
-      // 추가 코인도 여기에 추가
   ];
+
+  const stockList = [
+    '^KS11',
+    '005930.KS',
+    'NVDA',
+  ]
+
+  const stokSymbol = [];
 
   useEffect(() => {
     // WebSocket 연결 설정
@@ -28,13 +37,10 @@ function InvestmentMain(){
             [symbol]: currentPrice,
         }));
     };
-
-
-
     // 컴포넌트 언마운트 시 WebSocket 연결 종료
     return () => {
         socket.close();
-    };
+    };    
     }, []);
 
     return (
@@ -78,6 +84,21 @@ function InvestmentMain(){
                 price={`$${prices['XRPUSDT'] ? parseFloat(prices['XRPUSDT']).toFixed(4) : 'Loading...'}`} 
                 p1={0} p2={""} p3={""} p4={""} p5={""} p6={""} p7={""}
               />
+              <div className='chartTable'>
+                <table>
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>종목명</th>
+                      <th>현재가격</th>
+                      <th>고가</th>
+                      <th>저가</th>
+                      <th>전일종가</th>
+                      <th>거래량</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
             {/* 코인바 끝. */}
           </div>

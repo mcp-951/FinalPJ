@@ -34,6 +34,10 @@ function InvestmentRight() {
         };
     }, []);
 
+    useEffect(() => {
+        
+    }, [])
+
     return (
         <div className="StockRightBar">
             <table>
