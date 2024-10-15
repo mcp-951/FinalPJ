@@ -10,7 +10,6 @@ const AccountClose = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // String 타입으로 처리된 accountNumber
   const accountNumber = location.state?.accountNumber || 'Unknown';
   const productName = location.state?.productName || 'Unknown';
 
@@ -42,22 +41,19 @@ const AccountClose = () => {
     }
   }, [accountNumber, userNo, token]);
 
-  // 이체 페이지로 이동하는 함수
   const handleTransfer = () => {
-    navigate('/account/transfer', { state: { accountNumber } });
+    navigate('/account/transfer');
   };
 
-  // 휴대폰 인증 로직
   const handlePhoneVerification = () => {
     setIsVerified(true);
     alert('휴대폰 인증이 완료되었습니다.');
   };
 
-  // 계좌 해지 API 호출 함수
   const confirmClose = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8081/uram/account/${accountNumber}/terminate`, // accountNumber는 String으로 처리
+        `http://localhost:8081/uram/account/${accountNumber}/terminate`,
         {
           userNo: userNo, // userNo를 요청 본문에 포함
         },
@@ -78,7 +74,6 @@ const AccountClose = () => {
     }
   };
 
-  // 계좌 해지 버튼 클릭 시 처리
   const handleAccountClose = () => {
     if (balance === 0) {
       if (window.confirm('계좌를 정말 해지하시겠습니까?')) {

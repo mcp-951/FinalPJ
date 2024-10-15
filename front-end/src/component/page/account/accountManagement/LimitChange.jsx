@@ -4,7 +4,9 @@ import axios from 'axios'; // 서버 요청을 위한 axios 추가
 import '../../../../resource/css/account/accountManagement/LimitChange.css'; // CSS 파일
 
 const LimitChange = () => {
+  const [newDailyLimit, setNewDailyLimit] = useState(''); // 1일 이체한도
   const [newOnceLimit, setNewOnceLimit] = useState(''); // 1회 이체한도
+  const [currentDailyLimit, setCurrentDailyLimit] = useState(null); // 현재 1일 이체한도
   const [currentOnceLimit, setCurrentOnceLimit] = useState(null); // 현재 1회 이체한도
   const [errorMessage, setErrorMessage] = useState(''); // 오류 메시지 상태
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate 훅
@@ -28,6 +30,7 @@ const LimitChange = () => {
           userNo: userNo // userNo를 쿼리 파라미터로 추가
         }
       });
+      setCurrentDailyLimit(response.data.accountMax);  // 1일 이체한도 설정
       setCurrentOnceLimit(response.data.accountLimit); // 1회 이체한도 설정
     } catch (error) {
       setErrorMessage('이체 한도 정보를 불러오는 중 오류가 발생했습니다.');
@@ -43,16 +46,22 @@ const LimitChange = () => {
   }, [accountNumber, userNo, token]);
 
   const handleLimitChange = async () => {
-    if (!newOnceLimit) {
-      setErrorMessage('변경할 한도 값을 입력해주세요.');
+    if (!newDailyLimit || !newOnceLimit) {
+      setErrorMessage('모든 한도 값을 입력해주세요.');
+      return;
+    }
+  
+    if (parseInt(newOnceLimit, 10) > parseInt(newDailyLimit, 10)) {
+      setErrorMessage('1회 이체한도가 1일 이체한도보다 클 수 없습니다.');
       return;
     }
   
     try {
       const response = await axios.post(
-        `http://localhost:8081/uram/account/${accountNumber}/change-limit`,
+        `http://localhost:8081/uram/account/${accountNumber}/change-limits`,
         {
-          onceLimit: parseInt(newOnceLimit, 10), // 새로운 1회 이체한도
+          dailyLimit: parseInt(newDailyLimit, 10),
+          onceLimit: parseInt(newOnceLimit, 10),
           userNo: userNo // userNo를 요청 본문에 포함
         },
         {
@@ -77,7 +86,7 @@ const LimitChange = () => {
   return (
     <div className="limit-change-container">
       <h2>이체한도 변경</h2>
-      <p>1회 이체한도를 확인하시고 변경할 이체한도를 입력해주세요</p>
+      <p>1일 및 1회 이체한도를 확인하시고 변경할 1일 및 1회 이체한도를 입력해주세요</p>
       
       {/* 오류 메시지 출력 */}
       {errorMessage && <p className="error-message" style={{ color: 'red' }}>{errorMessage}</p>}
@@ -91,6 +100,19 @@ const LimitChange = () => {
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <th>1일 이체한도</th>
+            <td>{currentDailyLimit !== null ? `${currentDailyLimit.toLocaleString()}원` : '로딩 중...'}</td>
+            <td>
+              <input
+                type="text"
+                value={newDailyLimit}
+                onChange={(e) => setNewDailyLimit(e.target.value)}
+                placeholder="입력칸"
+              />
+              원
+            </td>
+          </tr>
           <tr>
             <th>1회 이체한도</th>
             <td>{currentOnceLimit !== null ? `${currentOnceLimit.toLocaleString()}원` : '로딩 중...'}</td>

@@ -15,44 +15,21 @@ const AccountTransfer = () => {
   const [selectedBank, setSelectedBank] = useState(''); // 선택된 은행
   const [targetAccountNumber, setTargetAccountNumber] = useState(''); // 입금 계좌번호
   const [isAccountValid, setIsAccountValid] = useState(null); // 입금 계좌번호 유효성 체크
-  const [onceLimit, setOnceLimit] = useState(null); // 1회 이체 한도
+  const [transferLimit, setTransferLimit] = useState({ dailyLimit: null, onceLimit: null }); // 이체 한도
   const [errorMessages, setErrorMessages] = useState({}); // 각 필드에 대한 에러 메시지 상태
   const [accounts, setAccounts] = useState([]); // 사용자의 계좌 목록
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 사용
 
-  // 로그인 확인 추가 부분
-  useEffect(() => {
-    const token = localStorage.getItem('token'); // 토큰 확인
-    if (!token) {
-      alert('로그인이 필요합니다.');
-      navigate('/login'); // 로그인 페이지로 리다이렉트
-    }
-  }, [navigate]);
-
   // 로컬 스토리지에서 JWT 토큰과 userNo 가져오기
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");
-
-  // 계좌번호 포맷팅 함수 (###-##-##### 형식)
-  const formatAccountNumber = (value) => {
-    const cleanValue = value.replace(/\D+/g, ''); // 숫자만 남김
-    const formattedValue = cleanValue.replace(/(\d{3})(\d{2})(\d{5})/, '$1-$2-$3'); // 형식 적용
-    return formattedValue;
-  };
-
-  // 계좌번호 입력 시 포맷 적용
-  const handleAccountNumberChange = (e) => {
-    const inputValue = e.target.value;
-    const formattedAccountNumber = formatAccountNumber(inputValue);
-    setTargetAccountNumber(formattedAccountNumber); // 포맷팅된 계좌번호 저장
-  };
 
   // 초기 계좌 목록 로드 및 이체 한도 정보 로드
   useEffect(() => {
     fetchAccounts();
     if (initialAccount) {
       setSelectedAccount(initialAccount);
-      fetchOnceLimit(initialAccount); // 이체 한도 정보를 가져옴
+      fetchTransferLimits(initialAccount); // 이체 한도 정보를 가져옴
     }
   }, [initialAccount]);
 
@@ -81,8 +58,8 @@ const AccountTransfer = () => {
     }
   };
 
-  // 1회 이체 한도 정보를 받아오는 함수
-  const fetchOnceLimit = async (accountNumber) => {
+  // 이체 한도 정보를 받아오는 함수
+  const fetchTransferLimits = async (accountNumber) => {
     try {
       const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
         headers: {
@@ -92,7 +69,10 @@ const AccountTransfer = () => {
           userNo: userNo // userNo를 쿼리 파라미터로 추가
         }
       });
-      setOnceLimit(response.data.accountLimit); // 1회 이체 한도 설정
+      setTransferLimit({
+        dailyLimit: response.data.accountMax, // 1일 이체 한도
+        onceLimit: response.data.accountLimit   // 1회 이체 한도
+      });
     } catch (error) {
       console.error('이체 한도 정보를 불러오는 중 오류 발생:', error);
     }
@@ -100,7 +80,7 @@ const AccountTransfer = () => {
 
   // 출금 가능 금액 확인
   const handleCheckBalance = () => {
-    const account = accounts.find(acc => acc.accountNumber === selectedAccount);
+    const account = accounts.find(acc => acc.accountNumber === parseInt(selectedAccount));
     if (account) {
       setAvailableBalance(account.accountBalance); // 계좌의 잔액을 설정
       setErrorMessages({ ...errorMessages, selectedAccount: '' });
@@ -126,8 +106,8 @@ const AccountTransfer = () => {
 
     try {
       const response = await axios.post(`http://localhost:8081/uram/account/${selectedAccount}/check-password`, {
-        password: password,
-        userNo: userNo // userNo를 요청 본문에 포함
+        password: parseInt(password, 10),
+        userNo: parseInt(userNo, 10) // userNo를 숫자로 변환하여 요청 본문에 포함
       }, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -160,7 +140,7 @@ const AccountTransfer = () => {
         params: {
           accountNumber: targetAccountNumber,
           bankName: selectedBank,
-          userNo: userNo // userNo를 쿼리 파라미터로 추가
+          userNo: parseInt(userNo, 10) // userNo를 숫자로 변환하여 쿼리 파라미터로 추가
         },
         headers: {
           'Authorization': `Bearer ${token}`
@@ -222,9 +202,6 @@ const AccountTransfer = () => {
     } else if (parseInt(transferAmount, 10) > availableBalance) {
       newErrorMessages.transferAmount = '이체 금액이 잔액보다 큽니다.';
       hasError = true;
-    } else if (parseInt(transferAmount, 10) > onceLimit) {
-      newErrorMessages.transferAmount = `이체 금액이 1회 이체 한도(${onceLimit.toLocaleString()}원)를 초과했습니다.`;
-      hasError = true;
     }
 
     if (!isPasswordValid) {
@@ -264,7 +241,7 @@ const AccountTransfer = () => {
                       setSelectedAccount(e.target.value);
                       setAvailableBalance(null);
                       setErrorMessages({ ...errorMessages, selectedAccount: '' });
-                      fetchOnceLimit(e.target.value); // 선택된 계좌의 이체 한도 가져오기
+                      fetchTransferLimits(e.target.value); // 선택된 계좌의 이체 한도 가져오기
                     }}
                   >
                     <option value="">계좌 선택</option>
@@ -305,7 +282,10 @@ const AccountTransfer = () => {
                 <input
                   type="text"
                   value={targetAccountNumber}
-                  onChange={handleAccountNumberChange}
+                  onChange={(e) => {
+                    setTargetAccountNumber(e.target.value);
+                    setErrorMessages({ ...errorMessages, targetAccountNumber: '' });
+                  }}
                   placeholder="입금 계좌번호 입력"
                 />
                 <button type="button" onClick={handleAccountCheck}>계좌 확인</button>

@@ -56,4 +56,6 @@ public class AutoTransferEntity {
 
     @Column
     private String toBankName;
+    
+
 }

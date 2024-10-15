@@ -50,31 +50,20 @@ public class UserController {
         return userService.checkHp(hp);
     }
 
-    // 카카오 연동 로그인
-    @GetMapping("/doKakaoLogin/{code}")
-    public ResponseEntity<?> kakaoLogin(@PathVariable("code") String code){
+    @GetMapping("/kakaoLogin")
+    public ResponseEntity<?> kakaoLogin(@RequestParam("code") String code){
         logger.info("<<< kakaoLogin >>>");
-        String userId = kakaoService.getAccessTokenFromKakao(code);
-        return ResponseEntity.ok(userId);
+        String accessToken = kakaoService.getAccessTokenFromKakao(code);
+        return ResponseEntity.ok(accessToken);
     }
-    // 아이디 찾기
-    @GetMapping("/findUserId")
-    public ResponseEntity<?> findUserId(@RequestParam String name, @RequestParam String hp) {
-        logger.info("<<< findUserId >>>");
-        logger.info("name : " + name);
-        logger.info("hp : " + hp);
 
-        String userId = userService.findUserId(name, hp); // 서비스 호출
-        return ResponseEntity.ok(userId); // 찾은 userId 반환
-    }
-    // 비밀번호 찾기 - 비밀번호 재설정
-    @PutMapping("/resetPassword")
-    public ResponseEntity<?> resetPassword(@RequestBody UserDTO userdto) {
-        logger.info("<<< resetPassword >>>");
+//    @GetMapping("/getUserId")
+//    public ResponseEntity<?> getUserId(@RequestParam("kakaoId") String kakaoId){
+//        logger.info("<<< getUserId >>>");=
+//        return ResponseEntity.ok(accessToken);
+   // }
 
-        String userPw = userService.resetPassword(userdto); // 서비스 호출
-        return ResponseEntity.ok(userPw);
-    }
+
 
 //    @PostMapping("/refresh")
 //    public ResponseEntity<UserDTO> refreshToken(@RequestBody UserDTO dto){

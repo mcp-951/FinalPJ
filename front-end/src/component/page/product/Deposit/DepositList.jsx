@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../../../util/Footer'; // Footer 컴포넌트 임포트
-import '../../../../resource/css/product/DepositList.css'; // 예금 상품 관련 CSS 파일
+import ApiService from 'component/ApiService'; // API 서비스 임포트
+import '../../../../resource/css/product/DepositList.css';
 
-// 예금 상품 항목 컴포넌트 (DepositItem)
-const DepositItem = ({ title, description, rate }) => {
+// 상품 항목 컴포넌트 (DepositItem)
+const DepositItem = ({ depositName, depositContent, depositRate, depositCategory, depositNo }) => {
   const navigate = useNavigate();
 
   const handleDetailClick = () => {
-    // 세션에 예금 상품 정보 저장
-    sessionStorage.setItem('selectedDepositProduct', JSON.stringify({ title, description, rate }));
-    // 예금 상품 상세 페이지로 이동
+    // 세션에 상품 정보 저장
+    sessionStorage.setItem(
+      'selectedDeposit',
+      JSON.stringify({ depositName, depositContent, depositRate, depositCategory, depositNo })
+    );
+    // 상세 페이지로 이동
     navigate('/DepositMain');
   };
 
   return (
     <div className="deposit-item">
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <strong>연 {rate}%</strong>
+      <h3>{depositName}</h3>
+      <p>{depositContent}</p>
+      <strong>연 {depositRate}%</strong>
       <div className="buttons">
         <button onClick={handleDetailClick}>상세보기</button>
         <button onClick={handleDetailClick}>가입하기</button>
@@ -27,88 +30,51 @@ const DepositItem = ({ title, description, rate }) => {
   );
 };
 
-// 예금 상품 리스트 컴포넌트 (DepositList)
-const DepositList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+// 상품 리스트 컴포넌트 (DepositList)
+const DepositList = ({ deposits }) => (
+  <div className="deposit-list">
+    {deposits.map((deposit, index) => (
+      <DepositItem
+        key={index}
+        depositName={deposit.depositName}
+        depositContent={deposit.depositContent}
+        depositRate={deposit.depositRate}
+        depositCategory={deposit.depositCategory}
+        depositNo={deposit.depositNo}
+      />
+    ))}
+  </div>
+);
 
-  // 예시 상품 데이터
-  const productsPerPage = 3;
-  const depositProducts = [
-    { title: '우람 정기예금', description: '우람은행의 고이율 정기예금', rate: 4.0 },
-    { title: '우람 적금', description: '우람은행의 정기 적금 상품', rate: 3.5 },
-    { title: '우람 청약저축', description: '내집 마련을 위한 청약저축', rate: 2.0 },
-    { title: '단기 예금', description: '단기간 예금 상품', rate: 2.8 },
-    { title: '장기 예금', description: '장기간 예금 상품', rate: 3.2 },
-    { title: '기업 예금', description: '기업 고객을 위한 예금 상품', rate: 3.8 },
-  ];
+// 메인 컴포넌트 (DepositList1)
+const DepositList1 = () => {
+  const [deposits, setDeposits] = useState([]);  // 상품 데이터를 저장하는 state
+  const [currentPage, setCurrentPage] = useState(1);  // 현재 페이지
+  const [totalPages, setTotalPages] = useState(0);  // 총 페이지 수
+  const depositsPerPage = 8;  // 페이지당 상품 개수
 
-  // 페이지 계산
-  const totalPages = Math.ceil(depositProducts.length / productsPerPage);
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const currentProducts = depositProducts.slice(startIndex, startIndex + productsPerPage);
+  useEffect(() => {
+    // API를 호출하여 적금 상품 데이터 가져오기
+    ApiService.fetchDepositProductsPaged(currentPage - 1, depositsPerPage)
+      .then(response => {
+        console.log('API Response:', response.data);  // 콘솔에 응답 출력
+        setDeposits(response.data.content);  // 상품 데이터 설정
+        setTotalPages(response.data.totalPages);  // 총 페이지 수 설정
+      })
+      .catch(error => {
+        console.error('Error fetching deposit products:', error);
+      });
+  }, [currentPage]);  // currentPage가 변경될 때마다 API 호출
 
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    setCurrentPage(page);  // 페이지 변경
   };
 
   return (
     <div className="app">
-      <h1>예금 상품 리스트</h1>
-      <div className="product-list">
-        {currentProducts.map((product, index) => (
-          <DepositItem
-            key={index}
-            title={product.title}
-            description={product.description}
-            rate={product.rate}
-          />
-        ))}
-      </div>
+      <h1>적금 상품 리스트</h1>
+      <DepositList deposits={deposits} />
       <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
-
-      {/* 예금 관련 수수료 테이블 추가 */}
-      <div className="fee-table-container">
-        <h2>예금 관련 수수료</h2>
-        <table className="fee-table">
-          <thead>
-            <tr>
-              <th>이용형태</th>
-              <th>단위/기준</th>
-              <th>일반고객</th>
-              <th>할인고객</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>창구 송금수수료 (같은 은행으로 보낼 때)</td>
-              <td>10만원 이하</td>
-              <td>500원</td>
-              <td>400원</td>
-            </tr>
-            <tr>
-              <td>창구 송금수수료 (다른 은행으로 보낼 때)</td>
-              <td>10만원 초과 ~ 100만원 이하</td>
-              <td>2,000원</td>
-              <td>1,600원</td>
-            </tr>
-            <tr>
-              <td>추심 수수료</td>
-              <td>10만원 이하</td>
-              <td>2,000원</td>
-              <td>1,600원</td>
-            </tr>
-            <tr>
-              <td>추심 수수료</td>
-              <td>100만원 초과</td>
-              <td>3,500원</td>
-              <td>3,000원</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* Footer 추가 */}
-      <Footer />
     </div>
   );
 };
@@ -119,8 +85,9 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => (
     {[...Array(totalPages)].map((_, index) => (
       <button
         key={index}
-        className={currentPage === index + 1 ? 'active' : ''}
+        className={currentPage === index + 1 ? 'active' : ''} 
         onClick={() => onPageChange(index + 1)}
+        disabled={currentPage === index + 1}  // 현재 페이지는 비활성화
       >
         {index + 1}
       </button>
@@ -128,4 +95,4 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => (
   </div>
 );
 
-export default DepositList;
+export default DepositList1;

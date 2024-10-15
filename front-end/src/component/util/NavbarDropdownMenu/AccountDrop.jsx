@@ -44,6 +44,8 @@ function AccountDrop(){
                         <h4>자동이체</h4>
                         <li className="small-text"><a href='/auto-transfer/register'>자동이체 등록</a></li> {/* 등록 페이지 경로 추가 */}
                         <li className="small-text"><a href='/auto-transfer/list'>자동이체 조회</a></li>
+                        <li className="small-text"><a href='/transfer/other'>자동이체 변경</a></li>
+                        <li className="small-text"><a href='/transfer/other'>자동이체 해지</a></li>
                     </ul>
                 </div>
             </div>
