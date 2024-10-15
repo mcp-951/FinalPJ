@@ -12,6 +12,8 @@ import InquiryForm from 'component/page/customerService/InquiryForm';
 // 로그인 라우터 임포트
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
+import SignupForKakao from '../page/loginPage/SignUpForKakao';
+import FindIdAndPw from '../page/loginPage/FindIdAndPw';
 
 // 투자 라우터 임포트
 import InvestmentMain from 'component/page/investment/InvestmentMain';
@@ -80,6 +82,7 @@ import AssetsAnalysis from '../page/assetsPage/AssetsAnalysis';
 //팝업
 import GetAddress from 'component/page/loginPage/GetAddress';
 import ExchangeResult from 'component/page/exchangePage/ExchangeResult';
+import RedirectKakao from 'component/page/loginPage/RedirectKakao';
 
 
 const RouteComponent = () => {
@@ -96,6 +99,8 @@ const RouteComponent = () => {
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
                         <Route path="/signup" exact={true} element={<Signup />} />
+                        <Route path="/signupForKakao" exact={true} element={<SignupForKakao />} />
+                        <Route path="/FindIdAndPw" exact={true} element={<FindIdAndPw />} />
                         {/*}투자 페이지{*/}
                         <Route path="/investment" exact={true} element={<InvestmentMain/>} />
                         {/*}공과금페이지{*/}
@@ -183,6 +188,7 @@ const RouteComponent = () => {
 
 
                         <Route path="/getAddress" exact={true} element={<GetAddress />} />
+                        <Route path="/kakaoLogin" exact={true} element={<RedirectKakao />} />
 
 
                    </Routes>

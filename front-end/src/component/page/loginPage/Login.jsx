@@ -7,7 +7,7 @@ import kakaoimg from 'resource/img/kakao_login.png';
 
 function Login() {
     const Rest_api_key = '7101f2d4aff750a5e9aba4237ed24b78'; // REST API KEY
-    const redirect_uri = 'http://localhost:8081/kakaoLogin'; // Redirect URI
+    const redirect_uri = 'http://localhost:3000/kakaoLogin'; // Redirect URI
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -27,64 +27,56 @@ function Login() {
             windowFeatures
         );
         setPopup(popup);
-        console.log(popup);
+
     };
+
+    // 부모 창에서 메시지 수신
     useEffect(() => {
-        const currentUrl = window.location.href;
-        const searchParams = new URL(currentUrl).searchParams;
-        const code = searchParams.get("code");
-        if (code) {
-          window.opener.postMessage({ code }, window.location.origin);
-        }
-    }, []);
-    // 로그인 팝입이 열리면 로그인 로직을 처리합니다.
-    useEffect(() => {
-        if (!popup) {
-          return;
-    }
+        const messageListener = (event) => {
+            if (event.origin !== window.location.origin) return; // 같은 도메인에서 온 메시지만 처리
+            const { code } = event.data;
+            console.log(code);
+            if (code) {
+                handleKakaoLogin(code); // 로그인 처리
+                popup?.close(); // 팝업 닫기
+                setPopup(null);
+            }
+        };
 
-    const githubOAuthCodeListener = (e) => {
-        // 동일한 Origin 의 이벤트만 처리하도록 제한
-        if (e.origin !== window.location.origin) {
-            return;
-        }
-        const { code } = e.data;
-        if (code) {
-            console.log(`The popup URL has URL code param = ${code}`);
-        }
-        popup?.close();
-        setPopup(null);
-    };
-
-    window.addEventListener("message", githubOAuthCodeListener, false);
-
-    return () => {
-        window.removeEventListener("message", githubOAuthCodeListener);
-        popup?.close();
-        setPopup(null);
-    };
+        window.addEventListener('message', messageListener);
+        return () => {
+            window.removeEventListener('message', messageListener);
+            popup?.close();
+        };
     }, [popup]);
 
-
+    // 카카오로그인 처리
     const handleKakaoLogin = async (code) => {
         try {
-            // 백엔드로 code 전달 후 accessToken 획득
-            const response = await apiSer.checkId(code); // 백엔드에서 accessToken 처리
-            const accessToken = response.data.accessToken;
+            const response = await apiSer.kakaoLogin(code);
+            const kakaoId = response.data;
+            const response2 = apiSer.checkId(kakaoId);
 
-            if (accessToken) {
-                localStorage.setItem('token', accessToken); // accessToken 저장
-                console.log('카카오 로그인 성공, 토큰 저장:', accessToken);
-                alert('로그인 성공');
-                navigate('/'); // 메인 페이지로 이동
-                window.location.reload(); // 새로고침으로 로그인 반영
-            }
+            if(response2.data === "" || response2.data === null || response2.data === undefined) {
+                alert('추가 회원가입이 필요합니다.');
+                navigate('/signupForKakao', { state: { kakaoId: kakaoId } });
+                }else{
+                    const data = {
+                        "userId" : kakaoId,
+                        "userPw" : kakaoId
+                    }
+                    const response = await apiSer.login(data);
+                    const token = response.data.accessToken;
+                    localStorage.setItem('token', token); // 로그인 성공 시 토큰 저장
+                    localStorage.setItem('userNo', response.data.userNo);
+                    navigate('/'); // 메인 페이지로 이동
+                }
         } catch (error) {
             console.error('카카오 로그인 실패:', error);
-            alert('카카오 로그인에 실패했습니다.');
         }
     };
 
+    // 로그인 처리
     const handleLogin = async () => {
         try {
             const form = {
@@ -133,7 +125,7 @@ function Login() {
                 </div>
                 <button className="login-button" onClick={handleLogin}>로그인</button>
                 <div className="login_move_other_href">
-                    <a href="#">아이디 찾기</a> | <a href="#">비밀번호 찾기</a> | <a href="/signup">회원가입</a>
+                    <a href="/FindIdAndPw">아이디/비밀번호 찾기</a> |  <a href="/signup">회원가입 </a>
                 </div>
                 <div>
                     <button onClick={openPopup}>

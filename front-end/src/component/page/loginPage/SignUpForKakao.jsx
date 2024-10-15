@@ -1,14 +1,16 @@
 import React, { useEffect , useState } from 'react';
 import '../../../resource/css/SignUp.css';
 import apiSer from '../../ApiService';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import getAddress from './GetAddress'
 
-function SignUp() {
+function SignUpForKakao() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { kakaoId } = location.state || {}; // state에서 kakaoId 가져오기
     const [form, setForm] = useState({
         userId: '',
         userPw: '',
-        confirmPassword: '',
         name: '',
         email: '',
         email1: '',
@@ -29,15 +31,21 @@ function SignUp() {
     const [stateAuth, setStateAuth] = useState(false);
     const [pwSameCheck, setPwSameCheck] = useState(false);
     const [plusAddress, setPlusAddress] = useState(false);
-    const navigate = useNavigate();
     const [hpAuthKey, setHpAuthKey] = useState('');
-    const [authHp, setAuthHp] = useState('');
+    const [authHp, setAuthHp] = useState(false);
     const [resNoError1, setResNoError1] = useState('');
     const [resNoError2, setResNoError2] = useState('');
-    // 정규식
-    const reg_id = /^(?=.*?[a-zA-Z0-9]).{6,16}$/;   //아이디 판별을 위한 정규식 영문자숫자만 입력 가능 6~16 자
-    const reg_password = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,20}$/;	//비밀번호 판별을 위한 정규식 문자(소문자, 대문자)+숫자로 구성된 8~20 자
 
+    // 카카오 아이디를 form에 설정
+    useEffect(() => {
+        if (kakaoId) {
+            setForm((prevForm) => ({
+                ...prevForm,
+                userId: kakaoId,
+                userPw: kakaoId
+            }));
+        }
+    }, [kakaoId]);
     // 입력창 실시간 업데이트
     const handleChange = (e) => {
       const { name, value } = e.target;
@@ -52,48 +60,6 @@ function SignUp() {
         setStateAuth(true);
     };
 
-    //아이디
-    const idCheck = () => {
-        const userId = form.userId;
-        if(userId === "") {
-            setIdCheckMessage('아이디를 입력하세요');
-        }else{
-          console.log("userId :" + userId)
-          handleCheckId(userId);
-        }
-    }
-    const handleCheckId = (userId) => {
-    apiSer.checkId(userId)
-        .then((response) => {
-            console.log(response.data);  // 서버에서 받은 데이터
-            if(response.data === '') {
-              setIdCheckMessage(userId + '는(은) 사용가능한 아이디입니다.');
-              setIdCheckState(true);
-            }else{
-              setIdCheckMessage(userId + '는(은) 이미 존재하는 아이디입니다.');
-              setIdCheckState(false);
-            }
-        })
-        .catch((error) => {
-            console.error("Error checking ID: ", error);
-        });
-    };
-
-    // 비밀번호
-    useEffect(() => {
-        checkingPw();
-    }, [form.userPw, form.confirmPassword]);
-
-
-    const checkingPw = () => {
-        if(form.userPw != null && form.confirmPassword != null) {
-            if(form.userPw === form.confirmPassword){
-                setPwSameCheck(false);
-            }else{
-                setPwSameCheck(true);
-            }
-        }
-    };
 
     //이메일 셀렉트 박스 자동 입력
     const handleChangeEmail2 = (e) => {
@@ -120,8 +86,14 @@ function SignUp() {
 };
 
     useEffect(() => {
-        checkResNo1();
-        checkResNo2();
+        if(form.residentNumber1 !== null){
+            checkResNo1();
+            }
+        if(form.residentNumber2 !== null){
+            checkResNo2();
+            }
+
+
         },[form.residentNumber1, form.residentNumber2]);
 
     // 휴대폰
@@ -198,7 +170,6 @@ function SignUp() {
                 }else if(authHp === 'false' || authHp === ''){
                     alert("휴대폰 인증이 되지 않았습니다.")
                     }else {
-
                         console.log(form.address)
                         console.log({...form})
                         apiSer.signUp({...form});
@@ -219,11 +190,9 @@ function SignUp() {
             type="text"
             name="userId"
             value={form.userId}
-            onChange={handleChange}
             placeholder="6-20자 영문, 숫자"
+            readOnly
           />
-          <button type="button" onClick = {idCheck} className='signUp-button'>중복체크</button>
-          <p name= "checkingId" value = "0">{idCheckMessage}</p>
         </div>
 
         <div className="form-group">
@@ -232,25 +201,9 @@ function SignUp() {
             type="password"
             name="userPw"
             value={form.userPw}
-            onChange={handleChange}
             placeholder="8-12자 영문, 숫자, 특수문자"
+            readOnly
           />
-        </div>
-
-        <div className="form-group">
-          <label>비밀번호 확인</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            placeholder="8-12자 영문, 숫자, 특수문자"
-          />
-        </div>
-        <div className="form-group">
-            {pwSameCheck && (<>
-               <p>비밀번호가 일치하지 않습니다.</p>
-            </>)}
         </div>
 
         <div className="form-group">
@@ -283,32 +236,6 @@ function SignUp() {
             required
           />
           {resNoError2 && <p style={{ color: 'red' }}>{resNoError2}</p>}
-        </div>
-
-        <div className="form-group">
-          <label>이메일</label>
-          <input
-            type="text"
-            name="email1"
-            value={form.email1}
-            onChange={handleChange}
-            required
-          />
-          @
-          <input
-            type="text"
-            name="email2"
-            value={form.email2}
-            onChange={handleChange}
-            required
-          />
-          <select onChange={handleChangeEmail2}>
-            <option value="">직접입력</option>
-            <option value="gmail.com">gmail.com</option>
-            <option value="naver.com">naver.com</option>
-            <option value="daum.co.kr">daum.co.kr</option>
-            <option value="nate.com">nate.com</option>
-          </select>
         </div>
 
         <div className="form-group">
@@ -384,11 +311,10 @@ function SignUp() {
           <button type="button" onClick={openPopup} className='signUp-button'>검색</button>
         </div>
 
-
         <button type="submit" className='signUp-button'>가입완료</button>
       </div>
     </form>
     );
 }
 
-export default SignUp;
+export default SignUpForKakao;

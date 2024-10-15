@@ -1,0 +1,65 @@
+.topBtn_wrap {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000; /* 버튼이 항상 최상단에 위치하게 함 */
+}
+
+.topBtn {
+  background-color: #007BFF;
+  border: none;
+  color: white;
+  padding: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 900; /* 버튼보다 아래에 위치하도록 설정 */
+}
+/* 챗봇 모달 스타일 */
+.chatbotModal {
+  position: fixed;
+  margin-right: 100px;
+  margin-bottom: 20px;
+  bottom: 0;
+  right: 0;
+  width: 400px;
+  height: 600px;
+  background-color: #f1f1f1;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
+/* 챗봇 헤더 */
+.chatbotHeader {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #e1e1e1;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* 챗봇 헤더 */
+.chatbotFooter {
+  align-items: bottom;
+  padding: 10px;
+  background-color: white;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}

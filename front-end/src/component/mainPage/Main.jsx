@@ -5,6 +5,7 @@ import Middlebar from './Middlebar';
 import BottomNoticeBoard from './BottomNoticeBoard';
 import BottomNewsBoard from './BottomNewsBoard';
 import Footer from '../util/Footer';
+import ChatBotButton from './ChatBotButton';
 
 function Main() {
     // 토큰과 userNo를 localStorage에서 가져오기
@@ -37,6 +38,7 @@ function Main() {
                 {/* <BottomNoticeBoard />
                 <BottomNewsBoard /> */}
             </div>
+            <ChatBotButton />
             <Footer />
             
             {/* 토큰과 userNo 출력 */}
