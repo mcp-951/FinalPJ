@@ -8,6 +8,7 @@ import com.urambank.uram.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -48,10 +49,13 @@ public class AccountController {
     }
 
     @GetMapping("/category/{depositCategory}")
-    public ResponseEntity<List<Map<String, Object>>> categoryList(@PathVariable("depositCategory") int depositCategory) {
+    public ResponseEntity<List<Map<String, Object>>> categoryList(
+            @PathVariable("depositCategory") int depositCategory,
+            @RequestParam("userNo") int userNo // userNo를 파라미터로 추가
+    ) {
         try {
-            // depositCategory에 해당하는 계좌 목록 가져오기
-            List<Map<String, Object>> accountList = accountService.listCategory(depositCategory);
+            // depositCategory와 userNo에 해당하는 계좌 목록 가져오기
+            List<Map<String, Object>> accountList = accountService.listCategory(depositCategory, userNo);
             if (accountList.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
             }
@@ -97,15 +101,15 @@ public class AccountController {
     }
 
 
-    // 계좌 비밀번호 확인
+    // 계좌 비밀번호 확인 API
     @PostMapping("/account/{accountNumber}/check-password")
     public ResponseEntity<String> checkAccountPassword(
-            @PathVariable("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
+            @PathVariable("accountNumber") String accountNumber,
             @RequestBody Map<String, Object> request) {
         try {
-            // userNo와 password를 요청에서 가져옴
+            // 요청에서 userNo와 입력된 비밀번호 가져오기
             Integer userNo = Integer.parseInt(request.get("userNo").toString());
-            String inputPassword = request.get("password").toString();  // accountPW를 String으로 처리
+            String inputPassword = request.get("password").toString();
 
             // 비밀번호가 누락된 경우
             if (inputPassword == null || userNo == null) {
@@ -113,7 +117,7 @@ public class AccountController {
             }
 
             // 계좌 비밀번호 확인
-            boolean isPasswordCorrect = accountService.checkAccountPassword(userNo, accountNumber, inputPassword);  // accountNumber와 password를 String으로 처리
+            boolean isPasswordCorrect = accountService.checkAccountPassword(userNo, accountNumber, inputPassword);
 
             if (isPasswordCorrect) {
                 return ResponseEntity.ok("비밀번호 일치");
@@ -135,15 +139,15 @@ public class AccountController {
         try {
             // userNo와 newPassword를 요청에서 가져옴
             Integer userNo = Integer.parseInt(request.get("userNo").toString());
-            String newPassword = request.get("newPassword").toString();  // accountPW를 String으로 처리
+            String newPassword = request.get("newPassword").toString();  // 입력된 새로운 비밀번호
 
             // 비밀번호나 userNo가 누락된 경우
             if (newPassword == null || userNo == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 번호 또는 새로운 비밀번호 누락");
             }
 
-            // 계좌 비밀번호 변경
-            boolean isPasswordChanged = accountService.changeAccountPassword(userNo, accountNumber, newPassword);  // accountNumber와 newPassword를 String으로 처리
+            // 계좌 비밀번호 변경 (비밀번호 암호화 후 저장)
+            boolean isPasswordChanged = accountService.changeAccountPassword(userNo, accountNumber, newPassword);
 
             if (isPasswordChanged) {
                 return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다.");
@@ -155,6 +159,7 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류");
         }
     }
+
 
 
     // 계좌 해지 API
@@ -445,12 +450,11 @@ public class AccountController {
     }
 
 
-
     @GetMapping("/auto-transfer/list")
-    public ResponseEntity<List<Map<String, Object>>> getAllAutoTransfers() {
+    public ResponseEntity<List<Map<String, Object>>> getAllAutoTransfers(@RequestParam("userNo") int userNo) {
         try {
-            // 서비스에서 모든 자동이체 데이터와 계좌 정보를 한 번에 가져옴
-            List<Map<String, Object>> autoTransfers = accountService.getAllAutoTransfers();
+            // 서비스에서 userNo에 해당하는 자동이체 데이터와 계좌 정보를 가져옴
+            List<Map<String, Object>> autoTransfers = accountService.getAllAutoTransfers(userNo);
 
             // 자동이체 목록이 비어 있을 경우 204 응답
             if (autoTransfers.isEmpty()) {
@@ -465,6 +469,7 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 서버 오류 처리
         }
     }
+
 
     @PutMapping("/auto-transfer/{autoTransNo}/update")
     public ResponseEntity<String> updateAutoTransfer(@PathVariable("autoTransNo") int autoTransNo, @RequestBody AutoTransferDTO autoTransferDTO) {

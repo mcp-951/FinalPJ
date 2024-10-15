@@ -4,7 +4,6 @@ import '../../../../resource/css/account/autoTransfer/AutoTransferList.css';
 
 const AutoTransferList = () => {
   const [autoTransfers, setAutoTransfers] = useState([]);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   // 로그인 확인 추가 부분
@@ -34,12 +33,11 @@ const AutoTransferList = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setAutoTransfers(data);
-      } else {
-        setError('자동이체 내역을 불러오는 중 오류가 발생했습니다.');
+        setAutoTransfers(data); // 데이터 설정
+      } else if (response.status === 204) {
+        setAutoTransfers([]); // 자동이체 내역이 없을 때 빈 배열 설정
       }
     } catch (error) {
-      setError('자동이체 내역을 불러오는 중 오류가 발생했습니다.');
       console.error('자동이체 목록 불러오기 실패:', error);
     }
   };
@@ -64,7 +62,6 @@ const AutoTransferList = () => {
   return (
     <div className="auto-transfer-list-container">
       <h2>자동이체 내역</h2>
-      {error && <p className="error-message">{error}</p>}
       {autoTransfers.length > 0 ? (
         <table className="auto-transfer-list-table">
           <thead>
@@ -119,7 +116,7 @@ const AutoTransferList = () => {
           </tbody>
         </table>
       ) : (
-        <p>등록된 자동이체 내역이 없습니다.</p>
+        <p>등록된 자동이체 내역이 없습니다.</p> // 자동이체 내역이 없을 때 표시
       )}
     </div>
   );

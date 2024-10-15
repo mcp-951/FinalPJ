@@ -36,9 +36,16 @@ const Total = () => {
         index === self.findIndex((acc) => acc.accountNumber === account.accountNumber)
       );
 
-      setUserName(userName); // 사용자 이름 설정
-      setAccounts(uniqueAccounts); // 계좌 목록 설정
+      if (uniqueAccounts.length === 0) {
+        alert('등록된 계좌가 없습니다.');
+        navigate('/'); // 계좌가 없을 경우 메인 페이지로 리다이렉트
+      } else {
+        setUserName(userName); // 사용자 이름 설정
+        setAccounts(uniqueAccounts); // 계좌 목록 설정
+      }
     } catch (error) {
+      alert('등록된 계좌가 없습니다.');
+      navigate('/'); // 오류 발생 시 메인 페이지로 리다이렉트
       console.error('데이터를 가져오는 중 오류 발생:', error);
     }
   };

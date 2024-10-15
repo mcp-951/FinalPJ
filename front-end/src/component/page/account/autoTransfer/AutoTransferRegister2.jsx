@@ -49,16 +49,16 @@ const AutoTransferRegister2 = () => {
 
       const { accounts } = response.data;
 
-      if (Array.isArray(accounts)) {
+      if (Array.isArray(accounts) && accounts.length > 0) {
         setAccounts(accounts);
       } else {
-        setAccounts([]);
-        setErrorMessages({ general: '계좌 목록을 불러오는 중 오류가 발생했습니다.' });
+        alert('등록된 계좌가 없습니다.'); // 계좌가 없을 때 알림
+        navigate('/'); // 메인 페이지로 리다이렉트
       }
     } catch (error) {
       console.error('계좌 목록 불러오기 실패:', error);
       setErrorMessages({ general: '계좌 목록을 불러오는 중 오류가 발생했습니다.' });
-      setAccounts([]);
+      setAccounts([]); // 계좌가 없을 경우 빈 배열로 설정
     }
   };
 

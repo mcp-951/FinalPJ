@@ -21,8 +21,13 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, " +
             "a.deposit.depositNo, a.deposit.depositName " +
-            "FROM AccountEntity a JOIN a.deposit d WHERE d.depositCategory = :depositCategory AND a.accountState = 'NORMAL'")
-    List<Object[]> findByDepositCategoryAndActive(@Param("depositCategory") int depositCategory);
+            "FROM AccountEntity a JOIN a.deposit d " +
+            "WHERE d.depositCategory = :depositCategory AND a.accountState = 'NORMAL' AND a.userNo = :userNo")
+    List<Object[]> findByDepositCategoryAndActiveAndUser(
+            @Param("depositCategory") int depositCategory,
+            @Param("userNo") int userNo  // userNo 파라미터 추가
+    );
+
 
     // 특정 계좌 정보와 관련된 deposit 정보를 조회
     @Query("SELECT a FROM AccountEntity a JOIN FETCH a.deposit d WHERE a.accountNumber = :accountNumber AND a.accountState = :accountState AND a.userNo = :userNo")

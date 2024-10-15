@@ -10,6 +10,7 @@ const PasswordCheck = ({ title, instructions }) => {
   const [password, setPassword] = useState('');  // 입력된 비밀번호
   const [isPasswordValid, setIsPasswordValid] = useState(null);  // 비밀번호 유효성 상태
   const [errorMessage, setErrorMessage] = useState('');  // 오류 메시지 상태
+  const [loading, setLoading] = useState(true);  // 로딩 상태 추가
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -46,10 +47,17 @@ const PasswordCheck = ({ title, instructions }) => {
       });  // 계좌 목록을 불러오는 API 호출
 
       const { accounts } = response.data;
-      setAccounts(accounts);
+      if (!accounts || accounts.length === 0) {
+        alert('등록된 계좌가 없습니다.');
+        navigate('/');  // 메인 페이지로 리다이렉트
+      } else {
+        setAccounts(accounts || []); // accounts가 undefined일 경우 빈 배열로 설정
+      }
+      setLoading(false); // 로딩 완료
     } catch (error) {
       console.error("Error fetching accounts: ", error);
       setErrorMessage("계좌 목록을 불러오는 중 오류가 발생했습니다.");
+      setLoading(false); // 로딩 완료
     }
   };
 
@@ -131,6 +139,10 @@ const PasswordCheck = ({ title, instructions }) => {
     }
   };
 
+  if (loading) {
+    return <p>로딩 중...</p>; // 로딩 중일 때 표시할 내용
+  }
+
   return (
     <div className="password-check-container">
       <h2>{title}</h2>
@@ -138,14 +150,18 @@ const PasswordCheck = ({ title, instructions }) => {
 
       <div className="account-select">
         <label>계좌 선택</label>
-        <select value={selectedAccount || accountNumberFromState || ''} onChange={handleAccountSelect}>
-          <option value="">계좌를 선택하세요</option>
-          {accounts.map(account => (
-            <option key={account.accountNumber} value={account.accountNumber}>
-              {account.accountNumber} ({account.depositName}) {/* 드롭다운에서도 계좌번호와 계좌명을 같이 표시 */}
-            </option>
-          ))}
-        </select>
+        {Array.isArray(accounts) && accounts.length > 0 ? (
+          <select value={selectedAccount || accountNumberFromState || ''} onChange={handleAccountSelect}>
+            <option value="">계좌를 선택하세요</option>
+            {accounts.map(account => (
+              <option key={account.accountNumber} value={account.accountNumber}>
+                {account.accountNumber} ({account.depositName}) {/* 드롭다운에서도 계좌번호와 계좌명을 같이 표시 */}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <p>등록된 계좌가 없습니다.</p>
+        )}
       </div>
 
       <div className="password-input">

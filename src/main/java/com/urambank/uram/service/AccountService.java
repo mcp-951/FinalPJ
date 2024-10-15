@@ -9,6 +9,7 @@ import com.urambank.uram.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class AccountService {
     private final OutAccountRepository outAccountRepository;
     private final UserRepository userRepository;
     private final AutoTransferRepository autoTransferRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
 
     // 'NORMAL' 상태의 모든 계좌와 관련된 정보 조회
@@ -54,8 +56,9 @@ public class AccountService {
         return user != null ? user.getName() : null;
     }
 
-    public List<Map<String, Object>> listCategory(int depositCategory) {
-        List<Object[]> results = accountRepository.findByDepositCategoryAndActive(depositCategory);
+    public List<Map<String, Object>> listCategory(int depositCategory, int userNo) {
+        // userNo 조건을 추가하여 조회
+        List<Object[]> results = accountRepository.findByDepositCategoryAndActiveAndUser(depositCategory, userNo);
         List<Map<String, Object>> accountDataList = new ArrayList<>();
 
         for (Object[] result : results) {
@@ -66,13 +69,14 @@ public class AccountService {
             accountData.put("accountOpen", result[3]);
             accountData.put("accountClose", result[4]);
             accountData.put("depositNo", result[5]);  // Deposit 번호
-            accountData.put("depositName", result[6]); // Deposit 이름 추가
+            accountData.put("depositName", result[6]); // Deposit 이름
 
             accountDataList.add(accountData);
         }
 
         return accountDataList;
     }
+
 
 
     public Map<String, Object> getAccountDetail(String accountNumber, int userNo) {
@@ -105,20 +109,27 @@ public class AccountService {
 
 
     // 계좌 비밀번호 확인
-    public boolean checkAccountPassword(int userNo, String accountNumber, String inputPassword) {  // accountNumber와 accountPW를 String으로 처리
-        AccountEntity account = accountRepository.findAccountDetailWithDeposit(accountNumber, "NORMAL", userNo);  // deposit으로 변경
-        if (account != null && account.getAccountPW() != null) {  // accountPW를 String으로 처리
-            return account.getAccountPW().equals(inputPassword);  // 비밀번호 비교
+    // 계좌 비밀번호 검증
+    public boolean checkAccountPassword(int userNo, String accountNumber, String inputPassword) {
+        // DB에서 계좌 정보와 비밀번호 가져오기
+        AccountEntity account = accountRepository.findAccountDetailWithDeposit(accountNumber, "NORMAL", userNo);
+
+        if (account != null && account.getAccountPW() != null) {
+            // BCrypt 해시된 비밀번호와 입력된 비밀번호를 비교
+            return passwordEncoder.matches(inputPassword, account.getAccountPW());
         }
         return false;
     }
 
-
     // 계좌 비밀번호 변경
-    public boolean changeAccountPassword(int userNo, String accountNumber, String newPassword) {  // accountNumber와 accountPW를 String으로 처리
-        AccountEntity account = accountRepository.findAccountDetailWithDeposit(accountNumber, "NORMAL", userNo);  // deposit으로 변경
+    public boolean changeAccountPassword(int userNo, String accountNumber, String newPassword) {
+        AccountEntity account = accountRepository.findAccountDetailWithDeposit(accountNumber, "NORMAL", userNo);
+
         if (account != null) {
-            account.setAccountPW(newPassword);  // 새 비밀번호 설정 (String으로 변경)
+            // 새로운 비밀번호를 암호화
+            String encodedPassword = passwordEncoder.encode(newPassword);
+
+            account.setAccountPW(encodedPassword);  // 암호화된 비밀번호 저장
             accountRepository.save(account);  // 변경 사항 저장
             return true;
         }
@@ -451,10 +462,9 @@ public class AccountService {
     }
 
 
-
-
-    public List<Map<String, Object>> getAllAutoTransfers() {
-        List<AutoTransferEntity> autoTransferEntities = autoTransferRepository.findAllActiveAutoTransfers();
+    public List<Map<String, Object>> getAllAutoTransfers(int userNo) {
+        // userNo에 해당하는 활성화된 자동이체 목록 가져오기
+        List<AutoTransferEntity> autoTransferEntities = autoTransferRepository.findAllActiveAutoTransfersByUserNo(userNo);
 
         return autoTransferEntities.stream()
                 .map(autoTransfer -> {
@@ -506,6 +516,7 @@ public class AccountService {
                 })
                 .collect(Collectors.toList());
     }
+
 
 
     // accountNumber로 Account 테이블에서 accountNo 조회
