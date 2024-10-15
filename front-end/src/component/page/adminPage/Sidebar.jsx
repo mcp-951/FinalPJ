@@ -88,9 +88,23 @@ const Sidebar = () => {
             )}
           </li>
 
-          <li>
-            <NavLink to="/billingManagement">공과금 관리</NavLink>
+          <li
+            onMouseEnter={() => setShowAccountDropdown(true)}
+            onMouseLeave={() => setShowAccountDropdown(false)}
+          >
+            공과금 관리
+            {showAccountDropdown && (
+              <ul className="dropdown">
+                <li>
+                  <NavLink to="/taxInsert">청구서 작성</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/taxList">납부 현황</NavLink>
+                </li>
+              </ul>
+            )}
           </li>
+          
         </ul>
       </div>
 

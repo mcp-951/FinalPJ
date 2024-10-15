@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -111,6 +112,26 @@ public class UserService {
         int authKey = rand();
         sendSMS(hp,authKey);
         return authKey;
+    }
+
+    public List<User> getUsersByRoleUser() {
+        return userRepository.findByUserRole("ROLE_USER");
+    }
+
+    // userId로 userNo 가져오기
+    public int getUserNoByUserId(String userId) {
+        User user = userRepository.findByUserId(userId);
+        return user.getUserNo();  // userNo 반환
+    }
+
+    public String getUserNameByUserNo(int userNo) {
+        User user = userRepository.findById(userNo).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getName();
+    }
+
+    public int getUserNoByName(String name) {
+        User user = userRepository.findByName(name);
+        return user != null ? user.getUserNo() : null;
     }
 
 }
