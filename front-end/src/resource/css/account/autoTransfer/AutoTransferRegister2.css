@@ -99,11 +99,3 @@
   width: auto; /* 입력 필드 크기를 자동으로 설정 */
   margin-right: 10px; /* 시작과 종료 날짜 사이에 약간의 간격 추가 */
 }
-
-/* AutoTransferRegister2.css */
-.recipient-name {
-  margin-left: 50px; /* 계좌주명을 오른쪽으로 20px 이동 */
-  font-weight: bold; /* 계좌주명 강조 */
-  color: #333; /* 텍스트 색상 */
-}
-
