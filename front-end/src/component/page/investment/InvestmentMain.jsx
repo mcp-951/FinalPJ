@@ -2,6 +2,7 @@ import InvestmentRight from'./InvestmentRight';
 import StockMain from "./StockMain";
 import'../../../resource/css/investment/InvestmentMain.css'
 import React, { useEffect, useState } from 'react';
+import SamsungStock from './stock/SamsungStock';
 
 function InvestmentMain(){
   const API_KEY = 'H1CKZCZJ76G0MZ5S';
@@ -52,7 +53,7 @@ function InvestmentMain(){
                 <h4>주가지수</h4>
                 <a href="/">+ 더보기</a>
               </div>
-              <StockMain title={"코스피"} price={"\\2581.3"} p1 ={0} p2 ={"2500"} p3 ={"2551"} p4 ={"2552"} p5 ={""} p6 ={""} p7 ={""}/>
+              <SamsungStock />
               <StockMain title={"코스닥"} price={"\\781.3"} p1 ={"5000"} p2 ={"2000"} p3 ={"4000"} p4 ={"3000"} p5 ={"3500"} p6 ={"2000"} p7 ={"1500"}/>
               <StockMain title={"나스닥"} price={"$18,119.3"} p1 ={0} p2 ={""} p3 ={""} p4 ={""} p5 ={""} p6 ={""} p7 ={""}/>
               <StockMain title={"다우지수"} price={"$42,313.0"} p1 ={0} p2 ={""} p3 ={""} p4 ={""} p5 ={""} p6 ={""} p7 ={""}/>

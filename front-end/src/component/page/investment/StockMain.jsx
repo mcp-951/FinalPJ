@@ -11,13 +11,15 @@ function StockMain(props){
     const price = data.c;
     };
     const stockData = [
-        { date: '1월', price: props.p1 },
-        { date: '2월', price: props.p2 },
-        { date: '3월', price: props.p3 },
-        { date: '4월', price: props.p4 },
-        { date: '5월', price: props.p5},
-        { date: '6월', price: props.p6 },
-        { date: '7월', price: props.p7 },
+        { date: '1월', price: 300 },
+        { date: '2월', price: 300 },
+        { date: '3월', price: 300 },
+        { date: '4월', price: 300 },
+        { date: '5월', price: 300},
+        { date: '6월', price: 300 },
+        { date: '7월', price: 200 },
+        { date: '8월', price: 300},
+        { date: '9월', price: 300},
     ];
 
     return(
@@ -29,7 +31,7 @@ function StockMain(props){
         <ResponsiveContainer width={200} height={150}>
             <LineChart data={stockData} margin={{ top: 5, right: 0, left: 0, bottom: 0 }}>
                 <XAxis dataKey="date" tick={false} stroke="transparent" />
-                <YAxis domain={[2500, 2900]} ticks={[2550, 2600, 2650, 2700, 2750, 2800, 2850, 2900]} orientation="left" tick={false} stroke="transparent"/>
+                <YAxis domain={[100, 400]} ticks={[140, 180, 220, 260, 300, 340, 380, 400]} orientation="left" tick={false} stroke="transparent"/>
                 <Line type="monotone" dataKey="price" stroke="#8884d8" dot={false}/>
             </LineChart>
         </ResponsiveContainer>
