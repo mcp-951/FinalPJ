@@ -370,7 +370,7 @@ public class AccountController {
                 toBankName = "우람은행";  // 내부 계좌로 간주
                 System.out.println("내부 계좌 처리: toAccountNumber = " + toAccountNumber + ", toBankName = " + toBankName);
             }
-            // 외부 계좌 처리 (수동 매핑 적용)
+// 외부 계좌 처리 (수동 매핑 적용) - 내부 계좌일 경우 건너뜀
             else if (autoTransferDTO.getOutAccountDTO() != null) {
                 OutAccountDTO outAccountDTO = autoTransferDTO.getOutAccountDTO();
 
@@ -384,35 +384,42 @@ public class AccountController {
                 }
             }
 
-            // 입금 계좌 정보가 유효하지 않을 경우 처리
+// 입금 계좌 정보가 유효하지 않을 경우 처리
             if (toAccountNumber == null || toBankName == null) {
                 System.out.println("유효하지 않은 입금 계좌 정보: toAccountNumber = " + toAccountNumber + ", toBankName = " + toBankName);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입금 계좌 정보가 유효하지 않습니다.");
             }
 
-            // 출금 계좌번호로 accountNo 조회
+// 출금 계좌번호로 accountNo 조회
             Integer accountNo = accountService.getAccountNoByAccountNumber(fromAccountNumber);
             if (accountNo == null) {
                 System.out.println("유효하지 않은 출금 계좌번호: " + fromAccountNumber);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 출금 계좌번호입니다.");
             }
 
-            // 외부 계좌 처리 로직
-            Integer receiveAccountNo = accountService.getExternalAccountNoByAccountNumberAndBank(toAccountNumber, toBankName);
+// 외부 계좌 처리 로직 - 내부 계좌일 경우 건너뜀
+            Integer receiveAccountNo = null;
+            if (!toBankName.equals("우람은행")) { // 내부 계좌가 아닌 경우에만 외부 계좌로 처리
+                receiveAccountNo = accountService.getExternalAccountNoByAccountNumberAndBank(toAccountNumber, toBankName);
 
-            // NullPointerException 방지를 위한 null 체크
-            if (receiveAccountNo == null) {
-                System.out.println("유효하지 않은 입금 계좌번호: " + toAccountNumber + ", 은행: " + toBankName);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 입금 계좌번호입니다.");
+                // NullPointerException 방지를 위한 null 체크
+                if (receiveAccountNo == null) {
+                    System.out.println("유효하지 않은 입금 계좌번호: " + toAccountNumber + ", 은행: " + toBankName);
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 입금 계좌번호입니다.");
+                } else {
+                    System.out.println("외부 계좌 처리 완료: receiveAccountNo = " + receiveAccountNo);
+                }
             } else {
-                System.out.println("외부 계좌 처리 완료: receiveAccountNo = " + receiveAccountNo);
+                // 내부 계좌일 경우 처리
+                receiveAccountNo = accountService.getAccountNoByAccountNumber(toAccountNumber);
+                System.out.println("내부 계좌 처리 완료: receiveAccountNo = " + receiveAccountNo);
             }
 
-            // DTO에 조회된 accountNo와 receiveAccountNo 설정
+// DTO에 조회된 accountNo와 receiveAccountNo 설정
             autoTransferDTO.setAccountNo(accountNo);
             autoTransferDTO.setReceiveAccountNo(receiveAccountNo);
 
-            // 자동이체 등록 로직 실행
+// 자동이체 등록 로직 실행
             boolean isRegistered = accountService.registerAutoTransfer(autoTransferDTO);
 
             if (isRegistered) {
@@ -422,6 +429,7 @@ public class AccountController {
                 System.out.println("자동이체 등록 실패: " + autoTransferDTO);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("자동이체 등록에 실패했습니다.");
             }
+
 
         } catch (NullPointerException e) {
             // NullPointerException 예외 발생 시 처리

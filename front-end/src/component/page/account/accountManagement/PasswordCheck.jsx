@@ -138,22 +138,14 @@ const PasswordCheck = ({ title, instructions }) => {
 
       <div className="account-select">
         <label>계좌 선택</label>
-        {accountNumber ? (
-          <div>
-            <p style={{ fontSize: '20px', fontWeight: 'bold' }}>
-              {accountNumber} ({productName}) {/* 크고 굵은 글씨로 표시 */}
-            </p>
-          </div>
-        ) : (
-          <select value={selectedAccount} onChange={handleAccountSelect}>
-            <option value="">계좌를 선택하세요</option>
-            {accounts.map(account => (
-              <option key={account.accountNumber} value={account.accountNumber}>
-                {account.accountNumber} ({account.depositName}) {/* 드롭다운에서도 계좌번호와 계좌명을 같이 표시 */}
-              </option>
-            ))}
-          </select>
-        )}
+        <select value={selectedAccount || accountNumberFromState || ''} onChange={handleAccountSelect}>
+          <option value="">계좌를 선택하세요</option>
+          {accounts.map(account => (
+            <option key={account.accountNumber} value={account.accountNumber}>
+              {account.accountNumber} ({account.depositName}) {/* 드롭다운에서도 계좌번호와 계좌명을 같이 표시 */}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="password-input">

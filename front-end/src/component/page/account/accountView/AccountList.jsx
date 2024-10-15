@@ -54,7 +54,7 @@ const AccountList = ({ type }) => {
 
         setAccounts(uniqueAccounts); // 중복 제거된 계좌 목록 설정
       } catch (error) {
-        setError('데이터를 가져오는 중 오류가 발생했습니다.');
+        setError('해당하는 계좌가 없습니다.');
         setAccounts([]); // 오류 발생 시 빈 배열로 설정
       }
     };
