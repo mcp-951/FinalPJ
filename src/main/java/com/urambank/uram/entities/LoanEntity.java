@@ -10,24 +10,21 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "deposit_TB")
-public class DepositEntity {
+@Table(name = "Loan_TB")
+public class LoanEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int depositNo;
+    private int loanNo;
 
     @Column(nullable = false)
-    private String depositName;
+    private String loanName;
 
     @Column(nullable = false)
-    private float depositRate;
+    private float loanRate;
 
     @Column(columnDefinition = "TEXT")
-    private String depositContent;
+    private String loanContent;
 
-    @Column(nullable = false)
-    private int depositCategory;
-
-    @Column(nullable = false, columnDefinition = "CHAR(1) DEFAULT 'Y'")
-    private char depositState;
+    @Column(nullable = false, columnDefinition = "CHAR(1) DEFAULT 'y'")
+    private Character loanState;
 }

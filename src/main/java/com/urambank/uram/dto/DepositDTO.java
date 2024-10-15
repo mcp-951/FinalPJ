@@ -1,6 +1,5 @@
 package com.urambank.uram.dto;
 
-import com.urambank.uram.entities.DepositEntity;
 import lombok.*;
 
 @Getter
@@ -17,16 +16,16 @@ public class DepositDTO {
     private String depositContent;// 상품 설명
     private String depositIMG;    // 상품 이미지 URL
 
-    // Entity에서 DTO로 변환
-    public static DepositDTO toDepositDTO(DepositEntity depositEntity) {
-        DepositDTO depositDTO = new DepositDTO();
-        depositDTO.setDepositNo(depositEntity.getDepositNo());
-        depositDTO.setDepositName(depositEntity.getDepositName());
-        depositDTO.setDepositCategory(depositEntity.getDepositCategory());
-        depositDTO.setDepositRate(depositEntity.getDepositRate());
-        depositDTO.setDepositContent(depositEntity.getDepositContent());
-        depositDTO.setDepositIMG(depositEntity.getDepositIMG());
-
-        return depositDTO;
-    }
+//    // Entity에서 DTO로 변환
+//    public static DepositDTO toDepositDTO(DepositEntity depositEntity) {
+//        DepositDTO depositDTO = new DepositDTO();
+//        depositDTO.setDepositNo(depositEntity.getDepositNo());
+//        depositDTO.setDepositName(depositEntity.getDepositName());
+//        depositDTO.setDepositCategory(depositEntity.getDepositCategory());
+//        depositDTO.setDepositRate(depositEntity.getDepositRate());
+//        depositDTO.setDepositContent(depositEntity.getDepositContent());
+//        depositDTO.setDepositIMG(depositEntity.getDepositIMG());
+//
+//        return depositDTO;
+//    }
 }

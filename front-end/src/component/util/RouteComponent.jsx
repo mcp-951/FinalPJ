@@ -59,9 +59,9 @@ import Calculatior from 'component/page/product/Loan/Calculatior';
 import LoanList from 'component/page/product/Loan/LoanList';
 import LoanMain from 'component/page/product/Loan/LoanMain';
 import Repayment from 'component/page/product/Loan/Repayment';
-import Accession_chap1 from 'component/page/product/Accession/Accession_chap1';
-import Accession_chap2 from 'component/page/product/Accession/Accession_chap2';
-import Accession_chap3 from 'component/page/product/Accession/Accession_chap3';
+import Loanchap1 from 'component/page/product/Loan/Loanchap1';
+import Loanchap2 from 'component/page/product/Loan/Loanchap2';
+import Loanchap3 from 'component/page/product/Loan/Loanchap3';
 
 // 계좌 관련 (채림)
 import Account from '../page/account/accountView/Account';
@@ -171,9 +171,9 @@ const RouteComponent = () => {
                         <Route path="/LoanList" exact={true} element={<LoanList />} />
                         <Route path="/LoanMain" exact={true} element={<LoanMain />} />
                         <Route path="/Repayment" exact={true} element={<Repayment />} />
-                        <Route path="/Accession_chap1" exact={true} element={<Accession_chap1 />} />
-                        <Route path="/Accession_chap2" exact={true} element={<Accession_chap2 />} />
-                        <Route path="/Accession_chap3" exact={true} element={<Accession_chap3 />} />
+                        <Route path="/Loanchap1" exact={true} element={<Loanchap1 />} />
+                        <Route path="/Loanchap2" exact={true} element={<Loanchap2 />} />
+                        <Route path="/Loanchap3" exact={true} element={<Loanchap3 />} />
 
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />

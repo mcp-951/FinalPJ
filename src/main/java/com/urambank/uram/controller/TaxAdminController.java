@@ -72,13 +72,12 @@ public class TaxAdminController {
         return ResponseEntity.ok(userNo);
 
     }
-    
+
     // userNo를 통해 userName 가져오기
     @GetMapping("/name/{userNo}")
     public ResponseEntity<String> getUserNameByUserNo(@PathVariable("userNo") int userNo) {
         String userName = userService.getUserNameByUserNo(userNo);
         return ResponseEntity.ok(userName);
     }
-
 
 }

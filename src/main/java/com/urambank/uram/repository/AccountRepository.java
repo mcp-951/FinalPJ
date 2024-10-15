@@ -72,8 +72,11 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     @Query("SELECT a.accountNumber FROM AccountEntity a WHERE a.accountNo = :accountNo AND a.bankName = :bankName")
     String findAccountNumberByAccountNoAndBankName(@Param("accountNo") int accountNo, @Param("bankName") String bankName);  // Integer 대신 String으로 변경
 
+    List<AccountEntity> findByUserNoAndAccountState(@Param("userNo")int userNo,@Param("accountState") String accountState);
 
-
+    // userNo와 accountNo로 계좌 찾기
+    @Query("SELECT a FROM AccountEntity a WHERE a.userNo = :userNo AND a.accountNo = :accountNo")
+    Optional<AccountEntity> findByUserNoAndAccountNo(@Param("userNo") int userNo, @Param("accountNo") int accountNo);
 
 
 }
