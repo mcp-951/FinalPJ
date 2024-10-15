@@ -92,7 +92,7 @@ public class TradeController {
         exchangeEntity.setSelectCountry(currencyExchangeDTO.getSelectCountry()); // 선택된 통화
         exchangeEntity.setExchangeRate(currencyExchangeDTO.getExchangeRate()); // 환율
         exchangeEntity.setTradeDate(currencyExchangeDTO.getTradeDate()); // 거래 날짜
-        exchangeEntity.setPickupPlace(currencyExchangeDTO.getPickupPlace()); // 수령 지점
+        //exchangeEntity.setPickupPlace(currencyExchangeDTO.getPickupPlace()); // 수령 지점
         exchangeEntity.setTradePrice(currencyExchangeDTO.getTradePrice()); // 원화 금액
         exchangeEntity.setTradeAmount(currencyExchangeDTO.getTradeAmount()); // 환전 금액
         exchangeEntity.setReceiveDate(currencyExchangeDTO.getReceiveDate()); // 수령 날짜
@@ -105,29 +105,29 @@ public class TradeController {
 
 
 
-    // 환전 내역 가져오기
-    @GetMapping("/exchangeList/{userNo}")
-    public ResponseEntity<List<CurrencyExchangeDTO>> getExchangeListByUserNo(@PathVariable("userNo") int userNo) {
-        List<CurrencyExchangeEntity> exchanges = currencyExchangeRepository.findByUserNo(userNo);  // JPQL 쿼리로 필터링된 데이터 가져오기
-        if (exchanges.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-        }
-        List<CurrencyExchangeDTO> exchangeDTOs = exchanges.stream()
-                .map(exchange -> new CurrencyExchangeDTO(
-                        exchange.getTradeNo(),
-                        exchange.getUserNo(),
-                        exchange.getAccountNo(),
-                        exchange.getSelectCountry(),
-                        exchange.getExchangeRate(),
-                        exchange.getTradeDate(),
-                        exchange.getPickupPlace(),
-                        exchange.getTradePrice(),
-                        exchange.getTradeAmount(),
-                        exchange.getReceiveDate()
-                ))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(exchangeDTOs);
-    }
+//    // 환전 내역 가져오기
+//    @GetMapping("/exchangeList/{userNo}")
+//    public ResponseEntity<List<CurrencyExchangeDTO>> getExchangeListByUserNo(@PathVariable("userNo") int userNo) {
+//        List<CurrencyExchangeEntity> exchanges = currencyExchangeRepository.findByUserNo(userNo);  // JPQL 쿼리로 필터링된 데이터 가져오기
+//        if (exchanges.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+//        }
+//        List<CurrencyExchangeDTO> exchangeDTOs = exchanges.stream()
+//                .map(exchange -> new CurrencyExchangeDTO(
+//                        exchange.getTradeNo(),
+//                        exchange.getUserNo(),
+//                        exchange.getAccountNo(),
+//                        exchange.getSelectCountry(),
+//                        exchange.getExchangeRate(),
+//                        exchange.getTradeDate(),
+//                        exchange.getPickupPlace(),
+//                        exchange.getTradePrice(),
+//                        exchange.getTradeAmount(),
+//                        exchange.getReceiveDate()
+//                ))
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok(exchangeDTOs);
+//    }
 
 
 

@@ -3,6 +3,7 @@ import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
 
 // 메인 라우터 임포트
 import Main from '../mainPage/Main';
+import Navbar from './Navbar';
 
 // 고객센터 라우터 임포트
 import CustomerServiceMain from 'component/page/customerService/CustomerServiceMain';
@@ -171,7 +172,7 @@ const RouteComponent = () => {
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
-                        <Route path="/account/transaction-history" element={<TransactionCalendar />} />
+{/*                         <Route path="/account/transaction-history" element={<TransactionCalendar />} /> */}
 
 
                         {/* 비밀번호 확인 페이지 */}
@@ -190,7 +191,7 @@ const RouteComponent = () => {
                         <Route path="/auto-transfer/list" element={<AutoTransferList />} />
                         <Route path="/new-transfer-modify/:autoTransNo" element={<AutoTransferRegister2 />} />
                         {/* 자동이체 해지 비밀번호 확인 페이지 */}
-                        <Route path="/auto-transfer-password-check" element={<AutoTransferCancelPasswordCheck />} />
+{/*                         <Route path="/auto-transfer-password-check" element={<AutoTransferCancelPasswordCheck />} /> */}
 
                         {/*여기는 에이스 클럽 원주민만 가능*/}
                         <Route path="/exchange-rate" exact={true} element={<ExchangeRate />} />
