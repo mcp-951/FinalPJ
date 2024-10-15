@@ -1,55 +1,82 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../../resource/css/customerService/CustomerServiceMain.css';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
-function CustomerServiceMain({ inquiries }) {
+function CustomerServiceMain() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const [data, setData] = useState([]);
 
-  // 문의글 상세 페이지로 이동하는 함수
-  const handleInquiryClick = (id) => {
-    navigate(`/inquiry/${id}`); // 고유한 ID로 이동
+  useEffect(() => {
+    const fetchInquiries = async () => {
+      try {
+        const decoding = jwtDecode(token);
+        const response = await axios.get(
+          `http://localhost:8081/support/board/${decoding.userNo}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setData(response.data);
+      } catch (error) {
+        console.error('문의글 목록을 불러오는 중 오류가 발생했습니다:', error);
+      }
+    };
+
+    if (token) {
+      fetchInquiries();
+    } else {
+      alert('로그인이 필요합니다.');
+      navigate('/');
+    }
+  }, [token, navigate]);
+
+  const handleRowClick = (qnaNo) => {
+    navigate(`/inquiry/${qnaNo}`); // 상세 페이지로 이동
+  };
+
+  const handleNewInquiryClick = () => {
+    navigate('/inquiry-form'); // 1:1 문의하기 페이지로 이동
   };
 
   return (
     <div className="customer-service-main">
-      <h1>무엇을 도와드릴까요? <span>Q&A</span></h1>
-  
-      {/* 문의글 리스트 테이블을 위쪽에 배치 */}
-      {Array.isArray(inquiries) && inquiries.length === 0 ? (
-        <p>문의한 내역이 없습니다.</p>
-      ) : (
-        <table className="inquiry-table">
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>문의 날짜</th>
-              <th>진행상황</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inquiries && inquiries.map((inquiry, index) => (
-              <tr key={inquiry.id}>
-                <td>{index + 1}</td>
-                <td>
-                  <button
-                    onClick={() => handleInquiryClick(inquiry.id)}
-                    style={{ background: "none", border: "none", color: "blue", textDecoration: "underline", cursor: "pointer" }}
-                  >
-                    {inquiry.title}
-                  </button>
-                </td>
-                <td>{inquiry.date}</td>
-                <td>{inquiry.status}</td>
+      <h1>Q&A</h1>
+      <table className="inquiry-table">
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>문의 날짜</th>
+            <th>진행상황</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.length > 0 ? (
+            data.map((item) => (
+              <tr key={item.qnaNo} onClick={() => handleRowClick(item.qnaNo)}>
+                <td>{item.qnaNo}</td>
+                <td>{item.qnaTitle}</td>
+                <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                <td>{item.status}</td>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">문의 내역이 없습니다.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
 
-      <button className="inquiry-button" onClick={() => navigate('/inquiry-form')}>1:1 문의하기</button>
+      {/* 1:1 문의하기 버튼 */}
+      <div className="inquiry-button-container">
+        <button className="inquiry-button" onClick={handleNewInquiryClick}>
+          1:1 문의하기
+        </button>
+      </div>
 
-      {/* 고객 상담 정보 섹션을 아래쪽에 배치 */}
+      {/* 고객 상담 정보 섹션 */}
       <div className="customer-service-info">
         <div className="info-section">
           <h2>고객상담전화</h2>
@@ -68,6 +95,7 @@ function CustomerServiceMain({ inquiries }) {
             <li>국내 1833-3938</li>
           </ul>
         </div>
+
         <div className="info-section">
           <h2>상담시간안내</h2>
           <ul>
@@ -78,6 +106,7 @@ function CustomerServiceMain({ inquiries }) {
             <li>어르신전용/수화상담 평일 09:00~18:00</li>
           </ul>
         </div>
+
         <div className="info-section">
           <h2>콜백서비스 안내</h2>
           <ul>

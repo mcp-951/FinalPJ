@@ -20,14 +20,14 @@ public class AccountEntity {
     private int accountNo;
 
     @Column
-    private int accountNumber;
+    private String accountNumber;
 
     @Column
     private int userNo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "productNo", referencedColumnName = "productNo")
-    private ProductEntity product;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "depositNo")  // deposit 테이블과의 FK 관계 설정
+    private DepositEntity deposit;
 
     @Column
     private String bankName;
@@ -39,10 +39,7 @@ public class AccountEntity {
     private int accountLimit;
 
     @Column
-    private int accountMax;
-
-    @Column
-    private int accountPW;
+    private String accountPW;
 
     @Column
     private String accountState;
@@ -50,5 +47,7 @@ public class AccountEntity {
     @Column
     private Date accountOpen;
 
+    @Column
+    private Date accountClose;
 
 }

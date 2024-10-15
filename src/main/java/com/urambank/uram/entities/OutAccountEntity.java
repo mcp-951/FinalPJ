@@ -19,7 +19,7 @@ public class OutAccountEntity {
     private int oAccountNo;
 
     @Column
-    private int oAccountNumber;
+    private String oAccountNumber;
 
     @Column
     private String oUserName;

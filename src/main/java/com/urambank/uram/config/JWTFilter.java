@@ -39,6 +39,10 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+        if (request.getRequestURI().equals("/ocr/upload")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         if (request.getRequestURI().equals("/checkHp/**")) {
             filterChain.doFilter(request, response);
             return;

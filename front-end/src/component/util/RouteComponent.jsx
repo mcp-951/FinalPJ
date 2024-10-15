@@ -15,6 +15,9 @@ import Signup from '../page/loginPage/SignUp';
 import SignupForKakao from '../page/loginPage/SignUpForKakao';
 import FindIdAndPw from '../page/loginPage/FindIdAndPw';
 
+// 검색바 라우터 임포트
+import SearchResult from './searchBar/SearchResult';
+
 // 투자 라우터 임포트
 import InvestmentMain from 'component/page/investment/InvestmentMain';
 
@@ -23,6 +26,8 @@ import TaxMain from 'component/page/tax/TaxMain';
 import TaxDetail from 'component/page/tax/TaxDetail';
 import TaxHistory from 'component/page/tax/TaxHistory';
 
+// OCR 데이터
+import ImgSelect from 'component/page/ocrPage/ImgSelect';
 
 // 어드민 라우터 임포트
 import AdminList from '../page/adminPage/admin/AdminList';
@@ -87,18 +92,23 @@ import RedirectKakao from 'component/page/loginPage/RedirectKakao';
 
 const RouteComponent = () => {
     const [inquiries, setInquiries] = useState([]); // inquiries 상태 변수 정의
-  const addInquiry = (newInquiry) => setInquiries([...inquiries, newInquiry]); // addInquiry 함수 정의
+    const addInquiry = (newInquiry) => setInquiries([...inquiries, newInquiry]); // addInquiry 함수 정의
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     return (
         <div>
             <BrowserRouter>
+                <header>
+                    <Navbar/>
+                </header>
                 <div style={style}>
                     <Routes>
                         <Route path="/" exact={true} element={<Main />} />
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
                         <Route path="/signup" exact={true} element={<Signup />} />
+                        {/*검색바 리스트 이동*/}
+                        <Route path="/searchresult" exact={true} element={<SearchResult/>} />
                         <Route path="/signupForKakao" exact={true} element={<SignupForKakao />} />
                         <Route path="/FindIdAndPw" exact={true} element={<FindIdAndPw />} />
                         {/*}투자 페이지{*/}
@@ -107,6 +117,8 @@ const RouteComponent = () => {
                         <Route path="/tax/elec" exact={true} element={<TaxMain/>} />
                         <Route path="/tax/Detail" exact={true} element={<TaxDetail/>} />
                         <Route path="/tax/History" exact={true} element={<TaxHistory/>} />
+                        {/*OCR데이터*/}
+                        <Route path="/ocr" exact={true} element={<ImgSelect />} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
 {/*                         <Route path="/adminList" element={<AdminList />} /> */}
@@ -159,7 +171,9 @@ const RouteComponent = () => {
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
-                        
+                        <Route path="/account/transaction-history" element={<TransactionCalendar />} />
+
+
                         {/* 비밀번호 확인 페이지 */}
                         <Route path="/account/:accountNumber/password-check" element={<PasswordCheck title="비밀번호 확인" instructions="비밀번호를 확인해주세요." />} />
                         <Route path="/account/password-check" element={<PasswordCheck title="비밀번호 확인" instructions="비밀번호를 확인해주세요." />} />
@@ -174,6 +188,9 @@ const RouteComponent = () => {
                         {/* 자동이체 등록 페이지 */}<Route path="/auto-transfer/register" element={<AutoTransferRegister />} /> {/* 자동이체 등록 페이지 경로 추가 */}
                         {/* 자동이체 등록 2단계 페이지 */}<Route path="/auto-transfer/step2" element={<AutoTransferRegister2 />} /> {/* 자동이체 등록 2단계 페이지 추가 */}
                         <Route path="/auto-transfer/list" element={<AutoTransferList />} />
+                        <Route path="/new-transfer-modify/:autoTransNo" element={<AutoTransferRegister2 />} />
+                        {/* 자동이체 해지 비밀번호 확인 페이지 */}
+                        <Route path="/auto-transfer-password-check" element={<AutoTransferCancelPasswordCheck />} />
 
                         {/*여기는 에이스 클럽 원주민만 가능*/}
                         <Route path="/exchange-rate" exact={true} element={<ExchangeRate />} />

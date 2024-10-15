@@ -1,12 +1,11 @@
 package com.urambank.uram.repository;
 
-import com.urambank.uram.entities.SupportEntity;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.urambank.uram.entities.Support;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
-public interface SupportRepository extends JpaRepository<SupportEntity, Integer> {
-
-    // 특정 사용자의 문의 목록을 페이징으로 조회
-    Page<SupportEntity> findByUserNo(Integer userNo, Pageable pageable);
+@Repository
+public interface SupportRepository extends JpaRepository<Support, Integer> {
+    List<Support> findAllByUserId(Integer userId);
 }
