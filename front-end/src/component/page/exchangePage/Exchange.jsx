@@ -46,17 +46,17 @@ const Exchange = () => {
                 setUserNo(userNo);
                 console.log("UserNo:", userNo);
 
-                // userNo로 account 데이터 리스트 추출
-                const accountsResponse = await axios.get(`http://localhost:8081/exchange/account/${userNo}`, {
+                // userNo로 예금 계좌 목록 가져오기
+                const accountsResponse = await axios.get(`http://localhost:8081/exchange/users/${userNo}/accounts/category-one`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
                 });
-                
-                // depositNo가 1인 계좌만 필터링
-                const filteredAccounts = accountsResponse.data.filter(account => account.depositNo === 1);
-                setAccountNumbers(filteredAccounts);
-                console.log("Filtered Accounts (deposit === 1):", filteredAccounts);
+
+                // 백엔드에서 반환된 계좌 목록을 상태에 저장
+                const accountData = accountsResponse.data.accounts;
+                setAccountNumbers(accountData);
+                console.log("Accounts (depositCategory 1):", accountData);
             } catch (error) {
                 console.error("계좌 정보를 가져오는 중 오류 발생:", error);
             }

@@ -151,8 +151,7 @@ const TaxInsert = () => {
               <th>요금내역</th>
               <th>사용요금</th>
               <th>기본요금</th>
-              <th>정산액</th>
-              <th>납부금액</th>
+              <th>납부금액</th> {/* 정산액을 제거하고 납부금액만 남김 */}
             </tr>
           </thead>
           <tbody>
@@ -160,38 +159,32 @@ const TaxInsert = () => {
               <td>{feeNames[tax.taxCategory][0]}</td>
               <td><input type="number" name="fee1" value={tax.fee1} onChange={handleChange} className="input-field" /></td>
               <td><input type="number" name="basicFee1" value={tax.basicFee1} onChange={handleChange} className="input-field" /></td>
-              <td>{(parseFloat(tax.fee1) + parseFloat(tax.basicFee1)).toLocaleString()}</td> {/* 정산액 */}
-              <td>{(parseFloat(tax.fee1) + parseFloat(tax.basicFee1)).toLocaleString()}</td> {/* 납부금액 계산 */}
+              <td>{(parseFloat(tax.fee1) + parseFloat(tax.basicFee1)).toLocaleString()}</td> {/* 납부금액 계산 */} 
             </tr>
             <tr>
               <td>{feeNames[tax.taxCategory][1]}</td>
               <td><input type="number" name="fee2" value={tax.fee2} onChange={handleChange} className="input-field" /></td>
               <td><input type="number" name="basicFee2" value={tax.basicFee2} onChange={handleChange} className="input-field" /></td>
-              <td>{(parseFloat(tax.fee2) + parseFloat(tax.basicFee2)).toLocaleString()}</td> {/* 정산액 */}
               <td>{(parseFloat(tax.fee2) + parseFloat(tax.basicFee2)).toLocaleString()}</td> {/* 납부금액 계산 */}
             </tr>
             <tr>
               <td>{feeNames[tax.taxCategory][2]}</td>
               <td><input type="number" name="fee3" value={tax.fee3} onChange={handleChange} className="input-field" /></td>
               <td><input type="number" name="basicFee3" value={tax.basicFee3} onChange={handleChange} className="input-field" /></td>
-              <td>{(parseFloat(tax.fee3) + parseFloat(tax.basicFee3)).toLocaleString()}</td> {/* 정산액 */}
               <td>{(parseFloat(tax.fee3) + parseFloat(tax.basicFee3)).toLocaleString()}</td> {/* 납부금액 계산 */}
             </tr>
             <tr>
               <td>총 고지액</td>
               <td>{totalFee.toLocaleString()}</td>
               <td>{totalBasicFee.toLocaleString()}</td>
-              <td>{(totalFee + totalBasicFee).toLocaleString()}</td>
               <td>{totalAmount.toLocaleString()}</td> {/* 총 납부금액 */}
             </tr>
           </tbody>
         </table>
       </div>
 
-      
-        <button type="submit" className="submit-button">생성</button>
-        <button type="button" className="cancel-button" onClick={() => navigate('/taxList')}>취소</button>
-      
+      <button type="submit" className="submit-button">생성</button>
+      <button type="button" className="cancel-button" onClick={() => navigate('/taxList')}>취소</button>
     </form>
   );
 };

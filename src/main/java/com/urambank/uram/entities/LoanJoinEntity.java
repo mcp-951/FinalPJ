@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "loanJoin_TB")
+@Table(name = "LoanJoin_TB")
 public class LoanJoinEntity {
 
     @Id
