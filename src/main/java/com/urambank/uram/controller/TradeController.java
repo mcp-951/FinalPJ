@@ -3,6 +3,7 @@ package com.urambank.uram.controller;
 import com.urambank.uram.dto.AccountDTO;
 import com.urambank.uram.dto.CurrencyExchangeDTO;
 import com.urambank.uram.entities.PickUpPlaceEntity;
+import com.urambank.uram.service.AccountService;
 import com.urambank.uram.service.TradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
@@ -20,6 +23,9 @@ public class TradeController {
 
     @Autowired
     private TradeService tradeService;
+
+    @Autowired
+    private AccountService accountService;
 
     // 1. userId로 userNo 가져오기
     @GetMapping("/list/{userId}")
@@ -92,6 +98,31 @@ public class TradeController {
             return ResponseEntity.ok(pickUpAddress);
         } else {
             return ResponseEntity.badRequest().body("해당 지점 정보를 찾을 수 없습니다.");
+        }
+    }
+
+    // 예금 계좌
+    @GetMapping("/users/{userNo}/accounts/category-one")
+    public ResponseEntity<Map<String, Object>> depositCategoryOneAccountList(@PathVariable("userNo") int userNo) {
+        try {
+            // 사용자 이름 가져오기
+            String userName = accountService.getUserNameByUserNo(userNo);
+
+            // depositCategory가 1인 계좌 목록 가져오기
+            List<Map<String, Object>> accounts = tradeService.getDepositCategoryOneAccounts(userNo);
+            if (accounts.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+
+            // 사용자 이름과 계좌 목록을 함께 반환
+            Map<String, Object> response = new HashMap<>();
+            response.put("userName", userName);
+            response.put("accounts", accounts);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 

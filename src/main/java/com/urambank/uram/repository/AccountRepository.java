@@ -79,6 +79,13 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     @Query("SELECT a.accountNumber FROM AccountEntity a WHERE a.accountNo = :accountNo AND a.bankName = :bankName")
     String findAccountNumberByAccountNoAndBankName(@Param("accountNo") int accountNo, @Param("bankName") String bankName);  // Integer 대신 String으로 변경
 
+    // 예금 계좌만 반환
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, d.depositNo, d.depositName, d.depositCategory " +
+            "FROM AccountEntity a " +
+            "JOIN a.deposit d " +
+            "WHERE a.userNo = :userNo AND a.accountState = 'NORMAL' AND d.depositCategory = 1")
+    List<Object[]> findAllDepositCategoryOneAccounts(@Param("userNo") int userNo);
+
     List<AccountEntity> findByUserNoAndAccountState(@Param("userNo")int userNo,@Param("accountState") String accountState);
 
     // userNo와 accountNo로 계좌 찾기
@@ -92,4 +99,5 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     @Transactional
     @Query("UPDATE AccountEntity a SET a.accountState = :accountState WHERE a.accountNo = :accountNo")
     void updateAccountState(@Param("accountState") String accountState, @Param("accountNo") int accountNo);
+
 }

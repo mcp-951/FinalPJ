@@ -89,6 +89,7 @@ const TaxInsert = () => {
 
   return (
     <form onSubmit={handleSubmit} className="tax-insert-form">
+       <h1 className="tax-edit-title">청구서 작성</h1>
       {/* 사용자 선택 및 납부기한 선택 부분 */}
       <div className="form-group">
         <label>사용자 선택: 
@@ -159,7 +160,7 @@ const TaxInsert = () => {
               <td>{feeNames[tax.taxCategory][0]}</td>
               <td><input type="number" name="fee1" value={tax.fee1} onChange={handleChange} className="input-field" /></td>
               <td><input type="number" name="basicFee1" value={tax.basicFee1} onChange={handleChange} className="input-field" /></td>
-              <td>{(parseFloat(tax.fee1) + parseFloat(tax.basicFee1)).toLocaleString()}</td> {/* 납부금액 계산 */}
+              <td>{(parseFloat(tax.fee1) + parseFloat(tax.basicFee1)).toLocaleString()}</td> {/* 납부금액 계산 */} 
             </tr>
             <tr>
               <td>{feeNames[tax.taxCategory][1]}</td>
