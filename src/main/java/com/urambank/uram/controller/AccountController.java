@@ -24,6 +24,7 @@ public class AccountController {
 
     private final AccountService accountService;
 
+    // 전체 계좌
     @GetMapping("/users/{userNo}/accounts")
     public ResponseEntity<Map<String, Object>> accountList(@PathVariable("userNo") int userNo) {
         try {
@@ -47,7 +48,33 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    
+    // 예금 계좌
+    @GetMapping("/users/{userNo}/accounts/category-one")
+    public ResponseEntity<Map<String, Object>> depositCategoryOneAccountList(@PathVariable("userNo") int userNo) {
+        try {
+            // 사용자 이름 가져오기
+            String userName = accountService.getUserNameByUserNo(userNo);
 
+            // depositCategory가 1인 계좌 목록 가져오기
+            List<Map<String, Object>> accounts = accountService.getDepositCategoryOneAccounts(userNo);
+            if (accounts.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+
+            // 사용자 이름과 계좌 목록을 함께 반환
+            Map<String, Object> response = new HashMap<>();
+            response.put("userName", userName);
+            response.put("accounts", accounts);
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // 카테고리별
     @GetMapping("/category/{depositCategory}")
     public ResponseEntity<List<Map<String, Object>>> categoryList(
             @PathVariable("depositCategory") int depositCategory,
@@ -66,10 +93,10 @@ public class AccountController {
         }
     }
 
-
+    // 계좌 상세
     @GetMapping("/account/{accountNumber}")
     public ResponseEntity<Map<String, Object>> getAccountDetail(
-            @PathVariable("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
+            @PathVariable("accountNumber") String accountNumber,
             @RequestParam("userNo") int userNo) {
         try {
             Map<String, Object> accountDetail = accountService.getAccountDetail(accountNumber, userNo);
@@ -84,10 +111,10 @@ public class AccountController {
         }
     }
 
-
+    // 거래 내역
     @GetMapping("/account/{accountNumber}/logs")
     public ResponseEntity<List<LogDTO>> getTransactionLogs(
-            @PathVariable("accountNumber") String accountNumber) {  // accountNumber를 String으로 변경
+            @PathVariable("accountNumber") String accountNumber) {
         try {
             List<LogDTO> logs = accountService.getTransactionLogs(accountNumber);
             if (logs.isEmpty()) {
@@ -101,13 +128,12 @@ public class AccountController {
     }
 
 
-    // 계좌 비밀번호 확인 API
+    // 계좌 비밀번호 확인
     @PostMapping("/account/{accountNumber}/check-password")
     public ResponseEntity<String> checkAccountPassword(
             @PathVariable("accountNumber") String accountNumber,
             @RequestBody Map<String, Object> request) {
         try {
-            // 요청에서 userNo와 입력된 비밀번호 가져오기
             Integer userNo = Integer.parseInt(request.get("userNo").toString());
             String inputPassword = request.get("password").toString();
 
@@ -134,12 +160,11 @@ public class AccountController {
     // 계좌 비밀번호 변경
     @PostMapping("/account/{accountNumber}/change-password")
     public ResponseEntity<String> changeAccountPassword(
-            @PathVariable("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
+            @PathVariable("accountNumber") String accountNumber,
             @RequestBody Map<String, Object> request) {
         try {
-            // userNo와 newPassword를 요청에서 가져옴
             Integer userNo = Integer.parseInt(request.get("userNo").toString());
-            String newPassword = request.get("newPassword").toString();  // 입력된 새로운 비밀번호
+            String newPassword = request.get("newPassword").toString();
 
             // 비밀번호나 userNo가 누락된 경우
             if (newPassword == null || userNo == null) {
@@ -160,21 +185,17 @@ public class AccountController {
         }
     }
 
-
-
-    // 계좌 해지 API
+    // 계좌 해지
     @PostMapping("/account/{accountNumber}/terminate")
     public ResponseEntity<String> terminateAccount(
-            @PathVariable("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
+            @PathVariable("accountNumber") String accountNumber,
             @RequestBody Map<String, Object> request,
             @RequestHeader("Authorization") String authorizationHeader) {
 
         try {
-            // JWT에서 유저 정보 추출 (예: userNo 추출)
             Integer userNo = Integer.parseInt(request.get("userNo").toString());
 
-            // 계좌 해지 로직 호출
-            boolean isTerminated = accountService.terminateAccount(userNo, accountNumber);  // accountNumber를 String으로 처리
+            boolean isTerminated = accountService.terminateAccount(userNo, accountNumber);
 
             if (isTerminated) {
                 return ResponseEntity.ok("계좌가 성공적으로 해지되었습니다.");
@@ -182,25 +203,25 @@ public class AccountController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("계좌를 찾을 수 없습니다.");
             }
         } catch (Exception e) {
-            e.printStackTrace();  // 예외 로그 기록
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
         }
     }
 
-
+    // 이체한도 변경
     @PostMapping("/account/{accountNumber}/change-limit")
     public ResponseEntity<String> changeTransferLimits(
-            @PathVariable("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
+            @PathVariable("accountNumber") String accountNumber,
             @RequestBody Map<String, Object> limits) {
         try {
             Integer userNo = Integer.parseInt(limits.get("userNo").toString());
-            Integer newOnceLimit = Integer.parseInt(limits.get("onceLimit").toString());  // 1회 이체한도 가져오기
+            Integer newOnceLimit = Integer.parseInt(limits.get("onceLimit").toString());
 
             if (userNo == null || newOnceLimit == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유저 번호 또는 이체 한도 누락");
             }
 
-            boolean isLimitChanged = accountService.changeTransferLimits(userNo, accountNumber, newOnceLimit);  // accountNumber와 newOnceLimit 처리
+            boolean isLimitChanged = accountService.changeTransferLimits(userNo, accountNumber, newOnceLimit);
 
             if (isLimitChanged) {
                 return ResponseEntity.ok("이체 한도가 성공적으로 변경되었습니다.");
@@ -213,10 +234,9 @@ public class AccountController {
         }
     }
 
-
     @GetMapping("/recipient-name")
     public ResponseEntity<Map<String, Object>> getRecipientName(
-            @RequestParam("accountNumber") String toAccountNumber,  // accountNumber를 String으로 변경
+            @RequestParam("accountNumber") String toAccountNumber,
             @RequestParam("bankName") String toBankName) {
 
         try {
@@ -233,14 +253,11 @@ public class AccountController {
         }
     }
 
-
     @PostMapping("/transfer")
     public ResponseEntity<Map<String, Object>> transferAccount(@RequestBody Map<String, Object> transferData) {
         try {
-            // 전달된 데이터를 확인하는 로그 추가
             System.out.println("전달된 데이터: " + transferData);
 
-            // 필수 값들이 모두 있는지 체크
             if (!transferData.containsKey("userNo") || !transferData.containsKey("fromAccountNumber") ||
                     !transferData.containsKey("toAccountNumber") || !transferData.containsKey("transferAmount") ||
                     !transferData.containsKey("password") || !transferData.containsKey("toBankName")) {
@@ -248,12 +265,10 @@ public class AccountController {
                         .body(Collections.singletonMap("message", "필수 입력값이 누락되었습니다."));
             }
 
-            // 값들 가져오기
             int userNo = Integer.parseInt(transferData.get("userNo").toString());
             String fromAccountNumber = (String) transferData.get("fromAccountNumber");
             String toAccountNumber = (String) transferData.get("toAccountNumber");
 
-            // transferAmount가 이미 숫자일 경우 그대로 사용
             int transferAmount;
             if (transferData.get("transferAmount") instanceof Integer) {
                 transferAmount = (Integer) transferData.get("transferAmount");
@@ -293,47 +308,14 @@ public class AccountController {
         }
     }
 
-
-
-    // 거래 내역 확인 API (userNo 제거)
-    @GetMapping("/account/{accountNumber}/transaction-history")
-    public ResponseEntity<List<LogDTO>> getAccountTransactionHistory(
-            @PathVariable("accountNumber") String accountNumber) {  // accountNumber를 String으로 변경
-        try {
-            // accountNumber만을 이용해 거래 내역 조회
-            List<LogDTO> logs = accountService.getTransactionLogs(accountNumber);  // 여기도 String으로 처리
-            if (logs.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-            }
-            return ResponseEntity.ok(logs);
-        } catch (Exception e) {
-            e.printStackTrace();  // 예외 로그 기록
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 서버 오류 처리
-        }
-    }
-
-
-    @GetMapping("/banks/{bankName}/accounts/{accountNumber}")
-    public ResponseEntity<List<OutAccountDTO>> getOutAccountList() {
-        try {
-            List<OutAccountDTO> outAccounts = accountService.getAllNormalOutAccounts();
-            if (outAccounts.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(outAccounts);
-        } catch (Exception e) {
-            e.printStackTrace();  // 예외 로그 기록
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 서버 오류 처리
-        }
-    }
-
+    // 계좌 유효성 검사
     @GetMapping("/account/validate")
     public ResponseEntity<Map<String, Object>> validateAccountNumber(
-            @RequestParam("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
+            @RequestParam("accountNumber") String accountNumber,
             @RequestParam("bankName") String bankName) {
         try {
             // 계좌 유효성 검사
-            boolean isValid = accountService.validateAccountNumberWithBank(accountNumber, bankName);  // String으로 변경된 accountNumber 처리
+            boolean isValid = accountService.validateAccountNumberWithBank(accountNumber, bankName);
 
             // 유효한 계좌일 경우 계좌주명 조회
             if (isValid) {
@@ -351,8 +333,7 @@ public class AccountController {
         }
     }
 
-
-
+    // 자동이체
     @PostMapping("/auto-transfer")
     public ResponseEntity<String> registerAutoTransfer(@RequestBody AutoTransferDTO autoTransferDTO) {
         try {
@@ -375,7 +356,8 @@ public class AccountController {
                 toBankName = "우람은행";  // 내부 계좌로 간주
                 System.out.println("내부 계좌 처리: toAccountNumber = " + toAccountNumber + ", toBankName = " + toBankName);
             }
-// 외부 계좌 처리 (수동 매핑 적용) - 내부 계좌일 경우 건너뜀
+
+            // 외부 계좌 처리 (수동 매핑 적용)
             else if (autoTransferDTO.getOutAccountDTO() != null) {
                 OutAccountDTO outAccountDTO = autoTransferDTO.getOutAccountDTO();
 
@@ -389,20 +371,20 @@ public class AccountController {
                 }
             }
 
-// 입금 계좌 정보가 유효하지 않을 경우 처리
+            // 입금 계좌 정보가 유효하지 않을 경우 처리
             if (toAccountNumber == null || toBankName == null) {
                 System.out.println("유효하지 않은 입금 계좌 정보: toAccountNumber = " + toAccountNumber + ", toBankName = " + toBankName);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("입금 계좌 정보가 유효하지 않습니다.");
             }
 
-// 출금 계좌번호로 accountNo 조회
+            // 출금 계좌번호로 accountNo 조회
             Integer accountNo = accountService.getAccountNoByAccountNumber(fromAccountNumber);
             if (accountNo == null) {
                 System.out.println("유효하지 않은 출금 계좌번호: " + fromAccountNumber);
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효하지 않은 출금 계좌번호입니다.");
             }
 
-// 외부 계좌 처리 로직 - 내부 계좌일 경우 건너뜀
+            // 외부 계좌 처리 로직 - 내부 계좌일 경우 건너뜀
             Integer receiveAccountNo = null;
             if (!toBankName.equals("우람은행")) { // 내부 계좌가 아닌 경우에만 외부 계좌로 처리
                 receiveAccountNo = accountService.getExternalAccountNoByAccountNumberAndBank(toAccountNumber, toBankName);
@@ -420,11 +402,11 @@ public class AccountController {
                 System.out.println("내부 계좌 처리 완료: receiveAccountNo = " + receiveAccountNo);
             }
 
-// DTO에 조회된 accountNo와 receiveAccountNo 설정
+            // DTO에 조회된 accountNo와 receiveAccountNo 설정
             autoTransferDTO.setAccountNo(accountNo);
             autoTransferDTO.setReceiveAccountNo(receiveAccountNo);
 
-// 자동이체 등록 로직 실행
+            // 자동이체 등록 로직 실행
             boolean isRegistered = accountService.registerAutoTransfer(autoTransferDTO);
 
             if (isRegistered) {
@@ -449,7 +431,7 @@ public class AccountController {
         }
     }
 
-
+    // 자동이체 조회
     @GetMapping("/auto-transfer/list")
     public ResponseEntity<List<Map<String, Object>>> getAllAutoTransfers(@RequestParam("userNo") int userNo) {
         try {
@@ -470,7 +452,7 @@ public class AccountController {
         }
     }
 
-
+    // 자동이체 변경
     @PutMapping("/auto-transfer/{autoTransNo}/update")
     public ResponseEntity<String> updateAutoTransfer(@PathVariable("autoTransNo") int autoTransNo, @RequestBody AutoTransferDTO autoTransferDTO) {
         try {
