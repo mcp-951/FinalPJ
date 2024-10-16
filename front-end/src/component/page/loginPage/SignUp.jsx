@@ -34,6 +34,9 @@ function SignUp() {
     const [authHp, setAuthHp] = useState('');
     const [resNoError1, setResNoError1] = useState('');
     const [resNoError2, setResNoError2] = useState('');
+    const [ocrCheck, setOcrCheck] = useState(false);
+    const [ocrName, setOcrName] =useState('');
+    const [ocrLocalNo, setOcrLocalNo] = useState('');
     // 정규식
     const reg_id = /^(?=.*?[a-zA-Z0-9]).{6,16}$/;   //아이디 판별을 위한 정규식 영문자숫자만 입력 가능 6~16 자
     const reg_password = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,20}$/;	//비밀번호 판별을 위한 정규식 문자(소문자, 대문자)+숫자로 구성된 8~20 자
@@ -206,6 +209,25 @@ function SignUp() {
                     }
     };
 
+    const ocrMove = () => {
+      if(!ocrCheck){
+        // 팝업 열기
+        const popup = window.open('http://localhost:3000/ocr', '_blank');
+    
+        // 팝업에서 메시지를 받을 listener 설정
+        window.addEventListener('message', (event) => {
+          if (event.origin === 'http://localhost:3000') { // 보안을 위해 origin 확인
+            const { value1, value2 } = event.data; // 객체에서 값 추출
+            setOcrName(value1); // 첫 번째 메시지 상태 업데이트
+            setOcrLocalNo(value2); // 두 번째 메시지 상태 업데이트
+            if(value1 && value2){
+              setOcrCheck(true);
+            }
+          }
+        })
+      };
+    };
+
     return (
     <form className="sign-up-form" onSubmit={handleSubmit}>
       <div className="logo">
@@ -353,14 +375,13 @@ function SignUp() {
         </div>
 
         <div className="form-group">
-          <label>OCR 등록</label>
-          <input
-            type="text"
-            name="ocrFile"
-            onChange={handleChange}
-            required
-          />
-          <button className='signUp-button'>등록</button>
+          <label>신분증 인증</label>
+          {!ocrCheck ? (
+            <p>인증이 완료되지 않았습니다.</p>
+          ) : (
+            <p>인증이 완료되었습니다.</p>
+          )}
+          <button className='signUp-button' onClick={ocrMove}>인증하기</button>
         </div>
 
         <div className="form-group">
