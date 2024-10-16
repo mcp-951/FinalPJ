@@ -13,11 +13,9 @@ function Account() {
       case "전체":
         return <Total userNo={userNo} />; // userNo를 Total 컴포넌트에 전달
       case "예금":
-        return <AccountList type="예금" />;
+        return <AccountList type="예금" userNo={userNo} />; // userNo를 AccountList에 전달
       case "적금":
-        return <AccountList type="적금" />;
-      case "외환":
-        return <AccountList type="외환" />;
+        return <AccountList type="적금" userNo={userNo} />; // userNo를 AccountList에 전달
       default:
         return <Total userNo={userNo} />; // 기본적으로 userNo를 Total 컴포넌트에 전달
     }
@@ -37,3 +35,4 @@ function Account() {
 }
 
 export default Account;
+

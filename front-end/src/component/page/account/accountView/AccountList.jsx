@@ -25,39 +25,38 @@ const AccountList = ({ type }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // 기존 데이터 초기화
         setAccounts([]);
         setError(null);
-
+    
         let depositCategory = 0;
         if (type === '예금') {
-          depositCategory = 1; // 예금의 depositCategory 값
+          depositCategory = 1;
         } else if (type === '적금') {
-          depositCategory = 3; // 적금의 depositCategory 값
-        } else if (type === '외환') {
-          depositCategory = 2; // 외환 depositCategory 값
+          depositCategory = 3;
         }
-
+    
         const response = await axios.get(`http://localhost:8081/uram/category/${depositCategory}`, {
           headers: {
-            'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+            'Authorization': `Bearer ${token}`
+          },
+          params: {
+            userNo: userNo  // userNo를 쿼리 파라미터로 포함
           }
         });
-
-        // 응답 데이터에서 계좌 목록을 추출
+    
         const accountList = response.data;
-
-        // 중복 계좌 제거 (accountNumber 기준으로)
         const uniqueAccounts = accountList.filter((account, index, self) =>
           index === self.findIndex((acc) => acc.accountNumber === account.accountNumber)
         );
-
-        setAccounts(uniqueAccounts); // 중복 제거된 계좌 목록 설정
+    
+        setAccounts(uniqueAccounts);
       } catch (error) {
-        setError('데이터를 가져오는 중 오류가 발생했습니다.');
-        setAccounts([]); // 오류 발생 시 빈 배열로 설정
+        console.error('계좌 불러오기 실패:', error);
+        setError('등록된 계좌가 없습니다.');
+        setAccounts([]);
       }
     };
+    
 
     // type이 변경될 때마다 fetchData 호출
     if (type && token && userNo) {
@@ -107,7 +106,7 @@ const AccountList = ({ type }) => {
             </div>
           ))
         ) : (
-          <p>해당하는 계좌가 없습니다.</p>
+          <p>등록된 계좌가 없습니다.</p>
         )}
       </div>
 
