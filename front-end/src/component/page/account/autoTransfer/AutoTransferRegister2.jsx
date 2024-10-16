@@ -240,6 +240,9 @@ const AutoTransferRegister2 = () => {
     } else if (parseInt(autoTransferAmount) > availableAutoBalance) {
       newErrorMessages.autoTransferAmount = '이체 금액이 잔액보다 큽니다.';
       hasError = true;
+    } else if (autoTransferLimit.onceLimit && parseInt(autoTransferAmount) > autoTransferLimit.onceLimit) {
+      newErrorMessages.autoTransferAmount = '이체 금액이 1회 이체 한도를 초과합니다.';
+      hasError = true;
     }
 
     if (!isAutoPasswordValid) {

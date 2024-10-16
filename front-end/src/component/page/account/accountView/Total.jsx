@@ -75,7 +75,7 @@ const Total = () => {
           <thead>
             <tr>
               <th>계좌번호</th>
-              <th>예금명</th> {/* productName 대신 deposit 테이블의 depositName 사용 */}
+              <th>예금명</th> {/* deposit 테이블의 depositName 사용 */}
               <th>개설일</th>
               <th>만기일</th>
               <th>잔액</th>

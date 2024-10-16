@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -598,19 +599,44 @@ public class AccountService {
         }
     }
 
-
-
     // 자동이체 상태 업데이트 메서드 (해지 처리)
     public void cancelAutoTransfer(int autoTransNo) {
         // 해당 자동이체 번호(autoTransNo)를 조회
         AutoTransferEntity autoTransfer = autoTransferRepository.findById(autoTransNo)
                 .orElseThrow(() -> new EntityNotFoundException("자동이체를 찾을 수 없습니다."));
 
+        // 24시간 이전인지 확인
+        checkIfCancelable(autoTransNo);
+
         // 예약 상태를 'CANCELED'로 업데이트
         autoTransfer.setReservationState("CANCELED");
+
+        // deleteDate를 현재 날짜로 설정
+        autoTransfer.setDeleteDate(LocalDate.now());
 
         // 업데이트된 정보를 저장
         autoTransferRepository.save(autoTransfer);
     }
 
+    // 24시간 이전인지 확인하는 메서드
+    public void checkIfCancelable(int autoTransNo) {
+        AutoTransferEntity autoTransfer = autoTransferRepository.findById(autoTransNo)
+                .orElseThrow(() -> new EntityNotFoundException("자동이체를 찾을 수 없습니다."));
+
+        // 이체일의 24시간 전인지 확인
+        LocalDate nextTransferDate = getNextTransferDate(autoTransfer.getTransferDay());
+        if (LocalDateTime.now().isAfter(nextTransferDate.atStartOfDay().minusHours(24))) {
+            throw new IllegalStateException("이체일 24시간 전까지만 변경하거나 해지할 수 있습니다.");
+        }
+    }
+
+    // 다음 이체일을 계산하는 메서드
+    private LocalDate getNextTransferDate(int transferDay) {
+        LocalDate now = LocalDate.now();
+        LocalDate nextTransferDate = now.withDayOfMonth(transferDay);
+        if (now.isAfter(nextTransferDate) || now.isEqual(nextTransferDate)) {
+            nextTransferDate = nextTransferDate.plusMonths(1);
+        }
+        return nextTransferDate;
+    }
 }

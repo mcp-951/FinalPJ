@@ -57,7 +57,6 @@ import Accession_chap3 from 'component/page/product/Accession/Accession_chap3';
 // 계좌 관련 (채림)
 import Account from '../page/account/accountView/Account';
 import AccountDetail from '../page/account/accountView/AccountDetail'; 
-import TransactionCalendar from '../page/account/accountView/TransactionCalendar';
 import PasswordCheck from '../page/account/accountManagement/PasswordCheck'; 
 import PasswordChange from '../page/account/accountManagement/PasswordChange'; 
 import AccountClose from '../page/account/accountManagement/AccountClose'; 
@@ -158,7 +157,6 @@ const RouteComponent = () => {
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
-                        <Route path="/account/transaction-history" element={<TransactionCalendar />} />
 
                         
                         {/* 비밀번호 확인 페이지 */}
