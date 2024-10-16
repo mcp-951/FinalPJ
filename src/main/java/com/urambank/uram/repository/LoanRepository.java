@@ -19,4 +19,7 @@ public interface LoanRepository extends JpaRepository<LoanEntity, Integer> {
 
     // loanState가 "Y"인 대출 상품을 페이징 처리하여 반환하는 메서드
     Page<LoanEntity> findByLoanState(Character loanState, Pageable pageable);
+
+    int countByLoanState(char state);
+
 }

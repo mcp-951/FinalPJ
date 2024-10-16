@@ -46,12 +46,17 @@ import CurrencyExchangeHistory from '../page/adminPage/exchange/CurrencyExchange
 import ExchangePickupLocation from '../page/adminPage/exchange/ExchangePickupLocation';
 import MemberEdit from '../page/adminPage/user/MemberEdit';
 import EditSavingsProduct from '../page/adminPage/product/EditSavingsProduct';
-import EditDepositProduct from '../page/adminPage/product/EditDepositProduct';
 import EditLoanProduct from '../page/adminPage/product/EditLoanProduct';
 import Sidebar from '../page/adminPage/Sidebar';
 import TaxList from '../page/adminPage/tax/taxList';
 import TaxEdit from '../page/adminPage/tax/taxEdit';
 import TaxInsert from '../page/adminPage/tax/taxInsert';
+import AdAccount from '../page/adminPage/account/AdAccount';
+import AdAccountStop from '../page/adminPage/account/AdAccountStop';
+import AdAccountClosure from '../page/adminPage/account/AdAccountClosure';
+import AdTransactionHistory from '../page/adminPage/account/AdTransactionHistory';
+import RegisterProduct from '../page/adminPage/product/RegisterProduct';
+import RegisterLoanProduct from '../page/adminPage/product/RegisterLoanProduct ';
 // 예금 적금
 import DepositMain from 'component/page/product/Deposit/DepositMain';
 import DepositList from 'component/page/product/Deposit/DepositList';
@@ -128,8 +133,6 @@ const RouteComponent = () => {
                         <Route path="/taxList" exact={true} element={<TaxList />} /> {/* TaxList 경로 추가 */}
                         <Route path="/taxEdit/:taxNo" exact={true} element={<TaxEdit />} /> {/* TaxEdit 경로 추가 */}
                         <Route path="/taxInsert" exact={true} element={<TaxInsert />} />
-{/*                         <Route path="/adminList" element={<AdminList />} /> */}
-{/*                         <Route path="/editAdmin" element={<EditAdmin />} /> */}
 
                         {/* 고객센터 페이지 경로 설정 */}
                         <Route path="/customer-service" element={<CustomerServiceMain />} />
@@ -142,19 +145,21 @@ const RouteComponent = () => {
                         <Route path="/editMember" element={<MemberEdit />} />
 
                         {/* 금융 상품 관리 페이지 */}
-                        <Route path="/financialProduct" element={<FinancialProduct />} />
-                        <Route path="/savingsProduct" element={<SavingsProduct />} />
-                        <Route path="/depositProduct" element={<DepositProduct />} />
-                        <Route path="/loanProduct" element={<LoanProduct />} />
-
+                        <Route path="/admin/financialProduct" element={<FinancialProduct />} />
+                        <Route path="/admin/savingsProduct" element={<SavingsProduct />} />
+                        <Route path="/admin/depositProduct" element={<DepositProduct />} />
+                        <Route path="/admin/loanProduct" element={<LoanProduct />} />
                         {/* 금융 상품 수정 페이지 */}
-                        <Route path="/editSavingsProduct" element={<EditSavingsProduct />} />
-                        <Route path="/editDepositProduct" element={<EditDepositProduct />} />
-                        <Route path="/editLoanProduct" element={<EditLoanProduct />} />
+                        <Route path="/admin/RegisterLoanProduct" element={<RegisterLoanProduct  />} />
+                        <Route path="/admin/RegisterProduct" element={<RegisterProduct />} />
+                        <Route path="/EditSavingsProduct" element={<EditSavingsProduct />} />
+                        <Route path="/EditLoanProduct" element={<EditLoanProduct />} />
 
                         {/* 거래 내역 및 계좌 관리 페이지 */}
-                        <Route path="/transactionHistory" element={<TransactionHistory />} />
-                        <Route path="/accountClosure" element={<AccountClosure />} />
+                        <Route path="/admin/adTransactionHistory" element={<AdTransactionHistory />} />
+                        <Route path="/admin/adAccount" element={<AdAccount />} />
+                        <Route path="/admin/adAccountStop" element={<AdAccountStop />} />
+                        <Route path="/admin/adAccountClosure" element={<AdAccountClosure />} />
 
                         {/* 외환 거래 관리 페이지 */}
                         <Route path="/exchangeHistory" element={<CurrencyExchangeHistory />} />

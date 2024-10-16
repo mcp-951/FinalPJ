@@ -39,16 +39,16 @@ const Sidebar = () => {
             {showFinancialDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/financialProduct">전체</NavLink>
+                  <NavLink to="/admin/financialProduct">전체</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/savingsProduct">예금상품 관리</NavLink>
+                  <NavLink to="/admin/savingsProduct">예금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/depositProduct">적금상품 관리</NavLink>
+                  <NavLink to="/admin/depositProduct">적금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/loanProduct">대출상품 관리</NavLink>
+                  <NavLink to="/admin/loanProduct">대출상품 관리</NavLink>
                 </li>
               </ul>
             )}
@@ -62,10 +62,10 @@ const Sidebar = () => {
             {showAccountDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/transactionHistory">거래 현황</NavLink>
+                  <NavLink to="/admin/transactionHistory">거래 현황</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/accountClosure">계좌 해지 관리</NavLink>
+                  <NavLink to="/admin/accountClosure">계좌 해지 관리</NavLink>
                 </li>
               </ul>
             )}

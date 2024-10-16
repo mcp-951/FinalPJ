@@ -3,9 +3,11 @@ package com.urambank.uram.repository;
 import com.urambank.uram.dto.AccountDTO;
 import com.urambank.uram.entities.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -83,5 +85,11 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     @Query("SELECT a FROM AccountEntity a WHERE a.userNo = :userNo AND a.accountNo = :accountNo")
     Optional<AccountEntity> findByUserNoAndAccountNo(@Param("userNo") int userNo, @Param("accountNo") int accountNo);
 
+    // 계좌 리스트 불러오기
+    List<AccountEntity> findByAccountState(String accountState);
 
+    @Modifying
+    @Transactional
+    @Query("UPDATE AccountEntity a SET a.accountState = :accountState WHERE a.accountNo = :accountNo")
+    void updateAccountState(@Param("accountState") String accountState, @Param("accountNo") int accountNo);
 }

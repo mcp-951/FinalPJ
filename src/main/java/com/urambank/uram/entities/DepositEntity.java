@@ -1,15 +1,15 @@
 package com.urambank.uram.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "deposit_TB")
 public class DepositEntity {
     @Id
@@ -27,6 +27,9 @@ public class DepositEntity {
 
     @Column(nullable = false)
     private int depositCategory;
+
+    @Column(nullable = true)
+    private String depositIMG;
 
     @Column(nullable = false, columnDefinition = "CHAR(1) DEFAULT 'Y'")
     private char depositState;

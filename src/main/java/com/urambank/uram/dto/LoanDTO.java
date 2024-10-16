@@ -1,13 +1,13 @@
 package com.urambank.uram.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LoanDTO {
     private int loanNo;

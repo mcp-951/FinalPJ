@@ -1,5 +1,6 @@
 package com.urambank.uram.repository;
 
+import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -10,11 +10,11 @@ import java.sql.Date;
 import java.util.Collection;
 
 @Table(name="userInfo")
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -72,9 +72,4 @@ public class User {
     }
 
 
-    public User(String subject, String s, Collection<? extends GrantedAuthority> authorities) {
-    }
-
-    public void setOCRCheck(String ocrCheck) {
-    }
 }
