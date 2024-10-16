@@ -1,27 +1,24 @@
-import InvestmentRight from'./InvestmentRight';
-import StockMain from "./StockMain";
 import'../../../resource/css/investment/InvestmentMain.css'
 import React, { useEffect, useState } from 'react';
 import SamsungStock from './stock/SamsungStock';
+import LGelectroStock from './stock/LGelectroStock';
+import SKhinicks from './stock/SKhinicks';
+import NaverStock from './stock/NaverStock';
+import Bitcoin from './coin/Bitcoin';
+import Ehereum from './coin/Ehereum';
+import Ripple from './coin/Ripple';
+import Solana from './coin/Solana';
+import StockList from './stock/StockList';
 
 function InvestmentMain(){
-  const API_KEY = 'H1CKZCZJ76G0MZ5S';
+
   const [prices, setPrices] = useState({});
-  const [stock, setStock] = useState({});
   const coins = [
       { name: '비트코인', symbol: 'BTCUSDT' },
       { name: '이더리움', symbol: 'ETHUSDT' },
       { name: '솔라나', symbol: 'SOLUSDT' },
       { name: '리플', symbol: 'XRPUSDT' },
   ];
-
-  const stockList = [
-    '^KS11',
-    '005930.KS',
-    'NVDA',
-  ]
-
-  const stokSymbol = [];
 
   useEffect(() => {
     // WebSocket 연결 설정
@@ -54,9 +51,9 @@ function InvestmentMain(){
                 <a href="/">+ 더보기</a>
               </div>
               <SamsungStock />
-              <StockMain title={"코스닥"} price={"\\781.3"} p1 ={"5000"} p2 ={"2000"} p3 ={"4000"} p4 ={"3000"} p5 ={"3500"} p6 ={"2000"} p7 ={"1500"}/>
-              <StockMain title={"나스닥"} price={"$18,119.3"} p1 ={0} p2 ={""} p3 ={""} p4 ={""} p5 ={""} p6 ={""} p7 ={""}/>
-              <StockMain title={"다우지수"} price={"$42,313.0"} p1 ={0} p2 ={""} p3 ={""} p4 ={""} p5 ={""} p6 ={""} p7 ={""}/>
+              <LGelectroStock />
+              <SKhinicks />
+              <NaverStock />
             </div>
             {/* 주식바 끝. */}
             {/* 코인바 시작됩니다. */}
@@ -65,46 +62,15 @@ function InvestmentMain(){
                 <h4>코인동향</h4>
                 <a href="/">+ 더보기</a>
               </div>
-              <StockMain 
-                title={"비트코인"} 
-                price={`$${prices['BTCUSDT'] ? parseFloat(prices['BTCUSDT']).toFixed(1) : 'Loading...'}`} 
-                p1={0} p2={""} p3={""} p4={""} p5={""} p6={""} p7={""}
-              />
-              <StockMain 
-                title={"이더리움"} 
-                price={`$${prices['ETHUSDT'] ? parseFloat(prices['ETHUSDT']).toFixed(1) : 'Loading...'}`} 
-                p1={0} p2={""} p3={""} p4={""} p5={""} p6={""} p7={""}
-              />
-              <StockMain 
-                title={"솔라나"} 
-                price={`$${prices['SOLUSDT'] ? parseFloat(prices['SOLUSDT']).toFixed(1) : 'Loading...'}`} 
-                p1={0} p2={""} p3={""} p4={""} p5={""} p6={""} p7={""}
-              />
-              <StockMain 
-                title={"리플"} 
-                price={`$${prices['XRPUSDT'] ? parseFloat(prices['XRPUSDT']).toFixed(4) : 'Loading...'}`} 
-                p1={0} p2={""} p3={""} p4={""} p5={""} p6={""} p7={""}
-              />
-              <div className='chartTable'>
-                <table>
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>종목명</th>
-                      <th>현재가격</th>
-                      <th>고가</th>
-                      <th>저가</th>
-                      <th>전일종가</th>
-                      <th>거래량</th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
+              <Bitcoin />
+              <Ehereum />
+              <Solana />
+              <Ripple />
             </div>
             {/* 코인바 끝. */}
-          </div>
-          <div className="RightList">
-            <InvestmentRight />
+            <div className='Stock_List'>
+              <StockList />
+            </div>
           </div>
         </div>
     );

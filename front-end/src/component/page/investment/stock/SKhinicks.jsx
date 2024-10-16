@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {LineChart, Line, XAxis, YAxis,ResponsiveContainer} from 'recharts';
 import '../../../../resource/css/investment/StockMain.css'
 
-function SamsungStock(){
+function SKhinicks(){
     const [stockPrice, setStockPrice] = useState(null);
     const [stockData, setStockData] = useState([]);
 
@@ -11,7 +11,7 @@ function SamsungStock(){
 
     useEffect(() => {
         const fetchStockData = async () => {
-            const url = 'https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=tqRVFQ9BDH11cOzb19t6hpP%2BPSNNHtuCCNf5lLN5GHa%2FqkZoPdzXx247yVaeI%2B67eSxufozQlXK0v%2Fcs%2FYdZXA%3D%3D&numOfRows=60&resultType=json&itmsNm=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90';
+            const url = 'https://apis.data.go.kr/1160100/service/GetStockSecuritiesInfoService/getStockPriceInfo?serviceKey=tqRVFQ9BDH11cOzb19t6hpP%2BPSNNHtuCCNf5lLN5GHa%2FqkZoPdzXx247yVaeI%2B67eSxufozQlXK0v%2Fcs%2FYdZXA%3D%3D&numOfRows=60&resultType=json&itmsNm=SK%ED%95%98%EC%9D%B4%EB%8B%89%EC%8A%A4';
             try {
               const response = await fetch(url);
               const data = await response.json();
@@ -41,13 +41,13 @@ function SamsungStock(){
     return(
     <div className="Stock_kospi">
         <div>
-            <h5>삼성전자</h5>
+            <h5>SK하이닉스</h5>
             <h5>₩{stockPrice}</h5>
         </div>
         <ResponsiveContainer width={200} height={150}>
             <LineChart data={stockData} margin={{ top: 5, right: 0, left: 0, bottom: 0 }}>
                 <XAxis dataKey="date" tick={false} stroke="transparent" />
-                <YAxis domain={[55000, 90000]} ticks={null} orientation="left" tick={false} stroke="transparent"/>
+                <YAxis domain={[140000, 210000]} ticks={null} orientation="left" tick={false} stroke="transparent"/>
                 <Line type="monotone" dataKey="price" stroke="#8884d8" dot={false}/>
             </LineChart>
         </ResponsiveContainer>
@@ -55,4 +55,4 @@ function SamsungStock(){
     );
 }
 
-export default SamsungStock;
+export default SKhinicks;
