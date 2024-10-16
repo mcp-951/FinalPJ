@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../../resource/css/main/BottomBoard.css';
+import '../../resource/css/BottomBoard.css';
 
 function BottomNewsBoard() {
     const [news, setNews] = useState([]); // 뉴스 데이터를 저장할 상태 변수

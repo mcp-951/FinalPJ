@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ApiService from '../../../ApiService';  // ApiService import
 import '../../../resource/css/customerService/InquiryDetail.css';
 import axios from 'axios';
 

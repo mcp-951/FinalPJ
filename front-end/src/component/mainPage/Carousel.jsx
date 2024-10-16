@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import '../../resource/css/main/Carousel.css';
-import product1 from '../../resource/img/b.png';  // 첫 번째 금융상품 이미지
-import product2 from '../../resource/img/a.png';  // 두 번째 금융상품 이미지
-import product3 from '../../resource/img/c.png';  // 세 번째 금융상품 이미지
+import '../../resource/css/Carousel.css';
+import product1 from '../../resource/img/a.jpg';  // 첫 번째 금융상품 이미지
+import product2 from '../../resource/img/b.jpg';  // 두 번째 금융상품 이미지
+import product3 from '../../resource/img/c.jpg';  // 세 번째 금융상품 이미지
 
 function Carousel_Main() {
   const [index, setIndex] = useState(0);
