@@ -28,11 +28,19 @@ const AccountDetail = () => {
       try {
         const accountResponse = await ApiService.getAccountDetail(userNo, accountNumber, token);
         setAccountDetail(accountResponse.data);
-
+  
         const logsResponse = await ApiService.getAccountLogs(accountNumber, token);
         const logs = logsResponse.data.length > 0 ? logsResponse.data : [];
-        const sortedLogs = logs.sort((a, b) => new Date(b.sendDate) - new Date(a.sendDate)); // 최신순으로 정렬
-
+        const sortedLogs = logs.sort((a, b) => {
+          // 날짜를 기준으로 내림차순 정렬
+          const dateComparison = new Date(b.sendDate) - new Date(a.sendDate);
+          if (dateComparison !== 0) {
+            return dateComparison;
+          }
+          // 날짜가 같을 경우 logNo 역순으로 정렬
+          return b.logNo - a.logNo;
+        });
+  
         setTransactionLogs(sortedLogs);
         calculateTotals(sortedLogs);
       } catch (error) {
@@ -40,9 +48,11 @@ const AccountDetail = () => {
         setError('계좌 정보를 가져오는 중 오류가 발생했습니다.');
       }
     };
-
+  
     fetchAccountDetail();
   }, [userNo, accountNumber, token]);
+  
+  
 
   const calculateTotals = (logs) => {
     let totalDepositAmount = 0;
