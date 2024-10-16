@@ -1,8 +1,9 @@
 import React, { useEffect , useState } from 'react';
-import '../../../resource/css/SignUp.css';
 import apiSer from '../../ApiService';
 import {useNavigate} from 'react-router-dom';
 import getAddress from './GetAddress'
+
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 
 function SignUp() {
     const [form, setForm] = useState({
@@ -210,7 +211,10 @@ function SignUp() {
     };
 
     const ocrMove = () => {
-      if(!ocrCheck){
+      const localNo = form.residentNumber1 + form.residentNumber2;
+      const userName = form.name;
+    
+      if (!ocrCheck) {
         // 팝업 열기
         const popup = window.open('http://localhost:3000/ocr', '_blank');
     
@@ -218,198 +222,237 @@ function SignUp() {
         window.addEventListener('message', (event) => {
           if (event.origin === 'http://localhost:3000') { // 보안을 위해 origin 확인
             const { value1, value2 } = event.data; // 객체에서 값 추출
+    
             setOcrName(value1); // 첫 번째 메시지 상태 업데이트
             setOcrLocalNo(value2); // 두 번째 메시지 상태 업데이트
-            if(value1 && value2){
+    
+            // 값이 null이 아니면서 조건을 만족할 때
+            if (value1 && value2 && userName === value1 && value2 === localNo) {
               setOcrCheck(true);
             }
           }
-        })
-      };
+        });
+      }
     };
 
-    return (
-    <form className="sign-up-form" onSubmit={handleSubmit}>
-      <div className="logo">
-        <img src="logo.png" alt="URAM Logo" />
-      </div>
+  return (
+    <Container className="d-flex justify-content-end align-items-center" style={{ minHeight: '80vh' }}>
+      <Row className="w-100">
+        <Form onSubmit={handleSubmit}>
+        <Form.Group as={Row} controlId="userId" className="mt-3">
+          <Form.Label column sm={3} className="text-left">아이디</Form.Label>
+          <Col sm={6}>
+              <Form.Control
+                  type="text"
+                  placeholder="아이디를 입력하세요"
+                  name="userId"
+                  value={form.userId}
+                  onChange={handleChange}
+              />
+          </Col>
+          <Col sm={2}>
+            <Button onClick = {idCheck}>중복체크</Button>
+          </Col>
+          <Col sm={12} className="d-flex justify-content-center align-items-center mt-3">
+            <p name="checkingId" value="0">{idCheckMessage}</p>
+          </Col>
+      </Form.Group>
 
-      <div className="form-container">
-        <div className="form-group">
-          <label>아이디</label>
-          <input
-            type="text"
-            name="userId"
-            value={form.userId}
-            onChange={handleChange}
-            placeholder="6-20자 영문, 숫자"
-          />
-          <button type="button" onClick = {idCheck} className='signUp-button'>중복체크</button>
-          <p name= "checkingId" value = "0">{idCheckMessage}</p>
-        </div>
+      <Form.Group as={Row} controlId="userPw" className="mt-3">
+        <Form.Label column sm={3} className="text-left">비밀번호</Form.Label>
+        <Col sm={6}>
+            <Form.Control
+                type="password"
+                placeholder="비밀번호를 입력하세요, 8-12자 영문, 숫자, 특수문자"
+                name="userPw"
+                value={form.userPw}
+                onChange={handleChange}
+            />
+        </Col>
+      </Form.Group>
 
-        <div className="form-group">
-          <label>비밀번호</label>
-          <input
-            type="password"
-            name="userPw"
-            value={form.userPw}
-            onChange={handleChange}
-            placeholder="8-12자 영문, 숫자, 특수문자"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>비밀번호 확인</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            placeholder="8-12자 영문, 숫자, 특수문자"
-          />
-        </div>
-        <div className="form-group">
-            {pwSameCheck && (<>
-               <p>비밀번호가 일치하지 않습니다.</p>
-            </>)}
-        </div>
-
-        <div className="form-group">
-          <label>이름</label>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>주민등록번호</label>
-          <input
-            type="text"
-            name="residentNumber1"
-            value={form.residentNumber1}
-            onChange={handleChange}
-            required
-          />
-          {resNoError1 && <p style={{ color: 'red' }}>{resNoError1}</p>}
+      <Form.Group as={Row} controlId="confirmPassword" className="mt-3">
+        <Form.Label column sm={3} className="text-left">비밀번호 확인</Form.Label>
+        <Col sm={6}>
+            <Form.Control
+                type="password"
+                placeholder="비밀번호를 다시 입력해 주세요"
+                name="confirmPassword"
+                value={form.confirmPassword}
+                onChange={handleChange}
+            />
+        </Col>
+        <Col sm={2}>
+          {pwSameCheck && (<><p>일치하지 않습니다.</p></>)}
+        </Col>
+      </Form.Group>
+      <Form.Group as={Row} controlId="name" className="mt-3">
+          <Form.Label column sm={3} className="text-left">이름</Form.Label>
+          <Col sm={6}>
+              <Form.Control
+                  type="text"
+                  placeholder="이름을 입력해 주세요"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+              />
+          </Col>
+      </Form.Group>
+      <Form.Group as={Row} controlId="residentNumber1" className="mt-3">
+          <Form.Label column sm={3} className="text-left">주민등록번호</Form.Label>
+          <Col sm={3}>
+              <Form.Control
+                  type="text"
+                  placeholder="주민등록번호 앞 6자리"
+                  name='residentNumber1'
+                  value={form.residentNumber1}
+                  onChange={handleChange}
+                  maxLength={6}
+              />
+          </Col>
           -
-          <input
-            type="password"
-            name="residentNumber2"
-            value={form.residentNumber2}
-            onChange={handleChange}
-            required
-          />
-          {resNoError2 && <p style={{ color: 'red' }}>{resNoError2}</p>}
-        </div>
-
-        <div className="form-group">
-          <label>이메일</label>
-          <input
-            type="text"
-            name="email1"
-            value={form.email1}
-            onChange={handleChange}
-            required
-          />
-          @
-          <input
-            type="text"
-            name="email2"
-            value={form.email2}
-            onChange={handleChange}
-            required
-          />
-          <select onChange={handleChangeEmail2}>
-            <option value="">직접입력</option>
-            <option value="gmail.com">gmail.com</option>
-            <option value="naver.com">naver.com</option>
-            <option value="daum.co.kr">daum.co.kr</option>
-            <option value="nate.com">nate.com</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>휴대폰</label>
-          <input
-            type="tel"
-            name="hp"
-            value={form.hp}
-            onChange={handleChange}
-            placeholder="010 1234 5678"
-            required
-          />
-          <button type="button" onClick = {hpCheck} className='signUp-button' >인증번호받기</button>
-        </div>
-
-        <div className="form-group">
-            {startCheckHp && (<>
-                <input
-                    type="text"
-                    name="hpAuthkey"
-                    value={form.hpAuthkey}
+          <Col sm={3}>
+              <Form.Control
+                  type="password"
+                  placeholder="주민등록번호 뒤 7자리"
+                  name='residentNumber2'
+                  value={form.residentNumber2}
+                  onChange={handleChange}
+                  maxLength={7}
+              />
+          </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="formEmail" className="mt-3">
+              <Form.Label column sm={3} className="text-left">이메일</Form.Label>
+              <Col sm={3}>
+                  <Form.Control
+                      type="text"
+                      placeholder="이메일을 입력하세요"
+                      name="email1"
+                      value={form.email1}
+                      onChange={handleChange}
+                  />
+              </Col>
+              @
+              <Col sm={3}>
+                  <Form.Control
+                      type="text"
+                      placeholder="이메일을 입력하세요"
+                      name="email2"
+                      value={form.email2}
+                      onChange={handleChange}
+                  />
+              </Col>
+              <Col sm={2}>
+                  <Form.Select value={form.email2} onChange={handleChangeEmail2}>
+                    <option value="">직접입력</option>
+                    <option value="gmail.com">gmail.com</option>
+                    <option value="naver.com">naver.com</option>
+                    <option value="daum.co.kr">daum.co.kr</option>
+                    <option value="nate.com">nate.com</option>
+                  </Form.Select>
+              </Col>
+          </Form.Group>
+          <Form.Group as={Row} controlId="formUsername" className="mt-3">
+              <Form.Label column sm={3} className="text-left">ID</Form.Label>
+              <Col sm={6}>
+                  <Form.Control
+                      type="tel"
+                      placeholder="핸드폰 번호를 - 빼고 입력해 주세요."
+                      name="hp"
+                      value={form.hp}
+                      onChange={handleChange}
+                  />
+              </Col>
+              <Col sm={2}>
+                  <Button onClick = {hpCheck}>인증번호 받기</Button>
+              </Col>
+          </Form.Group>
+          {startCheckHp && (
+            <Form.Group controlId="formHpAuthKey" className="mt-3">
+              <Row className="align-items-center">
+                <Form.Label column sm={3}>인증번호</Form.Label>
+                    <Col sm={6}>
+                        <Form.Control
+                            type="text"
+                            name="hpAuthkey"
+                            value={form.hpAuthkey}
+                            onChange={handleChange}
+                            required
+                            placeholder="인증번호를 입력하세요" // Placeholder 추가
+                        />
+                    </Col>
+                    <Col sm={2}>
+                        <Button type="button" onClick={authingKey}>
+                            인증번호 확인
+                        </Button>
+                    </Col>
+                    <Col sm={1}>
+                        {stateAuth && (
+                            <Form.Text style={{ color: 'green' }}>
+                                인증 성공
+                            </Form.Text>
+                        )}
+                    </Col>
+                </Row>
+            </Form.Group>
+        )}
+        <Form.Group as={Row} controlId="formUsername" className="mt-3">
+            <Form.Label column sm={3} className="text-left">생년월일</Form.Label>
+            <Col sm={6}>
+                <Form.Control
+                    type="date"
+                    name="birth"
+                    value={form.birth}
                     onChange={handleChange}
-                    required
                 />
-                {stateAuth &&(<>
-                    <p> 인증 성공 </p>
-                    </>)}
-                <button type="button" onClick={authingKey} className='signUp-button'>인증</button>
-                </>
-            )}
-        </div>
-
-        <div className="form-group">
-          <label>생년월일</label>
-          <input
-            type="date"
-            name="birth"
-            value={form.birth}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>신분증 인증</label>
-          {!ocrCheck ? (
-            <p>인증이 완료되지 않았습니다.</p>
-          ) : (
-            <p>인증이 완료되었습니다.</p>
-          )}
-          <button className='signUp-button' onClick={ocrMove}>인증하기</button>
-        </div>
-
-        <div className="form-group">
-          <label>주소</label>
-          <input
-            type="text"
-            name="address"
-            value={form.address1}
-            required
-          />
-          {plusAddress && (<>
-                <input
+            </Col>
+        </Form.Group>
+        <Form.Group as={Row} controlId="formUsername" className="mt-3">
+            <Form.Label column sm={3} className="text-left">신분증 인증</Form.Label>
+            <Col sm={6}>
+              {!ocrCheck ? (<p>인증이 완료되지 않았습니다.</p>) : (<p>인증이 완료되었습니다.</p>)}
+            </Col>
+            <Col sm={2}>
+              <Button onClick={ocrMove}>인증하기</Button>
+            </Col>
+        </Form.Group>
+        <Form.Group as={Row} controlId="formUsername" className="mt-3">
+            <Form.Label column sm={3} className="text-left">주소</Form.Label>
+            <Col sm={6}>
+            <Form.Control
                     type="text"
-                    name="address2"
-                    value={form.address2}
+                    name="address"
+                    value={form.address1}
                     onChange={handleChange}
-                    placeholder="추가주소를 입력해주세요."
                 />
-                </>
+            </Col>
+            <Col sm={2}>
+              <Button onClick={openPopup}>검색</Button>
+            </Col>
+            {plusAddress && (
+              
+              <Form.Group controlId="formAddress2" className="mt-3">
+                  <Row>
+                  <Form.Label column sm={3}>추가 주소</Form.Label>
+                  <Col sm={6}>
+                  <Form.Control
+                      type="text"
+                      name="address2"
+                      value={form.address2}
+                      onChange={handleChange}
+                      placeholder="추가주소를 입력해주세요."
+                  />
+                  </Col>
+                  </Row>
+              </Form.Group>
             )}
-          <button type="button" onClick={openPopup} className='signUp-button'>검색</button>
-        </div>
-
-
-        <button type="submit" className='signUp-button'>가입완료</button>
-      </div>
-    </form>
-    );
+        </Form.Group>
+          <Button variant="primary" type="submit" className="mt-3">가입완료</Button>
+        </Form>
+      </Row>
+    </Container>
+  );
 }
 
 export default SignUp;

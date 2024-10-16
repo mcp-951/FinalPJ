@@ -13,6 +13,7 @@ import InquiryForm from 'component/page/customerService/InquiryForm';
 // 로그인 라우터 임포트
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
+import SignUp_ from 'component/page/loginPage/Signup_';
 
 // 검색바 라우터 임포트
 import SearchResult from './searchBar/SearchResult';
@@ -109,6 +110,8 @@ const RouteComponent = () => {
                         {/*로그인 페이지*/}
                         <Route path="/login" exact={true} element={<Login />} />
                         <Route path="/signup" exact={true} element={<Signup />} />
+                        <Route path="/signup_" exact={true} element={<SignUp_ />} />
+                        
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />
                         {/*}투자 페이지{*/}
