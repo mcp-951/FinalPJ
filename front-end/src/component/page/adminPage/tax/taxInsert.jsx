@@ -89,6 +89,7 @@ const TaxInsert = () => {
 
   return (
     <form onSubmit={handleSubmit} className="tax-insert-form">
+       <h1 className="tax-edit-title">청구서 작성</h1>
       {/* 사용자 선택 및 납부기한 선택 부분 */}
       <div className="form-group">
         <label>사용자 선택: 
