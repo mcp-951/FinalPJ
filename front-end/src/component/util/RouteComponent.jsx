@@ -57,6 +57,9 @@ import AdAccountClosure from '../page/adminPage/account/AdAccountClosure';
 import AdTransactionHistory from '../page/adminPage/account/AdTransactionHistory';
 import RegisterProduct from '../page/adminPage/product/RegisterProduct';
 import RegisterLoanProduct from '../page/adminPage/product/RegisterLoanProduct ';
+import AdminInquiryList from '../page/adminPage/support/AdminInquiryList';  // 문의 목록
+import AdminInquiryDetail from '../page/adminPage/support/AdminInquiryDetail';  // 문의 상세
+
 // 예금 적금
 import DepositMain from 'component/page/product/Deposit/DepositMain';
 import DepositList from 'component/page/product/Deposit/DepositList';
@@ -150,6 +153,12 @@ const RouteComponent = () => {
                         <Route path="/memberList" element={<MemberList />} />
                         <Route path="/retiredMember" element={<RetiredMember />} />
                         <Route path="/editMember" element={<MemberEdit />} />
+
+                        {/* 관리자 페이지 문의 관리 목록 */}
+                        <Route path="/admin/support/inquiries" element={<AdminInquiryList />} />
+                        
+                        {/* 특정 문의글 상세 보기 (qnaNo가 변수로 전달됨) */}
+                        <Route path="/admin/support/inquiry/:qnaNo" element={<AdminInquiryDetail />} />
 
                         {/* 금융 상품 관리 페이지 */}
                         <Route path="/admin/financialProduct" element={<FinancialProduct />} />

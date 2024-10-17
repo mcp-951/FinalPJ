@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../../resource/css/customerService/CustomerServiceMain.css';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 function CustomerServiceMain() {
   const navigate = useNavigate();
@@ -12,12 +12,13 @@ function CustomerServiceMain() {
   useEffect(() => {
     const fetchInquiries = async () => {
       try {
-        const decoding = jwtDecode(token);
+        const decoding = jwtDecode(token); // JWT 토큰에서 사용자 정보 디코딩
         const response = await axios.get(
           `http://localhost:8081/support/board/${decoding.userNo}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        setData(response.data);
+        console.log('API 응답 데이터:', response.data); // 응답 확인
+        setData(response.data); // 삭제되지 않은 글만 저장
       } catch (error) {
         console.error('문의글 목록을 불러오는 중 오류가 발생했습니다:', error);
       }
@@ -32,7 +33,7 @@ function CustomerServiceMain() {
   }, [token, navigate]);
 
   const handleRowClick = (qnaNo) => {
-    navigate(`/inquiry/${qnaNo}`); // 상세 페이지로 이동
+    navigate(`/inquiry/${qnaNo}`); // 문의글 상세 페이지로 이동
   };
 
   const handleNewInquiryClick = () => {
@@ -69,7 +70,6 @@ function CustomerServiceMain() {
         </tbody>
       </table>
 
-      {/* 1:1 문의하기 버튼 */}
       <div className="inquiry-button-container">
         <button className="inquiry-button" onClick={handleNewInquiryClick}>
           1:1 문의하기
@@ -95,7 +95,6 @@ function CustomerServiceMain() {
             <li>국내 1833-3938</li>
           </ul>
         </div>
-
         <div className="info-section">
           <h2>상담시간안내</h2>
           <ul>
@@ -106,7 +105,6 @@ function CustomerServiceMain() {
             <li>어르신전용/수화상담 평일 09:00~18:00</li>
           </ul>
         </div>
-
         <div className="info-section">
           <h2>콜백서비스 안내</h2>
           <ul>

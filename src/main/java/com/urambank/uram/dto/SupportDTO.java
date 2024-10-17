@@ -1,4 +1,5 @@
 package com.urambank.uram.dto;
+
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -11,12 +12,12 @@ import java.time.LocalDateTime;
 @Builder
 public class SupportDTO {
     private Integer qnaNo;
-    private Integer userId;
+    private int userId;
     private String qnaTitle;
     private String message;
-    private String file;
-    private LocalDateTime createdAt;
     private String answer;
     private String status;
+    private String isDeleted;
+    private LocalDateTime createdAt;
     private LocalDateTime answerDay;
 }

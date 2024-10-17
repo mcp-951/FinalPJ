@@ -7,6 +7,7 @@ const Sidebar = () => {
   const [showFinancialDropdown, setShowFinancialDropdown] = useState(false);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
   const [showExchangeDropdown, setShowExchangeDropdown] = useState(false);
+  const [showInquiryDropdown, setShowInquiryDropdown] = useState(false); // 문의 관리 드롭다운
 
   return (
     <div className="sidebar">
@@ -104,7 +105,21 @@ const Sidebar = () => {
               </ul>
             )}
           </li>
-          
+
+          {/* 문의 관리 추가 */}
+          <li
+            onMouseEnter={() => setShowInquiryDropdown(true)}
+            onMouseLeave={() => setShowInquiryDropdown(false)}
+          >
+            문의 관리
+            {showInquiryDropdown && (
+              <ul className="dropdown">
+                <li>
+                  <NavLink to="/admin/support/inquiries">문의글 리스트</NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
         </ul>
       </div>
 
