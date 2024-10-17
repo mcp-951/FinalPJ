@@ -5,6 +5,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdOutlineLogin } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
 import { IoCloseSharp } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 import AccountDrop from './NavbarDropdownMenu/AccountDrop';
 import ProductDrop from './NavbarDropdownMenu/ProductDrop';
 import ExchangeDrop from './NavbarDropdownMenu/ExchangeDrop';
@@ -16,6 +17,7 @@ import SearchBar from './searchBar/SearchBar';
 
 
 function Navbar(){
+    const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
     const handleLogout = () => {
@@ -33,6 +35,9 @@ function Navbar(){
     const handleSearchBar = () => {
         setSearchOpen(!searchOpen);
     };
+    const moveInvestment = () =>{
+        navigate('/investment')
+    }
     return(
         <>
         { !searchOpen ? (
@@ -45,7 +50,7 @@ function Navbar(){
                         <li onClick={()=> handleDropdown('exchange')}><div>외환</div></li>
                         <li onClick={()=> handleDropdown('tax')}><div>공과금</div></li>
                         <li onClick={()=> handleDropdown('manage')}><div>자산관리</div></li>
-                        <li onClick={()=> handleDropdown('investment')}><div>투자</div></li>
+                        <li onClick={()=> moveInvestment()}><div>투자</div></li>
                     </ul>
                 </div>
                 <div className='nav_iconMenu'>

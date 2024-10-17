@@ -5,11 +5,11 @@ function Middlebar(){
     return(
         <div className='Middlebar_menu'>
             <ul>
-                <li><a>계좌조회</a></li>
-                <li><a>환율조회</a></li>
+                <li><a href="/users/:userNo/accounts">계좌조회</a></li>
+                <li><a href="/exchange-rate">환율조회</a></li>
                 <li><a>예적금</a></li>
-                <li><a>주식정보</a></li>
-                <li><a>자산현황</a></li>
+                <li><a>투자정보</a></li>
+                <li><a>이체</a></li>
             </ul>
         </div>
     );

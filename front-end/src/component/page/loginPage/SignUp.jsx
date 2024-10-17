@@ -195,19 +195,17 @@ function SignUp() {
 
     // 회원가입 완료
     const handleSubmit = (e) => {
-        if(idCheckState === '' || idCheckState === false){
-            setIdCheckMessage('중복확인 해주세요.');
-            }else if(form.userPw === null || form.userPw === '' || form.userPw !== form.confirmPassword){
-                alert("비밀번호 확인 바랍니다.")
-                }else if(authHp === 'false' || authHp === ''){
-                    alert("휴대폰 인증이 되지 않았습니다.")
-                    }else {
-
-                        console.log(form.address)
-                        console.log({...form})
-                        apiSer.signUp({...form});
-                        navigate("/login");
-                    }
+        if(idCheckState === '' || idCheckState === false){setIdCheckMessage('중복확인 해주세요.');}
+        else if(form.userPw === null || form.userPw === '' || form.userPw !== form.confirmPassword){alert("비밀번호 확인 바랍니다.")}
+        else if(authHp === 'false' || authHp === ''){alert("휴대폰 인증이 되지 않았습니다.")}
+        else if (ocrCheck === 'false' || ocrCheck === ''){alert("신분증 인증을 진행하세요.")}
+        else {
+            console.log(form.address)
+            console.log({...form})
+            apiSer.signUp({...form});
+            navigate("/login");
+        }
+        return;
     };
 
     const ocrMove = () => {

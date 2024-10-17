@@ -13,7 +13,6 @@ import InquiryForm from 'component/page/customerService/InquiryForm';
 // 로그인 라우터 임포트
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
-import SignUp_ from 'component/page/loginPage/Signup_';
 
 // 검색바 라우터 임포트
 import SearchResult from './searchBar/SearchResult';
@@ -89,6 +88,7 @@ import AssetsAnalysis from '../page/assetsPage/AssetsAnalysis';
 //팝업
 import GetAddress from 'component/page/loginPage/GetAddress';
 import ExchangeResult from 'component/page/exchangePage/ExchangeResult';
+import Footer from './Footer';
 
 
 
@@ -109,9 +109,7 @@ const RouteComponent = () => {
                         <Route path="/" exact={true} element={<Main />} />
                         {/*로그인 페이지*/}
                         <Route path="/login" exact={true} element={<Login />} />
-                        <Route path="/signup" exact={true} element={<Signup />} />
-                        <Route path="/signup_" exact={true} element={<SignUp_ />} />
-                        
+                        <Route path="/signup" exact={true} element={<Signup />} />                        
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />
                         {/*}투자 페이지{*/}
@@ -124,9 +122,8 @@ const RouteComponent = () => {
                         <Route path="/ocr" exact={true} element={<ImgSelect />} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
-{/*                         <Route path="/adminList" element={<AdminList />} /> */}
-{/*                         <Route path="/editAdmin" element={<EditAdmin />} /> */}
-
+                        {/* <Route path="/adminList" element={<AdminList />} /> */}
+                        {/* <Route path="/editAdmin" element={<EditAdmin />} /> */}
                         {/* 고객센터 페이지 경로 설정 */}
                         <Route path="/customer-service" element={<CustomerServiceMain />} />
                         <Route path="/inquiry/:id" element={<InquiryDetail inquiries={inquiries} />} />
@@ -212,6 +209,9 @@ const RouteComponent = () => {
 
                    </Routes>
                 </div>
+                <footer>
+                    <Footer />
+                </footer>
             </BrowserRouter>
         </div>
     );
