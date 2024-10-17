@@ -40,7 +40,7 @@ const PasswordCheck = ({ title, instructions }) => {
   // 계좌 목록을 불러오는 함수
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+      const response = await axios.get(`http://localhost:8081/uram/accounts`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

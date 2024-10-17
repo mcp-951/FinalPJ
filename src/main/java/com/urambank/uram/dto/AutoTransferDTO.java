@@ -22,6 +22,7 @@ public class AutoTransferDTO {
     private LocalDate endDate;              // 이체 종료일
     private int transferDay;                // 매월 이체일
     private String toBankName;              // 입금 은행 이름 (내부 계좌일 경우 null, 외부 계좌일 경우 은행명)
+    private char autoAgreement;
 
     // 추가된 필드: 출금 계좌 및 입금 계좌 정보
     private AccountDTO fromAccountDTO;      // 출금 계좌 정보

@@ -13,7 +13,7 @@ function AccountDrop(){
                     <ul className="dropdown-content">
                         <h4>계좌조회</h4>
                         <li className="small-text">
-                            <a href={`/users/${userNo}/accounts`}>전체계좌조회</a>
+                            <a href={`/accounts`}>전체계좌조회</a>
                         </li>
                         {/* <li className="small-text"><a href='/transfer/other'>해지계좌조회</a></li> */}
                     </ul>

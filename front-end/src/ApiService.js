@@ -12,7 +12,7 @@ const api = axios.create({
 const ApiService = {
   // 특정 유저의 모든 계좌 정보 가져오기 (예금, 적금, 대출 등 모두 포함)
   getAllAccounts: (userNo, token) => {
-    return api.get(`/users/${userNo}/accounts`, {
+    return api.get(`/accounts`, {
       headers: {
         'Authorization': `Bearer ${token}`, // JWT 토큰 추가
       },

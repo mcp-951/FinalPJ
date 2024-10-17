@@ -26,7 +26,7 @@ public class JWTUtil {
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(token)
+                .parseClaimsJws(token.trim())  // 공백 제거
                 .getBody()
                 .get("username", String.class);
     }
@@ -35,7 +35,7 @@ public class JWTUtil {
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(token)
+                .parseClaimsJws(token.trim())  // 공백 제거
                 .getBody()
                 .get("userNo", Integer.class);
     }
@@ -44,7 +44,7 @@ public class JWTUtil {
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(token)
+                .parseClaimsJws(token.trim())  // 공백 제거
                 .getBody()
                 .get("name", String.class);
     }
@@ -53,7 +53,7 @@ public class JWTUtil {
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(token)
+                .parseClaimsJws(token.trim())  // 공백 제거
                 .getBody()
                 .get("role", String.class);
     }
@@ -62,7 +62,7 @@ public class JWTUtil {
         Date expiration = Jwts.parser()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJws(token)
+                .parseClaimsJws(token.trim())  // 공백 제거
                 .getBody()
                 .getExpiration();
         return expiration.before(new Date());
@@ -77,7 +77,7 @@ public class JWTUtil {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
-                .compact();
+                .compact().trim();  // 공백 제거
     }
 
     public String generateRefreshToken(HashMap<String, Object> claims, UserDetails userDetails) {
@@ -87,6 +87,6 @@ public class JWTUtil {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_TIME))
                 .signWith(secretKey)
-                .compact();
+                .compact().trim();  // 공백 제거
     }
 }

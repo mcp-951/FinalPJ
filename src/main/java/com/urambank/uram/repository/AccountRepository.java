@@ -58,7 +58,6 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     AccountEntity findByAccountNumberAndBankName(@Param("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
                                                  @Param("bankName") String bankName);
 
-
     // accountNo와 상태로 계좌 조회
     @Query("SELECT a FROM AccountEntity a WHERE a.accountNo = :accountNo AND a.accountState = :state")
     AccountEntity findByAccountNoAndState(@Param("accountNo") int accountNo, @Param("state") String state);
@@ -75,8 +74,5 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     // accountNo와 bankName으로 accountNumber 조회
     @Query("SELECT a.accountNumber FROM AccountEntity a WHERE a.accountNo = :accountNo AND a.bankName = :bankName")
     String findAccountNumberByAccountNoAndBankName(@Param("accountNo") int accountNo, @Param("bankName") String bankName);  // Integer 대신 String으로 변경
-
-
-
 
 }

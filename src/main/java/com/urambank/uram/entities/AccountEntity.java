@@ -50,4 +50,11 @@ public class AccountEntity {
     @Column
     private Date accountClose;
 
+    @Column
+    private char agreement;
+
+    @Column
+    private float accountRate;
+
+
 }

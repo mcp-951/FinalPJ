@@ -25,8 +25,8 @@ const AccountTransferComplete = () => {
   };
 
   const handleGoToAccountList = () => {
-    navigate(`/users/${userNo}/accounts`);  // 계좌 목록으로 이동
-  };
+    navigate('/accounts');  // 계좌 목록으로 이동
+  };  
 
   return (
     <div className="transfer-complete-container">

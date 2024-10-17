@@ -155,7 +155,7 @@ const RouteComponent = () => {
                         <Route path="/Accession_chap3" exact={true} element={<Accession_chap3 />} />
 
                         {/* 계좌 페이지 시작_채림님*/}
-                        {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
+                        {/* 계좌 목록 페이지 */}<Route path="/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
 
                         
