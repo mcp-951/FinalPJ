@@ -1,9 +1,6 @@
 package com.urambank.uram.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
@@ -23,8 +20,9 @@ public class LoanAutoTransferEntity {
     @Column
     private int autoTransNo;
 
-    @Column
-    private int accountNo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "accountNo")
+    private AccountEntity accountNo;
 
     @Column
     private int receiveAccountNo;
@@ -57,7 +55,10 @@ public class LoanAutoTransferEntity {
     @Column
     private String toBankName;
 
-    private int loanJoinNo;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "loanJoinNo")
+    private LoanJoinEntity loanJoin;
 
 
 

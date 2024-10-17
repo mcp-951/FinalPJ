@@ -1,14 +1,12 @@
 package com.urambank.uram.dto;
 
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class LoanDTO {
     private int loanNo;
     private String loanName;
@@ -16,4 +14,3 @@ public class LoanDTO {
     private String loanContent;
     private char loanState;
 }
-

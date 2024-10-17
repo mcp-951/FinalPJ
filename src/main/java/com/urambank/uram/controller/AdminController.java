@@ -28,28 +28,28 @@ public class AdminController {
         this.adminService = adminService;
     }
 //------------------------ 전체 상품 -------------------------------------
-    // 전체 금융 상품 조회
-    @GetMapping("/financial-products")
-    public List<Object> getAllFinancialProducts() {
-
-        System.out.println("<<< AdminController /getAllFinancialProducts >>>");
-        return adminService.getAllFinancialProducts();
-    }
-
-    // 상품 판매량 차트 데이터 조회
-    @GetMapping("/product-counts")
-    public Map<String, Integer> getProductCounts() {
-
-        System.out.println("<<< AdminController /product-counts >>>");
-        return adminService.getProductCounts();
-    }
-    // 새로운 상품 등록
-    @PostMapping("/register-product")
-    public ResponseEntity<String> addDepositProduct(@RequestBody DepositDTO depositDTO) {
-        System.out.println("<<< AdminService /addDepositProduct >>>");
-        adminService.addDepositProduct(depositDTO);  // 서비스에서 적금 상품 등록
-        return ResponseEntity.ok("상품이 성공적으로 등록되었습니다.");
-    }
+//    // 전체 금융 상품 조회
+//    @GetMapping("/financial-products")
+//    public List<Object> getAllFinancialProducts() {
+//
+//        System.out.println("<<< AdminController /getAllFinancialProducts >>>");
+//        return adminService.getAllFinancialProducts();
+//    }
+//
+//    // 상품 판매량 차트 데이터 조회
+//    @GetMapping("/product-counts")
+//    public Map<String, Integer> getProductCounts() {
+//
+//        System.out.println("<<< AdminController /product-counts >>>");
+//        return adminService.getProductCounts();
+//    }
+//    // 새로운 상품 등록
+//    @PostMapping("/register-product")
+//    public ResponseEntity<String> addDepositProduct(@RequestBody DepositDTO depositDTO) {
+//        System.out.println("<<< AdminService /addDepositProduct >>>");
+//        adminService.addDepositProduct(depositDTO);  // 서비스에서 적금 상품 등록
+//        return ResponseEntity.ok("상품이 성공적으로 등록되었습니다.");
+//    }
 //------------------- 적금 상품 관련 -------------------------------------
     // 적금 상품 목록 조회
     @GetMapping("/savings")
@@ -102,12 +102,12 @@ public class AdminController {
     }
 //--------------------------------- 대출 관련 ----------------------------------------------------------
     // 대출 상품 목록 조회
-//    @GetMapping("/loans")
-//    public ResponseEntity<List<LoanDTO>> getLoans() {
-//        System.out.println("<<< AdminService /getLoans >>>");
-//        List<LoanDTO> loans = adminService.getLoans();
-//        return ResponseEntity.ok(loans);
-//    }
+    @GetMapping("/loans")
+    public ResponseEntity<List<LoanDTO>> getLoans() {
+        System.out.println("<<< AdminService /getLoans >>>");
+        List<LoanDTO> loans = adminService.getLoans();
+        return ResponseEntity.ok(loans);
+    }
 
     // 대출 상품 등록
     @PostMapping("/register-loanProduct")

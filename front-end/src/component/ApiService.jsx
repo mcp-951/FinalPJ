@@ -48,7 +48,7 @@ const apiSer = {
         return axios.put(`${API_BASE_URL}/resetPassword`,datas)
     },
 
-   // 자동이체 리스트 가져오기
+  // 자동이체 리스트 가져오기
   getAutoTransfers: async () => {
     try {
       return await axios.get(`${BASE_URL}/auto-transfers`, {
@@ -144,8 +144,74 @@ const apiSer = {
       throw error;
     }
 
-  }
+  },
+  // 적금 상품 페이징 처리하여 가져오기
+  fetchDepositProductsPaged: async (page, size) => {
+    try {
+      return await axios.get(`${BASE_URL}/products/deposits/page`, {
+        "getPage" : page,
+        "getSize" : size
+      });
+    } catch (error) {
+      console.error('대출 상품 페이징 조회 오류:', error);
+      throw error;
+    }
+  },
 
+  saveDepositJoin: async (depositData, token) => {
+    try {
+      return await axios.post(`${BASE_URL}/products/deposits/save`, depositData, {
+        headers: {
+          Authorization: `Bearer ${token}` // JWT 토큰을 Authorization 헤더에 포함
+        },
+      });
+    } catch (error) {
+      console.error('LoanJoin 저장 실패:', error);
+      throw error; // 에러 발생 시 상위로 전달
+    }
+  },
+
+  // 적금 중도 해지 처리
+  terminateDeposit: async (terminationData, token) => {
+    try {
+      return await axios.post(`${BASE_URL}/products/deposits/terminate`, terminationData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      console.error('적금 중도 해지 처리 중 오류 발생:', error);
+      throw error; // 에러 발생 시 상위로 전달
+    }
+  },
+
+  getDepositAccounts: async () => {
+    try {
+      return await axios.get(`${BASE_URL}/products/deposits/account` , {
+        headers: {
+          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+        }
+      });
+    } catch (error) {
+      console.error('사용자 계좌 정보 조회 오류:', error);
+      throw error;
+    }
+  },
+
+  // 적금 가입 정보를 저장하는 메서드
+  saveDepJoin: async (depositData, token) => {
+    try {
+      return await axios.post(`${BASE_URL}/products/deposits/join`, depositData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error('적금 가입 오류:', error);
+      throw error;
+    }
+  }
 };
 
 export default apiSer;

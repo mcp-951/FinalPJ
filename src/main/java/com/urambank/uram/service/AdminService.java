@@ -46,20 +46,21 @@ public class AdminService {
         this.loanRepository = loanRepository;
     }
 
-//    // DTO -> Entity 변환 메서드
-//    private User convertToEntity(UserDTO userDTO) {
-//        if (userDTO == null) {
-//            return null;
-//        }
-//        User.builder()
-//                .userNo(userDTO.getUserNo())
-//                .userId(userDTO.getUserId())
-//                .name(userDTO.getName())
-//                .userPw(userDTO.getUserPw())
-//                .state(userDTO.getState());
-//
-//        return ;
-//    }
+    // DTO -> Entity 변환 메서드
+    private User convertToEntity(UserDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
+        User user = User.builder()
+                    .userNo(userDTO.getUserNo())
+                    .userId(userDTO.getUserId())
+                    .name(userDTO.getName())
+                    .userPw(userDTO.getUserPw())
+                    .state(userDTO.getState())
+                    .build();
+
+        return user;
+    }
 
     // Entity -> DTO 변환 메서드
     private UserDTO convertToDTO(User user) {
@@ -87,7 +88,6 @@ public class AdminService {
             .depositNo(depositDTO.getDepositNo())
             .depositCategory(depositDTO.getDepositCategory())
             .depositContent(depositDTO.getDepositContent())
-            .depositIMG(depositDTO.getDepositIMG())
             .depositName(depositDTO.getDepositName())
             .depositRate(depositDTO.getDepositRate())
             .depositState(depositDTO.getDepositState())
@@ -102,7 +102,6 @@ public class AdminService {
                 .depositCategory(depositEntity.getDepositCategory())
                 .depositRate(depositEntity.getDepositRate())
                 .depositContent(depositEntity.getDepositContent())
-                .depositIMG(depositEntity.getDepositIMG())
                 .depositState(depositEntity.getDepositState())
                 .build();  // 여기서 .build()를 추가
     }
@@ -115,7 +114,6 @@ public class AdminService {
                 .depositCategory(depositDTO.getDepositCategory())
                 .depositRate(depositDTO.getDepositRate())
                 .depositContent(depositDTO.getDepositContent())
-                .depositIMG(depositDTO.getDepositIMG())
                 .depositState('Y')  // 신규 등록은 'Y'로 활성화 상태로 설정
                 .build();
         // Repository를 통해 DB에 저장
@@ -136,7 +134,6 @@ public class AdminService {
                         deposit.getDepositCategory(),   // 예금 카테고리 (이 부분이 추가됨)
                         deposit.getDepositRate(),       // 예금 금리
                         deposit.getDepositContent(),    // 예금 설명
-                        deposit.getDepositIMG(),        // 예금 이미지
                         deposit.getDepositState()       // 예금 상태
                 ))
                 .collect(Collectors.toList());  // 변환된 DepositDTO 리스트를 다시 리스트로 수집
@@ -187,7 +184,6 @@ public class AdminService {
                     .depositCategory(eDto.getDepositCategory())
                     .depositRate(eDto.getDepositRate())
                     .depositContent(eDto.getDepositContent())
-                    .depositIMG(eDto.getDepositIMG())
                     .depositState(eDto.getDepositState())
                     .build();  // 적금 DTO 생성
 
@@ -208,7 +204,6 @@ public class AdminService {
         depositEntity.setDepositCategory(depositDTO.getDepositCategory());
         depositEntity.setDepositRate(depositDTO.getDepositRate());
         depositEntity.setDepositContent(depositDTO.getDepositContent());
-        depositEntity.setDepositIMG(depositDTO.getDepositIMG());
 
         // 변경된 엔티티 저장
         depositRepository.save(depositEntity);
@@ -233,7 +228,6 @@ public List<DepositDTO> getDeposits() {
                 .depositCategory(eDto.getDepositCategory())
                 .depositRate(eDto.getDepositRate())
                 .depositContent(eDto.getDepositContent())
-                .depositIMG(eDto.getDepositIMG())
                 .depositState(eDto.getDepositState())
                 .build();  // 예금 DTO 생성
 
@@ -266,24 +260,24 @@ public List<DepositDTO> getDeposits() {
                 .build();
     }
 
-//    // 대출 상품 목록 조회
-//    public List<LoanDTO> getLoans() {
-//        List<LoanEntity> loanEntities = loanRepository.findByLoanState('y',);
-//        List<LoanDTO> loanDTOs = new ArrayList<>();
-//
-//        for (LoanEntity entity : loanEntities) {
-//            LoanDTO loanDTO = LoanDTO.builder()
-//                    .loanNo(entity.getLoanNo())
-//                    .loanName(entity.getLoanName())
-//                    .loanRate(entity.getLoanRate())
-//                    .loanContent(entity.getLoanContent())
-//                    .loanState(entity.getLoanState())
-//                    .build();
-//            loanDTOs.add(loanDTO);
-//        }
-//
-//    return loanDTOs;
-//    }
+    // 대출 상품 목록 조회
+    public List<LoanDTO> getLoans() {
+        Page<LoanEntity> loanEntities = loanRepository.findByLoanState('y',Pageable.unpaged());
+        List<LoanDTO> loanDTOs = new ArrayList<>();
+
+        for (LoanEntity entity : loanEntities) {
+            LoanDTO loanDTO = LoanDTO.builder()
+                    .loanNo(entity.getLoanNo())
+                    .loanName(entity.getLoanName())
+                    .loanRate(entity.getLoanRate())
+                    .loanContent(entity.getLoanContent())
+                    .loanState(entity.getLoanState())
+                    .build();
+            loanDTOs.add(loanDTO);
+        }
+
+    return loanDTOs;
+    }
 
     // 대출 상품 등록
     public void registerLoan(LoanDTO loanDTO) {
@@ -486,29 +480,6 @@ public List<DepositDTO> getDeposits() {
     public void resumeAccount(int accountNo) {
         accountRepository.updateAccountState("NORMAL", accountNo);
     }
-
-//    public List<Map<String, Object>> getAccountsWithProductCategoryC() {
-//        System.out.println("<<< AdminService getAccountsWithProductCategoryC >>>");
-//        List<Map<String, Object>> accounts = new ArrayList<>();
-//        List<Object[]> results = accountRepository.findAccountsWithProductCategoryC();
-//
-//        for (Object[] result : results) {
-//            Map<String, Object> accountData = new HashMap<>();
-//            accountData.put("accountNo", result[0]);
-//            accountData.put("userNo", result[1]);
-//            accountData.put("accountNumber", result[2]);
-//            accountData.put("accountOpen", result[3]);
-//            accountData.put("accountState", result[4]);
-//            accountData.put("productCategory", result[5]);
-//
-//            accounts.add(accountData);
-//        }
-//        System.out.println("<<< AdminService getAccountsWithProductCategoryC - accounts >>> : " + accounts);
-//        return accounts;
-//    }
-//
-
-
 
     // 활성 회원 목록 조회 (NORMAL, STOP 상태의 유저를 조회)
     public List<UserDTO> getAllUsers(){

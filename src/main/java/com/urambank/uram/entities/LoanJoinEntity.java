@@ -22,6 +22,7 @@ public class LoanJoinEntity {
     @Column(nullable = false)
     private int loanAmount;
 
+    @Column(nullable = false)
     private int remainingLoanAmount;
 
     @Column(nullable = false)
@@ -33,25 +34,28 @@ public class LoanJoinEntity {
     @Column(nullable = false)
     private int loanTransferDay;
 
-    @Column(nullable = false)
-    private Date loanJoinDay;
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDate loanJoinDay;
 
-    private Date loanFinishDay;
+    @Column
+    private LocalDate loanFinishDay;
 
     @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'Y'")
     private String loanStatus;
 
-    @Column(nullable = false)
-    private int loanNo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "loanNo")
+    private LoanEntity loan;
 
-    @Column(nullable = false)
-    private int userNo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "accountNo")
+    private AccountEntity account;
 
-    @Column(nullable = false)
-    private int accountNo;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userNo")
+    private User user;
 
-    @Column(nullable = false)
+    @Column
     private String loanName;
-
 
 }

@@ -67,6 +67,13 @@ import Repayment from 'component/page/product/Loan/Repayment';
 import Loanchap1 from 'component/page/product/Loan/Loanchap1';
 import Loanchap2 from 'component/page/product/Loan/Loanchap2';
 import Loanchap3 from 'component/page/product/Loan/Loanchap3';
+import Depositchap1 from 'component/page/product/Deposit/Depositchap1';
+import Depositchap2 from 'component/page/product/Deposit/Depositchap2';
+import Depositchap3 from 'component/page/product/Deposit/Depositchap3';
+import DepositchapO1 from 'component/page/product/Deposit/DepositchapO1';
+import DepositchapO2 from 'component/page/product/Deposit/DepositchapO2';
+import Termination from 'component/page/product/Deposit/Termination';
+
 
 // 계좌 관련 (채림)
 import Account from '../page/account/accountView/Account';
@@ -179,6 +186,12 @@ const RouteComponent = () => {
                         <Route path="/Loanchap1" exact={true} element={<Loanchap1 />} />
                         <Route path="/Loanchap2" exact={true} element={<Loanchap2 />} />
                         <Route path="/Loanchap3" exact={true} element={<Loanchap3 />} />
+                        <Route path="/Depositchap1" exact={true} element={<Depositchap1 />} />
+                        <Route path="/Depositchap2" exact={true} element={<Depositchap2 />} />
+                        <Route path="/Depositchap3" exact={true} element={<Depositchap3 />} />
+                        <Route path="/DepositchapO1" exact={true} element={<DepositchapO1 />} />
+                        <Route path="/DepositchapO2" exact={true} element={<DepositchapO2 />} />
+                        <Route path="/Termination" exact={true} element={<Termination />} />
 
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
