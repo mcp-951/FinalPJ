@@ -72,15 +72,18 @@ public class JWTFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        if (request.getRequestURI().equals("/kakaoLogin")) {
+        if (request.getRequestURI().equals("/doKakaoLogin/**")) {
             filterChain.doFilter(request, response);
             return;
         }
-
-
-
-
-
+        if (request.getRequestURI().equals("/findUserId")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (request.getRequestURI().equals("/resetPassword")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         //Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {

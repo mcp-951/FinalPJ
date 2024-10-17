@@ -15,6 +15,11 @@ const AccountDetail = () => {
   const [totalWithdraw, setTotalWithdraw] = useState(0);
   const [error, setError] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
+
+  // 페이징 상태 추가
+  const [currentPage, setCurrentPage] = useState(1);
+  const [logsPerPage] = useState(10); // 한 페이지에 10개의 거래 내역 표시
+
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");
 
@@ -23,11 +28,19 @@ const AccountDetail = () => {
       try {
         const accountResponse = await ApiService.getAccountDetail(userNo, accountNumber, token);
         setAccountDetail(accountResponse.data);
-
+  
         const logsResponse = await ApiService.getAccountLogs(accountNumber, token);
         const logs = logsResponse.data.length > 0 ? logsResponse.data : [];
-        const sortedLogs = logs.sort((a, b) => new Date(a.sendDate) - new Date(b.sendDate));
-
+        const sortedLogs = logs.sort((a, b) => {
+          // 날짜를 기준으로 내림차순 정렬
+          const dateComparison = new Date(b.sendDate) - new Date(a.sendDate);
+          if (dateComparison !== 0) {
+            return dateComparison;
+          }
+          // 날짜가 같을 경우 logNo 역순으로 정렬
+          return b.logNo - a.logNo;
+        });
+  
         setTransactionLogs(sortedLogs);
         calculateTotals(sortedLogs);
       } catch (error) {
@@ -35,9 +48,11 @@ const AccountDetail = () => {
         setError('계좌 정보를 가져오는 중 오류가 발생했습니다.');
       }
     };
-
+  
     fetchAccountDetail();
   }, [userNo, accountNumber, token]);
+  
+  
 
   const calculateTotals = (logs) => {
     let totalDepositAmount = 0;
@@ -78,25 +93,39 @@ const AccountDetail = () => {
     return { totalDepositForDate, totalWithdrawForDate };
   };
 
+  // 잔액 계산 함수 (최신 거래부터 시작해서 차례로 잔액 계산)
   const calculateBalanceFromCurrent = (logs, currentBalance) => {
-    let balance = currentBalance;
+    let balance = currentBalance; // 현재 잔액부터 시작
+    const updatedLogs = logs.map(log => {
+      const updatedLog = { ...log };
 
-    return logs.reverse().map(log => {
-      let currentLog = { ...log };
-
+      // 거래 전 잔액을 먼저 계산
       if (log.sendAccountNumber === accountNumber) {
-        currentLog.balance = balance;
-        balance += log.sendPrice;
+        updatedLog.balance = balance;  // 거래 전 잔액 설정
+        balance += log.sendPrice;      // 출금 전 잔액 증가
       } else if (log.receiveAccountNumber === accountNumber) {
-        currentLog.balance = balance;
-        balance -= log.sendPrice;
+        updatedLog.balance = balance;  // 거래 전 잔액 설정
+        balance -= log.sendPrice;      // 입금 전 잔액 감소
       }
 
-      return currentLog;
-    }).reverse();
+      return updatedLog;
+    });
+
+    return updatedLogs; // 최신순으로 유지
   };
 
   const logsWithCalculatedBalance = calculateBalanceFromCurrent(transactionLogs, accountDetail ? accountDetail.accountBalance : 0);
+
+  // 현재 페이지에 맞는 거래 내역 가져오기
+  const indexOfLastLog = currentPage * logsPerPage;
+  const indexOfFirstLog = indexOfLastLog - logsPerPage;
+  const currentLogs = logsWithCalculatedBalance.slice(indexOfFirstLog, indexOfLastLog);
+
+  // 페이지 변경 핸들러
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // 페이지 수 계산
+  const totalPages = Math.ceil(transactionLogs.length / logsPerPage);
 
   if (error) {
     return <p>{error}</p>;
@@ -143,89 +172,104 @@ const AccountDetail = () => {
 
       {showCalendar ? (
         <Calendar
-        tileClassName={({ date, view }) => {
-          if (view === 'month') {
-            const day = date.getDay();
-            const isSaturday = day === 6;
-            const isSunday = day === 0;
-      
-            const classes = [];
-            if (isSaturday) {
-              classes.push('saturday');
+          tileClassName={({ date, view }) => {
+            if (view === 'month') {
+              const day = date.getDay();
+              const isSaturday = day === 6;
+              const isSunday = day === 0;
+
+              const classes = [];
+              if (isSaturday) {
+                classes.push('saturday');
+              }
+              if (isSunday) {
+                classes.push('sunday');
+              }
+
+              const { totalDepositForDate, totalWithdrawForDate } = getTotalAmountsForDate(date);
+
+              if (totalDepositForDate > 0 || totalWithdrawForDate > 0) {
+                if (totalWithdrawForDate > 0) {
+                  classes.push('withdraw');
+                }
+                if (totalDepositForDate > 0) {
+                  classes.push('deposit');
+                }
+              }
+
+              return classes.join(' ');
             }
-            if (isSunday) {
-              classes.push('sunday');
-            }
-      
+          }}
+          tileContent={({ date }) => {
             const { totalDepositForDate, totalWithdrawForDate } = getTotalAmountsForDate(date);
 
             if (totalDepositForDate > 0 || totalWithdrawForDate > 0) {
-              if (totalWithdrawForDate > 0) {
-                classes.push('withdraw');
-              }
-              if (totalDepositForDate > 0) {
-                classes.push('deposit');
-              }
+              return (
+                <div>
+                  {totalDepositForDate > 0 && (
+                    <div className="transaction-info blue-text">
+                      총 입금: {totalDepositForDate.toLocaleString()}원
+                    </div>
+                  )}
+                  {totalWithdrawForDate > 0 && (
+                    <div className="transaction-info red-text">
+                      총 출금: {totalWithdrawForDate.toLocaleString()}원
+                    </div>
+                  )}
+                </div>
+              );
+            } else {
+              return null;
             }
-      
-            return classes.join(' ');
-          }
-        }}
-        tileContent={({ date }) => {
-          const { totalDepositForDate, totalWithdrawForDate } = getTotalAmountsForDate(date);
-        
-          if (totalDepositForDate > 0 || totalWithdrawForDate > 0) {
-            return (
-              <div>
-                {totalDepositForDate > 0 && (
-                  <div className="transaction-info blue-text">
-                    총 입금: {totalDepositForDate.toLocaleString()}원
-                  </div>
-                )}
-                {totalWithdrawForDate > 0 && (
-                  <div className="transaction-info red-text">
-                    총 출금: {totalWithdrawForDate.toLocaleString()}원
-                  </div>
-                )}
-              </div>
-            );
-          } else {
-            return null;
-          }
-        }}
-      />
+          }}
+        />
       ) : (
         transactionLogs.length === 0 ? (
           <p>거래 내역이 없습니다.</p>
         ) : (
-          <table className="account-detail-table">
-            <thead>
-              <tr>
-                <th>거래일시</th>
-                <th>보낸/받는분</th>
-                <th>출금(원)</th>
-                <th>입금(원)</th>
-                <th>잔액(원)</th>
-              </tr>
-            </thead>
-            <tbody>
-              {logsWithCalculatedBalance.map((log) => (
-                <tr key={log.logNo}>
-                  <td>{new Date(log.sendDate).toLocaleDateString()}</td>
-                  <td>{log.sendAccountNumber === accountNumber ? log.receiveAccountNumber : log.sendAccountNumber}</td>
-                  <td>{log.sendAccountNumber === accountNumber ? log.sendPrice.toLocaleString() : '-'}</td>
-                  <td>{log.receiveAccountNumber === accountNumber ? log.sendPrice.toLocaleString() : '-'}</td>
-                  <td>{log.balance.toLocaleString()}원</td>
+          <div>
+            <table className="account-detail-table">
+              <thead>
+                <tr>
+                  <th>거래일시</th>
+                  <th>보낸/받는분</th>
+                  <th>출금(원)</th>
+                  <th>입금(원)</th>
+                  <th>잔액(원)</th>
                 </tr>
+              </thead>
+              <tbody>
+                {currentLogs.map((log) => (
+                  <tr key={log.logNo}>
+                    <td>{new Date(log.sendDate).toLocaleDateString()}</td>
+                    <td>{log.sendAccountNumber === accountNumber ? log.receiveAccountNumber : log.sendAccountNumber}</td>
+                    <td>{log.sendAccountNumber === accountNumber ? log.sendPrice.toLocaleString() : '-'}</td>
+                    <td>{log.receiveAccountNumber === accountNumber ? log.sendPrice.toLocaleString() : '-'}</td>
+                    <td>{log.balance.toLocaleString()}원</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* 페이지네이션 버튼 */}
+            <div className="pagination">
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => paginate(index + 1)}
+                  className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                >
+                  {index + 1}
+                </button>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         )
       )}
 
       <div className="account-detail-pagination">
         <div className="pagination-center">
-          <button className="account-detail-back-button" onClick={() => navigate('/account')}>
+          <button className="account-detail-back-button" onClick={() => navigate(`/users/${userNo}/accounts`)}>
             목록
           </button>
         </div>

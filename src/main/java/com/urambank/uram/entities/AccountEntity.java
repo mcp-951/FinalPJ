@@ -1,6 +1,5 @@
 package com.urambank.uram.entities;
 
-import com.urambank.uram.dto.AccountDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +24,7 @@ public class AccountEntity {
     @Column
     private int userNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "depositNo")  // deposit 테이블과의 FK 관계 설정
     private DepositEntity deposit;
 

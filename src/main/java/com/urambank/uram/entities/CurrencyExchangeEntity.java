@@ -47,4 +47,5 @@ public class CurrencyExchangeEntity {
 
     @Column
     private Date receiveDate;
+
 }

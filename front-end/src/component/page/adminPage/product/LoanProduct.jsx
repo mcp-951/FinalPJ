@@ -1,92 +1,89 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';  // API 호출을 위해 axios 사용
+import axios from 'axios';
+import Sidebar from '../Sidebar'; // 사이드바 추가
+import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 파일 추가
 
-// 사이드바 컴포넌트 추가
-const Sidebar = () => {
-  return (
-    <div className="savings-product-sidebar">
-      <h3>관리자 페이지</h3>
-      <ul>
-        <li>회원 관리</li>
-        <li>금융 상품 관리</li>
-        <li>계좌 관리</li>
-        <li>환전 관리</li>
-      </ul>
-    </div>
-  );
-};
-
-const SavingsProduct = () => {
+const LoanProduct = () => {
   const navigate = useNavigate();
-  const [savingsList, setSavingsList] = useState([]);
+  const [loans, setLoans] = useState([]);  // 대출 상품 목록 상태 관리
+  const token = localStorage.getItem("token");
 
-  // API 호출로 데이터를 가져오는 함수
-  const fetchSavingsProducts = async () => {
+  // 대출 상품 목록 불러오기
+  const fetchLoans = () => {
+    axios.get('http://localhost:8081/admin/loans', {
+      headers: {
+        'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+      }
+    })
+    .then((response) => {
+      setLoans(response.data);  // 불러온 데이터를 loans 상태로 설정
+    })
+    .catch((error) => {
+      console.error('대출 상품 목록을 불러오는 중 오류 발생:', error);
+    });
+  };
+
+  // 페이지가 처음 로드될 때 대출 상품 목록을 가져옴
+  useEffect(() => {
+    fetchLoans();
+  }, []);
+
+  // 수정 버튼 클릭 시 수정 페이지로 이동
+  const handleEdit = (loan) => {
+    navigate('/EditLoanProduct', { state: { loan } }); // 상품 정보를 상태로 전달하여 수정 페이지로 이동
+  };
+
+  // 삭제 버튼 클릭 시 loanState를 'Closed'로 변경
+  const handleDelete = async (loanNo) => {
     try {
-      const response = await axios.get('/api/savings/list');  // 적절한 API 엔드포인트 설정
-      setSavingsList(response.data);
+      await axios.put(`http://localhost:8081/admin/deleteLoan/${loanNo}`, null, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      alert('해당 대출 상품이 삭제되었습니다.');
+      fetchLoans(); // 삭제 후 대출 상품 목록 다시 불러오기
     } catch (error) {
-      console.error('데이터 가져오기에 실패했습니다.', error);
+      console.error('삭제 중 오류 발생:', error);
+      alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
 
-  useEffect(() => {
-    fetchSavingsProducts();  // 컴포넌트가 마운트될 때 데이터를 가져옴
-  }, []);
-
-  const handleEdit = (product) => {
-    navigate('/editSavingsProduct', { state: { product } });
-  };
-
+  // 등록 버튼 클릭 시 RegisterLoanProduct 페이지로 이동
   const handleRegister = () => {
-    navigate('/registerSavingsProduct');
+    navigate('/admin/RegisterLoanProduct');
   };
 
   return (
     <div className="app-container">
-      {/* 사이드바를 추가하여 메인 콘텐츠와 분리 */}
-      <Sidebar />
-
-      <div className="savings-product-main-content">
-        <div className="savings-product-container">
+      <Sidebar /> {/* 사이드바 추가 */}
+      <div className="alog-main-content">
+        <div className="loan-product-container">
           <h2>대출 상품 관리</h2>
-          <div className="savings-search-controls">
-            <div className="savings-search-bar">
-              {/* 검색 기능 구현 */}
-              <select>
-                <option value="전체">전체</option>
-                <option value="분류">분류</option>
-                <option value="상품명">상품명</option>
-              </select>
-              <input type="text" placeholder="검색어를 입력하세요" />
-              <button>검색</button>
-            </div>
-            <button onClick={handleRegister}>등록</button>
-          </div>
-
-          <table className="savings-product-table">
+          <button onClick={handleRegister}>등록</button>
+          <table className="product-table">
             <thead>
               <tr>
                 <th>노출순서</th>
-                <th>분류</th>
-                <th>상품명</th>
+                <th>상품이름</th>
                 <th>금리</th>
-                <th>기간</th>
-                <th>금액</th>
+                <th>상품 설명</th>
+                <th>상태</th>
                 <th>수정</th>
+                <th>삭제</th>
               </tr>
             </thead>
             <tbody>
-              {savingsList.map((product, index) => (
-                <tr key={product.id}>
+              {loans.map((loan, index) => (
+                <tr key={loan.loanNo}>
                   <td>{index + 1}</td>
-                  <td>{product.type}</td>
-                  <td>{product.productName}</td>
-                  <td>{product.interestRate}</td>
-                  <td>{product.period}</td>
-                  <td>{product.amount}</td>
-                  <td><button onClick={() => handleEdit(product)}>수정</button></td>
+                  <td>{loan.loanName}</td>
+                  <td>{loan.loanRate}</td>
+                  <td>{loan.loanContent}</td>
+                  <td>{loan.loanState}</td>
+                  <td><button onClick={() => handleEdit(loan)}>수정</button></td>
+                  <td><button onClick={() => handleDelete(loan.loanNo)}>삭제</button></td>
                 </tr>
               ))}
             </tbody>
@@ -97,4 +94,4 @@ const SavingsProduct = () => {
   );
 };
 
-export default SavingsProduct;
+export default LoanProduct;

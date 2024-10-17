@@ -3,77 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../../resource/css/exchange/Exchange.css';
 import Footer from '../../util/Footer';
-import {jwtDecode} from 'jwt-decode'; // default import로 변경
+import { jwtDecode } from 'jwt-decode';
 
 const Exchange = () => {
     const token = localStorage.getItem("token");
     const [branches, setBranches] = useState([]);
-    const [accountNumbers, setAccountNumbers] = useState([]);
-    const [selectedAccountNumber, setSelectedAccountNumber] = useState('');
+    const [accountNumbers, setAccountNumbers] = useState([]);  // 계좌 번호 리스트
+    const [selectedAccountNumber, setSelectedAccountNumber] = useState('');  // 선택된 계좌 번호
+    const [accountNo, setAccountNo] = useState(null);  // 백엔드에서 가져올 accountNo
     const [currency, setCurrency] = useState('');
     const [amount, setAmount] = useState('');
     const [rate, setRate] = useState(0);
     const [requiredWon, setRequiredWon] = useState(0);
     const [date, setDate] = useState('');
-    const [branch, setBranch] = useState('');
+    const [branch, setBranch] = useState('');  // 선택된 지점
     const [password, setPassword] = useState('');
     const [isPasswordConfirmed, setIsPasswordConfirmed] = useState(false);
     const [userNo, setUserNo] = useState(null);
     const passwordInputRef = useRef(null);
     const navigate = useNavigate();
 
-    // 토큰 만료 여부 체크 함수
-    const isTokenExpired = (token) => {
-        try {
-            const decodedToken = jwtDecode(token);
-            const currentTime = Math.floor(Date.now() / 1000); // 현재 시간을 초 단위로 변환
-            return decodedToken.exp < currentTime; // 토큰의 exp가 현재 시간보다 작으면 만료된 것
-        } catch (error) {
-            return true; // 토큰 디코딩 중 에러가 발생하면 만료된 것으로 간주
-        }
-    };
-
-    // 페이지 렌더링 전에 토큰 체크
-    useEffect(() => {
-        // 토큰이 없거나 잘못된 경우 알러트 창을 띄우고 로그인 페이지로 리다이렉트
-        if (!token || token === null) {
-            alert("로그인이 필요합니다.");
-            navigate('/login'); // 로그인 페이지로 리다이렉트
-            return;
-        }
-
-        try {
-            jwtDecode(token); // 토큰 디코딩 시도
-        } catch (error) {
-            alert("로그인이 필요합니다.");
-            localStorage.removeItem("token"); // 유효하지 않은 토큰 제거
-            navigate('/login'); // 로그인 페이지로 리다이렉트
-            return;
-        }
-
-        // 토큰 만료 체크
-        if (isTokenExpired(token)) {
-            alert(" 로그인이 필요합니다.");
-            localStorage.removeItem("token"); // 만료된 토큰 제거
-            navigate('/login'); // 로그인 페이지로 리다이렉트
-            return;
-        }
-    }, [token, navigate]);
-
-    const handleSelectedAccountNumber = (event) => {
-        const selectedAccountNumber = event.target.value;
-        setSelectedAccountNumber(selectedAccountNumber);
-        console.log(selectedAccountNumber);
-    };
-
     // JWT 토큰 디코딩해서 username 가져오기
     const decoded = token ? jwtDecode(token) : null;
     const userId = decoded ? decoded.username : null;
 
-    // 사용자 정보 및 계좌 정보 가져오기
     useEffect(() => {
+        if (!token || token === null) {
+            alert("로그인이 필요합니다.");
+            navigate('/login');
+            return;
+        }
+
         const fetchUserData = async () => {
             try {
+                // 토큰 값으로 userNo 추출
                 const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -81,16 +44,19 @@ const Exchange = () => {
                 });
                 const userNo = userNoResponse.data;
                 setUserNo(userNo);
-                console.log("UserNo:", userNo); // 사용자 번호 확인
+                console.log("UserNo:", userNo);
 
-                const accountsResponse = await axios.get(`http://localhost:8081/exchange/account/${userNo}`, {
+                // userNo로 예금 계좌 목록 가져오기
+                const accountsResponse = await axios.get(`http://localhost:8081/exchange/users/${userNo}/accounts/category-one`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
                 });
-                const accounts = accountsResponse.data;
-                console.log("Accounts:", accounts); // 응답 데이터 확인
-                setAccountNumbers(accounts);
+
+                // 백엔드에서 반환된 계좌 목록을 상태에 저장
+                const accountData = accountsResponse.data.accounts;
+                setAccountNumbers(accountData);
+                console.log("Accounts (depositCategory 1):", accountData);
             } catch (error) {
                 console.error("계좌 정보를 가져오는 중 오류 발생:", error);
             }
@@ -98,27 +64,47 @@ const Exchange = () => {
             try {
                 const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`, {
                     headers: {
-                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                        Authorization: `Bearer ${token}`
                     }
                 });
                 setBranches(branchesResponse.data);
+                console.log("Branches:", branchesResponse.data);
             } catch (error) {
                 console.error("지점 정보를 가져오는 중 오류 발생:", error);
             }
         };
 
-        if (token && userId) {
-            fetchUserData();
-        }
-    }, [token, userId]);
+        fetchUserData();
+    }, [token, userId, navigate]);
 
-    // 통화 종류 변경 시 환율 정보 가져오기
+    // 계좌 선택 시 해당 accountNo 가져오기
+    const handleSelectedAccountNumber = async (event) => {
+        const selectedAccountNumber = event.target.value;
+        setSelectedAccountNumber(selectedAccountNumber);
+
+        try {
+            const response = await axios.get(`http://localhost:8081/exchange/get-account-no/${selectedAccountNumber}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setAccountNo(response.data);
+            console.log("가져온 accountNo:", response.data);
+        } catch (error) {
+            console.error("계좌 번호를 가져오는 중 오류 발생:", error);
+            alert("계좌 번호를 가져오는 데 실패했습니다.");
+        }
+    };
+
+    // 통화 환율 계산
     useEffect(() => {
         if (currency) {
             axios.get(`https://api.exchangerate-api.com/v4/latest/${currency}`)
                 .then(response => {
                     setRate(response.data.rates.KRW);
                     setRequiredWon(amount * response.data.rates.KRW);
+                    console.log("환율:", response.data.rates.KRW);
+                    console.log("필요 원화:", amount * response.data.rates.KRW);
                 })
                 .catch(error => {
                     console.error('환율 정보를 가져오는 중 오류 발생:', error);
@@ -140,17 +126,15 @@ const Exchange = () => {
         }
 
         try {
-            // 선택한 계좌 번호와 입력한 비밀번호를 서버로 전송하여 비교
             const response = await axios.post(
                 `http://localhost:8081/exchange/verify-password/${selectedAccountNumber}/${password}`,
-                null,  // POST 요청에 보낼 데이터가 없으면 null을 전달
+                null,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`  // JWT 토큰을 Authorization 헤더에 추가
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );
-            console.log("가져온 값 : ", response);
             if (response.data === 1) {
                 alert("비밀번호가 일치합니다");
                 setIsPasswordConfirmed(true);
@@ -171,45 +155,60 @@ const Exchange = () => {
             alert('비밀번호를 확인하세요.');
             return;
         }
-        if (!currency || !amount || !date || !branch || !selectedAccountNumber) {
+        if (!currency || !amount || !date || !branch || !selectedAccountNumber || !accountNo) {
             alert('모든 항목을 입력해주세요.');
             return;
         }
 
+        // 수령 지점이 선택되었는지 확인
+        if (!branch) {
+            alert('수령 지점을 선택하세요.');
+            return;
+        }
+
+        // 전송할 데이터를 콘솔에 먼저 출력하여 확인
+        const exchangeDetails = {
+            userNo,
+            accountNo,
+            selectCountry: currency,
+            exchangeRate: rate,
+            tradeDate: new Date().toISOString().split('T')[0],
+            pickupPlace: branch,  
+            tradePrice: requiredWon,
+            tradeAmount: amount,
+            receiveDate: date
+        };
+
+        console.log("전송할 데이터:", exchangeDetails);  // 전송할 데이터 확인
+
         const confirmResult = window.confirm('환전 하시겠습니까?');
         if (confirmResult) {
-            const exchangeDetails = {
-                userNo,
-                accountNo: selectedAccountNumber,
-                selectCountry: currency,
-                exchangeRate: rate,
-                tradeDate: new Date().toISOString().split('T')[0],
-                pickupPlace: branch,
-                tradePrice: requiredWon,
-                tradeAmount: amount,
-                receiveDate: date
-            };
-
             axios.post('http://localhost:8081/exchange/submit-exchange', exchangeDetails, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
-                .then(response => {
-                    if (response.status === 200) {
-                        navigate('/exchange-result', {
-                            state: {
-                                message: `${date}에 ${branch}에 방문 해주세요.`
-                            }
-                        });
-                    } else {
-                        alert('환전 신청에 실패했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('환전 신청 중 오류 발생:', error);
+            .then(response => {
+                if (response.status === 200) {
+                    navigate('/exchange-result', {
+                        state: {
+                            message: `${date}에 ${branch}에 방문 해주세요.`,
+                            branch
+                        }
+                    });
+                } else {
                     alert('환전 신청에 실패했습니다.');
-                });
+                }
+            })
+            .catch(error => {
+                console.error('환전 신청 중 오류 발생:', error);
+                if (error.response) {
+                    console.log('서버 응답 데이터:', error.response.data);  // 구체적인 오류 메시지 확인
+                    console.log('서버 응답 상태 코드:', error.response.status);
+                    console.log('서버 응답 헤더:', error.response.headers);
+                }
+                alert('환전 신청에 실패했습니다.');
+            });
         }
     };
 
@@ -245,11 +244,14 @@ const Exchange = () => {
                     <label className='exlabel'>수령일</label>
                     <input className="ex" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                     <label className='exlabel' style={{ marginTop: '20px' }}>수령 지점</label>
-                    <select className="ex" value={branch} onChange={(e) => setBranch(e.target.value)}>
+                    <select className="ex" value={branch} onChange={(e) => {
+                        setBranch(e.target.value);  // branch 값 설정
+                        console.log("선택한 지점:", e.target.value);  // 선택된 지점 값 콘솔에 출력
+                    }}>
                         <option value="">지점을 선택하세요</option>
                         {branches.map((branch, index) => (
-                            <option key={index} value={branch.pickUpPlaceName}>
-                                {branch.pickUpPlaceName}
+                            <option key={index} value={branch.pickupPlaceName}>
+                                {branch.pickupPlaceName}
                             </option>
                         ))}
                     </select>

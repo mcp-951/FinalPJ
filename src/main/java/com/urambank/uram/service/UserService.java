@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -113,4 +114,48 @@ public class UserService {
         return authKey;
     }
 
+    public String findUserId(String name, String hp){
+        System.out.println("name : " + name);
+        User user = new User();
+        try{
+            user = userRepository.findByNameAndHp(name,hp);
+            return user.getUserId();
+        }catch(NullPointerException e){
+            return "";
+        }
+
+    }
+
+    public String resetPassword(UserDTO dto) {
+        User user = new User();
+        try{
+            user.setName(dto.getName());
+            user.setHp(dto.getHp());
+            user = userRepository.findByNameAndHp(user.getName(),user.getHp());
+            user.setUserPw(dto.getUserPw());
+            user = userRepository.save(user);
+            return user.getUserPw();
+        }catch(NullPointerException e){
+            return "";
+        }
+    }
+    public List<User> getUsersByRoleUser() {
+        return userRepository.findByUserRole("ROLE_USER");
+    }
+
+    // userId로 userNo 가져오기
+    public int getUserNoByUserId(String userId) {
+        User user = userRepository.findByUserId(userId);
+        return user.getUserNo();  // userNo 반환
+    }
+
+    public String getUserNameByUserNo(int userNo) {
+        User user = userRepository.findById(userNo).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getName();
+    }
+
+    public int getUserNoByName(String name) {
+        User user = userRepository.findByName(name);
+        return user != null ? user.getUserNo() : null;
+    }
 }

@@ -1,28 +1,28 @@
 package com.urambank.uram.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 public class LoanJoinDTO {
-
-    private String productName;
+    private int loanJoinNo;
+    private int loanAmount;
+    private int remainingLoanAmount;
+    private int loanPeriod;
     private String repaymentMethod;
-    private Integer loanAmount;
-    private Double interestRate;
-    private Integer loanPeriod;
-    private Integer loanAccount;
-    private Integer transferAccount;
-    private LocalDate joinDay;
-    private LocalDate finishDay;
-    private Integer userNo;
-    private Integer transferDay; // 추가 필요
-    private Integer remainingLoanAmount; // 추가 필요
-    private Integer repaymentAccount;
-
-
+    private int loanTransferDay;
+    private LocalDateTime loanJoinDay;
+    private LocalDate loanFinishDay;
+    private String loanStatus;
+    private int loanNo;
+    private int userNo;
+    private int accountNo;
+    private String transferAccount;
+    private String loanName;
 }

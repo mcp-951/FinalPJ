@@ -18,6 +18,7 @@ const AccountTransfer = () => {
   const [onceLimit, setOnceLimit] = useState(null); // 1회 이체 한도
   const [errorMessages, setErrorMessages] = useState({}); // 각 필드에 대한 에러 메시지 상태
   const [accounts, setAccounts] = useState([]); // 사용자의 계좌 목록
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 사용
 
   // 로그인 확인 추가 부분
@@ -65,19 +66,20 @@ const AccountTransfer = () => {
         }
       });
 
-      // 응답에서 accounts 배열을 추출
       const { accounts } = response.data;
 
-      if (Array.isArray(accounts)) {
+      if (Array.isArray(accounts) && accounts.length > 0) {
         setAccounts(accounts); // 사용자의 계좌 목록 설정
       } else {
-        setAccounts([]); // 배열이 아닐 경우 빈 배열로 설정
-        setErrorMessages({ general: '계좌 목록을 불러오는 중 오류가 발생했습니다.' });
+        alert('등록된 계좌가 없습니다.'); // 계좌가 없을 때 알림
+        navigate('/'); // 메인 페이지로 리다이렉트
       }
     } catch (error) {
       console.error('계좌 목록 불러오기 실패:', error);
       setErrorMessages({ general: '계좌 목록을 불러오는 중 오류가 발생했습니다.' });
-      setAccounts([]);
+      setAccounts([]); // 오류가 발생한 경우 빈 배열로 설정
+    } finally {
+      setLoading(false); // 로딩 완료
     }
   };
 
@@ -268,11 +270,17 @@ const AccountTransfer = () => {
                     }}
                   >
                     <option value="">계좌 선택</option>
-                    {accounts.map((account) => (
-                      <option key={account.accountNumber} value={account.accountNumber}>
-                        {account.accountNumber}
+                    {accounts.length > 0 ? (
+                      accounts.map((account) => (
+                        <option key={account.accountNumber} value={account.accountNumber}>
+                          {account.accountNumber}
+                        </option>
+                      ))
+                    ) : (
+                      <option value="" disabled>
+                        등록된 계좌가 없습니다
                       </option>
-                    ))}
+                    )}
                   </select>
                   <button type="button" onClick={handleCheckBalance} className="balance-button">
                     출금가능금액

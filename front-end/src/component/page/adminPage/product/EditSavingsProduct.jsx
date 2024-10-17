@@ -1,63 +1,176 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import Sidebar from '../Sidebar'; // Sidebar 추가
-import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 파일 추가
+import Sidebar from '../Sidebar'; // 사이드바 추가
+import '../../../../resource/css/admin/EditSavingsProduct.css'; // 적절한 CSS 파일 경로 사용
 
 const EditSavingsProduct = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const { product } = state;
+  const location = useLocation();
+  const [loading, setLoading] = useState(true); // 로딩 상태
+  const [formData, setFormData] = useState({
+    depositNo: '', // 상품 번호 (수정 불가)
+    depositCategory: '', // 상품종류
+    depositName: '', // 상품이름
+    depositRate: '', // 금리
+    depositContent: '', // 상품설명
+    depositIMG: '', // 상품 이미지
+  });
 
-  const [productName, setProductName] = useState(product.productName);
-  const [productCategory, setProductCategory] = useState(product.productCategory);
-  const [productRate, setProductRate] = useState(product.productRate);
-  const [productPeriod, setProductPeriod] = useState(product.productPeriod);
-  const [productContent, setProductContent] = useState(product.productContent);
-  const [productIMG, setProductIMG] = useState(product.productIMG);
-  const [viewState, setViewState] = useState(product.viewState);
-  const [repaymentType, setRepaymentType] = useState(product.repaymentType);
+  const token = localStorage.getItem("token");
 
-  const handleSave = async () => {
-    try {
-      await axios.put(`http://localhost:8080/product/update/${product.productNo}`, {
-        productName,
-        productCategory,
-        productRate,
-        productPeriod,
-        productContent,
-        productIMG,
-        viewState,
-        repaymentType,
+  // 데이터가 state로 넘어온 경우 state를 우선 사용, 넘어오지 않았다면 API 호출
+  useEffect(() => {
+    if (location.state?.deposit) {
+      const { depositNo, depositCategory, depositName, depositRate, depositContent, depositIMG } = location.state.deposit;
+      setFormData({
+        depositNo,
+        depositCategory,
+        depositName,
+        depositRate,
+        depositContent,
+        depositIMG,
       });
-      navigate('/savingsProduct');
+      setLoading(false);
+    } else {
+      // 만약 state로 데이터가 넘어오지 않았다면, 상품 번호를 기반으로 데이터를 가져오는 API 호출
+      const productId = formData.depositName;
+      axios.get(`http://localhost:8081/admin/getSavingsProduct/${productId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).then(response => {
+        setFormData({
+          depositNo: response.data.depositNo,
+          depositCategory: response.data.depositCategory,
+          depositName: response.data.depositName,
+          depositRate: response.data.depositRate,
+          depositContent: response.data.depositContent,
+          depositIMG: response.data.depositIMG,
+        });
+        setLoading(false);
+      }).catch(error => {
+        console.error('데이터를 불러오는 중 오류 발생:', error);
+        setLoading(false);
+      });
+    }
+  }, [location.state, token]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleCancel = () => {
+    navigate('/admin/financialProduct'); // 취소하면 목록으로 이동
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:8081/admin/editSavings/${formData.depositNo}`, formData, {
+        headers: {
+          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가   
+        }
+      });
+      alert("수정이 완료되었습니다.");
+      navigate("/admin/financialProduct");
     } catch (error) {
-      console.error('상품 수정에 실패했습니다.', error);
+      console.error("수정 중 오류 발생:", error);
+      alert("수정 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
+  if (loading) {
+    return <div>로딩 중...</div>; // 로딩 중일 때 로딩 메시지 표시
+  }
+
   return (
-    <div className="edit-product-container">
+    <div className="app-container">
       <Sidebar /> {/* 사이드바 추가 */}
-      <div className="edit-content">
-        <h2>예금 상품 수정</h2>
-        <label>상품명:</label>
-        <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)} />
-        <label>분류:</label>
-        <input type="text" value={productCategory} onChange={(e) => setProductCategory(e.target.value)} />
-        <label>금리:</label>
-        <input type="text" value={productRate} onChange={(e) => setProductRate(e.target.value)} />
-        <label>기간:</label>
-        <input type="text" value={productPeriod} onChange={(e) => setProductPeriod(e.target.value)} />
-        <label>내용:</label>
-        <input type="text" value={productContent} onChange={(e) => setProductContent(e.target.value)} />
-        <label>이미지:</label>
-        <input type="text" value={productIMG} onChange={(e) => setProductIMG(e.target.value)} />
-        <label>상태:</label>
-        <input type="text" value={viewState} onChange={(e) => setViewState(e.target.value)} />
-        <label>상환 방식:</label>
-        <input type="text" value={repaymentType} onChange={(e) => setRepaymentType(e.target.value)} />
-        <button onClick={handleSave}>수정 완료</button>
+      <div className="alog-main-content">
+        <div className="edit-container">
+          <h2>예금/적금 상품 수정</h2>
+          <form onSubmit={handleSubmit}>
+            <table className="edit-table">
+              <tbody>
+                <tr>
+                  <td>상품 번호</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="depositNo"
+                      value={formData.depositNo}
+                      readOnly
+                      disabled
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>상품 이름</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="depositName"
+                      value={formData.depositName}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>상품 종류</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="depositCategory"
+                      value={formData.depositCategory}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>금리</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="depositRate"
+                      value={formData.depositRate}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>상품 설명</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="depositContent"
+                      value={formData.depositContent}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>상품 이미지</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="depositIMG"
+                      value={formData.depositIMG}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="button-group">
+              <button type="button" onClick={handleCancel}>
+                취소
+              </button>
+              <button type="submit">수정</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
