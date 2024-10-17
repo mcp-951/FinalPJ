@@ -76,6 +76,15 @@ public class UserController {
         return ResponseEntity.ok(userPw);
     }
 
+    @GetMapping("/getUserInfo/{userNo}")
+    public ResponseEntity<?> getUserInfo(@PathVariable("userNo") int userNo) {
+        logger.info("<<< getUserInfo >>>");
+        logger.info("userNo : " + userNo);
+
+        UserDTO dto = userService.getUserInfo(userNo); // 서비스 호출
+        return ResponseEntity.ok(dto); // 찾은 userId 반환
+    }
+
 //    @PostMapping("/refresh")
 //    public ResponseEntity<UserDTO> refreshToken(@RequestBody UserDTO dto){
 //        return ResponseEntity.ok(userService.refreshToken(dto));

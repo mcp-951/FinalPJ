@@ -12,11 +12,12 @@ import TaxDrop from './NavbarDropdownMenu/TaxDrop';
 import ManageDrop from './NavbarDropdownMenu/ManageDrop';
 import InvestmentDrop from './NavbarDropdownMenu/InvestmentDrop';
 import SearchBar from './searchBar/SearchBar';
-
+import {useNavigate} from 'react-router-dom';
 
 
 function Navbar(){
     const token = localStorage.getItem('token');
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         console.log(token);
@@ -33,6 +34,9 @@ function Navbar(){
     const handleSearchBar = () => {
         setSearchOpen(!searchOpen);
     };
+    const navMyPage = () => {
+        navigate('/mypage');
+        }
     return(
         <>
         { !searchOpen ? (
@@ -51,7 +55,8 @@ function Navbar(){
                 <div className='nav_iconMenu'>
                     <button onClick={handleSearchBar}><div className="nav_search"><FaSearch className='nav_search_icon'/></div></button>
                     <button><div className="nav_allMenu"><GiHamburgerMenu className='nav_toggle_icon'/></div></button>
-                    {token ? (<button onClick={handleLogout}><div className="nav_logout"><CiLogout className="nav_logout_icon"/></div></button>)
+                    {token ? (<><button onClick={navMyPage}><div className="nav_logout">마이페이지</div></button>
+                        <button onClick={handleLogout}><div className="nav_logout"><CiLogout className="nav_logout_icon"/></div></button></>)
                     : (<button><div className="nav_login" ><a href='/login'><MdOutlineLogin className='nav_login_icon' /></a></div></button>)}
                     
                 </div>

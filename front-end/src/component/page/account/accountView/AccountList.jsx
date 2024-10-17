@@ -52,7 +52,8 @@ const AccountList = ({ type }) => {
         setAccounts(uniqueAccounts);
       } catch (error) {
         console.error('계좌 불러오기 실패:', error);
-        setError('등록된 계좌가 없습니다.');
+        setError('등록된 계좌가 없습니다. 새로운 계좌를 생성해주세요.');
+        navigate('/getNewAccount');
         setAccounts([]);
       }
     };

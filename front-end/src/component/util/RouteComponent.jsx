@@ -17,6 +17,10 @@ import SignUp_ from 'component/page/loginPage/Signup_';
 import SignupForKakao from '../page/loginPage/SignUpForKakao';
 import FindIdAndPw from '../page/loginPage/FindIdAndPw';
 
+// 유저 라우터 임포트
+import MyPage from 'component/page/user/MyPage'
+
+
 // 검색바 라우터 임포트
 import SearchResult from './searchBar/SearchResult';
 
@@ -127,6 +131,9 @@ const RouteComponent = () => {
                         <Route path="/login" exact={true} element={<Login />} />
                         <Route path="/signup" exact={true} element={<Signup />} />
                         <Route path="/signup_" exact={true} element={<SignUp_ />} />
+
+                        {/*검색바 리스트 이동*/}
+                        <Route path="/mypage" exact={true} element={<MyPage />} />
 
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />
