@@ -37,7 +37,7 @@ import RetiredMember from '../page/adminPage/user/RetiredMember';
 import FinancialProduct from '../page/adminPage/product/FinancialProduct';
 import SavingsProduct from '../page/adminPage/product/SavingsProduct';
 import DepositProduct from '../page/adminPage/product/DepositProduct';
-import LoanProduct from '../page/adminPage/product/LoanProduct';
+import ADLoanProduct from '../page/adminPage/product/ADLoanProduct';
 import TransactionHistory from '../page/adminPage/akkount/TransactionHistory';
 import AccountClosure from '../page/adminPage/akkount/AccountClosure';
 import CurrencyExchangeHistory from '../page/adminPage/exchange/CurrencyExchangeHistory';
@@ -61,13 +61,6 @@ import AdminInquiryDetail from '../page/adminPage/support/AdminInquiryDetail';  
 // 예금 적금
 import DepositMain from 'component/page/product/Deposit/DepositMain';
 import DepositList from 'component/page/product/Deposit/DepositList';
-import Calculatior from 'component/page/product/Loan/Calculatior';
-import LoanList from 'component/page/product/Loan/LoanList';
-import LoanMain from 'component/page/product/Loan/LoanMain';
-import Repayment from 'component/page/product/Loan/Repayment';
-import Loanchap1 from 'component/page/product/Loan/Loanchap1';
-import Loanchap2 from 'component/page/product/Loan/Loanchap2';
-import Loanchap3 from 'component/page/product/Loan/Loanchap3';
 import Depositchap1 from 'component/page/product/Deposit/Depositchap1';
 import Depositchap2 from 'component/page/product/Deposit/Depositchap2';
 import Depositchap3 from 'component/page/product/Deposit/Depositchap3';
@@ -107,6 +100,8 @@ import Footer from './Footer';
 import SignUpForKakao from 'component/page/loginPage/SignUpForKakao';
 import FindIdAndPw from 'component/page/loginPage/FindIdAndPw';
 import RedirectPage from 'component/page/loginPage/RedirectKakao';
+import LoanMain from 'component/page/loan/LoanMain';
+import LoanDetail from 'component/page/loan/LoanDetail';
 
 
 
@@ -139,6 +134,9 @@ const RouteComponent = () => {
                         <Route path="/tax/History" exact={true} element={<TaxHistory/>} />
                         {/*OCR데이터*/}
                         <Route path="/ocr" exact={true} element={<ImgSelect />} />
+                        {/*대출*/}
+                        <Route path="/loanmain" exact={true} element={<LoanMain />} />
+                        <Route path="/loanmain/loandetail" exact={true} element={<LoanDetail />} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
                         {/* <Route path="/adminList" element={<AdminList />} /> */}
@@ -163,7 +161,7 @@ const RouteComponent = () => {
                         <Route path="/admin/financialProduct" element={<FinancialProduct />} />
                         <Route path="/admin/savingsProduct" element={<SavingsProduct />} />
                         <Route path="/admin/depositProduct" element={<DepositProduct />} />
-                        <Route path="/admin/loanProduct" element={<LoanProduct />} />
+                        <Route path="/admin/loanProduct" element={<ADLoanProduct />} />
                         {/* 금융 상품 수정 페이지 */}
                         <Route path="/admin/RegisterLoanProduct" element={<RegisterLoanProduct  />} />
                         <Route path="/admin/RegisterProduct" element={<RegisterProduct />} />
@@ -187,13 +185,6 @@ const RouteComponent = () => {
                         {/* 예금, 적금, 대출 상품 관련 */}
                         <Route path="/DepositMain" exact={true} element={<DepositMain />} />
                         <Route path="/deposit-list" exact={true} element={<DepositList />} />
-                        <Route path="/Calculatior" exact={true} element={<Calculatior />} />
-                        <Route path="/LoanList" exact={true} element={<LoanList />} />
-                        <Route path="/LoanMain" exact={true} element={<LoanMain />} />
-                        <Route path="/Repayment" exact={true} element={<Repayment />} />
-                        <Route path="/Loanchap1" exact={true} element={<Loanchap1 />} />
-                        <Route path="/Loanchap2" exact={true} element={<Loanchap2 />} />
-                        <Route path="/Loanchap3" exact={true} element={<Loanchap3 />} />
                         <Route path="/Depositchap1" exact={true} element={<Depositchap1 />} />
                         <Route path="/Depositchap2" exact={true} element={<Depositchap2 />} />
                         <Route path="/Depositchap3" exact={true} element={<Depositchap3 />} />
