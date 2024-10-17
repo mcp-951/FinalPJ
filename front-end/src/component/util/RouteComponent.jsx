@@ -13,6 +13,7 @@ import InquiryForm from 'component/page/customerService/InquiryForm';
 // 로그인 라우터 임포트
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
+import SignUp_ from 'component/page/loginPage/Signup_';
 import SignupForKakao from '../page/loginPage/SignUpForKakao';
 import FindIdAndPw from '../page/loginPage/FindIdAndPw';
 
@@ -80,7 +81,7 @@ import Termination from 'component/page/product/Deposit/Termination';
 
 // 계좌 관련 (채림)
 import Account from '../page/account/accountView/Account';
-import AccountDetail from '../page/account/accountView/AccountDetail'; 
+import AccountDetail from '../page/account/accountView/AccountDetail';
 import PasswordCheck from '../page/account/accountManagement/PasswordCheck'; 
 import PasswordChange from '../page/account/accountManagement/PasswordChange'; 
 import AccountClose from '../page/account/accountManagement/AccountClose'; 
@@ -125,6 +126,8 @@ const RouteComponent = () => {
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
                         <Route path="/signup" exact={true} element={<Signup />} />
+                        <Route path="/signup_" exact={true} element={<SignUp_ />} />
+
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />
                         <Route path="/signupForKakao" exact={true} element={<SignupForKakao />} />
@@ -156,7 +159,7 @@ const RouteComponent = () => {
 
                         {/* 관리자 페이지 문의 관리 목록 */}
                         <Route path="/admin/support/inquiries" element={<AdminInquiryList />} />
-                        
+
                         {/* 특정 문의글 상세 보기 (qnaNo가 변수로 전달됨) */}
                         <Route path="/admin/support/inquiry/:qnaNo" element={<AdminInquiryDetail />} />
 
