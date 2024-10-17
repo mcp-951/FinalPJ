@@ -13,12 +13,6 @@ import InquiryForm from 'component/page/customerService/InquiryForm';
 // 로그인 라우터 임포트
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
-<<<<<<< HEAD
-=======
-import SignUp_ from 'component/page/loginPage/Signup_';
-import SignupForKakao from '../page/loginPage/SignUpForKakao';
-import FindIdAndPw from '../page/loginPage/FindIdAndPw';
->>>>>>> origin/newmain4
 
 // 검색바 라우터 임포트
 import SearchResult from './searchBar/SearchResult';
@@ -109,12 +103,11 @@ import AssetsAnalysis from '../page/assetsPage/AssetsAnalysis';
 //팝업
 import GetAddress from 'component/page/loginPage/GetAddress';
 import ExchangeResult from 'component/page/exchangePage/ExchangeResult';
-<<<<<<< HEAD
 import Footer from './Footer';
+import SignUpForKakao from 'component/page/loginPage/SignUpForKakao';
+import FindIdAndPw from 'component/page/loginPage/FindIdAndPw';
+import RedirectPage from 'component/page/loginPage/RedirectKakao';
 
-=======
-import RedirectKakao from 'component/page/loginPage/RedirectKakao';
->>>>>>> origin/newmain4
 
 
 const RouteComponent = () => {
@@ -133,16 +126,10 @@ const RouteComponent = () => {
                         <Route path="/" exact={true} element={<Main />} />
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
-<<<<<<< HEAD
                         <Route path="/signup" exact={true} element={<Signup />} />                        
-=======
-                        <Route path="/signup" exact={true} element={<Signup />} />
-                        <Route path="/signup_" exact={true} element={<SignUp_ />} />
-
->>>>>>> origin/newmain4
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />
-                        <Route path="/signupForKakao" exact={true} element={<SignupForKakao />} />
+                        <Route path="/signupForKakao" exact={true} element={<SignUpForKakao />} />
                         <Route path="/FindIdAndPw" exact={true} element={<FindIdAndPw />} />
                         {/*}투자 페이지{*/}
                         <Route path="/investment" exact={true} element={<InvestmentMain/>} />
@@ -154,16 +141,8 @@ const RouteComponent = () => {
                         <Route path="/ocr" exact={true} element={<ImgSelect />} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
-<<<<<<< HEAD
                         {/* <Route path="/adminList" element={<AdminList />} /> */}
                         {/* <Route path="/editAdmin" element={<EditAdmin />} /> */}
-=======
-                        {/* 공과금 관리자 페이지 */}
-                        <Route path="/taxList" exact={true} element={<TaxList />} /> {/* TaxList 경로 추가 */}
-                        <Route path="/taxEdit/:taxNo" exact={true} element={<TaxEdit />} /> {/* TaxEdit 경로 추가 */}
-                        <Route path="/taxInsert" exact={true} element={<TaxInsert />} />
-
->>>>>>> origin/newmain4
                         {/* 고객센터 페이지 경로 설정 */}
                         <Route path="/customer-service" element={<CustomerServiceMain />} />
                         <Route path="/inquiry/:id" element={<InquiryDetail inquiries={inquiries} />} />
@@ -257,10 +236,13 @@ const RouteComponent = () => {
                         <Route path="/consumeAnalyse" exact={true} element={<AssetsAnalysis/>} />
                         <Route path="/AssetsAnalysis" exact={true} element={<AssetsAnalysis />} />
 
+                        <Route path="/taxList" exact={true} element={<TaxList />} />
+                        <Route path="/taxInsert" exact={true} element={<TaxInsert />} />
+                        <Route path="/taxEdit/:taxNo" exact={true} element={<TaxEdit />} />
 
                         <Route path="/getAddress" exact={true} element={<GetAddress />} />
-                        <Route path="/kakaoLogin" exact={true} element={<RedirectKakao />} />
-
+                        <Route path="/kakaoLogin" exact={true} element={<RedirectPage />} />
+                        
 
                    </Routes>
                 </div>

@@ -2,12 +2,6 @@ import React from "react";
 import Carouesl_Main from './Carousel';
 import Middlebar from './Middlebar';
 import BottomNewsBoard from './BottomNewsBoard';
-<<<<<<< HEAD
-
-=======
-import Footer from '../util/Footer';
-import ChatBotButton from './ChatBotButton';
->>>>>>> origin/newmain4
 
 function Main() {
     return (
@@ -26,11 +20,6 @@ function Main() {
                 {/* <BottomNoticeBoard />*/
                 <BottomNewsBoard /> }
             </div>
-<<<<<<< HEAD
-=======
-            <ChatBotButton />
-            <Footer />
->>>>>>> origin/newmain4
         </div>
     );
 }
