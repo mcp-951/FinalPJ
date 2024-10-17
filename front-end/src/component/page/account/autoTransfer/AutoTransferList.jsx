@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../../../resource/css/account/autoTransfer/AutoTransferList.css';
+import axios from 'axios';
 
 const AutoTransferList = () => {
   const [autoTransfers, setAutoTransfers] = useState([]);
@@ -42,21 +43,58 @@ const AutoTransferList = () => {
     }
   };
 
-  const handleModifyClick = (autoTransNo, fromAccountNumber) => {
-    navigate(`/new-transfer-modify/${autoTransNo}`, {
-      state: { autoTransNo, fromAccountNumber },
-    });
+  const handleModifyClick = async (autoTransNo, fromAccountNumber) => {
+    try {
+      // 24시간 이전인지 확인을 위한 요청
+      const response = await axios.get(`http://localhost:8081/uram/auto-transfer/can-cancel/${autoTransNo}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // 24시간 이전이라면 변경 페이지로 이동
+        navigate(`/new-transfer-modify/${autoTransNo}`, {
+          state: { autoTransNo, fromAccountNumber },
+        });
+      }
+    } catch (error) {
+      // 백엔드에서 넘어온 에러 메시지 표시
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data); // 백엔드의 오류 메시지를 사용자에게 보여줌 (24시간 이내로 변경 불가 등)
+      } else {
+        alert('자동이체 변경 가능 여부 확인 중 오류가 발생했습니다.');
+      }
+    }
   };
 
-  const handleCancelClick = (autoTransNo, fromAccountNumber) => {
-    // 비밀번호 확인 페이지로 이동
-    navigate(`/auto-transfer-password-check`, {
-      state: {
-        purpose: 'cancel-transfer',  // 자동이체 해지 목적으로 전달
-        autoTransNo,  // 자동이체 번호 전달
-        accountNumber: fromAccountNumber,  // 계좌 번호 전달
-      },
-    });
+  const handleCancelClick = async (autoTransNo, fromAccountNumber) => {
+    try {
+      // 24시간 이전인지 확인을 위한 요청
+      const response = await axios.get(`http://localhost:8081/uram/auto-transfer/can-cancel/${autoTransNo}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        // 24시간 이전이라면 비밀번호 확인 페이지로 이동
+        navigate(`/auto-transfer-password-check`, {
+          state: {
+            purpose: 'cancel-transfer',  // 자동이체 해지 목적으로 전달
+            autoTransNo,  // 자동이체 번호 전달
+            accountNumber: fromAccountNumber,  // 계좌 번호 전달
+          },
+        });
+      }
+    } catch (error) {
+      // 백엔드에서 넘어온 에러 메시지 표시
+      if (error.response && error.response.status === 400) {
+        alert(error.response.data); // 백엔드의 오류 메시지를 사용자에게 보여줌 (24시간 이내로 해지 불가 등)
+      } else {
+        alert('자동이체 해지 가능 여부 확인 중 오류가 발생했습니다.');
+      }
+    }
   };
 
   return (
