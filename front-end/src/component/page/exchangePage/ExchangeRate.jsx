@@ -8,7 +8,7 @@ const ExchangeRate = () => {
     const [exchangeRates, setExchangeRates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('buy'); // 'buy' 또는 'sell'
-
+    
     // API 호출
     useEffect(() => {
         const fetchExchangeRates = async () => {
