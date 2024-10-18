@@ -14,6 +14,11 @@ import InquiryForm from 'component/page/customerService/InquiryForm';
 import Login from '../page/loginPage/Login';
 import Signup from '../page/loginPage/SignUp';
 
+// 유저 라우터 임포트
+import MyPage from 'component/page/user/MyPage'
+import MyPageChangePw from 'component/page/user/MyPageChangePw'
+
+
 // 검색바 라우터 임포트
 import SearchResult from './searchBar/SearchResult';
 

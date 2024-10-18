@@ -6,7 +6,6 @@ import com.urambank.uram.entities.User;
 import lombok.*;
 
 import java.sql.Date;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,6 +40,7 @@ public class UserDTO {
     private String USER_ROLE;
     private String residentNumber1;
     private String residentNumber2;
+    private int grade;
 
 
 

@@ -4,10 +4,8 @@ package com.urambank.uram.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.sql.Date;
-import java.util.Collection;
 
 @Table(name="userInfo")
 @Getter
@@ -56,6 +54,9 @@ public class User {
 
     @Column(length = 100, nullable = true, unique = false)
     private String residentNumber;
+
+    @Column(length = 1)
+    private int grade;
 
     @Builder
     public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck) {

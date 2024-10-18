@@ -19,7 +19,7 @@ function SignUp() {
         residentNumber1 : '',
         residentNumber2 : '',
         hpAuthkey:'',
-        ocrFile: null,
+        ocrCheck: '',
         address: '',
         address1: '',
         address2: ''
@@ -32,7 +32,7 @@ function SignUp() {
     const [plusAddress, setPlusAddress] = useState(false);
     const navigate = useNavigate();
     const [hpAuthKey, setHpAuthKey] = useState('');
-    const [authHp, setAuthHp] = useState('');
+    const [authHp, setAuthHp] = useState(false);
     const [resNoError1, setResNoError1] = useState('');
     const [resNoError2, setResNoError2] = useState('');
     const [ocrCheck, setOcrCheck] = useState(false);
@@ -227,6 +227,7 @@ function SignUp() {
             // 값이 null이 아니면서 조건을 만족할 때
             if (value1 && value2 && userName === value1 && value2 === localNo) {
               setOcrCheck(true);
+              setForm({ocrCheck : "1"});
             }
           }
         });

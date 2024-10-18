@@ -47,6 +47,14 @@ const apiSer = {
         console.log("info : " + datas);
         return axios.put(`${API_BASE_URL}/resetPassword`,datas)
     },
+    getUserInfo: (userNo) => {
+        console.log("info:" + userNo);
+        return axios.get(`${API_BASE_URL}/getUserInfo`+ '/' + userNo,{
+        headers: {
+          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+        }
+      })
+        },
 
   // 자동이체 리스트 가져오기
   getAutoTransfers: async () => {
