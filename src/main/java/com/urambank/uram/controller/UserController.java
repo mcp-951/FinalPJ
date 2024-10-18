@@ -85,7 +85,7 @@ public class UserController {
         UserDTO dto = userService.getUserInfo(userNo); // 서비스 호출
         return ResponseEntity.ok(dto); // 찾은 userId 반환
     }
-    // 비밀번호 찾기 - 비밀번호 재설정
+    // 비밀번호 재설정
     @PutMapping("/changePassword")
     public ResponseEntity<?> changePassword(@RequestBody UserDTO userdto) {
         logger.info("<<< changePassword >>>");
