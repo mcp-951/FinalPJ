@@ -123,11 +123,11 @@
 }
 
 .SavingsProduct-product-table button:hover {
-  background-color: #f1f1f1;
+  background-color: #5d95d1;
 }
 
 .SavingsProduct-edit-button {
-  background-color: #ffc107;
+  background-color: #74a1d2;
   color: white;
 }
 
@@ -137,7 +137,7 @@
 
 /* 삭제 버튼 스타일 */
 .SavingsProduct-delete-button {
-  background-color: #dc3545;
+  background-color: #74a1d2;
   color: white;
 }
 

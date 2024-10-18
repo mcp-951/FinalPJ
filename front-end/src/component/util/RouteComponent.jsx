@@ -42,15 +42,7 @@ import RetiredMember from '../page/adminPage/user/RetiredMember';
 import FinancialProduct from '../page/adminPage/product/FinancialProduct';
 import SavingsProduct from '../page/adminPage/product/SavingsProduct';
 import DepositProduct from '../page/adminPage/product/DepositProduct';
-<<<<<<< HEAD
-import LoanProduct from '../page/adminPage/product/LoanProduct';
-=======
 import ADLoanProduct from '../page/adminPage/product/ADLoanProduct';
-import TransactionHistory from '../page/adminPage/akkount/TransactionHistory';
-import AccountClosure from '../page/adminPage/akkount/AccountClosure';
-import CurrencyExchangeHistory from '../page/adminPage/exchange/CurrencyExchangeHistory';
-import ExchangePickupLocation from '../page/adminPage/exchange/ExchangePickupLocation';
->>>>>>> newmain5
 import MemberEdit from '../page/adminPage/user/MemberEdit';
 import EditSavingsProduct from '../page/adminPage/product/EditSavingsProduct';
 import EditLoanProduct from '../page/adminPage/product/EditLoanProduct';
@@ -130,7 +122,10 @@ const RouteComponent = () => {
                         <Route path="/" exact={true} element={<Main />} />
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
-                        <Route path="/signup" exact={true} element={<Signup />} />                        
+                        <Route path="/signup" exact={true} element={<Signup />} />        
+                        {/*}로그인 페이지{*/}
+                        <Route path="/mypage" exact={true} element={<MyPage />} />
+                        <Route path="/mypageChangePw" exact={true} element={<MyPageChangePw />} />                   
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />
                         <Route path="/signupForKakao" exact={true} element={<SignUpForKakao />} />
@@ -143,13 +138,9 @@ const RouteComponent = () => {
                         <Route path="/tax/History" exact={true} element={<TaxHistory/>} />
                         {/*OCR데이터*/}
                         <Route path="/ocr" exact={true} element={<ImgSelect />} />
-<<<<<<< HEAD
-
-=======
                         {/*대출*/}
                         <Route path="/loanmain" exact={true} element={<LoanMain />} />
                         <Route path="/loanmain/loandetail" exact={true} element={<LoanDetail />} />
->>>>>>> newmain5
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
                         {/* <Route path="/adminList" element={<AdminList />} /> */}

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import ApiSer from 'component/ApiService'
+import ApiSer from 'component/ApiService';
 import localStorage from 'localStorage';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import '../../../resource/css/user/MyPage.css';  // 경로 수정
 
 function MyPage() {
     const navigate = useNavigate();
@@ -16,89 +17,75 @@ function MyPage() {
         gender: '',
         grade : ''
     });
-    const getUserInfo = () => {
-        const response = ApiSer.getUserInfo(userNo)
-            .then((response) =>{
-                console.log(response.data);
-                let gend = response.data.residentNumber;
-                console.log(gend[7]);
-                let data;
-                    if (String(gend[7]) === '1') {
-                        data = {
-                            id: response.data.userId,
-                            name: response.data.name,
-                            hp: response.data.hp,
-                            email: response.data.email,
-                            birth: response.data.birth,
-                            gender: '남',
-                            grade : response.data.grade
-                        };
-                    } else {
-                        data = {
-                            id: response.data.userId,
-                            name: response.data.name,
-                            hp: response.data.hp,
-                            email: response.data.email,
-                            birth: response.data.birth,
-                            gender: '여',
-                            grade : response.data.grade
-                        };
-                    }
-                console.log(data);
-                setForm(data);
 
-            }).catch((error) => {
-                console.error("Error checking ID: ", error);
+    const getUserInfo = () => {
+        ApiSer.getUserInfo(userNo)
+            .then((response) => {
+                let gend = response.data.residentNumber;
+                let data = {
+                    id: response.data.userId,
+                    name: response.data.name,
+                    hp: response.data.hp,
+                    email: response.data.email,
+                    birth: response.data.birth,
+                    gender: String(gend[7]) === '1' ? '남' : '여',
+                    grade: response.data.grade
+                };
+                setForm(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching user info: ", error);
             });
-        }
-    useEffect(() =>{
+    };
+
+    useEffect(() => {
         getUserInfo();
-    },[userNo]);
+    }, [userNo]);
 
     const moveChangePw = () => {
-        navigate("/myPageChangePw", {userId : form.id})
-        }
-  return (
-    <div className="profile-edit">
-      <h2>회원정보</h2>
-      <div className="basic-info">
-        <h3>기본정보</h3>
-        <div>
-          <label>아이디</label>
-          <span>{form.id}</span>
-        </div>
-        <div>
-          <label>이름</label>
-          <span>{form.name}</span>
-        </div>
-        <div>
-          <label>휴대폰번호</label>
-          <span>{form.hp}</span>
-        </div>
-        <div>
-          <label>이메일</label>
-          <span>{form.email}</span>
-        </div>
-        <div>
-          <label>생년월일</label>
-          <span>{form.birth}</span>
-        </div>
-        <div>
-          <label>성별</label>
-          <span>{form.gender}</span>
-        </div>
-        <div>
-            <label>사용자 등급</label>
-            <span>{form.grade}등급</span>
-        </div>
-      </div>
+        navigate("/myPageChangePw", { state: { userId: form.id } });
+    };
 
+    return (
+        <div className="MyPage-container">
+            <h2 className="MyPage-title">회원정보</h2>
+            <div className="MyPage-basic-info">
+                <h3>기본정보</h3>
+                <div className="MyPage-field">
+                    <label>아이디</label>
+                    <span>{form.id}</span>
+                </div>
+                <div className="MyPage-field">
+                    <label>이름</label>
+                    <span>{form.name}</span>
+                </div>
+                <div className="MyPage-field">
+                    <label>휴대폰번호</label>
+                    <span>{form.hp}</span>
+                </div>
+                <div className="MyPage-field">
+                    <label>이메일</label>
+                    <span>{form.email}</span>
+                </div>
+                <div className="MyPage-field">
+                    <label>생년월일</label>
+                    <span>{form.birth}</span>
+                </div>
+                <div className="MyPage-field">
+                    <label>성별</label>
+                    <span>{form.gender}</span>
+                </div>
+                <div className="MyPage-field">
+                    <label>사용자 등급</label>
+                    <span>{form.grade}등급</span>
+                </div>
+            </div>
 
-      <div className="modiButton">
-        <button onClick={moveChangePw}>비밀번호 변경</button>
-      </div>
-    </div>
-  );
+            <div className="MyPage-modiButton">
+                <button onClick={moveChangePw} className="MyPage-btn">비밀번호 변경</button>
+            </div>
+        </div>
+    );
 }
 
 export default MyPage;
