@@ -1,293 +1,200 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import apiSer from '../../ApiService';
-import { useNavigate } from 'react-router-dom';
-import getAddress from './GetAddress';
-import '../../../resource/css/SignUp.css';
 
 function SignUp_() {
-    const [form, setForm] = useState({
-        userId: '',
-        userPw: '',
-        confirmPassword: '',
-        name: '',
-        email1: '',
-        email2: '',
-        hp: '',
-        birth: '',
-        residentNumber1: '',
-        residentNumber2: '',
-        hpAuthkey: '',
-        ocrFile: null,
-        address: '',
-        address1: '',
-        address2: ''
-    });
-
-    const [idCheckMessage, setIdCheckMessage] = useState('');
-    const [idCheckState, setIdCheckState] = useState('');
-    const [startCheckHp, setStartCheckHp] = useState(false);
-    const [stateAuth, setStateAuth] = useState(false);
-    const [pwSameCheck, setPwSameCheck] = useState(false);
-    const [plusAddress, setPlusAddress] = useState(false);
-    const navigate = useNavigate();
-    const [hpAuthKey, setHpAuthKey] = useState('');
-    const [authHp, setAuthHp] = useState('');
-    const [resNoError1, setResNoError1] = useState('');
-    const [resNoError2, setResNoError2] = useState('');
-    const [ocrCheck, setOcrCheck] = useState(false);
+    const fontsize = { fontSize: '0.8rem' };
+    // Id 입력 값
+    const [userId, setUserId] = useState('');
+    // 비밀번호 입력 값
+    const [password, setPassword] = useState('');
+    // 비밀번호 확인 입력 값
+    const [passwordCK, setPasswordCK] = useState('');
+    // 이메일 입력 값
+    const [email, setEmail] = useState('');
+    // 도메인 입력값
+    const [domain, setDomain] = useState('선택해주세요');
+    // 사용자 지정 도메인 값
+    const [customDomain, setCustomDomain] = useState('');
+    // 이름 입력 값
+    const [username, setuserName] = useState('');
+    // 주민번호 입력 값
+    const [residentNumberFront, setResidentNumberFront] = useState('');
+    const [residentNumberBack, setResidentNumberBack] = useState('');
+    //핸드폰번호 입력 값
+    const [userHP, setUserHP] = useState('');
+    // 핸드폰 인증 값
     
-    // 정규식
-    const reg_id = /^(?=.*?[a-zA-Z0-9]).{6,16}$/;
-    const reg_password = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,20}$/;
 
-    // 입력창 실시간 업데이트
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
-    };
-
-    // 아이디 체크
-    const idCheck = () => {
-        const userId = form.userId;
-        if (userId === "") {
-            setIdCheckMessage('아이디를 입력하세요');
-        } else {
-            handleCheckId(userId);
+    // 함수 시작
+    const userIdInput = (e) => {setUserId(e.target.value);};
+    // 비밀번호 입력 함수
+    const passwordInput = (e) => {setPassword(e.target.value);};
+    // 비밀번호 입력 함수
+    const passwordCInput = (e) => {setPasswordCK(e.target.value);};
+    //이메일 입력 함
+    const emailChange = (e) => {setEmail(e.target.value);};
+    const domainChange = (e) => {
+        setDomain(e.target.value);
+        // "직접 입력"이 선택된 경우 customDomain 상태를 초기화
+        if (e.target.value === 'custom') {
+            setCustomDomain('');
         }
     };
+    const customDomainChange = (e) => {setCustomDomain(e.target.value);};
+    const usernameChange = (e) => {setuserName(e.target.value);};
+    const residentNumberFrontChange = (e) => {setResidentNumberFront(e.target.value);};
+    const residentNumberBackChange = (e) => {setResidentNumberBack(e.target.value);};
+    const userHPChange = (e) => {setUserHP(e.target.value);};
 
-    const handleCheckId = (userId) => {
-        apiSer.checkId(userId)
-            .then((response) => {
-                if (response.data === '') {
-                    setIdCheckMessage(`${userId}는(은) 사용 가능한 아이디입니다.`);
-                    setIdCheckState(true);
-                } else {
-                    setIdCheckMessage(`${userId}는(은) 이미 존재하는 아이디입니다.`);
-                    setIdCheckState(false);
-                }
-            })
-            .catch((error) => {
-                console.error("Error checking ID: ", error);
-            });
-    };
-
-    // 비밀번호 체크
-    useEffect(() => {
-        if (form.userPw !== form.confirmPassword) {
-            setPwSameCheck(true);
-        } else {
-            setPwSameCheck(false);
-        }
-    }, [form.userPw, form.confirmPassword]);
-
-    // 주민등록번호 체크
-    useEffect(() => {
-        if (form.residentNumber1.length !== 6) {
-            setResNoError1('주민등록번호 앞자리는 6자리여야 합니다.');
-        } else {
-            setResNoError1('');
-        }
-
-        if (form.residentNumber2.length !== 7) {
-            setResNoError2('주민등록번호 뒷자리는 7자리여야 합니다.');
-        } else {
-            setResNoError2('');
-        }
-    }, [form.residentNumber1, form.residentNumber2]);
-
-    // 휴대폰 인증
+    //핸드폰 인증
     const hpCheck = () => {
-        const hp = form.hp;
-        if (hp.length < 10 || hp.length > 11) {
-            setIdCheckMessage('올바른 휴대폰 번호를 입력하세요');
-        } else {
+        const hp = userHP;
+        if(hp.length < 10 || hp.length >11) {
+            alert('올바른 휴대폰 번호를 입력하세요');
+        }else{
             handleCheckHp(hp);
-            setStartCheckHp(true);
+            startCheckHpHandler();
         }
     };
-
-    const handleCheckHp = (hp) => {
-        apiSer.checkHp(hp)
-            .then((response) => {
-                setHpAuthKey(response.data);
-            })
-            .catch((error) => {
-                console.error("Error checking Hp: ", error);
-            });
-    };
-
-    // 주소 검색 팝업
-    const openPopup = () => {
-        const width = 500;
-        const height = 400;
-        const left = window.screenX + (window.outerWidth - width) / 2;
-        const top = window.screenY + (window.outerHeight - height) / 2;
-        const windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
-        window.open("/getAddress", 'getAddress', windowFeatures);
-    };
-
-    // 회원가입 완료
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (idCheckState === '' || idCheckState === false) {
-            setIdCheckMessage('중복 확인 해주세요.');
-        } else if (form.userPw === '' || form.userPw !== form.confirmPassword) {
-            alert("비밀번호 확인 바랍니다.");
-        } else {
-            apiSer.signUp({...form});
-            navigate("/login");
-        }
-    };
-
-    const authingKey = () => {
-        if (form.hpAuthkey === hpAuthKey) {
-            setStateAuth(true);
-        } else {
-            setStateAuth(false);
-            alert("인증번호가 일치하지 않습니다.");
-        }
-    };
-
     return (
-        <Container>
-            <Row>
-                <Col>
-                    <Form onSubmit={handleSubmit}>
-                        <Form.Group controlId="formUserId">
-                            <Form.Label>아이디</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="userId"
-                                value={form.userId}
-                                onChange={handleChange}
-                                placeholder="6-20자 영문, 숫자"
-                            />
-                            <Button type="button" onClick={idCheck}>중복 체크</Button>
-                            <Form.Text>{idCheckMessage}</Form.Text>
-                        </Form.Group>
-
-                        <Form.Group controlId="formPassword">
-                            <Form.Label>비밀번호</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="userPw"
-                                value={form.userPw}
-                                onChange={handleChange}
-                                placeholder="8-12자 영문, 숫자, 특수문자"
-                            />
-                        </Form.Group>
-
-                        <Form.Group controlId="formConfirmPassword">
-                            <Form.Label>비밀번호 확인</Form.Label>
-                            <Form.Control
-                                type="password"
-                                name="confirmPassword"
-                                value={form.confirmPassword}
-                                onChange={handleChange}
-                                placeholder="8-12자 영문, 숫자, 특수문자"
-                            />
-                            {pwSameCheck && <Form.Text>비밀번호가 일치하지 않습니다.</Form.Text>}
-                        </Form.Group>
-
-                        <Form.Group controlId="formName">
-                            <Form.Label>이름</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="name"
-                                value={form.name}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group controlId="formResidentNumber">
-                            <Form.Label>주민등록번호</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="residentNumber1"
-                                value={form.residentNumber1}
-                                onChange={handleChange}
-                                required
-                            />
-                            {resNoError1 && <Form.Text style={{ color: 'red' }}>{resNoError1}</Form.Text>}
-                            <Form.Control
-                                type="password"
-                                name="residentNumber2"
-                                value={form.residentNumber2}
-                                onChange={handleChange}
-                                required
-                            />
-                            {resNoError2 && <Form.Text style={{ color: 'red' }}>{resNoError2}</Form.Text>}
-                        </Form.Group>
-
-                        <Form.Group controlId="formEmail">
-                            <Form.Label>이메일</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="email1"
-                                value={form.email1}
-                                onChange={handleChange}
-                                required
-                            />
-                            @
-                            <Form.Control
-                                type="text"
-                                name="email2"
-                                value={form.email2}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group controlId="formHp">
-                            <Form.Label>휴대폰</Form.Label>
-                            <Form.Control
-                                type="tel"
-                                name="hp"
-                                value={form.hp}
-                                onChange={handleChange}
-                                placeholder="010 1234 5678"
-                                required
-                            />
-                            <Button type="button" onClick={hpCheck}>인증번호받기</Button>
-                        </Form.Group>
-
-                        {startCheckHp && (
-                            <Form.Group controlId="formHpAuthKey">
-                                <Form.Label>인증번호</Form.Label>
+        <Container className="d-flex justify-content-end align-items-center" style={{ minHeight: '80vh' }}>
+            <Row className="w-100">
+                <Col md={12} className="mx-auto">
+                    <Form onSubmit="">
+                        {/* 아이디 입력 */}
+                        <Form.Group as={Row} controlId="formUsername" className="mt-3">
+                            <Form.Label column sm={3} className="text-left">ID</Form.Label>
+                            <Col sm={6}>
                                 <Form.Control
                                     type="text"
-                                    name="hpAuthkey"
-                                    value={form.hpAuthkey}
-                                    onChange={handleChange}
-                                    required
+                                    placeholder="아이디를 입력하세요"
+                                    name="username"
+                                    value={userId}
+                                    onChange={userIdInput}
                                 />
-                                {stateAuth && <Form.Text>인증 성공</Form.Text>}
-                                <Button type="button" onClick={authingKey}>인증</Button>
-                            </Form.Group>
-                        )}
-
-                        <Form.Group controlId="formAddress">
-                            <Form.Label>주소</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="address1"
-                                value={form.address1}
-                                readOnly
-                                required
-                            />
-                            <Button type="button" onClick={openPopup}>주소 검색</Button>
-                            <Form.Control
-                                type="text"
-                                name="address2"
-                                value={form.address2}
-                                onChange={handleChange}
-                            />
+                            </Col>
                         </Form.Group>
 
-                        <Button type="submit">회원가입</Button>
+                        {/* 비밀번호 입력 */}
+                        <Form.Group as={Row} controlId="formPassword" className="mt-3">
+                            <Form.Label column sm={3} className="text-left">비밀번호</Form.Label>
+                            <Col sm={6}>
+                                <Form.Control
+                                    type="password"
+                                    placeholder="비밀번호를 입력하세요"
+                                    name="password"
+                                    value={password}
+                                    onChange={passwordInput}
+                                />
+                            </Col>
+                        </Form.Group>
+                        {/*비밀번호 확인*/}
+                        <Form.Group as={Row} controlId="formPassword" className="mt-3">
+                            <Form.Label column sm={3} className="text-left">비밀번호 확인</Form.Label>
+                            <Col sm={6}>
+                                <Form.Control
+                                    type="password"
+                                    placeholder="비밀번호를 다시 입력해 주세요"
+                                    name="passwordCK"
+                                    value={passwordCK}
+                                    onChange={passwordCInput}
+                                />
+                            </Col>
+                            <Col sm={2}>
+                                {password !== passwordCK && passwordCK !== '' && (<p style={fontsize} className="text-danger">*비밀번호가 일치하지 않습니다.</p>)}  
+                            </Col>
+                        </Form.Group>
+
+                        {/* 이메일 입력 */}
+                        <Form.Group as={Row} controlId="formEmail" className="mt-3">
+                            <Form.Label column sm={3} className="text-left">이메일</Form.Label>
+                            <Col sm={3}>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="이메일을 입력하세요"
+                                    name="email"
+                                    value={email}
+                                    onChange={emailChange}
+                                />
+                            </Col>
+                            @
+                            <Col sm={3}>
+                                <Form.Select value={domain} onChange={domainChange}>
+                                    <option value="gmail.com">gmail.com</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="daum.net">daum.net</option>
+                                    <option value="yahoo.com">yahoo.com</option>
+                                    <option value="custom">직접 입력</option> {/* 사용자 정의 도메인 선택 */}
+                                </Form.Select>
+                            </Col>
+                        </Form.Group>
+
+                        {/* 직접 입력할 경우 도메인 입력 필드 */}
+                        {domain === 'custom' && (
+                            <Form.Group as={Row} controlId="formCustomDomain" className="mt-3">
+                                <Form.Label column sm={3} className="text-left">도메인</Form.Label>
+                                <Col sm={9}>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="도메인을 입력하세요"
+                                        value={customDomain}
+                                        onChange={customDomainChange}
+                                    />
+                                </Col>
+                            </Form.Group>
+                        )}
+                        <Form.Group as={Row} controlId="formUsername" className="mt-3">
+                            <Form.Label column sm={3} className="text-left">이름</Form.Label>
+                            <Col sm={6}>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="이름을 입력해 주세요"
+                                    name="username"
+                                    value={username}
+                                    onChange={usernameChange}
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formResidentNumberFront" className="mt-3">
+                            <Form.Label column sm={3} className="text-left">주민등록번호 (앞자리)</Form.Label>
+                            <Col sm={3}>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="주민등록번호 앞 6자리"
+                                    value={residentNumberFront}
+                                    onChange={residentNumberFrontChange}
+                                    maxLength={6}
+                                />
+                            </Col>
+                            -
+                            <Col sm={3}>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="주민등록번호 뒤 7자리"
+                                    value={residentNumberBack}
+                                    onChange={residentNumberBackChange}
+                                    maxLength={7}
+                                />
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} controlId="formUsername" className="mt-3">
+                            <Form.Label column sm={3} className="text-left">ID</Form.Label>
+                            <Col sm={6}>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="핸드폰 번호를 - 빼고 입력해 주세요."
+                                    name="userHP"
+                                    value={userHP}
+                                    onChange={userHPChange}
+                                />
+                            </Col>
+                            <Col sm={2}>
+                                <Button>인증번호 받기</Button>
+                            </Col>
+                        </Form.Group>
+                        
+                        <Button variant="primary" type="submit" className="mt-3">회원가입</Button>
                     </Form>
                 </Col>
             </Row>

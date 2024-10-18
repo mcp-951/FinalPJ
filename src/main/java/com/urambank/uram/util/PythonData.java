@@ -20,7 +20,7 @@ public class PythonData {
             String pythonScriptPath = projectRoot + File.separator + "python" + File.separator + "ocr.py";
 
             // Python 스크립트를 실행할 명령어 생성
-            ProcessBuilder processBuilder = new ProcessBuilder("C:\\Users\\user\\AppData\\Local\\Programs\\Python\\Python312\\python.exe", pythonScriptPath);
+            ProcessBuilder processBuilder = new ProcessBuilder("python", pythonScriptPath);
             processBuilder.redirectErrorStream(true);  // 오류 출력을 표준 출력에 합치기
 
             // 프로세스 시작

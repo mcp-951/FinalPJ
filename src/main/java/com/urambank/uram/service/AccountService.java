@@ -499,7 +499,6 @@ public class AccountService {
                             .endDate(autoTransfer.getEndDate())
                             .transferDay(autoTransfer.getTransferDay())
                             .reservationState(autoTransfer.getReservationState())
-                            .autoShow(autoTransfer.getAutoShow())
                             .deleteDate(autoTransfer.getDeleteDate())
                             .toBankName(autoTransfer.getToBankName()) // toBankName 추가
                             .build());

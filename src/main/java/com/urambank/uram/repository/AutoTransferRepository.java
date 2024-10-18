@@ -23,7 +23,7 @@ public interface AutoTransferRepository extends JpaRepository<AutoTransferEntity
     List<AutoTransferEntity> findByAccountNo(@Param("accountNo") int accountNo);
 
     // 매월 이체일과 자동이체 활성 상태('Y')인 항목들을 찾는 메서드
-    List<AutoTransferEntity> findByTransferDayAndAutoShow(int transferDay, char autoShow);
+    List<AutoTransferEntity> findByTransferDay(int transferDay);
 
 
 }

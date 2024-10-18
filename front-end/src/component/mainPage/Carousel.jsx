@@ -21,7 +21,7 @@ function Carousel_Main() {
               className="d-block w-100"
               src={product1}
               alt="주택청약종합저축"
-              style={{ maxHeight: '400px', objectFit: 'cover' }}
+              style={{ maxHeight: '540px', objectFit: 'cover' }}
             />
             <Carousel.Caption style={{ color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '5px' }}>
               <h3>내 집 마련의 시작</h3>
@@ -34,7 +34,7 @@ function Carousel_Main() {
               className="d-block w-100"
               src={product2}
               alt="URAM 내맘대로 적금"
-              style={{ maxHeight: '400px', objectFit: 'cover' }}
+              style={{ maxHeight: '540px', objectFit: 'cover' }}
             />
             <Carousel.Caption style={{ color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '5px' }}>
               <h3>누구나 쉽게 우대받는 DIY</h3>
@@ -47,7 +47,7 @@ function Carousel_Main() {
               className="d-block w-100"
               src={product3}
               alt="URAM 직장인든든 신용대출"
-              style={{ maxHeight: '400px', objectFit: 'cover' }}
+              style={{ maxHeight: '540px', objectFit: 'cover' }}
             />
             <Carousel.Caption style={{ color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '5px' }}>
               <h3>직장인이라면</h3>

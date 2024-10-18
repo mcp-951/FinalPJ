@@ -1,10 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Carouesl_Main from './Carousel';
-import RightMenu from './RightMenu';
 import Middlebar from './Middlebar';
 import BottomNewsBoard from './BottomNewsBoard';
-import Footer from '../util/Footer';
-import ChatBotButton from './ChatBotButton';
 
 function Main() {
     return (
@@ -12,7 +9,6 @@ function Main() {
             <div>
                 <div className='Carouesl_Main'>
                     <Carouesl_Main />
-                    <RightMenu />
                 </div>
             </div>
 
@@ -24,8 +20,6 @@ function Main() {
                 {/* <BottomNoticeBoard />*/
                 <BottomNewsBoard /> }
             </div>
-            <ChatBotButton />
-            <Footer />
         </div>
     );
 }

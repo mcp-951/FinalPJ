@@ -4,7 +4,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar'; // 사이드바 추가
 import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 파일 추가
 
-const LoanProduct = () => {
+const ADLoanProduct = () => {
   const navigate = useNavigate();
   const [loans, setLoans] = useState([]);  // 대출 상품 목록 상태 관리
   const token = localStorage.getItem("token");
@@ -94,4 +94,4 @@ const LoanProduct = () => {
   );
 };
 
-export default LoanProduct;
+export default ADLoanProduct;
