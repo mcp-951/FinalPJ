@@ -40,10 +40,6 @@ import FinancialProduct from '../page/adminPage/product/FinancialProduct';
 import SavingsProduct from '../page/adminPage/product/SavingsProduct';
 import DepositProduct from '../page/adminPage/product/DepositProduct';
 import LoanProduct from '../page/adminPage/product/LoanProduct';
-import TransactionHistory from '../page/adminPage/akkount/TransactionHistory';
-import AccountClosure from '../page/adminPage/akkount/AccountClosure';
-import CurrencyExchangeHistory from '../page/adminPage/exchange/CurrencyExchangeHistory';
-import ExchangePickupLocation from '../page/adminPage/exchange/ExchangePickupLocation';
 import MemberEdit from '../page/adminPage/user/MemberEdit';
 import EditSavingsProduct from '../page/adminPage/product/EditSavingsProduct';
 import EditLoanProduct from '../page/adminPage/product/EditLoanProduct';
@@ -130,6 +126,7 @@ const RouteComponent = () => {
                         <Route path="/tax/History" exact={true} element={<TaxHistory/>} />
                         {/*OCR데이터*/}
                         <Route path="/ocr" exact={true} element={<ImgSelect />} />
+
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
                         {/* 공과금 관리자 페이지 */}
@@ -170,14 +167,12 @@ const RouteComponent = () => {
                         <Route path="/admin/adAccountStop" element={<AdAccountStop />} />
                         <Route path="/admin/adAccountClosure" element={<AdAccountClosure />} />
 
-                        {/* 외환 거래 관리 페이지 */}
-                        <Route path="/exchangeHistory" element={<CurrencyExchangeHistory />} />
-                        <Route path="/exchangeLocation" element={<ExchangePickupLocation />} />
+                    
 
                         {/* 로그인하지 않았을 때는 관리자 로그인 페이지로 리다이렉트 */}
 
 
-                        {/*상품 라우터_민우님*/}
+                        
                         {/* 예금, 적금, 대출 상품 관련 */}
                         <Route path="/DepositMain" exact={true} element={<DepositMain />} />
                         <Route path="/deposit-list" exact={true} element={<DepositList />} />

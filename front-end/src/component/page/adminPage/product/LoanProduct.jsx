@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar'; // 사이드바 추가
-import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 파일 추가
+import '../../../../resource/css/admin/LoanProduct.css'; // CSS 파일 추가
 
 const LoanProduct = () => {
   const navigate = useNavigate();
@@ -58,11 +58,10 @@ const LoanProduct = () => {
   return (
     <div className="app-container">
       <Sidebar /> {/* 사이드바 추가 */}
-      <div className="alog-main-content">
-        <div className="loan-product-container">
+      <div className="LoanProduct-main-content">
+        <div className="LoanProduct-container">
           <h2>대출 상품 관리</h2>
-          <button onClick={handleRegister}>등록</button>
-          <table className="product-table">
+          <table className="LoanProduct-table">
             <thead>
               <tr>
                 <th>노출순서</th>
@@ -82,12 +81,17 @@ const LoanProduct = () => {
                   <td>{loan.loanRate}</td>
                   <td>{loan.loanContent}</td>
                   <td>{loan.loanState}</td>
-                  <td><button onClick={() => handleEdit(loan)}>수정</button></td>
-                  <td><button onClick={() => handleDelete(loan.loanNo)}>삭제</button></td>
+                  <td>
+                    <button className="LoanProduct-edit-btn" onClick={() => handleEdit(loan)}>수정</button>
+                  </td>
+                  <td>
+                    <button className="LoanProduct-delete-btn" onClick={() => handleDelete(loan.loanNo)}>삭제</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <button className="LoanProduct-register-btn" onClick={handleRegister}>등록</button>
         </div>
       </div>
     </div>

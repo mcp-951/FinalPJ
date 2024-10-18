@@ -16,7 +16,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products/loans")
-public class LoanController {
+public class oanController {
 
     private final LoanService loanService;
 

@@ -19,7 +19,6 @@ const EditSavingsProduct = () => {
 
   const token = localStorage.getItem("token");
 
-  // 데이터가 state로 넘어온 경우 state를 우선 사용, 넘어오지 않았다면 API 호출
   useEffect(() => {
     if (location.state?.deposit) {
       const { depositNo, depositCategory, depositName, depositRate, depositContent, depositIMG } = location.state.deposit;
@@ -33,7 +32,6 @@ const EditSavingsProduct = () => {
       });
       setLoading(false);
     } else {
-      // 만약 state로 데이터가 넘어오지 않았다면, 상품 번호를 기반으로 데이터를 가져오는 API 호출
       const productId = formData.depositName;
       axios.get(`http://localhost:8081/admin/getSavingsProduct/${productId}`, {
         headers: {
@@ -62,7 +60,7 @@ const EditSavingsProduct = () => {
   };
 
   const handleCancel = () => {
-    navigate('/admin/financialProduct'); // 취소하면 목록으로 이동
+    navigate('/admin/financialProduct');
   };
 
   const handleSubmit = async (e) => {
@@ -70,7 +68,7 @@ const EditSavingsProduct = () => {
     try {
       await axios.put(`http://localhost:8081/admin/editSavings/${formData.depositNo}`, formData, {
         headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가   
+          'Authorization': `Bearer ${token}`
         }
       });
       alert("수정이 완료되었습니다.");
@@ -82,12 +80,12 @@ const EditSavingsProduct = () => {
   };
 
   if (loading) {
-    return <div>로딩 중...</div>; // 로딩 중일 때 로딩 메시지 표시
+    return <div>로딩 중...</div>;
   }
 
   return (
     <div className="app-container">
-      <Sidebar /> {/* 사이드바 추가 */}
+      <Sidebar />
       <div className="alog-main-content">
         <div className="edit-container">
           <h2>예금/적금 상품 수정</h2>
