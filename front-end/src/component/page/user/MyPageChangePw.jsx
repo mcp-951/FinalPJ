@@ -23,8 +23,9 @@ function MyPageChangePw() {
     }
 
     const submitNewPw = () => {
-        const response = apiSer.changePassword(userNo, form.userPw,form.newUserPw)
+        const response = apiSer.changePassword(form)
         .then((response) => {
+            console.log(response.data)
             if(response.data === 'ok'){
                 alert("비밀번호가 변경되었습니다.")
                 navigate("/mypage");
@@ -50,7 +51,7 @@ function MyPageChangePw() {
                     <td>기존 비밀번호 확인</td>
                     <td>
                         <input
-                            type="text"
+                            type="password"
                             name="userPw"
                             value={form.userPw}
                             onChange={handleChange}
@@ -61,7 +62,7 @@ function MyPageChangePw() {
                     <td>새 비밀번호</td>
                     <td>
                         <input
-                            type="text"
+                            type="password"
                             name="newUserPw"
                             value={form.newUserPw}
                             onChange={handleChange}
@@ -72,7 +73,7 @@ function MyPageChangePw() {
                     <td>새 비밀번호 확인</td>
                     <td>
                         <input
-                            type="text"
+                            type="password"
                             name="confirmNewUserPw"
                             value={form.confirmNewUserPw}
                             onChange={handleChange}

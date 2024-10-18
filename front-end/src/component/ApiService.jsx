@@ -55,10 +55,9 @@ const apiSer = {
         }
       })
     },
-    changePassword:(userNo ,userPw, newUserPw) => {
-        console.log("userPw : " + userPw);
-        console.log("newUserPw : " + newUserPw);
-        return axios.put(`${API_BASE_URL}/changePassword`,{"userPw" : userPw, "newUserPw" : newUserPw},{
+    changePassword:(data) => {
+        console.log("userPw : " + data);
+        return axios.put(`${API_BASE_URL}/changePassword`,data,{
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }

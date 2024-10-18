@@ -17,6 +17,7 @@ public class UserDTO {
     private int userNo;
     private String userId;
     private String userPw;
+    private String newUserPw;
     private String name;
     private Date birth;
     private String email;

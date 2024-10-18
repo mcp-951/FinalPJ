@@ -126,7 +126,10 @@ const RouteComponent = () => {
                         <Route path="/" exact={true} element={<Main />} />
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
-                        <Route path="/signup" exact={true} element={<Signup />} />                        
+                        <Route path="/signup" exact={true} element={<Signup />} />
+                        {/*}로그인 페이지{*/}
+                        <Route path="/mypage" exact={true} element={<MyPage />} />
+                        <Route path="/mypageChangePw" exact={true} element={<MyPageChangePw />} />
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />
                         <Route path="/signupForKakao" exact={true} element={<SignUpForKakao />} />

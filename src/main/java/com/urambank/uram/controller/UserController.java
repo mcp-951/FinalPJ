@@ -86,13 +86,12 @@ public class UserController {
     }
     // 비밀번호 찾기 - 비밀번호 재설정
     @PutMapping("/changePassword")
-    public ResponseEntity<?> changePassword(@RequestParam("userNo")String userNo,@RequestParam("userPw") String userPw,@RequestParam("newUserPw") String newUserPw) {
+    public ResponseEntity<?> changePassword(@RequestBody UserDTO userdto) {
         logger.info("<<< changePassword >>>");
-        logger.info("userNo : " + userNo);
-        int useNo = Integer.parseInt(userNo);
-        logger.info("userPw : " + userPw);
-        logger.info("newUserPw : " + newUserPw);
+        logger.info("userNo : " + userdto.getUserNo());
+        logger.info("userPw : " + userdto.getUserPw());
+        logger.info("newUserPw : " + userdto.getNewUserPw());
 
-        return ResponseEntity.ok(userService.changePassword(useNo,userPw,newUserPw));
+        return ResponseEntity.ok(userService.changePassword(userdto.getUserNo(),userdto.getUserPw(),userdto.getNewUserPw()));
     }
 }

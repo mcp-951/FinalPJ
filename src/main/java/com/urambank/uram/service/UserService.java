@@ -209,10 +209,9 @@ public class UserService {
     }
 
     public String changePassword(int userNo, String userPw, String newUserPw) {
-        String encodedPw = passwordEncoder.encode(userPw);
         String encodedNewPw = passwordEncoder.encode(newUserPw);
         User user = userRepository.findByUserNo(userNo);
-        if(user.getUserPw().equals(encodedPw)) {
+        if(passwordEncoder.matches(userPw,user.getUserPw())) {
             user.setUserPw(encodedNewPw);
             userRepository.save(user);
             return "ok";
