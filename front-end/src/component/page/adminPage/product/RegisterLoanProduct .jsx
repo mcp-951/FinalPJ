@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar'; // Sidebar 추가
-import '../../../../resource/css/admin/RegisterLoanProduct.css'; // CSS 파일 추가
+import '../../../../resource/css/admin/EditSavingsProduct.css'; // CSS 파일 추가
 
 const RegisterLoanProduct = () => {
   const navigate = useNavigate();

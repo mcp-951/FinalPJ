@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
-import '../../../../resource/css/admin/AdAccount.css';
+import '../../../../resource/css/admin/TransactionHistory.css';
 import localStorage from 'localStorage';
 
 const AdAccount = () => {
@@ -69,71 +69,71 @@ const filteredList = accounts.filter(account => {
 
 
   return (
-    <div className="AdAccount-transaction-history-container">  {/* CSS 스타일 적용된 컨테이너 */}
+    <div className="transaction-history-container">  {/* CSS 스타일 적용된 컨테이너 */}
       <Sidebar />  {/* 좌측에 사이드바 컴포넌트 렌더링 */}
-      <div className="AdAccount-alog-main-content">  {/* 메인 컨텐츠 영역 */}
-        <div className="AdAccount-member-list-content">  {/* 계좌 목록 컨텐츠 영역 */}
-          <h2>NORMAL 계좌 관리</h2>  {/* 타이틀 */}
+      <div className="alog-main-content">  {/* 메인 컨텐츠 영역 */}
+      <div className="member-list-content">  {/* 계좌 목록 컨텐츠 영역 */}
+        <h2>NORMAL 계좌 관리</h2>  {/* 타이틀 */}
 
-          <div className="AdAccount-search-controls">  {/* 검색 및 필터링 컨트롤 */}
-            <div className="AdAccount-search-bar">  {/* 검색 바 */}
-              <select value={searchField} onChange={(e) => setSearchField(e.target.value)}>  {/* 검색 필드 선택 */}
-                <option value="전체">전체</option>
-                <option value="계좌 종류">계좌 종류</option>
-                <option value="계좌 번호">계좌 번호</option>
-                <option value="유저 No">유저 No</option>
-                <option value="만든날짜">만든날짜</option>
-              </select>
-              <input
-                type="text"
-                placeholder="검색어를 입력하세요."
-                value={searchTerm}  // 검색어 입력 필드
-                onChange={(e) => setSearchTerm(e.target.value)}  // 검색어 상태 업데이트
-              />
-              <button>검색</button>  {/* 검색 버튼 */}
-            </div>
-
-            <div className="AdAccount-pagination-controls">  {/* 페이지당 표시 개수 선택 */}
-              <label>표시 개수: </label>
-              <select value={displayCount} onChange={(e) => setDisplayCount(Number(e.target.value))}>  {/* 표시 개수 선택 */}
-                <option value={10}>10 개</option>
-                <option value={50}>50 개</option>
-                <option value={100}>100 개</option>
-              </select>
-            </div>
+        <div className="search-controls">  {/* 검색 및 필터링 컨트롤 */}
+          <div className="search-bar">  {/* 검색 바 */}
+            <select value={searchField} onChange={(e) => setSearchField(e.target.value)}>  {/* 검색 필드 선택 */}
+              <option value="전체">전체</option>
+              <option value="계좌 종류">계좌 종류</option>
+              <option value="계좌 번호">계좌 번호</option>
+              <option value="유저 No">유저 No</option>
+              <option value="만든날짜">만든날짜</option>
+            </select>
+            <input
+              type="text"
+              placeholder="검색어를 입력하세요."
+              value={searchTerm}  // 검색어 입력 필드
+              onChange={(e) => setSearchTerm(e.target.value)}  // 검색어 상태 업데이트
+            />
+            <button>검색</button>  {/* 검색 버튼 */}
           </div>
 
-          <table className="AdAccount-transaction-table">  {/* 계좌 목록 테이블 */}
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>유저 No</th>
-                <th>계좌 종류</th>
-                <th>계좌 번호</th>
-                <th>만든 날짜</th>
-                <th>상태</th>
-                <th>정지</th> {/* 정지 버튼 추가 */}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredList.map((account, index) => (
-                <tr key={account.accountNo}>  {/* 계좌별 데이터를 행으로 표시 */}
-                  <td>{index + 1}</td>  {/* 계좌 No */}
-                  <td>{account.userNo}</td>  {/* 회원 번호 */}
-                  <td>{account.productCategory}</td>  {/* 상품 종류 */}
-                  <td>{account.accountNumber}</td>  {/* 계좌 번호 */}
-                  <td>{account.accountOpen}</td>  {/* 계좌 탄생일 */}
-                  <td>{account.accountState}</td>  {/* 계좌 상태 (NORMAL) */}
-                  <td>
-                    <button className="AdAccount-stop-button" onClick={() => stopAccount(account.accountNo)}>정지</button>  {/* 정지 버튼 */}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="pagination-controls">  {/* 페이지당 표시 개수 선택 */}
+            <label>표시 개수: </label>
+            <select value={displayCount} onChange={(e) => setDisplayCount(Number(e.target.value))}>  {/* 표시 개수 선택 */}
+              <option value={10}>10 개</option>
+              <option value={50}>50 개</option>
+              <option value={100}>100 개</option>
+            </select>
+          </div>
         </div>
+
+        <table className="transaction-table">  {/* 회원 목록 테이블 */}
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>유저 No</th>
+              <th>계좌 종류</th>
+              <th>계좌 번호</th>
+              <th>만든 날짜</th>
+              <th>상태</th>
+              <th>정지</th> {/* 정지 버튼 추가 */}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredList.map((account, index) => (
+              <tr key={account.accountNo}>  {/* 계좌별 데이터를 행으로 표시 */}
+                <td>{index + 1}</td>  {/* 계좌 No */}
+                <td>{account.userNo}</td>  {/* 회원 번호 */}
+                <td>{account.productCategory}</td>  {/* 상품 종류 */}
+                <td>{account.accountNumber}</td>  {/* 계좌 번호 */}
+                <td>{account.accountOpen}</td>  {/* 계좌 탄생일 */}
+                <td>{account.accountState}</td>  {/* 계좌 상태 (NORMAL) */}
+                <td>
+                  <button onClick={() => stopAccount(account.accountNo)}>정지</button>  {/* 정지 버튼 */}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div> 
+    </div>
+   </div> 
   );
 };
 

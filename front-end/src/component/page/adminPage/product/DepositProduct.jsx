@@ -9,7 +9,7 @@ const DepositProduct = () => {
   const navigate = useNavigate();
   const location = useLocation(); // location 훅 사용
   const [deposits, setDeposits] = useState([]);  // 예금 상품 목록 상태 관리
-  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리
+  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
   const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
   const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 상품 수 상태 관리
   const token = localStorage.getItem("token");
@@ -62,13 +62,13 @@ const DepositProduct = () => {
   };
 
   return (
-    <div className="DepositProduct-app-container">
+    <div className="app-container">
       <Sidebar /> {/* 사이드바 추가 */}
-      <div className="DepositProduct-alog-main-content">
-        <div className="DepositProduct-deposit-product-container">
+      <div className="alog-main-content">
+        <div className="deposit-product-container">
           <h2>예금 상품 관리</h2>
-          <div className="DepositProduct-search-controls">
-            <div className="DepositProduct-search-bar">
+          <div className="search-controls">
+            <div className="search-bar">
               <select>
                 <option value="전체">전체</option>
                 <option value="분류">분류</option>
@@ -82,7 +82,7 @@ const DepositProduct = () => {
             <button onClick={handleRegister}>등록</button>
           </div>
 
-          <table className="DepositProduct-product-table">
+          <table className="product-table">
             <thead>
               <tr>
                 <th>노출순서</th>
@@ -104,7 +104,7 @@ const DepositProduct = () => {
                   <td>{deposit.depositCategory}</td>
                   <td>{deposit.depositRate}</td>
                   <td>{deposit.depositContent}</td>
-                  <td><img src={deposit.depositIMG} alt="상품 이미지" width="50" /></td>
+                  <td><img src={deposit.depositIMG} alt="상품 이미지" width="50" /></td> {/* 수정된 부분 */}
                   <td>{deposit.depositState}</td>          
                   <td><button onClick={() => handleEdit(deposit)}>수정</button></td>
                   <td><button onClick={() => handleDelete(deposit.depositNo)}>삭제</button></td>
@@ -113,7 +113,7 @@ const DepositProduct = () => {
             </tbody>
           </table>
 
-          <div className="DepositProduct-pagination-controls">
+          <div className="pagination-controls">
             <label>페이지당 항목 수: </label>
             <select onChange={(e) => setDisplayCount(e.target.value)}>
               <option value={10}>10</option>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';  // 좌측에 사이드바 컴포넌트 추가
-import '../../../../resource/css/admin/AdTransactionHistory.css';
+import '../../../../resource/css/admin/TransactionHistory.css';
 
 const AdTransactionHistory = () => {
   const [logs, setLogs] = useState([]);  // 거래 내역 상태 관리
@@ -39,13 +39,14 @@ const AdTransactionHistory = () => {
   }).slice(0, displayCount);  // 표시 개수만큼 잘라내기
 
   return (
-    <div className="AdTransactionHistory-transaction-history-container">
+    <div className="transaction-history-container">
       <Sidebar />  {/* 좌측에 사이드바 컴포넌트 렌더링 */}
-        <div className="AdTransactionHistory-member-list-content">
+      <div className="alog-main-content"> 
+        <div className="member-list-content">
           <h2>거래 현황</h2>
 
-          <div className="AdTransactionHistory-search-controls">
-            <div className="AdTransactionHistory-search-bar">
+          <div className="search-controls">
+            <div className="search-bar">
               <select value={searchField} onChange={(e) => setSearchField(e.target.value)}>
                 <option value="전체">전체</option>
                 <option value="보낸 계좌">보낸 계좌</option>
@@ -61,7 +62,7 @@ const AdTransactionHistory = () => {
               <button>검색</button>
             </div>
 
-            <div className="AdTransactionHistory-pagination-controls">
+            <div className="pagination-controls">
               <label>표시 개수: </label>
               <select value={displayCount} onChange={(e) => setDisplayCount(Number(e.target.value))}>
                 <option value={10}>10 개</option>
@@ -72,7 +73,7 @@ const AdTransactionHistory = () => {
           </div>
 
           {/* 거래 내역 리스트 테이블 */}
-          <table className="AdTransactionHistory-transaction-table">
+          <table className="transaction-table">
             <thead>
               <tr>
                 <th>거래 번호</th>
@@ -98,7 +99,7 @@ const AdTransactionHistory = () => {
           </table>
         </div>
       </div>
-
+    </div>
   );
 };
 

@@ -6,8 +6,8 @@ const Sidebar = () => {
   const [showMemberDropdown, setShowMemberDropdown] = useState(false);
   const [showFinancialDropdown, setShowFinancialDropdown] = useState(false);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
-  const [showBillsDropdown, setShowBillsDropdown] = useState(false);
-  const [showInquiryDropdown, setShowInquiryDropdown] = useState(false);
+  const [showExchangeDropdown, setShowExchangeDropdown] = useState(false);
+  const [showInquiryDropdown, setShowInquiryDropdown] = useState(false); // 문의 관리 드롭다운
 
   return (
     <div className="sidebar">
@@ -43,10 +43,10 @@ const Sidebar = () => {
                   <NavLink to="/admin/financialProduct">전체</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/savingsProduct">적금상품 관리</NavLink>
+                  <NavLink to="/admin/savingsProduct">예금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/depositProduct">예금상품 관리</NavLink>
+                  <NavLink to="/admin/depositProduct">적금상품 관리</NavLink>
                 </li>
                 <li>
                   <NavLink to="/admin/loanProduct">대출상품 관리</NavLink>
@@ -63,27 +63,38 @@ const Sidebar = () => {
             {showAccountDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/admin/adTransactionHistory">거래 로그</NavLink>
+                  <NavLink to="/admin/transactionHistory">거래 현황</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/adAccount">NORMAL 계좌</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/admin/adAccountStop">STOP 계좌</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/admin/adAccountClosure">CLOSURE 계좌</NavLink>
+                  <NavLink to="/admin/accountClosure">계좌 해지 관리</NavLink>
                 </li>
               </ul>
             )}
           </li>
 
           <li
-            onMouseEnter={() => setShowBillsDropdown(true)}
-            onMouseLeave={() => setShowBillsDropdown(false)}
+            onMouseEnter={() => setShowExchangeDropdown(true)}
+            onMouseLeave={() => setShowExchangeDropdown(false)}
+          >
+            환전 관리
+            {showExchangeDropdown && (
+              <ul className="dropdown">
+                <li>
+                  <NavLink to="/exchangeHistory">환전 현황</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/exchangeLocation">수령 지점</NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          <li
+            onMouseEnter={() => setShowAccountDropdown(true)}
+            onMouseLeave={() => setShowAccountDropdown(false)}
           >
             공과금 관리
-            {showBillsDropdown && (
+            {showAccountDropdown && (
               <ul className="dropdown">
                 <li>
                   <NavLink to="/taxInsert">청구서 작성</NavLink>
@@ -95,6 +106,7 @@ const Sidebar = () => {
             )}
           </li>
 
+          {/* 문의 관리 추가 */}
           <li
             onMouseEnter={() => setShowInquiryDropdown(true)}
             onMouseLeave={() => setShowInquiryDropdown(false)}
@@ -109,6 +121,10 @@ const Sidebar = () => {
             )}
           </li>
         </ul>
+      </div>
+
+      <div className="admin-manage">
+        <NavLink to="/adminList">관리자 관리</NavLink>
       </div>
     </div>
   );

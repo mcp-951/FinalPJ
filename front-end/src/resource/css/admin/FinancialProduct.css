@@ -1,152 +1,66 @@
-/* 전체 레이아웃 설정 */
-.app-container {
-  display: flex;
-  height: 100vh;
-  background-color: #f4f4f9;
-}
-
-/* 메인 컨텐츠 레이아웃 */
-.alog-main-content {
-  flex-grow: 1;
+.financial-product-container {
   padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-left: 20px;
 }
 
-/* 금융 상품 관리 타이틀 */
-.financial-main-content h2 {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-/* 차트 컨테이너 */
-.chart-container {
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* 버튼 컨테이너 */
-.button-container {
+.graphs {
   display: flex;
-  justify-content: flex-start;
-  gap: 10px;
+  justify-content: space-around;
   margin-bottom: 20px;
 }
 
-/* 예/적금 등록, 대출 등록 버튼 스타일 */
-.financial-register-button, .financial-filter-button {
-  padding: 10px 20px;
-  background-color: #74a1d2;
-  color: white;
-  border: none;
-  border-radius: 4px;
+.graph-item {
+  text-align: center;
+}
+
+.graph-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.search-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+}
+
+.search-bar select,
+.search-bar input,
+.search-bar button {
+  margin-right: 10px;
+  padding: 8px;
   font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.financial-register-button:hover, .financial-filter-button:hover {
-  background-color: #5d95d1;
+.pagination-controls select {
+  padding: 8px;
+  font-size: 14px;
 }
 
-/* 필터링 버튼 */
-.financial-filter-button {
-  background-color: #74a1d2;
-}
-
-.financial-filter-button:hover {
-  background-color: #5d95d1;
-}
-
-/* 상품 테이블 스타일 */
 .product-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
-.product-table th, .product-table td {
-  padding: 12px 15px;
+.product-table th,
+.product-table td {
   border: 1px solid #ddd;
+  padding: 8px;
   text-align: center;
-  font-size: 14px;
 }
 
 .product-table th {
-  background-color: #f8f9fa;
-  font-weight: bold;
-  color: #333;
-}
-
-.product-table td {
-  color: #555;
-}
-
-.product-table tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* 수정, 삭제 버튼 스타일 */
-.financial-edit-button, .financial-delete-button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.financial-edit-button {
-  background-color: #ffc107;
-  color: white;
-}
-
-.financial-edit-button:hover {
-  background-color: #e0a800;
-}
-
-.financial-delete-button {
-  background-color: #dc3545;
-  color: white;
-}
-
-.financial-delete-button:hover {
-  background-color: #c82333;
-}
-
-/* 페이지네이션 스타일 */
-.pagination {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.financial-pagination-button {
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.financial-pagination-button:disabled {
-  background-color: #b0c4de;
-  cursor: not-allowed;
-}
-
-.financial-pagination-button:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: #f4f4f4;
 }

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../Sidebar'; // 사이드바 추가
-import '../../../../resource/css/admin/TaxInsert.css'; // CSS 파일 추가
+import '../../../../resource/css/admin/TaxList.css'; // CSS 파일 추가
 
 const TaxInsert = () => {
   const [tax, setTax] = useState({
@@ -89,111 +88,105 @@ const TaxInsert = () => {
   };
 
   return (
-    <div className="tax-insert-page-container"> {/* 전체 페이지 컨테이너 */}
-      <Sidebar /> {/* 사이드바 추가 */}
-      <div className="tax-insert-form-container"> {/* 폼 컨테이너 */}
-        <form onSubmit={handleSubmit} className="tax-insert-form">
-           <h1 className="tax-edit-title">청구서 작성</h1>
+    <form onSubmit={handleSubmit} className="tax-insert-form">
+       <h1 className="tax-edit-title">청구서 작성</h1>
+      {/* 사용자 선택 및 납부기한 선택 부분 */}
+      <div className="form-group">
+        <label>사용자 선택: 
+          <select name="userId" onChange={handleUserChange} className="input-field">
+            <option value="">사용자 선택</option>
+            {userIds.map((id) => (
+              <option key={id} value={id}>
+                {id}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>납부기한: 
+          <input
+            name="taxDeadLine"
+            type="date"
+            value={tax.taxDeadLine}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </label>
 
-          {/* 사용자 선택 및 납부기한 선택 부분 */}
-          <div className="form-group">
-            <label>사용자 선택: 
-              <select name="userId" onChange={handleUserChange} className="input-field">
-                <option value="">사용자 선택</option>
-                {userIds.map((id) => (
-                  <option key={id} value={id}>
-                    {id}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>납부기한: 
-              <input
-                name="taxDeadLine"
-                type="date"
-                value={tax.taxDeadLine}
-                onChange={handleChange}
-                className="input-field"
-              />
-            </label>
-
-            {/* 세금 종류 선택 */}
-            <label>세금 종류: 
-              <select name="taxCategory" value={tax.taxCategory} onChange={handleChange} className="input-field">
-                {categories.map(category => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          {/* 관리번호 및 납부금액 표시 부분 */}
-          <div className="summary-table">
-            <table className="table-bordered">
-              <thead>
-                <tr>
-                  <th>관리번호</th>
-                  <th>납부기한</th>
-                  <th>납부금액</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>-</td>
-                  <td>~ {tax.taxDeadLine}</td>
-                  <td>{totalAmount.toLocaleString()} 원</td> {/* 계산된 총 납부 금액 */}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          {/* 사용요금 및 기본요금 입력 부분 */}
-          <div className="fee-table">
-            <table className="table-bordered">
-              <thead>
-                <tr>
-                  <th>요금내역</th>
-                  <th>사용요금</th>
-                  <th>기본요금</th>
-                  <th>납부금액</th> {/* 정산액을 제거하고 납부금액만 남김 */}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{feeNames[tax.taxCategory][0]}</td>
-                  <td><input type="number" name="fee1" value={tax.fee1} onChange={handleChange} className="input-field" /></td>
-                  <td><input type="number" name="basicFee1" value={tax.basicFee1} onChange={handleChange} className="input-field" /></td>
-                  <td>{(parseFloat(tax.fee1) + parseFloat(tax.basicFee1)).toLocaleString()}</td> {/* 납부금액 계산 */} 
-                </tr>
-                <tr>
-                  <td>{feeNames[tax.taxCategory][1]}</td>
-                  <td><input type="number" name="fee2" value={tax.fee2} onChange={handleChange} className="input-field" /></td>
-                  <td><input type="number" name="basicFee2" value={tax.basicFee2} onChange={handleChange} className="input-field" /></td>
-                  <td>{(parseFloat(tax.fee2) + parseFloat(tax.basicFee2)).toLocaleString()}</td> {/* 납부금액 계산 */}
-                </tr>
-                <tr>
-                  <td>{feeNames[tax.taxCategory][2]}</td>
-                  <td><input type="number" name="fee3" value={tax.fee3} onChange={handleChange} className="input-field" /></td>
-                  <td><input type="number" name="basicFee3" value={tax.basicFee3} onChange={handleChange} className="input-field" /></td>
-                  <td>{(parseFloat(tax.fee3) + parseFloat(tax.basicFee3)).toLocaleString()}</td> {/* 납부금액 계산 */}
-                </tr>
-                <tr>
-                  <td>총 고지액</td>
-                  <td>{totalFee.toLocaleString()}</td>
-                  <td>{totalBasicFee.toLocaleString()}</td>
-                  <td>{totalAmount.toLocaleString()}</td> {/* 총 납부금액 */}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <button type="submit" className="submit-button">생성</button>
-          <button type="button" className="cancel-button" onClick={() => navigate('/taxList')}>취소</button>
-        </form>
+        {/* 세금 종류 선택 */}
+        <label>세금 종류: 
+          <select name="taxCategory" value={tax.taxCategory} onChange={handleChange} className="input-field">
+            {categories.map(category => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
-    </div>
+
+      {/* 관리번호 및 납부금액 표시 부분 */}
+      <div className="summary-table">
+        <table className="table-bordered">
+          <thead>
+            <tr>
+              <th>관리번호</th>
+              <th>납부기한</th>
+              <th>납부금액</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>-</td>
+              <td>~ {tax.taxDeadLine}</td>
+              <td>{totalAmount.toLocaleString()} 원</td> {/* 계산된 총 납부 금액 */}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      {/* 사용요금 및 기본요금 입력 부분 */}
+      <div className="fee-table">
+        <table className="table-bordered">
+          <thead>
+            <tr>
+              <th>요금내역</th>
+              <th>사용요금</th>
+              <th>기본요금</th>
+              <th>납부금액</th> {/* 정산액을 제거하고 납부금액만 남김 */}
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{feeNames[tax.taxCategory][0]}</td>
+              <td><input type="number" name="fee1" value={tax.fee1} onChange={handleChange} className="input-field" /></td>
+              <td><input type="number" name="basicFee1" value={tax.basicFee1} onChange={handleChange} className="input-field" /></td>
+              <td>{(parseFloat(tax.fee1) + parseFloat(tax.basicFee1)).toLocaleString()}</td> {/* 납부금액 계산 */} 
+            </tr>
+            <tr>
+              <td>{feeNames[tax.taxCategory][1]}</td>
+              <td><input type="number" name="fee2" value={tax.fee2} onChange={handleChange} className="input-field" /></td>
+              <td><input type="number" name="basicFee2" value={tax.basicFee2} onChange={handleChange} className="input-field" /></td>
+              <td>{(parseFloat(tax.fee2) + parseFloat(tax.basicFee2)).toLocaleString()}</td> {/* 납부금액 계산 */}
+            </tr>
+            <tr>
+              <td>{feeNames[tax.taxCategory][2]}</td>
+              <td><input type="number" name="fee3" value={tax.fee3} onChange={handleChange} className="input-field" /></td>
+              <td><input type="number" name="basicFee3" value={tax.basicFee3} onChange={handleChange} className="input-field" /></td>
+              <td>{(parseFloat(tax.fee3) + parseFloat(tax.basicFee3)).toLocaleString()}</td> {/* 납부금액 계산 */}
+            </tr>
+            <tr>
+              <td>총 고지액</td>
+              <td>{totalFee.toLocaleString()}</td>
+              <td>{totalBasicFee.toLocaleString()}</td>
+              <td>{totalAmount.toLocaleString()}</td> {/* 총 납부금액 */}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <button type="submit" className="submit-button">생성</button>
+      <button type="button" className="cancel-button" onClick={() => navigate('/taxList')}>취소</button>
+    </form>
   );
 };
 

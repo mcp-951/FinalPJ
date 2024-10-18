@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../Sidebar'; // Sidebar 추가
-import '../../../../resource/css/admin/AdminInquiryList.css'; // CSS 파일 추가
 
 function AdminInquiryList() {
   const [inquiries, setInquiries] = useState([]); // 문의글 목록 상태
@@ -31,37 +29,34 @@ function AdminInquiryList() {
   };
 
   return (
-    <div className="app-container">
-      <Sidebar /> {/* 사이드바 추가 */}
-      <div className="AdminInquiryList-main-content">
-        <h1 className="AdminInquiryList-title">문의글 관리</h1>
-        <table className="AdminInquiryList-table">
-          <thead>
-            <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>작성일</th>
-              <th>상태</th>
-            </tr>
-          </thead>
-          <tbody>
-            {inquiries.length > 0 ? (
-              inquiries.map((item) => (
-                <tr key={item.qnaNo} onClick={() => handleRowClick(item.qnaNo)} className="AdminInquiryList-row">
-                  <td>{item.qnaNo}</td>
-                  <td>{item.qnaTitle}</td>
-                  <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                  <td>{item.status}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4">문의 내역이 없습니다.</td>
+    <div>
+      <h1>문의글 관리</h1>
+      <table className="inquiry-table">
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일</th>
+            <th>상태</th>
+          </tr>
+        </thead>
+        <tbody>
+          {inquiries.length > 0 ? (
+            inquiries.map((item) => (
+              <tr key={item.qnaNo} onClick={() => handleRowClick(item.qnaNo)}>
+                <td>{item.qnaNo}</td>
+                <td>{item.qnaTitle}</td>
+                <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+                <td>{item.status}</td>
               </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4">문의 내역이 없습니다.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
     </div>
   );
 }
