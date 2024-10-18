@@ -12,7 +12,7 @@ function FindIdAndPw() {
         email2: '',
         hp: '',
         hpAuthkey: '',
-        newPassword: '', // 새로운 비밀번호 필드 추가
+        userPw: '', // 새로운 비밀번호 필드 추가
         confirmPassword: '' // 비밀번호 확인 필드 추가
     });
     const [selectedTab, setSelectedTab] = useState('id'); // 'id' 또는 'pw' 탭 상태값
@@ -102,15 +102,15 @@ function FindIdAndPw() {
 
     // 인증 성공 시 비밀번호 재설정
     const resetPw = () => {
-        const { newPassword, confirmPassword, userId, name, hp } = form;
+        const { userPw, confirmPassword, userId, name, hp } = form;
 
-        if (newPassword !== confirmPassword) {
+        if (userPw !== confirmPassword) {
             alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
             return;
         }
 
         // 비밀번호 재설정 API 호출
-        const response = apiSer.resetPassword({ userId,name, hp, newPassword })
+        const response = apiSer.resetPassword({ userId,name, hp, userPw })
             .then((response) => {
                 console.log(response.data)
                 if(response.data === ''){
@@ -135,7 +135,7 @@ function FindIdAndPw() {
             email2: '',
             hp: '',
             hpAuthkey: '',
-            newPassword: '', // 새로운 비밀번호 초기화
+            userPw: '', // 새로운 비밀번호 초기화
             confirmPassword: '' // 비밀번호 확인 초기화
         });
         setSelectedMethod('phone');
@@ -274,8 +274,8 @@ function FindIdAndPw() {
                                             <>
                                             <input
                                                 type="password"
-                                                name="newPassword"
-                                                value={form.newPassword}
+                                                name="userPw"
+                                                value={form.userPw}
                                                 placeholder="새 비밀번호"
                                                 onChange={handleChange}
                                             />

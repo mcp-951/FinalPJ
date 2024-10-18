@@ -160,16 +160,14 @@ public class UserService {
     }
 
     public String resetPassword(UserDTO dto) {
-        User user = new User();
         try{
-            user.setName(dto.getName());
-            user.setHp(dto.getHp());
-            user = userRepository.findByNameAndHp(user.getName(),user.getHp());
-            user.setUserPw(dto.getUserPw());
+            User user = userRepository.findByNameAndHp(dto.getName(),dto.getHp());
+            String pw = passwordEncoder.encode(dto.getUserPw());
+            user.setUserPw(pw);
             user = userRepository.save(user);
             return user.getUserPw();
         }catch(NullPointerException e){
-            return "ok";
+            return "error";
         }
     }
     public List<User> getUsersByRoleUser() {

@@ -71,6 +71,7 @@ public class UserController {
     @PutMapping("/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody UserDTO userdto) {
         logger.info("<<< resetPassword >>>");
+        System.out.println("userPw :" + userdto.getUserPw());
 
         String userPw = userService.resetPassword(userdto); // 서비스 호출
         return ResponseEntity.ok(userPw);
