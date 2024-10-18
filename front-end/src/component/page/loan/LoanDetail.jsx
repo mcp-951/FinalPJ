@@ -22,6 +22,61 @@ function LoanDetail () {
                     </div>
                 </div>
             </div>
+            <div className="Product_container">
+                <div>
+                    <h3>상품 안내</h3>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>신청대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>대출한도</th>
+                                <th> 대출한동 궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>대출 기간</th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>신청 대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>신청 대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>신청 대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>신청 대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>신청 대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>신청 대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>신청 대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                            <tr>
+                                <th>신청 대상</th>
+                                <th>궁시렁 궁싱렁</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 }

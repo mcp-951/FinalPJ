@@ -9,12 +9,10 @@ import com.urambank.uram.entities.LogEntity;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.entities.AccountEntity;
 import com.urambank.uram.entities.DepositEntity;
-import com.urambank.uram.entities.LoanEntity;
 import com.urambank.uram.repository.UserRepository;
 import com.urambank.uram.repository.LogRepository;
 import com.urambank.uram.repository.DepositRepository;
 import com.urambank.uram.repository.AccountRepository;
-import com.urambank.uram.repository.LoanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,15 +33,13 @@ public class AdminService {
     private final AccountRepository accountRepository;
     private final LogRepository logRepository;
     private final DepositRepository depositRepository;
-    private final LoanRepository loanRepository;
 
     public AdminService(UserRepository userRepository, AccountRepository accountRepository, LogRepository logRepository
-        , DepositRepository depositRepository, LoanRepository loanRepository) {
+        , DepositRepository depositRepository) {
         this.logRepository = logRepository;
         this.depositRepository = depositRepository;
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
-        this.loanRepository = loanRepository;
     }
 
     // DTO -> Entity 변환 메서드
@@ -142,6 +138,7 @@ public class AdminService {
         allProducts.addAll(deposits);
 
         // 3. LoanEntity를 LoanDTO로 변환 (이 부분도 추가해야 함)
+        /*
         List<LoanDTO> loans = loanRepository.findAll()
                 .stream()
                 .map(loan -> new LoanDTO(
@@ -154,7 +151,7 @@ public class AdminService {
                 .collect(Collectors.toList());
 
         allProducts.addAll(loans);
-
+        */
         return allProducts;
     }
 
@@ -164,7 +161,7 @@ public class AdminService {
         System.out.println("<<< AdminService getProductCounts >>>");
         Map<String, Integer> productCounts = new HashMap<>();
         productCounts.put("Deposits", depositRepository.countByDepositState('Y'));
-        productCounts.put("Loans", loanRepository.countByLoanState('y'));
+        //productCounts.put("Loans", loanRepository.countByLoanState('y'));
         System.out.println("<<< AdminService productCounts >>> " + productCounts);
         return productCounts;
     }
@@ -238,6 +235,7 @@ public List<DepositDTO> getDeposits() {
 }
 //------------------------------------ 대출 관련------------------------------------------------------
     // DTO -> Entity 변환
+    /*
     private LoanEntity convertToLoanEntity(LoanDTO loanDTO) {
         System.out.println("<<< AdminService convertToLoanEntity >>>");
         return LoanEntity.builder()
@@ -248,6 +246,8 @@ public List<DepositDTO> getDeposits() {
                 .loanState(loanDTO.getLoanState())
                 .build();
     }
+
+
 
     // Entity -> DTO 변환
     private LoanDTO convertToLoanDTO(LoanEntity loanEntity) {
@@ -323,7 +323,7 @@ public List<DepositDTO> getDeposits() {
                 .logState(logEntity.getLogState())
                 .build();
     }
-
+     */
     // DTO -> Entity 변환
     private LogEntity convertToLogEntity(LogDTO logDTO) {
         return LogEntity.builder()
