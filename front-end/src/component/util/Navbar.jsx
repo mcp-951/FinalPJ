@@ -40,6 +40,10 @@ function Navbar(){
     const navMyPage = () => {
         navigate('/mypage');
         }
+    // 드롭다운 닫는 함수
+    const closeDropdown = () => {
+        setMenuOpen(null);
+    };
     return(
         <>
         { !searchOpen ? (
@@ -72,8 +76,8 @@ function Navbar(){
         }
             {menuOpen === 'account' && (<AccountDrop/>)}
             {menuOpen === 'product' && (<ProductDrop/>)}
-            {menuOpen === 'exchange' &&(<ExchangeDrop/>)}
-            {menuOpen === 'tax' &&(<TaxDrop/>)}
+            {menuOpen === 'exchange' && (<ExchangeDrop closeDropdown={closeDropdown} />)} {/* closeDropdown 전달 */}
+            {menuOpen === 'tax' && (<TaxDrop />)}
             {menuOpen === 'manage' &&(<ManageDrop/>)}
             {menuOpen === 'investment' &&(<InvestmentDrop/>)}
         </>
