@@ -19,6 +19,7 @@ import FindIdAndPw from '../page/loginPage/FindIdAndPw';
 
 // 유저 라우터 임포트
 import MyPage from 'component/page/user/MyPage'
+import MyPageChangePw from 'component/page/user/MyPageChangePw'
 
 
 // 검색바 라우터 임포트
@@ -132,8 +133,9 @@ const RouteComponent = () => {
                         <Route path="/signup" exact={true} element={<Signup />} />
                         <Route path="/signup_" exact={true} element={<SignUp_ />} />
 
-                        {/*검색바 리스트 이동*/}
+                        {/*유저 리스트 이동*/}
                         <Route path="/mypage" exact={true} element={<MyPage />} />
+                        <Route path="/myPageChangePw" exact={true} element={<MyPageChangePw />} />
 
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />

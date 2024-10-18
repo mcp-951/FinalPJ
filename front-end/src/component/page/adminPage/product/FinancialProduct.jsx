@@ -6,17 +6,17 @@ import { Chart } from 'react-google-charts'; // 구글 차트 사용
 import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 추가
 
 const FinancialProduct = () => {
-  const navigate = useNavigate();
-  const [products, setProducts] = useState([]); // 상품 리스트 관리
-  // const [filterState, setFilterState] = useState('all'); // 필터 상태: 'all', 'y', 'n'
-  const [chartData, setChartData] = useState([
-    ['상품 유형', '갯수'], 
-    ['예금', 0], 
-    ['적금', 0], 
-    ['대출', 0],
-  ]); // 기본 차트 데이터 형식 설정
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
-  const token = localStorage.getItem("token");
+    const navigate = useNavigate();
+    const [products, setProducts] = useState([]); // 상품 리스트 관리
+    // const [filterState, setFilterState] = useState('all'); // 필터 상태: 'all', 'y', 'n'
+    const [chartData, setChartData] = useState([
+        ['상품 유형', '갯수'],
+        ['예금', 0],
+        ['적금', 0],
+        ['대출', 0],
+    ]); // 기본 차트 데이터 형식 설정
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
+    const token = localStorage.getItem("token");
 
   // 전체 금융 상품 조회 API 호출
   const fetchProducts = () => {

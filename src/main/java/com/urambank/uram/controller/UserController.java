@@ -75,7 +75,7 @@ public class UserController {
         String userPw = userService.resetPassword(userdto); // 서비스 호출
         return ResponseEntity.ok(userPw);
     }
-
+    // 마이페이지 정보 가져오기
     @GetMapping("/getUserInfo/{userNo}")
     public ResponseEntity<?> getUserInfo(@PathVariable("userNo") int userNo) {
         logger.info("<<< getUserInfo >>>");
@@ -84,10 +84,5 @@ public class UserController {
         UserDTO dto = userService.getUserInfo(userNo); // 서비스 호출
         return ResponseEntity.ok(dto); // 찾은 userId 반환
     }
-
-//    @PostMapping("/refresh")
-//    public ResponseEntity<UserDTO> refreshToken(@RequestBody UserDTO dto){
-//        return ResponseEntity.ok(userService.refreshToken(dto));
-//    }
 
 }

@@ -73,13 +73,12 @@ public class UserService {
         Calendar cal = Calendar.getInstance();
         int birthYear = cal.get(Calendar.YEAR) - userDTO.getBirth().getYear();
 
-
         UserDTO dto = new UserDTO();
         userDTO.setResidentNumber(userDTO.getResidentNumber1() + "-" + userDTO.getResidentNumber2());
         userDTO.setAddress(userDTO.getAddress1() + userDTO.getAddress2());
         userDTO.setEmail(userDTO.getEmail1()+ "@" + userDTO.getEmail2());
         userDTO.setGrade(getGrade(birthYear));
-
+        userDTO.setOCRCheck(1);
 
         try {
             // 사용자 정보 설정 및 비밀번호 암호화
@@ -99,6 +98,7 @@ public class UserService {
             user.setState('y');
             user.setGrade(userDTO.getGrade());
             user.setJoinDate(Date.valueOf(LocalDate.now()));
+            user.setOCRCheck(userDTO.getOCRCheck());
 
             // 사용자 저장
             User savedUser = userRepository.save(user);
@@ -157,7 +157,6 @@ public class UserService {
         }catch(NullPointerException e){
             return "";
         }
-
     }
 
     public String resetPassword(UserDTO dto) {
@@ -205,6 +204,7 @@ public class UserService {
         dto.setEmail(user.getEmail());
         dto.setUserPw(user.getUserPw());
         dto.setResidentNumber(user.getResidentNumber());
+        dto.setGrade(user.getGrade());
         return dto;
     }
 }
