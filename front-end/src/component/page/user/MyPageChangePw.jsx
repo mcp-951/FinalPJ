@@ -1,20 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import apiSer from '../../ApiService';
+import localStorage from 'localStorage';
 
 function MyPageChangePw() {
-  const navigate = useNavigate();
+    const userNo = localStorage.getItem("userNo")
+    const navigate = useNavigate();
     const [form, setForm] = useState({
+        userNo : userNo,
         userPw:'',
         newUserPw:'',
         confirmNewUserPw:''
     });
 
     const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
     };
+
     const backToMyPage = () =>{
         navigate("/mypage");
+    }
+
+    const submitNewPw = () => {
+        const response = apiSer.changePassword(userNo, form.userPw,form.newUserPw)
+        .then((response) => {
+            if(response.data === 'ok'){
+                alert("비밀번호가 변경되었습니다.")
+                navigate("/mypage");
+                }else{
+                    alert("기존 비밀번호가 일치하지 않습니다.")
+                    return;
+                    }
+        }).catch((error) => {
+            console.error("Error checking Hp: ", error);
+        });
         }
 
     return(
@@ -62,7 +82,7 @@ function MyPageChangePw() {
                 </tbody>
             </table>
             <div>
-                <button>변경</button>
+                <button onClick={submitNewPw}>변경</button>
                 <button onClick={backToMyPage}>취소</button>
             </div>
         </div>

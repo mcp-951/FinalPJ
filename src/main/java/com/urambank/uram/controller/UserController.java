@@ -84,5 +84,15 @@ public class UserController {
         UserDTO dto = userService.getUserInfo(userNo); // 서비스 호출
         return ResponseEntity.ok(dto); // 찾은 userId 반환
     }
+    // 비밀번호 찾기 - 비밀번호 재설정
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestParam("userNo")String userNo,@RequestParam("userPw") String userPw,@RequestParam("newUserPw") String newUserPw) {
+        logger.info("<<< changePassword >>>");
+        logger.info("userNo : " + userNo);
+        int useNo = Integer.parseInt(userNo);
+        logger.info("userPw : " + userPw);
+        logger.info("newUserPw : " + newUserPw);
 
+        return ResponseEntity.ok(userService.changePassword(useNo,userPw,newUserPw));
+    }
 }

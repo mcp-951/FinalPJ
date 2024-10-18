@@ -54,7 +54,16 @@ const apiSer = {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }
       })
-        },
+    },
+    changePassword:(userNo ,userPw, newUserPw) => {
+        console.log("userPw : " + userPw);
+        console.log("newUserPw : " + newUserPw);
+        return axios.put(`${API_BASE_URL}/changePassword`,{"userPw" : userPw, "newUserPw" : newUserPw},{
+        headers: {
+          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+        }
+      })
+    },
 
   // 자동이체 리스트 가져오기
   getAutoTransfers: async () => {
