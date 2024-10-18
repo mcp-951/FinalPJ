@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import apiSer from '../../../ApiService';  // apiSer를 import
 import axios from 'axios';
 import '../../../../resource/css/account/accountManagement/PasswordChange.css';
 
@@ -8,8 +9,12 @@ const PasswordChange = () => {
   const location = useLocation();
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(false); // 인증 여부
   const [error, setError] = useState('');
+  const [hp, setHp] = useState(''); // 휴대폰 번호 입력 상태
+  const [hpAuthKey, setHpAuthKey] = useState(''); // 서버로부터 받은 인증번호
+  const [enteredAuthKey, setEnteredAuthKey] = useState(''); // 사용자가 입력한 인증번호
+  const [authSuccess, setAuthSuccess] = useState(false); // 인증 성공 여부
   const navigate = useNavigate();
 
   // 로컬 스토리지에서 JWT 토큰과 userNo를 가져오기
@@ -19,14 +24,28 @@ const PasswordChange = () => {
   // 전달된 계좌명 (productName)
   const productName = location.state?.productName || 'Unknown';
 
-  // 전달된 데이터 확인
-  console.log('Received accountNumber:', accountNumber);
-  console.log('Received productName from state:', productName);
+  // 인증번호 받기 로직
+  const handleCheckHp = async () => {
+    try {
+      const response = await apiSer.checkHp(hp); // apiSer의 checkHp 메서드 호출
+      setHpAuthKey(response.data); // 서버로부터 받은 인증번호 저장
+      alert('인증번호가 발송되었습니다.');
+    } catch (error) {
+      console.error('휴대폰 인증번호 발송 중 오류 발생:', error);
+      setError('휴대폰 인증번호 발송 중 오류가 발생했습니다.');
+    }
+  };
 
-  // 휴대폰 인증 핸들러
-  const handlePhoneVerification = () => {
-    setIsVerified(true);
-    alert('휴대폰 인증이 완료되었습니다.');
+  // 인증번호 확인 로직
+  const handleAuthKeyCheck = () => {
+    if (String(hpAuthKey).trim() === String(enteredAuthKey).trim()) {
+      setIsVerified(true);
+      setAuthSuccess(true);
+      alert('휴대폰 인증이 완료되었습니다.');
+    } else {
+      setAuthSuccess(false);
+      alert('인증번호가 일치하지 않습니다.');
+    }
   };
 
   // 비밀번호 변경 요청 핸들러
@@ -41,7 +60,7 @@ const PasswordChange = () => {
         // 비밀번호 변경 요청
         const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/change-password`, {
           userNo: parseInt(userNo, 10), // userNo를 전송
-          newPassword: newPassword  // 비밀번호를 그대로 String으로 전송
+          newPassword: newPassword,  // 비밀번호를 그대로 String으로 전송
         }, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -96,15 +115,32 @@ const PasswordChange = () => {
             </td>
           </tr>
           <tr>
-            <th>휴대폰 인증</th>
+            <th>휴대폰 번호</th>
             <td>
-              <button
-                onClick={handlePhoneVerification}
-                className="verify-button"
-                disabled={isVerified}
-              >
-                {isVerified ? '인증 완료' : '인증하기'}
+              <input
+                type="tel"
+                value={hp}
+                onChange={(e) => setHp(e.target.value)}
+                placeholder="01012345678"
+              />
+              <button onClick={handleCheckHp} className="verify-button">
+                인증번호 받기
               </button>
+            </td>
+          </tr>
+          <tr>
+            <th>인증번호</th>
+            <td>
+              <input
+                type="text"
+                value={enteredAuthKey}
+                onChange={(e) => setEnteredAuthKey(e.target.value)}
+                placeholder="인증번호 입력"
+              />
+              <button onClick={handleAuthKeyCheck} className="verify-button">
+                인증하기
+              </button>
+              {authSuccess && <span className="success-message">✔ 인증 완료</span>}
             </td>
           </tr>
         </tbody>

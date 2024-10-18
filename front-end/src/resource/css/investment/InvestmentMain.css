@@ -2,7 +2,7 @@
     display: flex;
 }
 .Content{
-    width: 80%;
+    width: 100%;
 }
 .StockBar{
     margin-top: 1rem;
@@ -59,9 +59,9 @@
     text-decoration: none;
     color: inherit;
 }
+
+
 /* */
-
-
 .RightList{
     width: 20%;
     min-height: 100vh;

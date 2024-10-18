@@ -30,14 +30,14 @@ public class TaxAdminController {
 
     // 특정 세금 조회
     @GetMapping("/select/{taxNo}")
-    public ResponseEntity<TaxEntity> getTaxByNo(@PathVariable int taxNo) {
+    public ResponseEntity<TaxEntity> getTaxByNo(@PathVariable("taxNo") int taxNo) {
         TaxEntity tax = taxAdminService.getTaxByNo(taxNo);
         return ResponseEntity.ok(tax);
     }
 
     // 특정 세금 수정
     @PutMapping("/edit/{taxNo}")
-    public ResponseEntity<String> updateTax(@PathVariable int taxNo, @RequestBody TaxDTO taxDTO) {
+    public ResponseEntity<String> updateTax(@PathVariable("taxNo") int taxNo, @RequestBody TaxDTO taxDTO) {
         taxAdminService.updateTax(taxNo, taxDTO);
         return ResponseEntity.ok("Tax updated successfully");
     }
@@ -46,7 +46,7 @@ public class TaxAdminController {
 
     // userNo를 통해 userId 가져오기
     @GetMapping("/userId/{userNo}")
-    public ResponseEntity<String> getUserIdByUserNo(@PathVariable int userNo) {
+    public ResponseEntity<String> getUserIdByUserNo(@PathVariable("userNo") int userNo) {
         String userId = taxAdminService.getUserIdByUserNo(userNo);
         return ResponseEntity.ok(userId);
     }
@@ -67,20 +67,17 @@ public class TaxAdminController {
 
     // userId로 userNo 가져오기
     @GetMapping("/userNo/{userId}")
-    public ResponseEntity<Integer> getUserNoByUserId(@PathVariable String userId) {
+    public ResponseEntity<Integer> getUserNoByUserId(@PathVariable("userId") String userId) {
         int userNo = userService.getUserNoByUserId(userId);
         return ResponseEntity.ok(userNo);
 
     }
 
-
-
     // userNo를 통해 userName 가져오기
     @GetMapping("/name/{userNo}")
-    public ResponseEntity<String> getUserNameByUserNo(@PathVariable int userNo) {
+    public ResponseEntity<String> getUserNameByUserNo(@PathVariable("userNo") int userNo) {
         String userName = userService.getUserNameByUserNo(userNo);
         return ResponseEntity.ok(userName);
     }
-
 
 }

@@ -18,33 +18,34 @@ import java.sql.Date;
 public class CurrencyExchangeEntity {
 
     @Id
-    @Column
+    @Column(name = "tradeNo")
     private int tradeNo;
 
-    @Column
+    @Column(name = "userNo")
     private int userNo;
 
-    @Column
+    @Column(name = "accountNo")
     private int accountNo;
 
-    @Column
+    @Column(name = "selectCountry")
     private String selectCountry;
 
-    @Column
+    @Column(name = "exchangeRate")
     private float exchangeRate;
 
-    @Column
+    @Column(name = "tradeDate")
     private Date tradeDate;
 
-    @Column
+    @Column(name = "pickupPlace")
     private String pickupPlace;
 
-    @Column
+    @Column(name = "tradePrice")
     private int tradePrice;
 
-    @Column
+    @Column(name = "tradeAmount")
     private int tradeAmount;
 
-    @Column
+    @Column(name = "receiveDate")
     private Date receiveDate;
+
 }

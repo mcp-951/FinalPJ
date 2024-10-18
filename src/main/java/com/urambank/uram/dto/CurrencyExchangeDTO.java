@@ -14,8 +14,8 @@ public class CurrencyExchangeDTO {
     private int tradeNo;
     private int userNo;
     private int accountNo;
-    private String selectCountry;
     private float exchangeRate;
+    private String selectCountry;
     private Date tradeDate;
     private String pickupPlace;
     private int tradePrice;

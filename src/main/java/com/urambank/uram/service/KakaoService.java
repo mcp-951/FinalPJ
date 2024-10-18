@@ -43,6 +43,8 @@ public class KakaoService {
         KakaoAccount kakaoDTO = getUserInfo(dto.getAccessToken()).getKakaoAccount();
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(kakaoDTO.getEmail());
+
+
         return kakaoDTO.getEmail();
     }
 

@@ -7,6 +7,7 @@ const Sidebar = () => {
   const [showFinancialDropdown, setShowFinancialDropdown] = useState(false);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
   const [showExchangeDropdown, setShowExchangeDropdown] = useState(false);
+  const [showInquiryDropdown, setShowInquiryDropdown] = useState(false); // 문의 관리 드롭다운
 
   return (
     <div className="sidebar">
@@ -39,16 +40,16 @@ const Sidebar = () => {
             {showFinancialDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/financialProduct">전체</NavLink>
+                  <NavLink to="/admin/financialProduct">전체</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/savingsProduct">예금상품 관리</NavLink>
+                  <NavLink to="/admin/savingsProduct">예금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/depositProduct">적금상품 관리</NavLink>
+                  <NavLink to="/admin/depositProduct">적금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/loanProduct">대출상품 관리</NavLink>
+                  <NavLink to="/admin/loanProduct">대출상품 관리</NavLink>
                 </li>
               </ul>
             )}
@@ -62,10 +63,10 @@ const Sidebar = () => {
             {showAccountDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/transactionHistory">거래 현황</NavLink>
+                  <NavLink to="/admin/transactionHistory">거래 현황</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/accountClosure">계좌 해지 관리</NavLink>
+                  <NavLink to="/admin/accountClosure">계좌 해지 관리</NavLink>
                 </li>
               </ul>
             )}
@@ -104,7 +105,21 @@ const Sidebar = () => {
               </ul>
             )}
           </li>
-          
+
+          {/* 문의 관리 추가 */}
+          <li
+            onMouseEnter={() => setShowInquiryDropdown(true)}
+            onMouseLeave={() => setShowInquiryDropdown(false)}
+          >
+            문의 관리
+            {showInquiryDropdown && (
+              <ul className="dropdown">
+                <li>
+                  <NavLink to="/admin/support/inquiries">문의글 리스트</NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
         </ul>
       </div>
 

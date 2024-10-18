@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import apiSer from '../../../ApiService';  // apiSer를 import
 import axios from 'axios';
 import '../../../../resource/css/account/accountManagement/AccountClose.css';
 
@@ -7,7 +8,11 @@ const AccountClose = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [balance, setBalance] = useState(null); 
-  const [isVerified, setIsVerified] = useState(false);
+  const [isVerified, setIsVerified] = useState(false); // 인증 여부
+  const [hp, setHp] = useState(''); // 휴대폰 번호 입력 상태
+  const [hpAuthKey, setHpAuthKey] = useState(''); // 서버로부터 받은 인증번호
+  const [enteredAuthKey, setEnteredAuthKey] = useState(''); // 사용자가 입력한 인증번호
+  const [authSuccess, setAuthSuccess] = useState(false); // 인증 성공 여부
   const [errorMessage, setErrorMessage] = useState('');
 
   // String 타입으로 처리된 accountNumber
@@ -42,15 +47,33 @@ const AccountClose = () => {
     }
   }, [accountNumber, userNo, token]);
 
+  // 휴대폰 인증번호 받기 로직
+  const handleCheckHp = async () => {
+    try {
+      const response = await apiSer.checkHp(hp); // apiSer의 checkHp 메서드 호출
+      setHpAuthKey(response.data); // 서버로부터 받은 인증번호 저장
+      alert('인증번호가 발송되었습니다.');
+    } catch (error) {
+      console.error('휴대폰 인증번호 발송 중 오류 발생:', error);
+      setErrorMessage('휴대폰 인증번호 발송 중 오류가 발생했습니다.');
+    }
+  };
+
+  // 인증번호 확인 로직
+  const handleAuthKeyCheck = () => {
+    if (String(hpAuthKey).trim() === String(enteredAuthKey).trim()) {
+      setIsVerified(true);
+      setAuthSuccess(true);
+      alert('휴대폰 인증이 완료되었습니다.');
+    } else {
+      setAuthSuccess(false);
+      alert('인증번호가 일치하지 않습니다.');
+    }
+  };
+
   // 이체 페이지로 이동하는 함수
   const handleTransfer = () => {
     navigate('/account/transfer', { state: { accountNumber } });
-  };
-
-  // 휴대폰 인증 로직
-  const handlePhoneVerification = () => {
-    setIsVerified(true);
-    alert('휴대폰 인증이 완료되었습니다.');
   };
 
   // 계좌 해지 API 호출 함수
@@ -117,15 +140,32 @@ const AccountClose = () => {
             </td>
           </tr>
           <tr>
-            <th>휴대폰 인증</th>
+            <th>휴대폰 번호</th>
             <td>
-              <button
-                onClick={handlePhoneVerification}
-                className="verify-button"
-                disabled={isVerified}
-              >
-                {isVerified ? '인증 완료' : '인증하기'}
+              <input
+                type="tel"
+                value={hp}
+                onChange={(e) => setHp(e.target.value)}
+                placeholder="01012345678"
+              />
+              <button onClick={handleCheckHp} className="verify-button">
+                인증번호 받기
               </button>
+            </td>
+          </tr>
+          <tr>
+            <th>인증번호</th>
+            <td>
+              <input
+                type="text"
+                value={enteredAuthKey}
+                onChange={(e) => setEnteredAuthKey(e.target.value)}
+                placeholder="인증번호 입력"
+              />
+              <button onClick={handleAuthKeyCheck} className="verify-button">
+                인증하기
+              </button>
+              {authSuccess && <span className="success-message">✔ 인증 완료</span>}
             </td>
           </tr>
         </tbody>

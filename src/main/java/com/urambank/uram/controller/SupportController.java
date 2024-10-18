@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-
-
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,53 +15,48 @@ public class SupportController {
 
     private final SupportService supportService;
 
-    // 특정 사용자 ID로 문의글 목록 조회
+    // 특정 사용자 ID로 삭제되지 않은 문의글 목록 조회
     @GetMapping("/board/{userNo}")
-    public ResponseEntity<?> getSupportByUserId(@PathVariable("userNo") int userNo) {
-        return ResponseEntity.ok(supportService.getSupportByUserId(userNo));
+    public ResponseEntity<List<SupportDTO>> getActiveInquiriesByUser(@PathVariable("userNo") Integer userNo) {
+        List<SupportDTO> inquiries = supportService.getActiveSupportByUserId(userNo);
+        return ResponseEntity.ok(inquiries);
     }
 
     // 특정 문의글 ID로 상세 조회
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<SupportDTO> getSupportByQnaNo(@PathVariable("id") int qnaNo) {
+    @GetMapping("/detail/{qnaNo}")
+    public ResponseEntity<SupportDTO> getSupportByQnaNo(@PathVariable("qnaNo") Integer qnaNo) {
         SupportDTO inquiry = supportService.getSupportByQnaNo(qnaNo);
-        if (inquiry != null) {
-            return ResponseEntity.ok(inquiry);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return inquiry != null
+                ? ResponseEntity.ok(inquiry)
+                : ResponseEntity.status(404).body(null);
     }
 
-
     // 문의글 등록
-    @PostMapping("/boardInsert")
-    public ResponseEntity<Integer> insertBoard(@RequestBody SupportDTO dto) {
+    @PostMapping("/board")
+    public ResponseEntity<String> insertBoard(@RequestBody SupportDTO dto) {
         int result = supportService.insertBoard(dto);
-        return ResponseEntity.ok(result);
+        return result == 1
+                ? ResponseEntity.ok("문의글이 성공적으로 등록되었습니다.")
+                : ResponseEntity.status(500).body("문의글 등록에 실패했습니다.");
     }
 
     // 문의글 수정
     @PutMapping("/{qnaNo}")
     public ResponseEntity<String> updateInquiry(
-            @PathVariable("qnaNo") int qnaNo,
+            @PathVariable("qnaNo") Integer qnaNo,
             @RequestBody SupportDTO dto) {
         boolean updated = supportService.updateInquiry(qnaNo, dto);
-        if (updated) {
-            return ResponseEntity.ok("문의글이 수정되었습니다.");
-        } else {
-            return ResponseEntity.status(404).body("해당 문의글을 찾을 수 없습니다.");
-        }
+        return updated
+                ? ResponseEntity.ok("문의글이 수정되었습니다.")
+                : ResponseEntity.status(404).body("해당 문의글을 찾을 수 없습니다.");
     }
 
-    // 문의글 삭제
+    // 문의글 삭제 (논리적 삭제)
     @DeleteMapping("/{qnaNo}")
-    public ResponseEntity<String> deleteInquiry(@PathVariable("qnaNo") int qnaNo) {
+    public ResponseEntity<String> deleteInquiry(@PathVariable("qnaNo") Integer qnaNo) {
         boolean deleted = supportService.deleteInquiry(qnaNo);
-        if (deleted) {
-            return ResponseEntity.ok("문의글이 삭제되었습니다.");
-        } else {
-            return ResponseEntity.status(404).body("해당 문의글을 찾을 수 없습니다.");
-        }
+        return deleted
+                ? ResponseEntity.ok("문의글이 삭제되었습니다.")
+                : ResponseEntity.status(404).body("해당 문의글을 찾을 수 없습니다.");
     }
-
 }

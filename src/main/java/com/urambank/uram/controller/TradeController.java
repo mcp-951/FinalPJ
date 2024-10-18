@@ -64,6 +64,7 @@ public class TradeController {
         return ResponseEntity.ok(pickUpPlaces);
     }
 
+
     // 4. 비밀번호 확인 (String 타입으로 처리)
     @PostMapping("/verify-password/{selectedAccountNumber}/{password}")
     public int passwordCheck(@PathVariable("selectedAccountNumber") String selectedAccountNumber, @PathVariable("password") String password) {
@@ -71,7 +72,8 @@ public class TradeController {
         return isValid ? 1 : 0;
     }
 
-    // 5. 환전 신청 저장하기
+
+    // 환전 신청 저장하기
     @PostMapping("/submit-exchange")
     public ResponseEntity<String> submitExchange(@RequestBody CurrencyExchangeDTO currencyExchangeDTO) {
         tradeService.submitExchange(currencyExchangeDTO);
@@ -90,7 +92,7 @@ public class TradeController {
 
     // 브랜치 이름을 받아 해당 지점의 pickUpAddress를 반환하는 메서드
     @GetMapping("/pickup-address/{branch}")
-    public ResponseEntity<String> getPickUpAddressByBranch(@PathVariable String branch) {
+    public ResponseEntity<String> getPickUpAddressByBranch(@PathVariable("branch") String branch) {
         String pickUpAddress = tradeService.getPickUpAddressByBranch(branch);
         if (pickUpAddress != null) {
             return ResponseEntity.ok(pickUpAddress);

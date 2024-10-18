@@ -11,8 +11,7 @@ import java.util.List;
 public interface LogRepository extends JpaRepository<LogEntity, Integer> {
 
     @Query("SELECT l FROM LogEntity l WHERE (l.sendAccountNumber = :accountNumber OR l.receiveAccountNumber = :accountNumber) AND l.logState = 'SUCCESS'")
-    List<LogEntity> findByAccountNumberAndLogState(@Param("accountNumber") String accountNumber);  // accountNumber를 String으로 변경
-
+    List<LogEntity> findByAccountNumberAndLogState(@Param("accountNumber") String accountNumber);
 
 }
 

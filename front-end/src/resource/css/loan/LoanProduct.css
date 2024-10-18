@@ -1,0 +1,60 @@
+.LoanProduct_div{
+    width: 80%;
+    border-radius: 15px;
+    background-color: white;
+    height: 135px;
+    display: flex;
+    justify-content: space-between;
+}
+.LoanProduct_div:hover{
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.loanTitle_spanMain{
+    width: 70%;
+    display: flex;
+    align-items: center;
+}
+.spanBox{
+    margin-left: 3rem;
+    margin-right: 2rem;
+    border-radius: 20px;
+    height: 40px;
+    width: 90px;
+    font-size: 15px;
+    font-weight: 900;
+    color: white;
+    background-color: #2c8aee;
+    display: flex; /* 플렉스 박스 활성화 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center;
+}
+.loanTitle_strong{
+    font-size: 30px;
+    color: #000;
+    margin-right: 2rem;
+
+}
+
+.loanPrice_spanMain{
+    display: flex; /* 플렉스 박스 활성화 */
+    flex-direction: column; /* 세로로 쌓기 */
+    justify-content: center; /* 세로 중앙 정렬 */
+    text-align: center; /* 텍스트 가운데 정렬 (선택 사항) */
+    margin-right: 3rem;
+}
+
+.loanPrice_strong{
+    font-size: 36px;
+}
+
+.loanPrice_spanMain p{
+    font-size: 22px;
+    width: 100%;
+    margin: 0;
+}
+
+.loanPrice_spanMain small{
+    width: 100%;
+}
