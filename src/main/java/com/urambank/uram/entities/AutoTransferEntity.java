@@ -20,40 +20,40 @@ import java.time.LocalDate;
 public class AutoTransferEntity {
 
     @Id
-    @Column
+    @Column(name = "autoTransNo")
     private int autoTransNo;
 
-    @Column
+    @Column(name = "accountNo")
     private int accountNo;
 
-    @Column
+    @Column(name = "receiveAccountNo")
     private int receiveAccountNo;
 
-    @Column
+    @Column(name = "autoSendPrice")
     private int autoSendPrice;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name ="reservationDate" )
     private LocalDate reservationDate; // LocalDate로 변경
 
-    @Column
+    @Column(name = "reservationState")
     private String reservationState;
 
-    @Column(nullable = false, columnDefinition = "CHAR(1) DEFAULT 'Y'")
-    private char autoShow;
-
-    @Column
+    @Column(name = "deleteDate")
     private LocalDate deleteDate;
 
     // 추가된 필드
-    @Column
+    @Column(name = "startDate")
     private LocalDate startDate;  // 이체 시작일
 
-    @Column
+    @Column(name = "endDate")
     private LocalDate endDate;    // 이체 종료일
 
-    @Column
+    @Column(name = "transferDay")
     private int transferDay; // 매월 이체할 날 (예: 1, 10, 20 등)
 
-    @Column
+    @Column(name = "toBankName")
     private String toBankName;
+
+    @Column(name = "autoAgreement")
+    private char autoAgreement;
 }

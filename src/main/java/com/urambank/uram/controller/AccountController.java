@@ -474,9 +474,22 @@ public class AccountController {
     // 자동이체 해지 API
     @PutMapping("/auto-transfer/cancel/{autoTransNo}")
     public ResponseEntity<String> cancelAutoTransfer(@PathVariable("autoTransNo") int autoTransNo) {
-        accountService.cancelAutoTransfer(autoTransNo);
-        return ResponseEntity.ok("자동이체가 성공적으로 해지되었습니다.");
+        try {
+            accountService.cancelAutoTransfer(autoTransNo);
+            return ResponseEntity.ok("자동이체가 성공적으로 해지되었습니다.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
-
+    // 자동이체 24시간 이전 확인 API
+    @GetMapping("/auto-transfer/can-cancel/{autoTransNo}")
+    public ResponseEntity<String> canCancelAutoTransfer(@PathVariable("autoTransNo") int autoTransNo) {
+        try {
+            accountService.checkIfCancelable(autoTransNo);
+            return ResponseEntity.ok("자동이체를 해지할 수 있습니다.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 }

@@ -1,18 +1,13 @@
-.Carousel_div {
-  width: 60%;
+.Carousel_div{
+  width: 80%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
-
-.Carousel_Tab {
-  position: relative;
-  width: 720px;
-  height: 400px;
-  overflow: hidden;
-  border-radius: 15px;
-  border: 3px solid #b2c8f5; /* 테두리 색상과 두께 설정 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
-  background-color: white; /* 배경색을 흰색으로 설정 */
+.Carousel_Tab{
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 15px;
 }
 
 

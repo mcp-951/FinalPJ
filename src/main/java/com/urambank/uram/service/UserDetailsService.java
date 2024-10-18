@@ -3,14 +3,12 @@ package com.urambank.uram.service;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.repository.CustomUserDetails;
 import com.urambank.uram.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
-
 
     private final UserRepository userRepository;
 

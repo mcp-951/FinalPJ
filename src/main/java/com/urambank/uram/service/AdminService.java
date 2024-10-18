@@ -4,17 +4,14 @@ import com.urambank.uram.dto.AccountDTO;
 import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.dto.LogDTO;
 import com.urambank.uram.dto.DepositDTO;
-import com.urambank.uram.dto.LoanDTO;
 import com.urambank.uram.entities.LogEntity;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.entities.AccountEntity;
 import com.urambank.uram.entities.DepositEntity;
-import com.urambank.uram.entities.LoanEntity;
 import com.urambank.uram.repository.UserRepository;
 import com.urambank.uram.repository.LogRepository;
 import com.urambank.uram.repository.DepositRepository;
 import com.urambank.uram.repository.AccountRepository;
-import com.urambank.uram.repository.LoanRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,31 +32,30 @@ public class AdminService {
     private final AccountRepository accountRepository;
     private final LogRepository logRepository;
     private final DepositRepository depositRepository;
-    private final LoanRepository loanRepository;
 
     public AdminService(UserRepository userRepository, AccountRepository accountRepository, LogRepository logRepository
-        , DepositRepository depositRepository, LoanRepository loanRepository) {
+        , DepositRepository depositRepository) {
         this.logRepository = logRepository;
         this.depositRepository = depositRepository;
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
-        this.loanRepository = loanRepository;
     }
 
-//    // DTO -> Entity 변환 메서드
-//    private User convertToEntity(UserDTO userDTO) {
-//        if (userDTO == null) {
-//            return null;
-//        }
-//        User.builder()
-//                .userNo(userDTO.getUserNo())
-//                .userId(userDTO.getUserId())
-//                .name(userDTO.getName())
-//                .userPw(userDTO.getUserPw())
-//                .state(userDTO.getState());
-//
-//        return ;
-//    }
+    // DTO -> Entity 변환 메서드
+    private User convertToEntity(UserDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
+        User user = User.builder()
+                    .userNo(userDTO.getUserNo())
+                    .userId(userDTO.getUserId())
+                    .name(userDTO.getName())
+                    .userPw(userDTO.getUserPw())
+                    .state(userDTO.getState())
+                    .build();
+
+        return user;
+    }
 
     // Entity -> DTO 변환 메서드
     private UserDTO convertToDTO(User user) {
@@ -87,7 +83,6 @@ public class AdminService {
             .depositNo(depositDTO.getDepositNo())
             .depositCategory(depositDTO.getDepositCategory())
             .depositContent(depositDTO.getDepositContent())
-            .depositIMG(depositDTO.getDepositIMG())
             .depositName(depositDTO.getDepositName())
             .depositRate(depositDTO.getDepositRate())
             .depositState(depositDTO.getDepositState())
@@ -102,7 +97,6 @@ public class AdminService {
                 .depositCategory(depositEntity.getDepositCategory())
                 .depositRate(depositEntity.getDepositRate())
                 .depositContent(depositEntity.getDepositContent())
-                .depositIMG(depositEntity.getDepositIMG())
                 .depositState(depositEntity.getDepositState())
                 .build();  // 여기서 .build()를 추가
     }
@@ -115,7 +109,6 @@ public class AdminService {
                 .depositCategory(depositDTO.getDepositCategory())
                 .depositRate(depositDTO.getDepositRate())
                 .depositContent(depositDTO.getDepositContent())
-                .depositIMG(depositDTO.getDepositIMG())
                 .depositState('Y')  // 신규 등록은 'Y'로 활성화 상태로 설정
                 .build();
         // Repository를 통해 DB에 저장
@@ -136,7 +129,6 @@ public class AdminService {
                         deposit.getDepositCategory(),   // 예금 카테고리 (이 부분이 추가됨)
                         deposit.getDepositRate(),       // 예금 금리
                         deposit.getDepositContent(),    // 예금 설명
-                        deposit.getDepositIMG(),        // 예금 이미지
                         deposit.getDepositState()       // 예금 상태
                 ))
                 .collect(Collectors.toList());  // 변환된 DepositDTO 리스트를 다시 리스트로 수집
@@ -145,6 +137,7 @@ public class AdminService {
         allProducts.addAll(deposits);
 
         // 3. LoanEntity를 LoanDTO로 변환 (이 부분도 추가해야 함)
+        /*
         List<LoanDTO> loans = loanRepository.findAll()
                 .stream()
                 .map(loan -> new LoanDTO(
@@ -157,7 +150,7 @@ public class AdminService {
                 .collect(Collectors.toList());
 
         allProducts.addAll(loans);
-
+        */
         return allProducts;
     }
 
@@ -167,7 +160,7 @@ public class AdminService {
         System.out.println("<<< AdminService getProductCounts >>>");
         Map<String, Integer> productCounts = new HashMap<>();
         productCounts.put("Deposits", depositRepository.countByDepositState('Y'));
-        productCounts.put("Loans", loanRepository.countByLoanState('y'));
+        //productCounts.put("Loans", loanRepository.countByLoanState('y'));
         System.out.println("<<< AdminService productCounts >>> " + productCounts);
         return productCounts;
     }
@@ -187,7 +180,6 @@ public class AdminService {
                     .depositCategory(eDto.getDepositCategory())
                     .depositRate(eDto.getDepositRate())
                     .depositContent(eDto.getDepositContent())
-                    .depositIMG(eDto.getDepositIMG())
                     .depositState(eDto.getDepositState())
                     .build();  // 적금 DTO 생성
 
@@ -208,7 +200,6 @@ public class AdminService {
         depositEntity.setDepositCategory(depositDTO.getDepositCategory());
         depositEntity.setDepositRate(depositDTO.getDepositRate());
         depositEntity.setDepositContent(depositDTO.getDepositContent());
-        depositEntity.setDepositIMG(depositDTO.getDepositIMG());
 
         // 변경된 엔티티 저장
         depositRepository.save(depositEntity);
@@ -233,7 +224,6 @@ public List<DepositDTO> getDeposits() {
                 .depositCategory(eDto.getDepositCategory())
                 .depositRate(eDto.getDepositRate())
                 .depositContent(eDto.getDepositContent())
-                .depositIMG(eDto.getDepositIMG())
                 .depositState(eDto.getDepositState())
                 .build();  // 예금 DTO 생성
 
@@ -243,81 +233,8 @@ public List<DepositDTO> getDeposits() {
     return list;  // 예금 상품 목록 반환
 }
 //------------------------------------ 대출 관련------------------------------------------------------
-    // DTO -> Entity 변환
-    private LoanEntity convertToLoanEntity(LoanDTO loanDTO) {
-        System.out.println("<<< AdminService convertToLoanEntity >>>");
-        return LoanEntity.builder()
-                .loanNo(loanDTO.getLoanNo())
-                .loanName(loanDTO.getLoanName())
-                .loanRate(loanDTO.getLoanRate())
-                .loanContent(loanDTO.getLoanContent())
-                .loanState(loanDTO.getLoanState())
-                .build();
-    }
 
-    // Entity -> DTO 변환
-    private LoanDTO convertToLoanDTO(LoanEntity loanEntity) {
-        return LoanDTO.builder()
-                .loanNo(loanEntity.getLoanNo())
-                .loanName(loanEntity.getLoanName())
-                .loanRate(loanEntity.getLoanRate())
-                .loanContent(loanEntity.getLoanContent())
-                .loanState(loanEntity.getLoanState())
-                .build();
-    }
-
-//    // 대출 상품 목록 조회
-//    public List<LoanDTO> getLoans() {
-//        List<LoanEntity> loanEntities = loanRepository.findByLoanState('y',);
-//        List<LoanDTO> loanDTOs = new ArrayList<>();
-//
-//        for (LoanEntity entity : loanEntities) {
-//            LoanDTO loanDTO = LoanDTO.builder()
-//                    .loanNo(entity.getLoanNo())
-//                    .loanName(entity.getLoanName())
-//                    .loanRate(entity.getLoanRate())
-//                    .loanContent(entity.getLoanContent())
-//                    .loanState(entity.getLoanState())
-//                    .build();
-//            loanDTOs.add(loanDTO);
-//        }
-//
-//    return loanDTOs;
-//    }
-
-    // 대출 상품 등록
-    public void registerLoan(LoanDTO loanDTO) {
-        LoanEntity loanEntity = LoanEntity.builder()
-                .loanName(loanDTO.getLoanName())
-                .loanRate(loanDTO.getLoanRate())
-                .loanContent(loanDTO.getLoanContent())
-                .loanState('y')
-                .build();
-        System.out.println("<<< AdminService registerLoan  >>> : " + loanEntity);
-        loanRepository.save(loanEntity);
-    }
-
-    // 대출 상품 수정
-    public void editLoan(int loanNo, LoanDTO loanDTO) {
-        LoanEntity loanEntity = loanRepository.findById(loanNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 대출 상품을 찾을 수 없습니다."));
-
-        loanEntity.setLoanName(loanDTO.getLoanName());
-        loanEntity.setLoanRate(loanDTO.getLoanRate());
-        loanEntity.setLoanContent(loanDTO.getLoanContent());
-
-        loanRepository.save(loanEntity);
-    }
-
-    // 대출 상품 삭제 (loanState를 'Closed'로 변경)
-    public void deleteLoan(int loanNo) {
-        LoanEntity loanEntity = loanRepository.findById(loanNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 대출 상품을 찾을 수 없습니다."));
-
-        loanEntity.setLoanState('n');
-        loanRepository.save(loanEntity);
-    }
-    //-------------------------------- 거래 관련 ---------------------------------------------------------
+//-------------------------------- 거래 관련 ---------------------------------------------------------
 // Entity -> DTO 변환
     private LogDTO convertToLogDTO(LogEntity logEntity) {
         return LogDTO.builder()
@@ -329,7 +246,6 @@ public List<DepositDTO> getDeposits() {
                 .logState(logEntity.getLogState())
                 .build();
     }
-
     // DTO -> Entity 변환
     private LogEntity convertToLogEntity(LogDTO logDTO) {
         return LogEntity.builder()
@@ -486,29 +402,6 @@ public List<DepositDTO> getDeposits() {
     public void resumeAccount(int accountNo) {
         accountRepository.updateAccountState("NORMAL", accountNo);
     }
-
-//    public List<Map<String, Object>> getAccountsWithProductCategoryC() {
-//        System.out.println("<<< AdminService getAccountsWithProductCategoryC >>>");
-//        List<Map<String, Object>> accounts = new ArrayList<>();
-//        List<Object[]> results = accountRepository.findAccountsWithProductCategoryC();
-//
-//        for (Object[] result : results) {
-//            Map<String, Object> accountData = new HashMap<>();
-//            accountData.put("accountNo", result[0]);
-//            accountData.put("userNo", result[1]);
-//            accountData.put("accountNumber", result[2]);
-//            accountData.put("accountOpen", result[3]);
-//            accountData.put("accountState", result[4]);
-//            accountData.put("productCategory", result[5]);
-//
-//            accounts.add(accountData);
-//        }
-//        System.out.println("<<< AdminService getAccountsWithProductCategoryC - accounts >>> : " + accounts);
-//        return accounts;
-//    }
-//
-
-
 
     // 활성 회원 목록 조회 (NORMAL, STOP 상태의 유저를 조회)
     public List<UserDTO> getAllUsers(){
