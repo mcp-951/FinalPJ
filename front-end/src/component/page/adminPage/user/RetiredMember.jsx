@@ -1,4 +1,3 @@
-// RetiredMember.jsx
 import React, { useState, useEffect } from 'react';
 import ApiService from '../service/ApiService';  // ApiService 추가
 import Sidebar from '../Sidebar';
@@ -12,39 +11,30 @@ const RetiredMember = () => {
   const [displayCount, setDisplayCount] = useState(10);
   const token = localStorage.getItem("token");
 
-  // 탈퇴 회원 목록 가져오기
   useEffect(() => {
-    ApiService.get('/retired',{
-      headers: {
-        'Authorization': `Bearer ${token}`  // Authorization 헤더에 JWT 추가
-      }
-    })  // 탈퇴 회원 목록 조회
+    ApiService.get('/retired', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
       .then((response) => {
         const filteredMembers = response.data.filter(member => member.state === 'e');
-        setRetiredMembers(filteredMembers);  // 데이터 설정
+        setRetiredMembers(filteredMembers);
       })
       .catch((error) => {
         console.error('탈퇴 회원 목록을 불러오는 중 오류 발생:', error);
       });
   }, []);
 
-  // 검색 및 필터링 로직
   const filteredList = retiredMembers.filter(member => {
-    if (searchField === '이름') {
-      return member.name.includes(searchTerm);
-    } else if (searchField === '이메일') {
-      return member.email.includes(searchTerm);
-    } else if (searchField === '핸드폰') {
-      return member.hp.includes(searchTerm);
-    }
+    if (searchField === '이름') return member.name.includes(searchTerm);
+    if (searchField === '이메일') return member.email.includes(searchTerm);
+    if (searchField === '핸드폰') return member.hp.includes(searchTerm);
     return true;
   }).slice(0, displayCount);
 
   return (
     <div className="retired-member-container">
       <Sidebar />
-      <div className="main-content"/>
-      <div className="retired-member-content">
+      <div className="main-content">
         <h2>탈퇴 회원</h2>
 
         <div className="search-controls">
@@ -84,7 +74,7 @@ const RetiredMember = () => {
               <th>핸드폰</th>
               <th>주소</th>
               <th>생년월일</th>
-              <th>주민번호</th> {/* 주민번호 추가 */}
+              <th>주민번호</th>
               <th>상태</th>
             </tr>
           </thead>
@@ -98,8 +88,8 @@ const RetiredMember = () => {
                 <td>{member.hp}</td>
                 <td>{member.address}</td>
                 <td>{member.birth}</td>
-                <td>{member.residentNumber}</td> {/* 주민번호 추가 */}
-                <td>{member.state}</td> {/* 상태 필드 추가 */}     
+                <td>{member.residentNumber}</td>
+                <td>{member.state}</td>
               </tr>
             ))}
           </tbody>
@@ -109,4 +99,4 @@ const RetiredMember = () => {
   );
 };
 
-export default RetiredMember; // RetiredMember 컴포넌트 내보내기
+export default RetiredMember;
