@@ -101,18 +101,23 @@ public class AccountService {
 
 
     public Map<String, Object> getAccountDetail(String accountNumber, int userNo) {
+        System.out.println("accountNumber: " + accountNumber + ", userNo: " + userNo);
         AccountEntity accountEntity = accountRepository.findAccountDetailWithDeposit(accountNumber, "NORMAL", userNo);
+
         if (accountEntity != null) {
             Map<String, Object> accountData = new HashMap<>();
             accountData.put("accountNumber", accountEntity.getAccountNumber());
             accountData.put("accountBalance", accountEntity.getAccountBalance());
             accountData.put("accountLimit", accountEntity.getAccountLimit());
             accountData.put("depositName", accountEntity.getDeposit().getDepositName());
+            System.out.println("Account found: " + accountData);
             return accountData;
         } else {
+            System.out.println("Account not found");
             return null;
         }
     }
+
 
     // 계좌의 거래 내역 조회 (성공한 거래만)
     public List<LogDTO> getTransactionLogs(String accountNumber) {

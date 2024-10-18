@@ -269,7 +269,7 @@ const AccountDetail = () => {
 
       <div className="account-detail-pagination">
         <div className="pagination-center">
-          <button className="account-detail-back-button" onClick={() => navigate(`/users/${userNo}/accounts`)}>
+          <button className="account-detail-back-button" onClick={() => navigate(`/accounts`)}>
             목록
           </button>
         </div>

@@ -5,10 +5,10 @@ import com.urambank.uram.dto.AutoTransferDTO;
 import com.urambank.uram.dto.LogDTO;
 import com.urambank.uram.dto.OutAccountDTO;
 import com.urambank.uram.service.AccountService;
+import com.urambank.uram.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -23,11 +23,21 @@ import java.util.Map;
 public class AccountController {
 
     private final AccountService accountService;
+    private final JWTUtil jwtUtil;
 
     // 전체 계좌
-    @GetMapping("/users/{userNo}/accounts")
-    public ResponseEntity<Map<String, Object>> accountList(@PathVariable("userNo") int userNo) {
+    @GetMapping("/accounts")
+    public ResponseEntity<Map<String, Object>> accountList(@RequestHeader("Authorization") String token) {
         try {
+
+            // JWT 토큰에서 "Bearer " 제거
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7).trim(); // "Bearer " 제거 및 공백 제거
+            }
+
+            // JWT 토큰에서 userNo 추출
+            int userNo = jwtUtil.getUserNo(token);
+
             // 사용자 이름 가져오기
             String userName = accountService.getUserNameByUserNo(userNo);
 
@@ -48,11 +58,15 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    
+
+
     // 예금 계좌
-    @GetMapping("/users/{userNo}/accounts/category-one")
-    public ResponseEntity<Map<String, Object>> depositCategoryOneAccountList(@PathVariable("userNo") int userNo) {
+    @GetMapping("/accounts/category-one")
+    public ResponseEntity<Map<String, Object>> depositCategoryOneAccountList(@RequestHeader("Authorization") String token) {
         try {
+            // JWT 토큰에서 userNo 추출
+            int userNo = jwtUtil.getUserNo(token.replace("Bearer ", "").trim());
+
             // 사용자 이름 가져오기
             String userName = accountService.getUserNameByUserNo(userNo);
 
@@ -74,6 +88,7 @@ public class AccountController {
         }
     }
 
+
     // 카테고리별
     @GetMapping("/category/{depositCategory}")
     public ResponseEntity<List<Map<String, Object>>> categoryList(
@@ -94,7 +109,7 @@ public class AccountController {
     }
 
     // 계좌 상세
-    @GetMapping("/account/{accountNumber}")
+    @GetMapping("/account/detail/{accountNumber}")
     public ResponseEntity<Map<String, Object>> getAccountDetail(
             @PathVariable("accountNumber") String accountNumber,
             @RequestParam("userNo") int userNo) {

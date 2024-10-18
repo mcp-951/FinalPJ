@@ -88,6 +88,7 @@ import AccountTransferComplete from '../page/account/accountTransfer/AccountTran
 import AutoTransferRegister from '../page/account/autoTransfer/AutoTransferRegister'; // 자동이체 등록 페이지
 import AutoTransferRegister2 from '../page/account/autoTransfer/AutoTransferRegister2'; // 자동이체 등록 2단계 페이지
 import AutoTransferList from '../page/account/autoTransfer/AutoTransferList';
+import AutoTransferCancelPasswordCheck from '../page/account/autoTransfer/AutoTransferCancelPasswordCheck';
 
 // 에이스 동명
 import ExchangeRate from '../page/exchangePage/ExchangeRate';
@@ -198,7 +199,7 @@ const RouteComponent = () => {
                         <Route path="/Termination" exact={true} element={<Termination />} />
 
                         {/* 계좌 페이지 시작_채림님*/}
-                        {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
+                        {/* 계좌 목록 페이지 */}<Route path="/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
 {/*                         <Route path="/account/transaction-history" element={<TransactionCalendar />} /> */}
 
@@ -219,7 +220,7 @@ const RouteComponent = () => {
                         <Route path="/auto-transfer/list" element={<AutoTransferList />} />
                         <Route path="/new-transfer-modify/:autoTransNo" element={<AutoTransferRegister2 />} />
                         {/* 자동이체 해지 비밀번호 확인 페이지 */}
-{/*                         <Route path="/auto-transfer-password-check" element={<AutoTransferCancelPasswordCheck />} /> */}
+                        <Route path="/auto-transfer-password-check" element={<AutoTransferCancelPasswordCheck />} />
 
                         {/*여기는 에이스 클럽 원주민만 가능*/}
                         <Route path="/exchange-rate" exact={true} element={<ExchangeRate />} />

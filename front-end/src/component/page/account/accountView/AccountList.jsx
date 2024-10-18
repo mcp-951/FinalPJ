@@ -45,20 +45,26 @@ const AccountList = ({ type }) => {
         });
     
         const accountList = response.data;
-        const uniqueAccounts = accountList.filter((account, index, self) =>
-          index === self.findIndex((acc) => acc.accountNumber === account.accountNumber)
-        );
-    
+
+        // Set을 사용하여 중복된 계좌 번호 제거
+        const uniqueAccounts = [];
+        const seenAccounts = new Set();
+
+        accountList.forEach(account => {
+          if (!seenAccounts.has(account.accountNumber)) {
+            uniqueAccounts.push(account);
+            seenAccounts.add(account.accountNumber);
+          }
+        });
+
         setAccounts(uniqueAccounts);
       } catch (error) {
         console.error('계좌 불러오기 실패:', error);
-        setError('등록된 계좌가 없습니다. 새로운 계좌를 생성해주세요.');
-        navigate('/getNewAccount');
-        setAccounts([]);
+        setError('등록된 계좌가 없습니다.');
+        setAccounts([]);  // 오류 발생 시 빈 배열 설정
       }
     };
     
-
     // type이 변경될 때마다 fetchData 호출
     if (type && token && userNo) {
       fetchData();

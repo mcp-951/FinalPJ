@@ -6,7 +6,7 @@ import '../../../../resource/css/account/autoTransfer/AutoTransferRegister2.css'
 const AutoTransferRegister2 = () => {
   const { autoTransNo } = useParams(); // 수정 모드 시 URL에서 자동이체 번호 가져오기
   const location = useLocation();
-  const { fromAccountNumber: initialAccount } = location.state || {}; // 출금 계좌번호를 초기값으로 받기
+  const { fromAccountNumber: initialAccount, autoAgreement } = location.state || {}; // 출금 계좌번호와 약관 동의 여부 받기
 
   const [selectedAutoAccount, setSelectedAutoAccount] = useState(initialAccount || ''); // 선택된 자동이체 계좌
   const [availableAutoBalance, setAvailableAutoBalance] = useState(null); // 출금 가능 금액
@@ -41,9 +41,12 @@ const AutoTransferRegister2 = () => {
   
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+      const response = await axios.get('http://localhost:8081/uram/accounts', {
         headers: {
           'Authorization': `Bearer ${token}`
+        },
+        params: {
+          userNo: userNo // userNo를 쿼리 파라미터로 추가
         }
       });
 
@@ -229,7 +232,7 @@ const AutoTransferRegister2 = () => {
       hasError = true;
     }
 
-    if (selectedAutoAccount === autoTargetAccount) {
+    if (selectedAutoAccount && autoTargetAccount && selectedAutoAccount === autoTargetAccount) {
       newErrorMessages.autoTargetAccount = '출금 계좌와 입금 계좌가 동일할 수 없습니다.';
       hasError = true;
     }
@@ -263,7 +266,6 @@ const AutoTransferRegister2 = () => {
       const formattedStartDate = `${startYearMonth[0]}-${startYearMonth[1]}-${String(transferDay).padStart(2, '0')}`;
       const formattedEndDate = `${endYearMonth[0]}-${endYearMonth[1]}-${String(transferDay).padStart(2, '0')}`;
 
-      // 내부 계좌와 외부 계좌 분리
       const autoTransferData = {
         fromAccountDTO: { accountNumber: selectedAutoAccount },
         toAccountDTO: selectedAutoBank === '우람은행' ? { accountNumber: autoTargetAccount, bankName: selectedAutoBank } : null,
@@ -273,6 +275,7 @@ const AutoTransferRegister2 = () => {
         endDate: formattedEndDate,
         transferDay: parseInt(transferDay, 10),
         userNo: parseInt(userNo, 10),
+        autoAgreement, // 필수 약관 동의 여부 추가
       };
 
       // 백엔드로 보내는 데이터 로그 출력

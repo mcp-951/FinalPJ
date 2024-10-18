@@ -19,11 +19,15 @@ const PasswordCheck = ({ title, instructions }) => {
   // URL 쿼리 파라미터나 location.state에서 accountNumber 가져오기
   const purpose = searchParams.get('purpose');
   const accountNumberFromQuery = searchParams.get('accountNumber'); // URL 쿼리에서 가져오기
-  const { accountNumber: accountNumberFromState, productName: productNameFromState } = location.state || {}; // 모달에서 전달된 값
+  const { accountNumber: accountNumberFromState, productName: productNameFromState } = location.state || {};
+  console.log("Received accountNumber from state:", accountNumberFromState);
+  console.log("Received productName from state:", productNameFromState);
+
 
   // accountNumber를 최종적으로 결정
   const accountNumber = accountNumberFromQuery || selectedAccount || accountNumberFromState;
   const productName = selectedProductName || productNameFromState || ''; // productName도 전달받은 값 사용
+  
 
   // JWT 토큰과 userNo를 로컬 스토리지에서 가져오기
   const token = localStorage.getItem("token");
@@ -40,7 +44,7 @@ const PasswordCheck = ({ title, instructions }) => {
   // 계좌 목록을 불러오는 함수
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+      const response = await axios.get(`http://localhost:8081/uram/accounts`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -64,6 +68,8 @@ const PasswordCheck = ({ title, instructions }) => {
   useEffect(() => {
     if (!accountNumber) {
       fetchAccounts(); // accountNumber가 없을 때만 전체 계좌 목록을 불러옴
+    } else {
+      setLoading(false); // accountNumber가 있으면 로딩 상태를 해제
     }
   }, [accountNumber]);
 
@@ -71,7 +77,7 @@ const PasswordCheck = ({ title, instructions }) => {
   const handleAccountSelect = (event) => {
     const selectedAccountNumber = event.target.value;
     setSelectedAccount(selectedAccountNumber);
-
+  
     // 선택된 계좌에 맞는 상품명 설정
     const selectedAccountData = accounts.find(account => account.accountNumber === selectedAccountNumber);
     if (selectedAccountData) {
@@ -147,15 +153,18 @@ const PasswordCheck = ({ title, instructions }) => {
     <div className="password-check-container">
       <h2>{title}</h2>
       <p>{instructions}</p>
-
+  
       <div className="account-select">
         <label>계좌 선택</label>
         {Array.isArray(accounts) && accounts.length > 0 ? (
-          <select value={selectedAccount || accountNumberFromState || ''} onChange={handleAccountSelect}>
+          <select
+            value={selectedAccount || accountNumberFromState || ''}
+            onChange={handleAccountSelect}
+          >
             <option value="">계좌를 선택하세요</option>
             {accounts.map(account => (
               <option key={account.accountNumber} value={account.accountNumber}>
-                {account.accountNumber} ({account.depositName}) {/* 드롭다운에서도 계좌번호와 계좌명을 같이 표시 */}
+                {account.accountNumber} ({account.depositName})
               </option>
             ))}
           </select>
@@ -163,7 +172,7 @@ const PasswordCheck = ({ title, instructions }) => {
           <p>등록된 계좌가 없습니다.</p>
         )}
       </div>
-
+  
       <div className="password-input">
         <label>비밀번호 입력</label>
         <input
@@ -172,18 +181,23 @@ const PasswordCheck = ({ title, instructions }) => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호 입력"
         />
-        <button onClick={handlePasswordCheck} className="password-check-button">확인</button>
-
-        <span className={`password-check-status ${isPasswordValid === false ? 'error' : isPasswordValid === true ? 'check-mark' : ''}`}>
+        <button onClick={handlePasswordCheck} className="password-check-button">
+          확인
+        </button>
+  
+        <span
+          className={`password-check-status ${
+            isPasswordValid === false ? 'error' : isPasswordValid === true ? 'check-mark' : ''
+          }`}
+        >
           {errorMessage}
         </span>
       </div>
-
+  
       <button onClick={handleSubmit} className="password-submit-button" disabled={!isPasswordValid}>
         확인
       </button>
     </div>
   );
-};
 
 export default PasswordCheck;
