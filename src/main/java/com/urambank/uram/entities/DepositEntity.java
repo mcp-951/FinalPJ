@@ -14,23 +14,24 @@ import lombok.*;
 public class DepositEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "depositNo")
     private int depositNo;
 
-    @Column(nullable = false)
+    @Column(name = "depositName")
     private String depositName;
 
-    @Column(nullable = false)
+    @Column(name = "depositRate")
     private float depositRate;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "depositContent")
     private String depositContent;
 
-    @Column(nullable = false)
+    @Column(name = "depositCategory")
     private int depositCategory;
 
-    @Column(nullable = true)
+    @Column(name = "depositIMG")
     private String depositIMG;
 
-    @Column(nullable = false, columnDefinition = "CHAR(1) DEFAULT 'Y'")
+    @Column(name = "depositState")
     private char depositState;
 }

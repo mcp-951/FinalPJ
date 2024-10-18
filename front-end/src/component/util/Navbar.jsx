@@ -13,7 +13,6 @@ import TaxDrop from './NavbarDropdownMenu/TaxDrop';
 import ManageDrop from './NavbarDropdownMenu/ManageDrop';
 import InvestmentDrop from './NavbarDropdownMenu/InvestmentDrop';
 import SearchBar from './searchBar/SearchBar';
-import {useNavigate} from 'react-router-dom';
 
 
 function Navbar(){

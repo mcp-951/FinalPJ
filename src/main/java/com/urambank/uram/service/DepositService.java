@@ -131,7 +131,6 @@ public class DepositService {
         autoTransfer.setAutoSendPrice(newAccount.getAccountBalance()); // 이체 금액
         autoTransfer.setReservationDate(date); // 예약 날짜
         autoTransfer.setReservationState("ACTIVE"); // 예약 상태
-        autoTransfer.setAutoShow('Y'); // 자동 표시 여부
         autoTransfer.setStartDate(startDate); // 시작일
         autoTransfer.setEndDate(EndDate); // 종료일
         autoTransfer.setTransferDay(1); // 매월 이체할 날 (예: 1일)

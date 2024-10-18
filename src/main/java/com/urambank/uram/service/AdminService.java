@@ -4,7 +4,6 @@ import com.urambank.uram.dto.AccountDTO;
 import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.dto.LogDTO;
 import com.urambank.uram.dto.DepositDTO;
-import com.urambank.uram.dto.LoanDTO;
 import com.urambank.uram.entities.LogEntity;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.entities.AccountEntity;
@@ -234,84 +233,8 @@ public List<DepositDTO> getDeposits() {
     return list;  // 예금 상품 목록 반환
 }
 //------------------------------------ 대출 관련------------------------------------------------------
-    // DTO -> Entity 변환
-    /*
-    private LoanEntity convertToLoanEntity(LoanDTO loanDTO) {
-        System.out.println("<<< AdminService convertToLoanEntity >>>");
-        return LoanEntity.builder()
-                .loanNo(loanDTO.getLoanNo())
-                .loanName(loanDTO.getLoanName())
-                .loanRate(loanDTO.getLoanRate())
-                .loanContent(loanDTO.getLoanContent())
-                .loanState(loanDTO.getLoanState())
-                .build();
-    }
 
-
-
-    // Entity -> DTO 변환
-    private LoanDTO convertToLoanDTO(LoanEntity loanEntity) {
-        return LoanDTO.builder()
-                .loanNo(loanEntity.getLoanNo())
-                .loanName(loanEntity.getLoanName())
-                .loanRate(loanEntity.getLoanRate())
-                .loanContent(loanEntity.getLoanContent())
-                .loanState(loanEntity.getLoanState())
-                .build();
-    }
-
-    // 대출 상품 목록 조회
-    public List<LoanDTO> getLoans() {
-        Page<LoanEntity> loanEntities = loanRepository.findByLoanState('y',Pageable.unpaged());
-        List<LoanDTO> loanDTOs = new ArrayList<>();
-
-        for (LoanEntity entity : loanEntities) {
-            LoanDTO loanDTO = LoanDTO.builder()
-                    .loanNo(entity.getLoanNo())
-                    .loanName(entity.getLoanName())
-                    .loanRate(entity.getLoanRate())
-                    .loanContent(entity.getLoanContent())
-                    .loanState(entity.getLoanState())
-                    .build();
-            loanDTOs.add(loanDTO);
-        }
-
-    return loanDTOs;
-    }
-
-    // 대출 상품 등록
-    public void registerLoan(LoanDTO loanDTO) {
-        LoanEntity loanEntity = LoanEntity.builder()
-                .loanName(loanDTO.getLoanName())
-                .loanRate(loanDTO.getLoanRate())
-                .loanContent(loanDTO.getLoanContent())
-                .loanState('y')
-                .build();
-        System.out.println("<<< AdminService registerLoan  >>> : " + loanEntity);
-        loanRepository.save(loanEntity);
-    }
-
-    // 대출 상품 수정
-    public void editLoan(int loanNo, LoanDTO loanDTO) {
-        LoanEntity loanEntity = loanRepository.findById(loanNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 대출 상품을 찾을 수 없습니다."));
-
-        loanEntity.setLoanName(loanDTO.getLoanName());
-        loanEntity.setLoanRate(loanDTO.getLoanRate());
-        loanEntity.setLoanContent(loanDTO.getLoanContent());
-
-        loanRepository.save(loanEntity);
-    }
-
-    // 대출 상품 삭제 (loanState를 'Closed'로 변경)
-    public void deleteLoan(int loanNo) {
-        LoanEntity loanEntity = loanRepository.findById(loanNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 대출 상품을 찾을 수 없습니다."));
-
-        loanEntity.setLoanState('n');
-        loanRepository.save(loanEntity);
-    }
-    //-------------------------------- 거래 관련 ---------------------------------------------------------
+//-------------------------------- 거래 관련 ---------------------------------------------------------
 // Entity -> DTO 변환
     private LogDTO convertToLogDTO(LogEntity logEntity) {
         return LogDTO.builder()
@@ -323,7 +246,6 @@ public List<DepositDTO> getDeposits() {
                 .logState(logEntity.getLogState())
                 .build();
     }
-     */
     // DTO -> Entity 변환
     private LogEntity convertToLogEntity(LogDTO logDTO) {
         return LogEntity.builder()
