@@ -141,7 +141,7 @@ const RouteComponent = () => {
                         <Route path="/ocr" exact={true} element={<ImgSelect />} />
                         {/*대출*/}
                         <Route path="/loanmain" exact={true} element={<LoanMain />} />
-                        <Route path="/loanmain/loandetail" exact={true} element={<LoanDetail />} />
+                        <Route path="/loanmain/loandetail/:loanProductNo" exact={true} element={<LoanDetail />} />
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
                         {/* <Route path="/adminList" element={<AdminList />} /> */}
