@@ -210,6 +210,15 @@ public class DepositService {
 //        int userNo = jwtUtil.getUserNo(token); // JWT 유틸을 사용해 토큰에서 userNo 추출
 //        return accountRepository.findByUserNoAndAccountState(userNo, "NORMAL"); // "NORMAL" 상태의 계좌만 조회
 //    }
+
+    public String getUserPhoneNumber(String token) {
+        int userNo = jwtUtil.getUserNo(token);
+        User user = userRepository.findByUserNo(userNo);
+        if (user != null) {
+            return user.getHp(); // 휴대폰 번호 필드가 `hp`인 경우
+        }
+        return null; // 유저가 없을 경우 null 반환
+    }
 }
 
 

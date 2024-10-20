@@ -21,7 +21,7 @@ const AutoTransferRegister = () => {
     }
 
     // '예' 클릭 시 AutoTransferRegisterStep2로 이동하며 autoAgreement 값을 y로 전달
-    navigate('/auto-transfer/step2', { state: { autoAgreement: 'y' } });
+    navigate('/auto-transfer/step2', { state: { autoAgreement: 'Y' } });
   };
 
   const handleNoClick = () => {

@@ -32,7 +32,7 @@ const AccountList = ({ type }) => {
         if (type === '예금') {
           depositCategory = 1;
         } else if (type === '적금') {
-          depositCategory = 3;
+          depositCategory = 2;
         }
     
         const response = await axios.get(`http://localhost:8081/uram/category/${depositCategory}`, {

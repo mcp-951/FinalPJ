@@ -29,6 +29,14 @@ const AutoTransferRegister2 = () => {
   const userNo = localStorage.getItem("userNo");
 
   useEffect(() => {
+    const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     console.log('Location State:', location.state); // 전달된 state 값 확인
     fetchAccounts(); 
     if (autoTransNo) {
@@ -237,8 +245,12 @@ const AutoTransferRegister2 = () => {
       hasError = true;
     }
 
+    // 이체 금액 검증 추가 (이체 금액은 0원 이상이어야 하며 입력이 필요함)
     if (!autoTransferAmount) {
-      newErrorMessages.autoTransferAmount = '이체 금액을 입력하세요.';
+      newErrorMessages.autoTransferAmount = '이체 금액을 입력해주세요.';
+      hasError = true;
+    } else if (parseInt(autoTransferAmount) <= 0) {
+      newErrorMessages.autoTransferAmount = '이체 금액은 0원보다 커야 합니다.';
       hasError = true;
     } else if (parseInt(autoTransferAmount) > availableAutoBalance) {
       newErrorMessages.autoTransferAmount = '이체 금액이 잔액보다 큽니다.';
@@ -253,8 +265,19 @@ const AutoTransferRegister2 = () => {
       hasError = true;
     }
 
+    const currentDate = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // 이체 기간 검증 추가
     if (!startDate || !endDate) {
       newErrorMessages.transferPeriod = '이체 기간을 설정하세요.';
+      hasError = true;
+    } else if (start <= currentDate) {
+      newErrorMessages.transferPeriod = '시작일은 현재 날짜보다 미래여야 합니다.';
+      hasError = true;
+    } else if (end <= start) {
+      newErrorMessages.transferPeriod = '종료일은 시작일보다 미래여야 합니다.';
       hasError = true;
     }
 
@@ -313,7 +336,7 @@ const AutoTransferRegister2 = () => {
         setErrorMessages({ general: '자동이체 처리 중 오류가 발생했습니다.' });
       }
     }
-};
+  };
 
   return (
     <div className="transfer-container">
@@ -414,7 +437,7 @@ const AutoTransferRegister2 = () => {
                 <input
                   type="text"
                   value={autoTransferAmount}
-                  onChange={(e) => setAutoTransferAmount(e.target.value)}
+                  onChange={(e) => setAutoTransferAmount(e.target.value)}  // 금액 입력 시 바로 설정
                   placeholder="금액 입력"
                 />
                 {errorMessages.autoTransferAmount && <span className="error-message">{errorMessages.autoTransferAmount}</span>}

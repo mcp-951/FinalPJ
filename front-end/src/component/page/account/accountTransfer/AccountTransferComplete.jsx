@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../../../../resource/css/account/accountTransfer/AccountTransferComplete.css';
 
@@ -27,6 +27,15 @@ const AccountTransferComplete = () => {
   const handleGoToAccountList = () => {
     navigate('/accounts');  // 계좌 목록으로 이동
   };  
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   return (
     <div className="transfer-complete-container">

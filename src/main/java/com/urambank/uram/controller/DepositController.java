@@ -19,7 +19,6 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products/deposits")
-
 public class DepositController {
 
     private PasswordEncoder passwordEncoder;
@@ -76,4 +75,22 @@ public class DepositController {
 //        String responseMessage = depositService.terminateDeposit(token, accountNo);
 //        return ResponseEntity.ok(responseMessage);
 //    }
+
+    @GetMapping("/phone")
+    public ResponseEntity<String> getUserPhoneNumber(@RequestHeader("Authorization") String token) {
+        try {
+            String cleanToken = token.replace("Bearer ", ""); // "Bearer " 제거하여 실제 토큰만 추출
+            String phoneNumber = depositService.getUserPhoneNumber(cleanToken); // cleanToken 사용
+            if (phoneNumber != null) {
+                return ResponseEntity.ok(phoneNumber);
+            } else {
+                return ResponseEntity.status(404).body("User phone number not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+
 }

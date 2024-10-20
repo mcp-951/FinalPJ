@@ -23,7 +23,7 @@ public class AccountDTO {
     private String accountState;
     private Date accountOpen;
     private Date accountClose;
-    private double accountRate;
+    private String withdrawal;
 
     public static AccountDTO toAccountDTO(AccountEntity accountEntity) {
         AccountDTO accountDTO = new AccountDTO();
@@ -47,3 +47,4 @@ public class AccountDTO {
     }
 
 }
+

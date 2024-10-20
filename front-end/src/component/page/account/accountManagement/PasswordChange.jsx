@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import apiSer from '../../../ApiService';  // apiSer를 import
+import apiSer from '../../../ApiService'; // apiSer를 import
 import axios from 'axios';
 import '../../../../resource/css/account/accountManagement/PasswordChange.css';
 
@@ -11,7 +11,7 @@ const PasswordChange = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isVerified, setIsVerified] = useState(false); // 인증 여부
   const [error, setError] = useState('');
-  const [hp, setHp] = useState(''); // 휴대폰 번호 입력 상태
+  const [hp, setHp] = useState(''); // 핸드폰 번호 상태
   const [hpAuthKey, setHpAuthKey] = useState(''); // 서버로부터 받은 인증번호
   const [enteredAuthKey, setEnteredAuthKey] = useState(''); // 사용자가 입력한 인증번호
   const [authSuccess, setAuthSuccess] = useState(false); // 인증 성공 여부
@@ -21,8 +21,36 @@ const PasswordChange = () => {
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");
 
-  // 전달된 계좌명 (productName)
+  // 전달된 계좌명 (productName)과 목적 (purpose)
   const productName = location.state?.productName || 'Unknown';
+  const purpose = location.state?.purpose || 'Unknown'; // 목적 추가
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  // 핸드폰 번호 가져오기
+  useEffect(() => {
+    const fetchPhoneNumber = async () => {
+      try {
+        const phoneNumber = await apiSer.getUserPhoneNumber(token);
+        console.log('Fetched phone number:', phoneNumber); // 응답값 로그 출력
+        setHp(phoneNumber); // 핸드폰 번호를 설정
+      } catch (error) {
+        console.error('Error fetching phone number:', error);
+        setError('핸드폰 번호 정보를 불러오는 중 오류가 발생했습니다.');
+      }
+    };
+
+    if (token) {
+      fetchPhoneNumber();
+    }
+  }, [token]);
 
   // 인증번호 받기 로직
   const handleCheckHp = async () => {
@@ -122,6 +150,7 @@ const PasswordChange = () => {
                 value={hp}
                 onChange={(e) => setHp(e.target.value)}
                 placeholder="01012345678"
+                readOnly // 핸드폰 번호는 수정 불가능
               />
               <button onClick={handleCheckHp} className="verify-button">
                 인증번호 받기

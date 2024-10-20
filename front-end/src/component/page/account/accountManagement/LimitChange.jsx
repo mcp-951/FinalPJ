@@ -20,7 +20,7 @@ const LimitChange = () => {
   // 이체 한도 정보를 받아오는 함수
   const fetchLimits = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+      const response = await axios.get(`http://localhost:8081/uram/account/detail/${accountNumber}`, {
         headers: {
           'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
         },
@@ -34,6 +34,15 @@ const LimitChange = () => {
       console.error('Error fetching limits: ', error);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   useEffect(() => {
     // 컴포넌트가 마운트되면 현재 이체한도 데이터를 불러옴

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../../../../resource/css/account/accountManagement/PasswordCheck.css';
 import axios from 'axios';
@@ -70,6 +70,15 @@ const AutoTransferCancelPasswordCheck = () => {
       alert('먼저 비밀번호를 확인해주세요.');
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   return (
     <div className="password-check-container">

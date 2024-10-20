@@ -117,14 +117,13 @@ const AccountTransfer = () => {
 
   // 금액 클릭 시 설정
   const handleAmountClick = (amount) => {
-    // 출금 가능 금액을 확인하지 않았어도 금액은 설정 가능
-    setTransferAmount(amount);
+    setTransferAmount(amount); // 클릭한 금액을 설정
     setErrorMessages((prevState) => ({
       ...prevState,
       transferAmount: '',
     }));
   };
-  
+
   // 비밀번호 확인 로직 (API 호출)
   const handlePasswordCheck = async () => {
     if (!password) {
@@ -226,8 +225,12 @@ const AccountTransfer = () => {
       hasError = true;
     }
 
+    // 금액 검증: 0원 초과여야 함
     if (!transferAmount) {
-      newErrorMessages.transferAmount = '이체 금액을 입력하세요.';
+      newErrorMessages.transferAmount = '이체 금액을 입력해주세요.';
+      hasError = true;
+    } else if (parseInt(transferAmount, 10) <= 0) {
+      newErrorMessages.transferAmount = '이체 금액은 0원보다 커야 합니다.';
       hasError = true;
     } else if (availableBalance !== null && parseInt(transferAmount, 10) > availableBalance) {
       newErrorMessages.transferAmount = '이체 금액이 잔액보다 큽니다.';
@@ -346,7 +349,7 @@ const AccountTransfer = () => {
                 <input
                   type="text"
                   value={transferAmount}
-                  onChange={(e) => setTransferAmount(e.target.value)}
+                  onChange={(e) => setTransferAmount(e.target.value)} // 금액 입력 시 바로 설정
                   placeholder="금액 입력"
                 />
                 {errorMessages.transferAmount && <span className="error-message">{errorMessages.transferAmount}</span>}
