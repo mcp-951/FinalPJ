@@ -57,11 +57,13 @@ public class UserService {
 
     public String findByUserId(String userId) {
         System.out.println("<<< UserService - findByUserId() >>>");
-            User user = new User();
+
         try{
-            user = userRepository.findByUserId(userId);
+            User user = userRepository.findByUserId(userId);
+            System.out.println("userid :" + user.getUserId());
             return user.getUserId();
         }catch(NullPointerException e){
+            System.out.println("userid :" );
             return "";
         }
     }

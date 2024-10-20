@@ -50,7 +50,7 @@ function SignUpForKakao() {
     // 입력창 실시간 업데이트
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setForm((prevForm) => ({ ...prevForm, [name]: value }));
+        setForm((prevForm) => ({ ...form, [name]: value }));
     };
 
     const startCheckHpHandler = () => {
@@ -186,12 +186,7 @@ const checkResNo2 = () => {
     // 회원가입 완료
     const handleSubmit = (e) => {
         e.preventDefault();  // 기본 폼 제출 방지
-
-        if (idCheckState === '' || idCheckState === false) {
-            setIdCheckMessage('중복확인 해주세요.');
-        } else if (form.userPw === null || form.userPw === '' || form.userPw !== form.confirmPassword) {
-            alert("비밀번호 확인 바랍니다.");
-        } else if (authHp === 'false' || authHp === '') {
+        if (authHp === 'false' || authHp === '') {
             alert("휴대폰 인증이 되지 않았습니다.");
         } else {
             console.log("주소: ", form.address);
@@ -200,6 +195,7 @@ const checkResNo2 = () => {
                 .then((response) => {
                     console.log('회원가입 성공:', response);
                     // 성공 시 처리
+                    navigate("/login");
                 })
                 .catch((error) => {
                     console.error('회원가입 중 오류 발생:', error);
@@ -370,7 +366,7 @@ const checkResNo2 = () => {
               </Form.Group>
             )}
         </Form.Group>
-          <Button variant="primary" type="submit" className="mt-3">가입완료</Button>
+          <Button onClick={handleSubmit}>가입완료</Button>
         </Form>
       </Row>
     </Container>
