@@ -1,0 +1,142 @@
+/* 전체 페이지 컨테이너 스타일 */
+.ExchangeList-container {
+    text-align: center;
+    min-height: 100vh;
+    padding-bottom: 150px;
+    background-color: #f9f9f9; /* 부드러운 배경색 */
+}
+
+/* 검색 바 스타일 */
+.ExchangeList-searchBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #4A90E2; /* 테마 색상 */
+    padding: 8px; /* 패딩 줄임 */
+    border-radius: 5px;
+    margin: 20px auto;
+    width: 70%; /* 너비를 줄임 */
+}
+
+.ExchangeList-searchBar label, .ExchangeList-searchBar span {
+    color: white;
+    font-size: 16px; /* 폰트 크기를 줄임 */
+    margin-right: 8px; /* 간격을 줄임 */
+}
+
+.ExchangeList-searchBar input {
+    padding: 6px; /* 내부 패딩을 줄임 */
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    margin-right: 8px; /* 입력란 사이 간격을 줄임 */
+    width: 120px; /* 입력창 너비를 줄임 */
+}
+
+.ExchangeList-searchBar button {
+    padding: 8px 16px; /* 버튼 크기 줄임 */
+    background-color: #2564ab;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ExchangeList-searchBar button:hover {
+    background-color: #4179c5;
+}
+
+/* 테이블 스타일 */
+.ExchangeList-table {
+    margin: 20px auto;
+    width: 80%; /* 테이블 너비를 줄임 */
+    border-collapse: collapse;
+    font-size: 16px; /* 폰트 크기 줄임 */
+    border: 1px solid #ddd;
+}
+
+.ExchangeList-table thead {
+    background-color: #4A90E2;
+    color: white;
+}
+
+.ExchangeList-table th, .ExchangeList-table td {
+    padding: 8px; /* 셀 내부 패딩 줄임 */
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.ExchangeList-table td img {
+    width: 25px; /* 이미지 크기 줄임 */
+    cursor: pointer;
+}
+
+.ExchangeList-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.ExchangeList-table tbody tr:hover {
+    background-color: #e0e7ff;
+}
+
+/* 지도 스타일 */
+.ExchangeList-map {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    margin-top: 10px;
+}
+
+/* 페이지네이션 버튼 스타일 */
+.ExchangeList-pagination {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.ExchangeList-pagination button {
+    margin: 0 5px;
+    padding: 6px 12px; /* 패딩을 줄여서 더 컴팩트하게 */
+    background-color: #f2f2f2;
+    color: black;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ExchangeList-pagination button.active {
+    background-color: #4A90E2;
+    color: white;
+}
+
+.ExchangeList-pagination button:hover {
+    background-color: #ddd;
+}
+
+/* 뒤로가기 버튼 스타일 */
+.ExchangeList-backButton {
+    margin-top: 20px;
+    margin-bottom: 50px;
+    padding: 8px 16px; /* 패딩을 줄여 버튼 크기 축소 */
+    background-color: #4A90E2;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ExchangeList-backButton:hover {
+    background-color: #4179c5;
+}
+
+/* 푸터 스타일 */
+.ExchangeList-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+}

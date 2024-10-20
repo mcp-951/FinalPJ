@@ -66,7 +66,7 @@
 .submit-btn {
   padding: 10px 20px;
   font-size: 14px;
-  background-color: #007bff;
+  background-color: #74a1d2;
   color: white;
   border: none;
   border-radius: 4px;
@@ -75,7 +75,7 @@
 }
 
 .submit-btn:hover {
-  background-color: #0056b3;
+  background-color: #5d95d1;
 }
 
 /* 취소 버튼 */

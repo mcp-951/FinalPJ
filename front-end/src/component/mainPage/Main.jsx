@@ -2,6 +2,7 @@ import React from "react";
 import Carouesl_Main from './Carousel';
 import Middlebar from './Middlebar';
 import BottomNewsBoard from './BottomNewsBoard';
+import ChatBotButton from './ChatBotButton';  // 챗봇 버튼 import
 
 function Main() {
     return (
@@ -15,10 +16,14 @@ function Main() {
             <div className='Menu_bar'>
                 <Middlebar />
             </div>
+
             <div className='Board_main'>
-                {/* 필요한 경우 공지사항과 뉴스 보드를 사용 */}
-                {/* <BottomNoticeBoard />*/
-                <BottomNewsBoard /> }
+                <BottomNewsBoard />
+            </div>
+
+            {/* 챗봇 버튼 추가 */}
+            <div className='ChatBotButton'>
+                <ChatBotButton />
             </div>
         </div>
     );
