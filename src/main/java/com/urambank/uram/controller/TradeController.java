@@ -2,6 +2,7 @@ package com.urambank.uram.controller;
 
 import com.urambank.uram.dto.AccountDTO;
 import com.urambank.uram.dto.CurrencyExchangeDTO;
+import com.urambank.uram.entities.AccountEntity;
 import com.urambank.uram.entities.PickUpPlaceEntity;
 import com.urambank.uram.service.AccountService;
 import com.urambank.uram.service.TradeService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
@@ -125,5 +127,28 @@ public class TradeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    // 선택한 계좌 번호로 accountNo와 잔액 반환
+    @GetMapping("/get-account-info/{selectedAccountNumber}")
+    public ResponseEntity<Map<String, Object>> getAccountInfo(@PathVariable("selectedAccountNumber") String selectedAccountNumber) {
+        try {
+            // accountNumber에 해당하는 accountNo와 잔액 조회
+            Optional<AccountEntity> accountOptional = tradeService.findByAccountNumber(selectedAccountNumber);
+
+            if (accountOptional.isPresent()) {  // 계좌가 존재할 때
+                AccountEntity account = accountOptional.get();  // Optional에서 실제 객체 추출
+                Map<String, Object> response = new HashMap<>();
+                response.put("accountNo", account.getAccountNo());
+                response.put("accountBalance", account.getAccountBalance());
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 계좌가 없을 때
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
 }

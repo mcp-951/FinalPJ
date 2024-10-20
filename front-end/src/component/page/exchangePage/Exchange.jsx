@@ -11,11 +11,12 @@ const Exchange = () => {
     const [accountNumbers, setAccountNumbers] = useState([]);  // 계좌 번호 리스트
     const [selectedAccountNumber, setSelectedAccountNumber] = useState('');  // 선택된 계좌 번호
     const [accountNo, setAccountNo] = useState(null);  // 백엔드에서 가져올 accountNo
+    const [selectedAccountBalance, setSelectedAccountBalance] = useState(0);  // 선택한 계좌의 잔액
     const [currency, setCurrency] = useState('');
-    const [amount, setAmount] = useState('');
+    const [amount, setAmount] = useState('');  // 환전 금액
     const [rate, setRate] = useState(0);
     const [requiredWon, setRequiredWon] = useState(0);
-    const [date, setDate] = useState('');
+    const [date, setDate] = useState('');  // 수령일
     const [branch, setBranch] = useState('');  // 선택된 지점
     const [password, setPassword] = useState('');
     const [isPasswordConfirmed, setIsPasswordConfirmed] = useState(false);
@@ -45,22 +46,30 @@ const Exchange = () => {
                 const userNo = userNoResponse.data;
                 setUserNo(userNo);
                 console.log("UserNo:", userNo);
-
+    
                 // userNo로 예금 계좌 목록 가져오기
                 const accountsResponse = await axios.get(`http://localhost:8081/exchange/users/${userNo}/accounts/category-one`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
                 });
-
+    
+                // 상태 코드가 NO_CONTENT(204)일 때 계좌 없음 처리
+                if (accountsResponse.status === 204) {
+                    alert("신청할 수 있는 계좌가 필요합니다.");
+                    navigate('/');  // 메인 페이지로 이동
+                    return;
+                }
+    
                 // 백엔드에서 반환된 계좌 목록을 상태에 저장
                 const accountData = accountsResponse.data.accounts;
                 setAccountNumbers(accountData);
                 console.log("Accounts (depositCategory 1):", accountData);
             } catch (error) {
                 console.error("계좌 정보를 가져오는 중 오류 발생:", error);
+                alert("계좌 정보를 가져오는 중 오류가 발생했습니다.");
             }
-
+    
             try {
                 const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`, {
                     headers: {
@@ -73,23 +82,24 @@ const Exchange = () => {
                 console.error("지점 정보를 가져오는 중 오류 발생:", error);
             }
         };
-
+    
         fetchUserData();
     }, [token, userId, navigate]);
 
-    // 계좌 선택 시 해당 accountNo 가져오기
+    // 계좌 선택 시 해당 accountNo와 잔액 가져오기
     const handleSelectedAccountNumber = async (event) => {
         const selectedAccountNumber = event.target.value;
         setSelectedAccountNumber(selectedAccountNumber);
 
         try {
-            const response = await axios.get(`http://localhost:8081/exchange/get-account-no/${selectedAccountNumber}`, {
+            const response = await axios.get(`http://localhost:8081/exchange/get-account-info/${selectedAccountNumber}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setAccountNo(response.data);
-            console.log("가져온 accountNo:", response.data);
+            setAccountNo(response.data.accountNo);  // accountNo는 그대로 전송에 사용
+            setSelectedAccountBalance(response.data.accountBalance);  // 잔액 설정 (UI용)
+            console.log("가져온 accountNo와 잔액:", response.data);
         } catch (error) {
             console.error("계좌 번호를 가져오는 중 오류 발생:", error);
             alert("계좌 번호를 가져오는 데 실패했습니다.");
@@ -98,13 +108,14 @@ const Exchange = () => {
 
     // 통화 환율 계산
     useEffect(() => {
-        if (currency) {
+        if (currency && amount > 0) {
             axios.get(`https://api.exchangerate-api.com/v4/latest/${currency}`)
                 .then(response => {
                     setRate(response.data.rates.KRW);
-                    setRequiredWon(amount * response.data.rates.KRW);
+                    const calculatedWon = amount * response.data.rates.KRW;
+                    setRequiredWon(calculatedWon);
                     console.log("환율:", response.data.rates.KRW);
-                    console.log("필요 원화:", amount * response.data.rates.KRW);
+                    console.log("필요 원화:", calculatedWon);
                 })
                 .catch(error => {
                     console.error('환율 정보를 가져오는 중 오류 발생:', error);
@@ -137,7 +148,7 @@ const Exchange = () => {
             );
             if (response.data === 1) {
                 alert("비밀번호가 일치합니다");
-                setIsPasswordConfirmed(true);
+                setIsPasswordConfirmed(true);  // 비밀번호 일치 시 상태 변경
             } else {
                 alert('비밀번호가 일치하지 않습니다.');
                 setIsPasswordConfirmed(false);
@@ -149,12 +160,46 @@ const Exchange = () => {
         }
     };
 
+    // 수령일 유효성 검사
+    const validateReceiveDate = () => {
+        const today = new Date().toISOString().split('T')[0];  // 오늘 날짜 (YYYY-MM-DD)
+        if (date < today) {
+            alert('지난 날짜는 선택할 수 없습니다.');
+            return false;
+        }
+        return true;
+    };
+
+    // 환전 금액 유효성 검사
+    const validateAmount = () => {
+        if (amount <= 0) {
+            alert('0원 이하는 환전신청이 불가능합니다.');
+            return false;
+        }
+        if (requiredWon > selectedAccountBalance) {
+            alert('계좌 잔액보다 많은 금액은 신청할 수 없습니다.');
+            return false;
+        }
+        return true;
+    };
+
     // 환전 신청 처리
     const handleSubmit = () => {
         if (!isPasswordConfirmed) {
             alert('비밀번호를 확인하세요.');
             return;
         }
+
+        // 수령일 유효성 검사
+        if (!validateReceiveDate()) {
+            return;
+        }
+
+        // 환전 금액 유효성 검사
+        if (!validateAmount()) {
+            return;
+        }
+
         if (!currency || !amount || !date || !branch || !selectedAccountNumber || !accountNo) {
             alert('모든 항목을 입력해주세요.');
             return;
@@ -166,10 +211,10 @@ const Exchange = () => {
             return;
         }
 
-        // 전송할 데이터를 콘솔에 먼저 출력하여 확인
+        // 전송할 데이터를 콘솔에 먼저 출력하여 확인 (기존 구조 유지)
         const exchangeDetails = {
             userNo,
-            accountNo,
+            accountNo,  // accountNo만 전송, 잔액은 전송하지 않음
             selectCountry: currency,
             exchangeRate: rate,
             tradeDate: new Date().toISOString().split('T')[0],
@@ -228,7 +273,7 @@ const Exchange = () => {
                 </div>
                 <div className="exchange-column">
                     <label className='exlabel'>환전 금액</label>
-                    <input className="ex" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                    <input className="ex" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
                 </div>
                 <div className="exchange-column">
                     <label className='exlabel'>현재 환율</label>
@@ -262,7 +307,7 @@ const Exchange = () => {
                         <option value="">계좌를 선택하세요</option>
                         {accountNumbers.map((account, index) => (
                             <option key={index} value={account.accountNumber}>
-                                {account.accountNumber}
+                                {account.accountNumber} - 잔액: {account.accountBalance}원
                             </option>
                         ))}
                     </select>
@@ -274,8 +319,11 @@ const Exchange = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             className="password-input"
                             ref={passwordInputRef}
+                            disabled={isPasswordConfirmed}  // 비밀번호가 확인되면 비활성화
                         />
-                        <button className='password-button' onClick={PwdSubmit}>확인</button>
+                        <button className='password-button' onClick={PwdSubmit} disabled={isPasswordConfirmed}>
+                            {isPasswordConfirmed ? '확인 완료' : '확인'}
+                        </button>
                     </div>
                 </div>
             </div>
