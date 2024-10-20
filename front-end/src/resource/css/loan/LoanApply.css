@@ -1,0 +1,24 @@
+
+.terms-box-unique {
+    max-height: 200px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+  }
+  
+  .terms-content-unique {
+    line-height: 1.6;
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .Terms_Agreement_Container{
+    text-align: left;
+  }
+
+  .Next_Cancel_Container Button{
+    margin-top: 2rem;
+    margin-left: 1rem;
+  }

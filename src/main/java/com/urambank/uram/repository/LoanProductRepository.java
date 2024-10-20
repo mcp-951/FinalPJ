@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface LoanProductRepository extends JpaRepository<LoanProductEntity, Integer> {
+public interface LoanProductRepository extends JpaRepository<LoanProductEntity,Integer> {
     List<LoanProductEntity> findByViewPoint(char viewPoint);
-    LoanProductEntity findByLoanProductNo(int loanProductNo);
+    LoanProductEntity findByLoanProductNo(int productNo);
 }

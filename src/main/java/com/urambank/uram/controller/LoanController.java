@@ -1,6 +1,7 @@
 package com.urambank.uram.controller;
 
 import com.urambank.uram.dto.LoanProductDTO;
+import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.service.LoanServiece;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,5 +26,10 @@ public class LoanController {
     @GetMapping("/detail/{loanProductNo}")
     public LoanProductDTO loanProductDetail(@PathVariable("loanProductNo") int loanProductNo){
         return loanServiec.loanProductDetail(loanProductNo);
+    }
+
+    @GetMapping("/apply/{userNo}")
+    public UserDTO userInfo(@PathVariable("userNo") int userNo){
+        return loanServiec.userInfo(userNo);
     }
 }

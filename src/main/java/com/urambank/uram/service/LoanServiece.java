@@ -1,9 +1,12 @@
 package com.urambank.uram.service;
 
 import com.urambank.uram.dto.LoanProductDTO;
+import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.entities.LoanProductEntity;
+import com.urambank.uram.entities.User;
 import com.urambank.uram.repository.LoanProductRepository;
 import com.urambank.uram.repository.LoanRepository;
+import com.urambank.uram.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoanServiece {
     private final LoanProductRepository loanProductRepository;
+    private final UserRepository userRepository;
     private final LoanRepository loanRepository;
 
     public List<LoanProductDTO> loanProductList(){
@@ -53,6 +57,17 @@ public class LoanServiece {
                 .minInterestRate(eDto.getMinInterestRate())
                 .maxInterestRate(eDto.getMaxInterestRate())
                 .earlyRepaymentFee(eDto.getEarlyRepaymentFee())
+                .minCreditScore(eDto.getMinCreditScore())
+                .build();
+        return dto;
+    }
+
+    public UserDTO userInfo(int userNo){
+        User eDto =  userRepository.findByUserNo(userNo);
+        UserDTO dto = UserDTO.builder()
+                .name(eDto.getName())
+                .hp(eDto.getHp())
+                .residentNumber(eDto.getResidentNumber())
                 .build();
         return dto;
     }

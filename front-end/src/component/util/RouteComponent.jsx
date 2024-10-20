@@ -33,6 +33,11 @@ import TaxHistory from 'component/page/tax/TaxHistory';
 // OCR 데이터
 import ImgSelect from 'component/page/ocrPage/ImgSelect';
 
+// 대출
+import LoanMain from 'component/page/loan/LoanMain';
+import LoanDetail from 'component/page/loan/LoanDetail';
+import LoanApply from 'component/page/loan/LoanApply';
+
 // 어드민 라우터 임포트
 import AdminList from '../page/adminPage/admin/AdminList';
 import AdminLogin from '../page/adminPage/admin/AdminLogin';
@@ -105,8 +110,7 @@ import Footer from './Footer';
 import SignUpForKakao from 'component/page/loginPage/SignUpForKakao';
 import FindIdAndPw from 'component/page/loginPage/FindIdAndPw';
 import RedirectPage from 'component/page/loginPage/RedirectKakao';
-import LoanMain from 'component/page/loan/LoanMain';
-import LoanDetail from 'component/page/loan/LoanDetail';
+
 
 
 
@@ -142,6 +146,8 @@ const RouteComponent = () => {
                         {/*대출*/}
                         <Route path="/loanmain" exact={true} element={<LoanMain />} />
                         <Route path="/loanmain/loandetail/:loanProductNo" exact={true} element={<LoanDetail />} />
+                        <Route path="/loanmain/loanapply/:loanProductNo" exact={true} element={<LoanApply />} />
+                        
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
                         {/* <Route path="/adminList" element={<AdminList />} /> */}
