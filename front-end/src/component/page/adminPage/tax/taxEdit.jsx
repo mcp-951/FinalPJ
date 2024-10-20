@@ -19,7 +19,6 @@ const TaxEdit = () => {
     totalAmount: 0, // 총 고지액 추가
     taxCategory: location.state?.taxCategory || '수도', // state에서 세금 종류를 받아옴
   });
-  const [lastMonthFee, setLastMonthFee] = useState(0); // 9월 요금 저장용
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
 
@@ -45,17 +44,6 @@ const TaxEdit = () => {
         }));
       })
       .catch(error => console.error('Error fetching user name:', error));
-
-      // 지난 달 요금 정보 가져오기
-      axios.get(`http://localhost:8081/tax/lastMonth/${response.data.userNo}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(lastMonthResponse => {
-        setLastMonthFee(lastMonthResponse.data);
-      })
-      .catch(error => console.error('Error fetching last month fee:', error));
     })
     .catch(error => console.error('Error fetching tax data:', error));
   }, [taxNo, token]);
@@ -63,15 +51,20 @@ const TaxEdit = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // 입력값이 0인 경우 확인
+    if (tax.fee1 === 0 || tax.fee2 === 0 || tax.fee3 === 0 || 
+        tax.basicFee1 === 0 || tax.basicFee2 === 0 || tax.basicFee3 === 0) {
+      alert('사용요금 및 기본요금은 0일 수 없습니다. 값을 입력해주세요.');
+      return; // 검증에 실패하면 제출하지 않음
+    }
+
     // 총 납부금액 계산 (사용요금과 기본요금의 합)
     const totalFee = tax.fee1 + tax.fee2 + tax.fee3;
     const totalBasicFee = tax.basicFee1 + tax.basicFee2 + tax.basicFee3;
-    const paymentAmount = totalFee + totalBasicFee + lastMonthFee;
 
     // tax 객체에 총 납부금액 포함하여 서버로 전송
     const updatedTax = { 
       ...tax, 
-      totalAmount: paymentAmount, 
       totalFee: totalFee, // 사용요금 합계 추가
       totalBasicFee: totalBasicFee // 기본요금 합계 추가
     };
@@ -89,12 +82,14 @@ const TaxEdit = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setTax(prevTax => ({ ...prevTax, [name]: Number(value) }));
+    const numValue = Number(value);
+
+    // 입력된 값으로 상태 업데이트 (0은 허용됨)
+    setTax(prevTax => ({ ...prevTax, [name]: numValue }));
   };
 
   const totalFee = tax.fee1 + tax.fee2 + tax.fee3;
   const totalBasicFee = tax.basicFee1 + tax.basicFee2 + tax.basicFee3;
-  const paymentAmount = totalFee + totalBasicFee + lastMonthFee;
 
   // 세금 종류에 따른 요금 내역 이름 변경
   const feeLabels = tax.taxCategory === 'electro' 
@@ -123,7 +118,7 @@ const TaxEdit = () => {
               <td>{tax.taxDeadLine}</td>
               <td>{tax.userName}</td> {/* 유저 이름 표시 */}
               <td>{tax.taxCategory}</td> {/* 세금 종류 표시 */}
-              <td>{paymentAmount.toLocaleString()} 원</td> {/* 납부금액 표시 */}
+              <td>{totalFee + totalBasicFee}</td>
             </tr>
           </tbody>
         </table>
@@ -161,7 +156,7 @@ const TaxEdit = () => {
                   className="input-field"
                 />
               </td>
-              <td>{tax.fee1 + tax.basicFee1 + lastMonthFee}</td> {/* 납부금액 계산 */}
+              <td>{tax.fee1 + tax.basicFee1}</td> {/* 납부금액 계산 */}
             </tr>
             <tr>
               <td>{feeLabels[1]}</td> {/* 두 번째 행 이름 */}
@@ -183,7 +178,7 @@ const TaxEdit = () => {
                   className="input-field"
                 />
               </td>
-              <td>{tax.fee2 + tax.basicFee2 + lastMonthFee}</td> {/* 납부금액 계산 */}
+              <td>{tax.fee2 + tax.basicFee2}</td> {/* 납부금액 계산 */}
             </tr>
             <tr>
               <td>{feeLabels[2]}</td> {/* 세 번째 행 이름 */}
@@ -205,13 +200,13 @@ const TaxEdit = () => {
                   className="input-field"
                 />
               </td>
-              <td>{tax.fee3 + tax.basicFee3 + lastMonthFee}</td> {/* 납부금액 계산 */}
+              <td>{tax.fee3 + tax.basicFee3}</td> {/* 납부금액 계산 */}
             </tr>
             <tr>
               <td>총 고지액</td>
               <td>{totalFee}</td>
               <td>{totalBasicFee}</td>
-              <td>{paymentAmount}</td>
+              <td>{totalFee + totalBasicFee}</td>
             </tr>
           </tbody>
         </table>

@@ -73,6 +73,32 @@ const TaxInsert = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // 필수 값 체크
+    if (!tax.userNo) {
+      alert('사용자를 선택해주세요.');
+      return;
+    }
+
+    if (!tax.taxDeadLine) {
+      alert('납부기한을 선택해주세요.');
+      return;
+    }
+
+    // 오늘 날짜보다 이전 날짜인지 체크
+    const today = new Date();
+    const selectedDate = new Date(tax.taxDeadLine);
+    if (selectedDate < today) {
+      alert('지난 날짜는 납부기한으로 설정할 수 없습니다.');
+      return;
+    }
+
+    // 사용 요금과 기본 요금 1 이상 체크
+    if (parseFloat(tax.fee1) <= 0 || parseFloat(tax.fee2) <= 0 || parseFloat(tax.fee3) <= 0 ||
+        parseFloat(tax.basicFee1) <= 0 || parseFloat(tax.basicFee2) <= 0 || parseFloat(tax.basicFee3) <= 0) {
+      alert('요금과 기본요금은 1 이상의 값을 입력해야 합니다.');
+      return;
+    }
+
     // 서버로 전송할 tax 객체에 총 납부금액 추가
     const taxData = { ...tax, totalAmount, totalFee, totalBasicFee };
 
@@ -89,7 +115,7 @@ const TaxInsert = () => {
 
   return (
     <form onSubmit={handleSubmit} className="tax-insert-form">
-       <h1 className="tax-edit-title">청구서 작성</h1>
+      <h1 className="tax-edit-title">청구서 작성</h1>
       {/* 사용자 선택 및 납부기한 선택 부분 */}
       <div className="form-group">
         <label>사용자 선택: 
