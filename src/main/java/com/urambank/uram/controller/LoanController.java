@@ -1,5 +1,6 @@
 package com.urambank.uram.controller;
 
+import com.urambank.uram.dto.LoanDTO;
 import com.urambank.uram.dto.LoanProductDTO;
 import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.service.LoanServiece;
@@ -31,5 +32,11 @@ public class LoanController {
     @GetMapping("/apply/{userNo}")
     public UserDTO userInfo(@PathVariable("userNo") int userNo){
         return loanServiec.userInfo(userNo);
+    }
+
+    @GetMapping("apply/join/{userNo}/{loanProductNo}")
+    public int loanInfo(@PathVariable("userNo") int userNo, @PathVariable("loanProductNo") int loanProductNo) {
+        System.out.println(userNo + loanProductNo + "하이이");
+        return loanServiec.loanJoinCheck(userNo, loanProductNo);
     }
 }

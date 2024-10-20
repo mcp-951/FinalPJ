@@ -4,6 +4,7 @@ import '../../../resource/css/loan/LoanApply.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import apiSer from '../../ApiService';
 
 function LoanApply() {
   const { loanProductNo } = useParams();
@@ -16,6 +17,15 @@ function LoanApply() {
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  const [firstNo, setFirstNo] = useState(null);
+  const [lastNo, setLastNo] = useState(null);
+  const [inputLastNo, setInputLastNo] = useState(null);
+  const [localNoCheck, setLocalNoCheck] = useState(false);
+  const [hpAuthKey, setHpAuthKey] = useState('');
+  const [startCheckHp, setStartCheckHp] = useState(false);
+  const [authHp, setAuthHp] = useState(false);
+  const [stateAuth, setStateAuth] = useState(false);
+  const [checkHpNo, setCheckHpNo] = useState('');
   
     useEffect(() => {
         const fetchLoanProduct = async () => {
@@ -55,6 +65,8 @@ function LoanApply() {
                 const data = response.data;
                 console.log(data);
                 setUserData(data);
+                setFirstNo(data.residentNumber.substring(0, 6));
+                setLastNo(data.residentNumber.substring(7))
             } catch (error) {
                 console.error("사용자 정보를 가져오는 데 실패했습니다.", error.response?.data || error.message);
             }
@@ -97,11 +109,69 @@ function LoanApply() {
         return <div>대출 상품 정보를 찾을 수 없습니다.</div>;
     }
 
+    const userLastNo = (e) => {
+        setInputLastNo(e.target.value);
+    };
+    const inputHpCheck = (e) => {
+        setCheckHpNo(e.target.value);
+    }
+
+    const noCheck = () => {
+        if(inputLastNo === lastNo && inputLastNo != null){
+            setLocalNoCheck(true);
+        }
+        else{
+            alert("번호를 다시 확인해 주세요.")
+        }
+    }
+
+
+    const hpCheck = () => {
+        const hp = userData.hp;
+        if(hp.length < 10 || hp.length >11) {
+        }else{
+            handleCheckHp(hp);
+            startCheckHpHandler();
+        }
+    };
+    const authingKey = () => {
+        const getHpAuthKey = String(hpAuthKey).trim()
+        const getFormHpAuthKey = String(checkHpNo).trim()
+        if(getHpAuthKey === getFormHpAuthKey) {
+            settingStateAuth(true);
+            setAuthHp(true);
+            }else{
+                alert("인증번호가 맞지 않습니다.")
+            }
+    };
+    const handleCheckHp = (hp) => {
+    apiSer.checkHp(hp)
+        .then((response) => {
+            setHpAuthKey(response.data);
+        })
+        .catch((error) => {
+            console.error("Error checking Hp: ", error);
+        });
+    };
+
+    const startCheckHpHandler = () => {
+        setStartCheckHp(true);
+    };
+    const settingStateAuth = () => {
+        setStateAuth(true);
+    };
+
+    const moveNext = () => {
+        if(stateAuth && localNoCheck && termsChecked.personalInfo && termsChecked.loanInfo){
+            navigate(`/loanmain/applynext/${loanProductNo}`)
+        }
+    };
+
 
 
   return (
     <Container>
-        <h2>{loanData.loanProductTitle} 가입 약관</h2>
+        <h2>{loanData ? loanData.loanProductTitle : "로딩중"}</h2>
         <Container className='Terms_Agreement_Container'>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check 
@@ -168,14 +238,7 @@ function LoanApply() {
             checked={termsChecked.loanInfo}
             onChange={handleIndividualChange}
             />
-
-
         </Form.Group>
-        <div>
-            <p>
-
-            </p>
-        </div>
         </Container>
         <Container className=''>
             <Row className="w-100">
@@ -183,13 +246,13 @@ function LoanApply() {
                     <Form.Group as={Row} controlId="userId" className="mt-3">
                         <Form.Label column sm={3} className="text-left">이름</Form.Label>
                         <Col sm={6}>
-                            <Form.Control
-                                type="text"
-                                name="userName"
-                                value= {userData.name}
-                                readOnly
-                                style={{ backgroundColor: '#f8f9fa', borderColor: '#ced4da' }} // 배경색과 테두리 색상 조정
-                            />
+                        <Form.Control
+                            type="text"
+                            name="userName"
+                            value={userData ? userData.name : "로딩중"}
+                            readOnly
+                            style={{ backgroundColor: '#f8f9fa', borderColor: '#ced4da' }} // 배경색과 테두리 색상 조정
+                        />
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row} controlId="residentNumber1" className="mt-3">
@@ -199,9 +262,7 @@ function LoanApply() {
                                 type="text"
                                 placeholder="주민등록번호 앞 6자리"
                                 name='residentNumber1'
-                                value=""
-                                onChange=""
-                                maxLength={6}
+                                value={userData ? firstNo : "로딩중"}
                                 readOnly
                                 style={{ backgroundColor: '#f8f9fa', borderColor: '#ced4da' }} // 배경색과 테두리 색상 조정
                             />
@@ -212,37 +273,63 @@ function LoanApply() {
                                 type="password"
                                 placeholder="주민등록번호 뒤 7자리"
                                 name='residentNumber2'
-                                value=""
-                                onChange=""
+                                value={inputLastNo}
+                                onChange={userLastNo}
                                 maxLength={7}
                             />
                         </Col>
                         <Col Col sm={2}>
-                            <Button onClick = "{hpCheck}">인증하기</Button>
+                            {localNoCheck ? (<div>인증완료</div>) : (<Button onClick = {noCheck}>인증하기</Button>) }
                         </Col>
                     </Form.Group>
-                        <Form.Group as={Row} controlId="formUsername" className="mt-3">
-                            <Form.Label column sm={3} className="text-left">핸드폰 번호</Form.Label>
+                    <Form.Group as={Row} controlId="formUsername" className="mt-3">
+                        <Form.Label column sm={3} className="text-left">ID</Form.Label>
+                        <Col sm={6}>
+                            <Form.Control
+                                type="tel"
+                                placeholder="핸드폰 번호를 - 빼고 입력해 주세요."
+                                name="hp"
+                                value={userData ? userData.hp : "로딩중"}
+                            />
+                        </Col>
+                        <Col sm={2}>
+                            <Button onClick = {hpCheck}>인증번호 받기</Button>
+                        </Col>
+                    </Form.Group>
+                    {startCheckHp && (
+                        <Form.Group controlId="formHpAuthKey" className="mt-3">
+                        <Row className="align-items-center">
+                            <Form.Label column sm={3}>인증번호</Form.Label>
                             <Col sm={6}>
                                 <Form.Control
-                                    type="tel"
-                                    placeholder="핸드폰 번호를 - 빼고 입력해 주세요."
-                                    name="hp"
-                                    value="{form.hp}"
-                                    onChange="{handleChange}"
-                                    readOnly
-                                    style={{ backgroundColor: '#f8f9fa', borderColor: '#ced4da' }} // 배경색과 테두리 색상 조정
+                                    type="text"
+                                    name="hpAuthkey"
+                                    value={checkHpNo}
+                                    onChange={inputHpCheck}
+                                    required
+                                    placeholder="인증번호를 입력하세요" // Placeholder 추가
                                 />
                             </Col>
                             <Col sm={2}>
-                                <Button onClick = "{hpCheck}">인증번호 받기</Button>
+                                <Button type="button" onClick={authingKey}>
+                                    인증번호 확인
+                                </Button>
                             </Col>
-                        </Form.Group>
+                            <Col sm={1}>
+                                {stateAuth && (
+                                    <Form.Text style={{ color: 'green' }}>
+                                        인증 성공
+                                    </Form.Text>
+                                )}
+                            </Col>
+                        </Row>
+                    </Form.Group>
+                    )}
                 </Form>
             </Row>
         </Container>
         <Container className='Next_Cancel_Container'>
-            <Button>다음</Button>
+            <Button onClick={moveNext}>다음</Button>
             <Button>취소</Button>
         </Container>
     </Container>

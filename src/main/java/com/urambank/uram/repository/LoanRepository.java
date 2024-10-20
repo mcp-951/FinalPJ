@@ -4,5 +4,5 @@ import com.urambank.uram.entities.LoanEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LoanRepository extends JpaRepository<LoanEntity, Integer> {
-
+    LoanEntity findByLoanProductNoAndUserNo(int productNo, int userNo);
 }

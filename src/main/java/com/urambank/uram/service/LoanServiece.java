@@ -1,7 +1,9 @@
 package com.urambank.uram.service;
 
+import com.urambank.uram.dto.LoanDTO;
 import com.urambank.uram.dto.LoanProductDTO;
 import com.urambank.uram.dto.UserDTO;
+import com.urambank.uram.entities.LoanEntity;
 import com.urambank.uram.entities.LoanProductEntity;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.repository.LoanProductRepository;
@@ -70,5 +72,15 @@ public class LoanServiece {
                 .residentNumber(eDto.getResidentNumber())
                 .build();
         return dto;
+    }
+
+    public int loanJoinCheck(int userNo, int loanProductNo){
+        LoanEntity eDto =  loanRepository.findByLoanProductNoAndUserNo(userNo, loanProductNo);
+        int resultNo = 0;
+        if (eDto != null){
+            resultNo = 1;
+        }
+
+        return resultNo;
     }
 }

@@ -37,6 +37,7 @@ import ImgSelect from 'component/page/ocrPage/ImgSelect';
 import LoanMain from 'component/page/loan/LoanMain';
 import LoanDetail from 'component/page/loan/LoanDetail';
 import LoanApply from 'component/page/loan/LoanApply';
+import LoanApplyNext from 'component/page/loan/LoanApplyNext';
 
 // 어드민 라우터 임포트
 import AdminList from '../page/adminPage/admin/AdminList';
@@ -147,6 +148,7 @@ const RouteComponent = () => {
                         <Route path="/loanmain" exact={true} element={<LoanMain />} />
                         <Route path="/loanmain/loandetail/:loanProductNo" exact={true} element={<LoanDetail />} />
                         <Route path="/loanmain/loanapply/:loanProductNo" exact={true} element={<LoanApply />} />
+                        <Route path="/loanmain/applynext/:loanProductNo" exact={true} element={<LoanApplyNext />} />
                         
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />

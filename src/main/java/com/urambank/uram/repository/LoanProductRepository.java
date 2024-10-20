@@ -8,4 +8,5 @@ import java.util.List;
 public interface LoanProductRepository extends JpaRepository<LoanProductEntity,Integer> {
     List<LoanProductEntity> findByViewPoint(char viewPoint);
     LoanProductEntity findByLoanProductNo(int productNo);
+
 }
