@@ -34,32 +34,29 @@ import TaxHistory from 'component/page/tax/TaxHistory';
 import ImgSelect from 'component/page/ocrPage/ImgSelect';
 
 // 어드민 라우터 임포트
-import AdminList from '../page/adminPage/admin/AdminList';
 import AdminLogin from '../page/adminPage/admin/AdminLogin';
 import EditAdmin from '../page/adminPage/admin/EditAdmin';
-import MemberList from '../page/adminPage/user/MemberList';
-import RetiredMember from '../page/adminPage/user/RetiredMember';
-import FinancialProduct from '../page/adminPage/product/FinancialProduct';
-import SavingsProduct from '../page/adminPage/product/SavingsProduct';
-import DepositProduct from '../page/adminPage/product/DepositProduct';
-import ADLoanProduct from '../page/adminPage/product/ADLoanProduct';
-import TransactionHistory from '../page/adminPage/account/AdTransactionHistory';
-import AccountClosure from '../page/adminPage/account/AdAccountClosure';
-import MemberEdit from '../page/adminPage/user/MemberEdit';
-import EditSavingsProduct from '../page/adminPage/product/EditSavingsProduct';
-import EditLoanProduct from '../page/adminPage/product/EditLoanProduct';
+import AdMemberList from '../page/adminPage/user/AdMemberList';
+import AdMemberEdit from '../page/adminPage/user/AdMemberEdit';
+import AdRetiredMember from '../page/adminPage/user/AdRetiredMember';
+import AdFinancialProduct from '../page/adminPage/product/AdFinancialProduct';
+import AdDepositProduct from '../page/adminPage/product/AdDepositProduct';
+import AdSavingsProduct from '../page/adminPage/product/AdSavingsProduct';
+import AdLoanProduct from 'component/page/adminPage/product/ADLoanProduct';
+import AdRegisterProduct from '../page/adminPage/product/AdRegisterProduct';
+import AdRegisterLoanProduct from '../page/adminPage/product/AdRegisterLoanProduct ';
+import AdEditSavingsProduct from '../page/adminPage/product/AdEditSavingsProduct';
+import AdEditLoanProduct from '../page/adminPage/product/AdEditLoanProduct';
+import AdAccount from 'component/page/adminPage/account/AdAccount';
+import AdAccountStop from 'component/page/adminPage/account/AdAccountStop';
+import AdAccountClosure from 'component/page/adminPage/account/AdAccountClosure';
+import AdTransactionHistory from 'component/page/adminPage/account/AdTransactionHistory';
+import AdTaxList from '../page/adminPage/tax/AdTaxList';
+import AdTaxEdit from '../page/adminPage/tax/AdTaxEdit';
+import AdTaxInsert from '../page/adminPage/tax/AdTaxInsert';
 import Sidebar from '../page/adminPage/Sidebar';
-import TaxList from '../page/adminPage/tax/taxList';
-import TaxEdit from '../page/adminPage/tax/taxEdit';
-import TaxInsert from '../page/adminPage/tax/taxInsert';
-import AdAccount from '../page/adminPage/account/AdAccount';
-import AdAccountStop from '../page/adminPage/account/AdAccountStop';
-import AdAccountClosure from '../page/adminPage/account/AdAccountClosure';
-import AdTransactionHistory from '../page/adminPage/account/AdTransactionHistory';
-import RegisterProduct from '../page/adminPage/product/RegisterProduct';
-import RegisterLoanProduct from '../page/adminPage/product/RegisterLoanProduct ';
-import AdminInquiryList from '../page/adminPage/support/AdminInquiryList';  // 문의 목록
-import AdminInquiryDetail from '../page/adminPage/support/AdminInquiryDetail';  // 문의 상세
+import AdminInquiryDetail from 'component/page/adminPage/support/AdminInquiryDetail';
+import AdminInquiryList from 'component/page/adminPage/support/AdminInquiryList';
 
 // 예금 적금
 import DepositMain from 'component/page/product/deposit/DepositMain';
@@ -169,9 +166,9 @@ const RouteComponent = () => {
                         <Route path="/inquiry-form" element={<InquiryForm addInquiry={addInquiry} />} /> {/* InquiryForm 라우팅 설정 */}
                         
                         {/* 사용자 관리 페이지 */}
-                        <Route path="/memberList" element={<MemberList />} />
-                        <Route path="/retiredMember" element={<RetiredMember />} />
-                        <Route path="/editMember" element={<MemberEdit />} />
+                        <Route path="/adMemberList" element={<AdMemberList />} />
+                        <Route path="/adRetiredMember" element={<AdRetiredMember />} />
+                        <Route path="/admin/adEditMember" element={<AdMemberEdit />} />
 
                         {/* 관리자 페이지 문의 관리 목록 */}
                         <Route path="/admin/support/inquiries" element={<AdminInquiryList />} />
@@ -180,21 +177,22 @@ const RouteComponent = () => {
                         <Route path="/admin/support/inquiry/:qnaNo" element={<AdminInquiryDetail />} />
 
                         {/* 금융 상품 관리 페이지 */}
-                        <Route path="/admin/financialProduct" element={<FinancialProduct />} />
-                        <Route path="/admin/savingsProduct" element={<SavingsProduct />} />
-                        <Route path="/admin/depositProduct" element={<DepositProduct />} />
-                        <Route path="/admin/loanProduct" element={<ADLoanProduct />} />
+                        <Route path="/admin/adFinancialProduct" element={<AdFinancialProduct />} />
+                        <Route path="/admin/adSavingsProduct" element={<AdSavingsProduct />} />
+                        <Route path="/admin/adDepositProduct" element={<AdDepositProduct />} />
+                        <Route path="/admin/adLoanProduct" element={<AdLoanProduct />} />
                         {/* 금융 상품 수정 페이지 */}
-                        <Route path="/admin/RegisterLoanProduct" element={<RegisterLoanProduct  />} />
-                        <Route path="/admin/RegisterProduct" element={<RegisterProduct />} />
-                        <Route path="/EditSavingsProduct" element={<EditSavingsProduct />} />
-                        <Route path="/EditLoanProduct" element={<EditLoanProduct />} />
+                        <Route path="/admin/adRegisterLoanProduct" element={<AdRegisterLoanProduct  />} />
+                        <Route path="/admin/adRegisterProduct" element={<AdRegisterProduct />} />
+                        <Route path="/admin/adEditSavingsProduct" element={<AdEditSavingsProduct />} />
+                        <Route path="/admin/adEditLoanProduct" element={<AdEditLoanProduct />} />
 
                         {/* 거래 내역 및 계좌 관리 페이지 */}
                         <Route path="/admin/adTransactionHistory" element={<AdTransactionHistory />} />
                         <Route path="/admin/adAccount" element={<AdAccount />} />
                         <Route path="/admin/adAccountStop" element={<AdAccountStop />} />
                         <Route path="/admin/adAccountClosure" element={<AdAccountClosure />} />
+
 
                         {/* 예금, 적금, 대출 상품 관련 */}
                         <Route path="/DepositMain" exact={true} element={<DepositMain />} />
@@ -247,9 +245,9 @@ const RouteComponent = () => {
                         <Route path="/consumeAnalyse" exact={true} element={<AssetsAnalysis/>} />
                         <Route path="/AssetsAnalysis" exact={true} element={<AssetsAnalysis />} />
 
-                        <Route path="/taxList" exact={true} element={<TaxList />} />
-                        <Route path="/taxInsert" exact={true} element={<TaxInsert />} />
-                        <Route path="/taxEdit/:taxNo" exact={true} element={<TaxEdit />} />
+                        <Route path="/taxList" exact={true} element={<AdTaxList />} />
+                        <Route path="/taxInsert" exact={true} element={<AdTaxInsert />} />
+                        <Route path="/taxEdit/:taxNo" exact={true} element={<AdTaxEdit />} />
 
                         <Route path="/kakaoLogin" exact={true} element={<RedirectPage />} />
                    </Routes>

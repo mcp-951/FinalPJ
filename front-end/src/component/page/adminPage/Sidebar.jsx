@@ -23,10 +23,10 @@ const Sidebar = () => {
             {showMemberDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/memberList">회원 리스트</NavLink>
+                  <NavLink to="/adMemberList">회원 리스트</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/retiredMember">탈퇴 회원</NavLink>
+                  <NavLink to="/adRetiredMember">탈퇴 회원</NavLink>
                 </li>
               </ul>
             )}
@@ -40,16 +40,16 @@ const Sidebar = () => {
             {showFinancialDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/admin/financialProduct">전체</NavLink>
+                  <NavLink to="/admin/adFinancialProduct">전체</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/savingsProduct">적금상품 관리</NavLink>
+                  <NavLink to="/admin/adSavingsProduct">적금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/depositProduct">예금상품 관리</NavLink>
+                  <NavLink to="/admin/adDepositProduct">예금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/loanProduct">대출상품 관리</NavLink>
+                  <NavLink to="/admin/adLoanProduct">대출상품 관리</NavLink>
                 </li>
               </ul>
             )}

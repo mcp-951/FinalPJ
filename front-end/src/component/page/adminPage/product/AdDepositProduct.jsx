@@ -5,24 +5,25 @@ import Sidebar from '../Sidebar'; // 사이드바 추가
 import '../../../../resource/css/admin/DepositProduct.css'; // CSS 파일 추가
 
 // 예금 상품 가져오기
-const DepositProduct = () => {
+const AdDepositProduct = () => {
   const navigate = useNavigate();
   const location = useLocation(); // location 훅 사용
   const [deposits, setDeposits] = useState([]);  // 예금 상품 목록 상태 관리
-  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리
-  const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
+  // const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
+  // const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
   const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 상품 수 상태 관리
   const token = localStorage.getItem("token");
 
   // 예금 상품 목록 불러오기
   const fetchDeposits = () => {
-    axios.get('http://localhost:8081/admin/deposits', { // 예금 관련 엔드포인트로 수정
+    console.log("예금")
+    axios.get('http://localhost:8081/admin/deposits', {
       headers: {
         'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
       }
     })
     .then((response) => {
-      setDeposits(response.data);  // 불러온 데이터를 deposits 상태로 설정
+      setDeposits(response.data);  // 불러온 데이터를 savings 상태로 설정
     })
     .catch((error) => {
       console.error('예금 상품 목록을 불러오는 중 오류 발생:', error);  // 오류 처리
@@ -88,7 +89,12 @@ const DepositProduct = () => {
                 <th>노출순서</th>
                 <th>상품이름</th>
                 <th>상품 종류</th>
-                <th>금리</th>
+                <th>최대 금액</th>
+                <th>최대 기간</th>
+                <th>최대 금리</th>
+                <th>최소 금액</th>
+                <th>최소 기간</th>
+                <th>최소 금리</th>
                 <th>상품 설명</th>
                 <th>이미지</th>
                 <th>상태</th>
@@ -102,7 +108,12 @@ const DepositProduct = () => {
                   <td>{index + 1}</td>
                   <td>{deposit.depositName}</td>
                   <td>{deposit.depositCategory}</td>
-                  <td>{deposit.depositRate}</td>
+                  <td>{deposit.depositMaximumAmount}</td>
+                  <td>{deposit.depositMaximumDate}</td>
+                  <td>{deposit.depositMaximumRate}</td>
+                  <td>{deposit.depositMinimumAmount}</td>
+                  <td>{deposit.depositMinimumDate}</td>
+                  <td>{deposit.depositMinimumRate}</td>
                   <td>{deposit.depositContent}</td>
                   <td><img src={deposit.depositIMG} alt="상품 이미지" width="50" /></td>
                   <td>{deposit.depositState}</td>          
@@ -127,4 +138,4 @@ const DepositProduct = () => {
   );
 };
 
-export default DepositProduct;
+export default AdDepositProduct;

@@ -5,11 +5,11 @@ import Sidebar from '../Sidebar'; // 사이드바 추가
 import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 파일 추가
 
 // 적금 상품 가져오기
-const SavingsProduct = () => {
+const AdSavingsProduct = () => {
   const navigate = useNavigate();
   const location = useLocation(); // location 훅 사용
   const [savings, setSavings] = useState([]);  // 적금 상품 목록 상태 관리
-  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리
+  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
   const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
   const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 상품 수 상태 관리
   const token = localStorage.getItem("token");
@@ -36,7 +36,7 @@ const SavingsProduct = () => {
 
   // 수정 버튼 클릭 시 수정 페이지로 이동
   const handleEdit = (deposit) => {
-    navigate('/EditSavingsProduct', { state: { deposit } }); // 상품 정보를 상태로 전달하여 수정 페이지로 이동
+    navigate('/adEditSavingsProduct', { state: { deposit } }); // 상품 정보를 상태로 전달하여 수정 페이지로 이동
   };
 
   // 삭제 버튼 클릭 시 depositState를 'n'으로 변경
@@ -58,17 +58,17 @@ const SavingsProduct = () => {
 
   // 등록 버튼 클릭 시 RegisterProduct 페이지로 이동
   const handleRegister = () => {
-    navigate('/admin/RegisterProduct'); // RegisterProduct 페이지로 이동
+    navigate('/admin/adRegisterProduct'); // RegisterProduct 페이지로 이동
   };
   
   return (
-    <div className="SavingsProduct-app-container">
+    <div className="app-container">
       <Sidebar /> {/* 사이드바 추가 */}
-      <div className="SavingsProduct-alog-main-content">
-        <div className="SavingsProduct-savings-product-container">
+      <div className="alog-main-content">
+        <div className="savings-product-container">
           <h2>적금 상품 관리</h2>
-          <div className="SavingsProduct-search-controls">
-            <div className="SavingsProduct-search-bar">
+          <div className="search-controls">
+            <div className="search-bar">
               <select>
                 <option value="전체">전체</option>
                 <option value="분류">분류</option>
@@ -77,19 +77,25 @@ const SavingsProduct = () => {
                 <option value="금액">금액</option>
               </select>
               <input type="text" placeholder="검색어를 입력하세요" />
-              <button className="SavingsProduct-search-button">검색</button>
+              <button>검색</button>
             </div>
-            <button className="SavingsProduct-register-button" onClick={handleRegister}>등록</button>
+            <button onClick={handleRegister}>등록</button>
           </div>
 
-          <table className="SavingsProduct-product-table">
+          <table className="product-table">
             <thead>
               <tr>
                 <th>노출순서</th>
                 <th>상품이름</th>
                 <th>상품 종류</th>
-                <th>금리</th>
+                <th>최대 금리</th>
+                <th>최소 금리</th>
+                <th>최대 예치 금액</th>
+                <th>최소 예치 금액</th>
+                <th>최대 기간</th>
+                <th>최소 기간</th>
                 <th>상품 설명</th>
+                <th>상품 특성</th>
                 <th>이미지</th>
                 <th>상태</th>
                 <th>수정</th>
@@ -102,18 +108,24 @@ const SavingsProduct = () => {
                   <td>{index + 1}</td>
                   <td>{deposit.depositName}</td>
                   <td>{deposit.depositCategory}</td>
-                  <td>{deposit.depositRate}</td>
+                  <td>{deposit.depositMaximumRate}</td>
+                  <td>{deposit.depositMinimumRate}</td>
+                  <td>{deposit.depositMaximumAmount}</td>
+                  <td>{deposit.depositMinimumAmount}</td>
+                  <td>{deposit.depositMaximumDate}</td>
+                  <td>{deposit.depositMinimumDate}</td>
                   <td>{deposit.depositContent}</td>
+                  <td>{deposit.depositCharacteristic}</td>
                   <td><img src={deposit.depositIMG} alt="상품 이미지" width="50" /></td>
                   <td>{deposit.depositState}</td>          
-                  <td><button className="SavingsProduct-edit-button" onClick={() => handleEdit(deposit)}>수정</button></td>
-                  <td><button className="SavingsProduct-delete-button" onClick={() => handleDelete(deposit.depositNo)}>삭제</button></td>
+                  <td><button onClick={() => handleEdit(deposit)}>수정</button></td>
+                  <td><button onClick={() => handleDelete(deposit.depositNo)}>삭제</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
           
-          <div className="SavingsProduct-pagination-controls">
+          <div className="pagination-controls">
             <label>페이지당 항목 수: </label>
             <select onChange={(e) => setDisplayCount(e.target.value)}>
               <option value={10}>10</option>
@@ -127,4 +139,4 @@ const SavingsProduct = () => {
   );
 };
 
-export default SavingsProduct;
+export default AdSavingsProduct;

@@ -4,7 +4,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar'; // Sidebar 추가
 import '../../../../resource/css/admin/EditSavingsProduct.css'; // CSS 파일 추가
 
-const RegisterProduct = () => {
+const AdRegisterProduct = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -20,11 +20,13 @@ const RegisterProduct = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    
+    navigate(-1);
   };
 
   // 취소 버튼 클릭 시 FinancialProduct 페이지로 이동
   const handleCancel = () => {
-    navigate('/admin/financialProduct');
+    navigate(-1);
   };
 
   const handleRegister = async (e) => {
@@ -35,7 +37,7 @@ const RegisterProduct = () => {
           'Authorization': `Bearer ${localStorage.getItem('token')}` // JWT 토큰 사용
         }
       });
-      navigate('/admin/financialProduct'); // 등록 후 FinancialProduct 페이지로 이동
+      navigate(-1); // 등록 후 이전 페이지로 이동
     } catch (error) {
       console.error('상품 등록에 실패했습니다.', error);
     }
@@ -131,4 +133,4 @@ const RegisterProduct = () => {
   );
 };
 
-export default RegisterProduct;
+export default AdRegisterProduct;

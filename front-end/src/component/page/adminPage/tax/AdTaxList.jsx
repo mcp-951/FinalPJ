@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar'; // 사이드바 추가
 import '../../../../resource/css/admin/TaxList.css'; // CSS 파일 추가
 
-const TaxList = () => {
+const AdTaxList = () => {
   const [taxes, setTaxes] = useState([]);
   const [filteredTaxes, setFilteredTaxes] = useState([]); // 필터링된 세금 목록
   const [userNames, setUserNames] = useState({});
@@ -58,11 +58,11 @@ const TaxList = () => {
   }, [selectedCategory, taxes]);
 
   const handleEdit = (taxNo, taxCategory) => {
-    navigate(`/taxEdit/${taxNo}`, { state: { taxCategory } }); // 세금 종류를 state로 넘김
+    navigate(`/adTaxEdit/${taxNo}`, { state: { taxCategory } }); // 세금 종류를 state로 넘김
   };
 
   const handleInsert = () => {
-    navigate('/taxInsert'); // 공과금 생성 페이지로 이동
+    navigate('/adTaxInsert'); // 공과금 생성 페이지로 이동
   };
 
   const totalPages = Math.ceil(filteredTaxes.length / itemsPerPage);
@@ -153,4 +153,4 @@ const TaxList = () => {
   );
 };
 
-export default TaxList;
+export default AdTaxList;
