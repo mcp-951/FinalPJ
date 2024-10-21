@@ -71,8 +71,7 @@ public class AccountService {
 
         return accountDataList;
     }
-
-
+    
     public String getUserNameByUserNo(int userNo) {
         User user = userRepository.findByUserNo(userNo);
         return user != null ? user.getName() : null;

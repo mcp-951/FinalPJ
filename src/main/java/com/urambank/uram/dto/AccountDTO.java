@@ -42,6 +42,7 @@ public class AccountDTO {
         accountDTO.setAccountState(accountEntity.getAccountState());
         accountDTO.setAccountOpen(accountEntity.getAccountOpen());
         accountDTO.setAccountClose(accountEntity.getAccountClose());
+        accountDTO.setWithdrawal(String.valueOf(accountEntity.getWithdrawal()));
 
         return accountDTO;
     }

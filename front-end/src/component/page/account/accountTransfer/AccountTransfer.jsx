@@ -279,6 +279,7 @@ const AccountTransfer = () => {
                       setErrorMessages({ ...errorMessages, selectedAccount: '' });
                       fetchOnceLimit(e.target.value); // 선택된 계좌의 이체 한도 가져오기
                     }}
+                    disabled={isPasswordValid} // 비밀번호 확인 완료 후 비활성화
                   >
                     <option value="">계좌 선택</option>
                     {accounts.length > 0 ? (
@@ -363,8 +364,9 @@ const AccountTransfer = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="비밀번호 입력"
+                  disabled={isPasswordValid} // 비밀번호 확인 완료 후 비활성화
                 />
-                <button type="button" onClick={handlePasswordCheck}>
+                <button type="button" onClick={handlePasswordCheck} disabled={isPasswordValid}>
                   확인
                 </button>
                 {isPasswordValid === true && <span className="valid-check">✔ 비밀번호 확인</span>}

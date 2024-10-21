@@ -11,6 +11,7 @@ const PasswordCheck = ({ title, instructions }) => {
   const [isPasswordValid, setIsPasswordValid] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [isPasswordDisabled, setIsPasswordDisabled] = useState(false); // 비밀번호 입력 비활성화 상태
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -91,6 +92,7 @@ const PasswordCheck = ({ title, instructions }) => {
         if (response.status === 200) {
           setIsPasswordValid(true);
           setErrorMessage('비밀번호가 확인되었습니다.');
+          setIsPasswordDisabled(true); // 비밀번호 확인 후 입력 비활성화
         }
       } catch (error) {
         setIsPasswordValid(false);
@@ -108,29 +110,26 @@ const PasswordCheck = ({ title, instructions }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!accountNumber) {
-      alert('계좌를 선택하세요.');
+    // 비밀번호 유효성 여부 확인
+    if (!isPasswordValid) {
+      setErrorMessage('비밀번호를 인증하세요.');
       return;
     }
 
-    if (isPasswordValid) {
-      let targetUrl = "";
+    let targetUrl = "";
 
-      if (purpose === 'password-change') {
-        targetUrl = `/account/${accountNumber}/password-change`;
-      } else if (purpose === 'close-account') {
-        targetUrl = `/account/${accountNumber}/close`;
-      } else if (purpose === 'limit-inquiry') {
-        targetUrl = `/account/${accountNumber}/limit-inquiry`;
-      }
+    if (purpose === 'password-change') {
+      targetUrl = `/account/${accountNumber}/password-change`;
+    } else if (purpose === 'close-account') {
+      targetUrl = `/account/${accountNumber}/close`;
+    } else if (purpose === 'limit-inquiry') {
+      targetUrl = `/account/${accountNumber}/limit-inquiry`;
+    }
 
-      if (targetUrl) {
-        navigate(targetUrl, { state: { productName, accountNumber, purpose } }); // purpose를 포함해 전달
-      } else {
-        alert("올바른 목적이 설정되지 않았습니다.");
-      }
+    if (targetUrl) {
+      navigate(targetUrl, { state: { productName, accountNumber, purpose } }); // purpose를 포함해 전달
     } else {
-      alert(errorMessage);
+      alert("올바른 목적이 설정되지 않았습니다.");
     }
   };
 
@@ -167,15 +166,22 @@ const PasswordCheck = ({ title, instructions }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호 입력"
+          disabled={isPasswordDisabled} // 비밀번호 입력 비활성화
         />
-        <button onClick={handlePasswordCheck} className="password-check-button">확인</button>
+        <button
+          onClick={handlePasswordCheck}
+          className="password-check-button"
+          disabled={isPasswordDisabled} // 비밀번호 확인 후 버튼 비활성화
+        >
+          확인
+        </button>
 
         <span className={`password-check-status ${isPasswordValid === false ? 'error' : isPasswordValid === true ? 'check-mark' : ''}`}>
           {errorMessage}
         </span>
       </div>
 
-      <button onClick={handleSubmit} className="password-submit-button" disabled={!isPasswordValid}>
+      <button onClick={handleSubmit} className="password-submit-button">
         확인
       </button>
     </div>
