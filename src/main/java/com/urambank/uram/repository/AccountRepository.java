@@ -97,4 +97,13 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     void updateAccountState(@Param("accountState") String accountState, @Param("accountNo") int accountNo);
 
     Optional<AccountEntity> findByAccountNumberAndUserNo(String accountNumber, int userNo);
+
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, d.depositNo, d.depositName " +
+            "FROM AccountEntity a JOIN a.deposit d WHERE a.userNo = :userNo AND a.accountState = :state")
+    List<Object[]> findAccountDataWithDeposit(@Param("userNo") int userNo, @Param("state") String state);
+
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, a.withdrawal, d.depositNo, d.depositName, d.depositCategory " +
+            "FROM AccountEntity a JOIN a.deposit d WHERE a.userNo = :userNo AND a.accountState = :state")
+    List<Object[]> findUserDepositAccounts(@Param("userNo") int userNo, @Param("state") String state);
+
 }

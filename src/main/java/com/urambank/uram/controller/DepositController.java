@@ -2,21 +2,15 @@ package com.urambank.uram.controller;
 
 import com.urambank.uram.dto.AccountDTO;
 import com.urambank.uram.dto.DepositDTO;
-import com.urambank.uram.entities.*;
-        import com.urambank.uram.service.DepositService;
+import com.urambank.uram.service.DepositService;
 import com.urambank.uram.util.JWTUtil;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-        import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

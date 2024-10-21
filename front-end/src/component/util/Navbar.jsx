@@ -44,7 +44,7 @@ function Navbar(){
                                 <div className="dropdown_menu">
                                     <div className="dropdown_menu_div">
                                         <ul>
-                                            <li><a href="/users/accounts">전체계좌조회</a></li>
+                                            <li><a href="/accounts">전체계좌조회</a></li>
                                             <li><a href="/account/password-check?purpose=password-change">비밀번호 변경</a></li>
                                             <li><a href="/account/password-check?purpose=close-account">계좌해지</a></li>
                                             <li><a href="/account/password-check?purpose=limit-inquiry">이체한도 조회</a></li>
@@ -60,10 +60,8 @@ function Navbar(){
                                 <div className="dropdown_menu">
                                     <div className="dropdown_menu_div">
                                         <ul>
-                                            <li><a href='/deposit-list'>예금상품 리스트</a></li>
-                                            <li><a href='/DepositMain'>예금상품 메인</a></li>
-                                            <li><a href='/saving-list'>적금상품 리스트</a></li>
-                                            <li><a href='/saving-main'>적금상품 메인</a></li>
+                                            <li><a href='/deposit-list'>상품 리스트</a></li>
+                                            <li><a href='/DepositSearch'>중도출금</a></li>
                                             <li><a href='/LoanList'>대출상품 리스트</a></li>
                                             <li><a href='/Repayment'>중도상환</a></li>
                                             <li><a href='/Calculatior'>대출 이자계산기</a></li>

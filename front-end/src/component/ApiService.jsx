@@ -47,13 +47,10 @@ const apiSer = {
         console.log("info : " + datas);
         return axios.put(`${API_BASE_URL}/resetPassword`,datas)
     },
-    getUserInfo: (userNo) => {
+    getUserInfo: (userNo,token) => {
         console.log("info:" + userNo);
-        return axios.get(`${API_BASE_URL}/getUserInfo`+ '/' + userNo,{
-        headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-        }
-      })
+        console.log("token : "+ token);
+        return axios.get(`${API_BASE_URL}/getUserInfo`+ '/' + userNo,token)
     },
     changePassword:(data) => {
         console.log("userPw : " + data);
@@ -134,9 +131,9 @@ const apiSer = {
 
 
   // 사용자 예적금 정보 가져오기 (토큰 필요)
-  getUserDeposit: async () => {
+  getUsersDeposit: async () => {
     try {
-      return await axios.get(`${BASE_URL}/products/deposits/findAccount`, {
+      return await axios.get(`${BASE_URL}/products/deposits/findDeposit`, {
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }
@@ -215,8 +212,8 @@ savingsReceive: async (depositData, token) => {
   } catch (error) {
     console.error('LoanJoin 저장 실패:', error);
     throw error; // 에러 발생 시 상위로 전달
-  },
-
+  }
+},
   getUserPhoneNumber: async (token) => {
     try {
       const response = await axios.get(`${BASE_URL}/products/deposits/phone`, { // BASE_URL을 명시적으로 추가
@@ -230,21 +227,6 @@ savingsReceive: async (depositData, token) => {
       throw error; // 에러 발생 시 상위로 전달
     }
   }
-},
-
-getUserPhoneNumber: async (token) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/products/deposits/phone`, { // BASE_URL을 명시적으로 추가
-      headers: {
-        Authorization: `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 포함
-      },
-    });
-    return response.data; // 유저의 휴대폰 번호 반환
-  } catch (error) {
-    console.error('휴대폰 번호 정보를 불러오는 중 오류 발생:', error);
-    throw error; // 에러 발생 시 상위로 전달
-  }
 }
-};
 
 export default apiSer;

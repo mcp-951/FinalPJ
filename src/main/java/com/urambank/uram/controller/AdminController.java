@@ -50,55 +50,55 @@ public class AdminController {
 //        return ResponseEntity.ok("상품이 성공적으로 등록되었습니다.");
 //    }
 //------------------- 적금 상품 관련 -------------------------------------
-    // 적금 상품 목록 조회
-    @GetMapping("/savings")
-    public ResponseEntity<List<DepositDTO>> savings() {
-        System.out.println("<<< AdminController /savings >>>");
-        // 서비스에서 계좌 상태와 상품 카테고리를 함께 가져오는 데이터를 반환
-        List<DepositDTO> savings = adminService.savings();
-        return ResponseEntity.ok(savings);
-    }
-
-    // 적금 상품 수정
-    @PutMapping("/editSavings/{depositNo}")
-    public ResponseEntity<String> editSavingsProduct(@PathVariable("depositNo") int depositNo, @RequestBody DepositDTO depositDTO) {
-        System.out.println("<<< AdminService /editSavings >>>");
-        adminService.updateDeposit(depositNo, depositDTO);  // 수정 서비스 호출
-        return ResponseEntity.ok("적금 상품이 수정되었습니다.");
-    }
-
-    // 적금 상품 삭제 (depositState를 'n'으로 변경)
-    @PutMapping("/deleteSavings/{depositNo}")
-    public ResponseEntity<String> deleteSavingsProduct(@PathVariable("depositNo") int depositNo) {
-        System.out.println("<<< AdminService /deleteSavings >>>");
-        adminService.deleteDeposit(depositNo);
-        return ResponseEntity.ok("해당 적금 상품이 삭제되었습니다.");
-    }
+//    // 적금 상품 목록 조회
+//    @GetMapping("/savings")
+//    public ResponseEntity<List<DepositDTO>> savings() {
+//        System.out.println("<<< AdminController /savings >>>");
+//        // 서비스에서 계좌 상태와 상품 카테고리를 함께 가져오는 데이터를 반환
+//        List<DepositDTO> savings = adminService.savings();
+//        return ResponseEntity.ok(savings);
+//    }
+//
+//    // 적금 상품 수정
+//    @PutMapping("/editSavings/{depositNo}")
+//    public ResponseEntity<String> editSavingsProduct(@PathVariable("depositNo") int depositNo, @RequestBody DepositDTO depositDTO) {
+//        System.out.println("<<< AdminService /editSavings >>>");
+//        adminService.updateDeposit(depositNo, depositDTO);  // 수정 서비스 호출
+//        return ResponseEntity.ok("적금 상품이 수정되었습니다.");
+//    }
+//
+//    // 적금 상품 삭제 (depositState를 'n'으로 변경)
+//    @PutMapping("/deleteSavings/{depositNo}")
+//    public ResponseEntity<String> deleteSavingsProduct(@PathVariable("depositNo") int depositNo) {
+//        System.out.println("<<< AdminService /deleteSavings >>>");
+//        adminService.deleteDeposit(depositNo);
+//        return ResponseEntity.ok("해당 적금 상품이 삭제되었습니다.");
+//    }
 //--------------------------------- 예금 상품 관련 -----------------------------------------
 
-    // 예금 상품 목록 조회
-    @GetMapping("/deposits")
-    public ResponseEntity<List<DepositDTO>> getDeposits() {
-        System.out.println("<<< AdminService /deposits >>>");
-        List<DepositDTO> deposits = adminService.getDeposits();
-        return ResponseEntity.ok(deposits);
-    }
-
-    // 예금 상품 수정
-    @PutMapping("/editDeposit/{depositNo}")
-    public ResponseEntity<String> editDepositProduct(@PathVariable("depositNo") int depositNo, @RequestBody DepositDTO depositDTO) {
-        System.out.println("<<< AdminService /editDeposit >>>");
-        adminService.updateDeposit(depositNo, depositDTO);
-        return ResponseEntity.ok("예금 상품이 수정되었습니다.");
-    }
-
-    // 예금 상품 삭제 (depositState를 'n'으로 변경)
-    @PutMapping("/deleteDeposit/{depositNo}")
-    public ResponseEntity<String> deleteDepositProduct(@PathVariable("depositNo") int depositNo) {
-        System.out.println("<<< AdminService /deleteDeposit >>>");
-        adminService.deleteDeposit(depositNo);
-        return ResponseEntity.ok("해당 예금 상품이 삭제되었습니다.");
-    }
+//    // 예금 상품 목록 조회
+//    @GetMapping("/deposits")
+//    public ResponseEntity<List<DepositDTO>> getDeposits() {
+//        System.out.println("<<< AdminService /deposits >>>");
+//        List<DepositDTO> deposits = adminService.getDeposits();
+//        return ResponseEntity.ok(deposits);
+//    }
+//
+//    // 예금 상품 수정
+//    @PutMapping("/editDeposit/{depositNo}")
+//    public ResponseEntity<String> editDepositProduct(@PathVariable("depositNo") int depositNo, @RequestBody DepositDTO depositDTO) {
+//        System.out.println("<<< AdminService /editDeposit >>>");
+//        adminService.updateDeposit(depositNo, depositDTO);
+//        return ResponseEntity.ok("예금 상품이 수정되었습니다.");
+//    }
+//
+//    // 예금 상품 삭제 (depositState를 'n'으로 변경)
+//    @PutMapping("/deleteDeposit/{depositNo}")
+//    public ResponseEntity<String> deleteDepositProduct(@PathVariable("depositNo") int depositNo) {
+//        System.out.println("<<< AdminService /deleteDeposit >>>");
+//        adminService.deleteDeposit(depositNo);
+//        return ResponseEntity.ok("해당 예금 상품이 삭제되었습니다.");
+//    }
     //--------------------------------- 대출 관련 ----------------------------------------------------------
 
     //------------------------------- 거래 관련 ------------------------------------------------

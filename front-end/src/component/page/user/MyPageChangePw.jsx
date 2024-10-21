@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import apiSer from '../../ApiService';
 import localStorage from 'localStorage';
+import 'resource/css/user/MyPageChangePw.css';
 
 function MyPageChangePw() {
     const userNo = localStorage.getItem("userNo")
@@ -38,56 +39,58 @@ function MyPageChangePw() {
         });
         }
 
-    return(
-        <div className="pwChangeForm">
-            <table>
-                <thead>
-                    <tr>
-                        <td colSpan ="2">비밀번호 변경</td>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>기존 비밀번호 확인</td>
-                    <td>
-                        <input
-                            type="password"
-                            name="userPw"
-                            value={form.userPw}
-                            onChange={handleChange}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>새 비밀번호</td>
-                    <td>
-                        <input
-                            type="password"
-                            name="newUserPw"
-                            value={form.newUserPw}
-                            onChange={handleChange}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td>새 비밀번호 확인</td>
-                    <td>
-                        <input
-                            type="password"
-                            name="confirmNewUserPw"
-                            value={form.confirmNewUserPw}
-                            onChange={handleChange}
-                        />
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div>
-                <button onClick={submitNewPw}>변경</button>
-                <button onClick={backToMyPage}>취소</button>
-            </div>
+    return (
+    <div className="MyPageChangePw-container">
+      <h2 className="MyPageChangePw-title">비밀번호 변경</h2>
+      <div className="MyPageChangePw-form">
+        <table className="MyPageChangePw-table">
+          <tbody>
+            <tr>
+              <td>기존 비밀번호 확인</td>
+              <td>
+                <input
+                  type="password"
+                  name="userPw"
+                  value={form.userPw}
+                  onChange={handleChange}
+                  className="MyPageChangePw-input"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>새 비밀번호</td>
+              <td>
+                <input
+                  type="password"
+                  name="newUserPw"
+                  value={form.newUserPw}
+                  onChange={handleChange}
+                  className="MyPageChangePw-input"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>새 비밀번호 확인</td>
+              <td>
+                <input
+                  type="password"
+                  name="confirmNewUserPw"
+                  value={form.confirmNewUserPw}
+                  onChange={handleChange}
+                  className="MyPageChangePw-input"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div className="MyPageChangePw-buttons">
+          <button className="MyPageChangePw-btn">변경</button>
+          <button className="MyPageChangePw-btn MyPageChangePw-cancel-btn" onClick={backToMyPage}>취소</button>
         </div>
-        );
+      </div>
+    </div>
+  );
+
     }
 
 export default MyPageChangePw;

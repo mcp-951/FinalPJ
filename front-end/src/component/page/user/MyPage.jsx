@@ -7,6 +7,7 @@ import '../../../resource/css/user/MyPage.css';  // 경로 수정
 function MyPage() {
     const navigate = useNavigate();
     const userNo = localStorage.getItem("userNo");
+    const token = localStorage.getItem("token");
     // 상태 관리
     const [form, setForm] = useState({
         id: '',
@@ -19,7 +20,11 @@ function MyPage() {
     });
 
     const getUserInfo = () => {
-        ApiSer.getUserInfo(userNo)
+        ApiSer.getUserInfo(userNo,{
+        headers: {
+          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+        }
+      })
             .then((response) => {
                 let gend = response.data.residentNumber;
                 let data = {
@@ -37,8 +42,18 @@ function MyPage() {
                 console.error("Error fetching user info: ", error);
             });
     };
-
     useEffect(() => {
+        if(userNo === null || userNo === ""){
+            alert("잘못된 접근입니다.");
+            navigate("/");
+            return;
+            }
+
+        if(token === null || token === ""){
+            alert("잘못된 접근입니다.");
+            navigate("/");
+            return;
+            }
         getUserInfo();
     }, [userNo]);
 

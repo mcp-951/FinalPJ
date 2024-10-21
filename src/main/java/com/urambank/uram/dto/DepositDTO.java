@@ -1,5 +1,6 @@
 package com.urambank.uram.dto;
 
+import com.urambank.uram.entities.DepositEntity;
 import jakarta.persistence.Column;
 import lombok.*;
 
@@ -34,4 +35,18 @@ public class DepositDTO {
     private int depositMinimumAmount; // 가입최소금액
     private int depositMaximumAmount; // 가입최대금액
     private String depositCharacteristic; // 상품 특징
+
+    public static DepositDTO toDepositDTO(DepositEntity depositEntity) {
+        return DepositDTO.builder()
+                .depositNo(depositEntity.getDepositNo())
+                .depositName(depositEntity.getDepositName())
+                .depositMaximumRate(depositEntity.getDepositMaximumRate())
+                .depositMinimumAmount(depositEntity.getDepositMinimumAmount())
+                .depositMaximumAmount(depositEntity.getDepositMaximumAmount())
+                .depositMinimumDate(depositEntity.getDepositMinimumDate())
+                .depositMaximumDate(depositEntity.getDepositMaximumDate())
+                .depositCategory(depositEntity.getDepositCategory())
+                .build();
+    }
+
 }

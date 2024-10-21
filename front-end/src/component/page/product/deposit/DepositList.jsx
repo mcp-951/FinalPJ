@@ -26,7 +26,6 @@ const DepositItem = ({ depositNo, depositName, depositMinimumRate, depositMaximu
     <div className="deposit-item">
       <div className="deposit-text">
         <div>{depositName}</div>
-        <div>afsdfads{depositCategory}</div>
         <div>{depositContent}</div>
         <div>최대 {depositMaximumDate}개월</div>
         <div>최대 {depositMaximumRate}%</div>
