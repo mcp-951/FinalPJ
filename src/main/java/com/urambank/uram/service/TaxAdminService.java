@@ -79,7 +79,7 @@ public class TaxAdminService {
     }
 
     // 회원 이름을 기준으로 userNo 가져오기
-    @GetMapping("/findByName/{name  }")
+    @GetMapping("/findByName/{name}")
     public ResponseEntity<Integer> getUserNoByName(@PathVariable String name) {
         int userNo = userService.getUserNoByName(name);
         if (userNo != 0) {

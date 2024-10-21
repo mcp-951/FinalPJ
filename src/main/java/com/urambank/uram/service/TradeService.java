@@ -132,4 +132,9 @@ public class TradeService {
 
         return accountDataList;
     }
+
+    // 계좌 번호로 계좌 정보 찾기
+    public Optional<AccountEntity> findByAccountNumber(String accountNumber) {
+        return accountRepository.findByAccountNumber(accountNumber);
+    }
 }

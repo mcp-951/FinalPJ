@@ -8,7 +8,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './searchBar/SearchBar';  // SearchBar 경로 확인 후 추가
 
-function Navbar() {
+function Navbar(){
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
 

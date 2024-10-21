@@ -173,7 +173,7 @@ public class UserService {
         }
     }
     public List<User> getUsersByRoleUser() {
-        return userRepository.findByUserRole("ROLE_USER");
+        return userRepository.findByUserRole("USER");
     }
 
     // userId로 userNo 가져오기
