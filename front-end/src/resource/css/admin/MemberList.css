@@ -1,0 +1,122 @@
+/* 전체 레이아웃 */
+.member-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #74a1d2;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 40px;
+}
+
+.member-list-content {
+  flex-grow: 1;
+  padding: 40px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.member-list-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* 검색 및 필터 컨트롤 */
+.search-bar {
+  display: flex; /* 검색 바 안의 요소를 가로로 정렬 */
+  align-items: center; /* 버튼과 입력 필드의 수직 정렬을 맞추기 위해 추가 */
+  gap: 10px; /* 입력 필드와 버튼 사이에 간격 추가 */
+}
+
+.search-input {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex-grow: 1; /* 입력 필드가 가능한 넓게 확장되도록 설정 */
+}
+
+.search-btn {
+  padding: 8px 16px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-btn:hover {
+  background-color: #5d95d1;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+}
+
+.pagination-select {
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* 테이블 스타일 */
+.member-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.member-table th, .member-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 16px;
+}
+
+.member-row:hover {
+  background-color: #f1f1f1;
+}
+
+.active {
+  color: green;
+  font-weight: bold;
+}
+
+.inactive {
+  color: red;
+  font-weight: bold;
+}
+
+/* 버튼 스타일 */
+.edit-btn, .status-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #74a1d2;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #74a1d2;
+}
+
+.status-btn {
+  background-color: #74a1d2;
+  color: white;
+}
+
+.status-btn:hover {
+  background-color: #74a1d2;
+}

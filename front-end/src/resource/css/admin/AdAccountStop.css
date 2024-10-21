@@ -1,0 +1,106 @@
+/* 전체 레이아웃 컨테이너 */
+.AdAccountStop-transaction-history-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* 메인 컨텐츠 영역 */
+  .AdAccountStop-alog-main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #f4f7f9;
+  }
+  
+  /* 계좌 목록 컨텐츠 영역 */
+  .AdAccountStop-member-list-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 테이블 스타일 */
+  .AdAccountStop-transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .AdAccountStop-transaction-table th, .AdAccountStop-transaction-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .AdAccountStop-transaction-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .AdAccountStop-transaction-table tbody tr:hover {
+    background-color: #f9f9f9;
+  }
+  
+  /* 검색 및 페이지네이션 컨트롤 영역 */
+  .AdAccountStop-search-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  /* 검색바 스타일 */
+  .AdAccountStop-search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .AdAccountStop-search-bar select, .AdAccountStop-search-bar input {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .AdAccountStop-search-bar button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .AdAccountStop-search-bar button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* 페이지당 표시 개수 선택 영역 */
+  .AdAccountStop-pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .AdAccountStop-pagination-controls select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  /* 해제 버튼 스타일 */
+  .AdAccountStop-normal-button {
+    padding: 8px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .AdAccountStop-normal-button:hover {
+    background-color: #218838;
+  }
+  

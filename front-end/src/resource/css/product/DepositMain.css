@@ -1,198 +1,136 @@
-/* 전체 페이지 스타일 */
-.loan-product-detail {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  background-color: #f9f9f9;
-  margin: 20px auto;
+/* 전체 컨테이너 스타일 */
+.deposit-main {
+  font-family: 'Arial', sans-serif;
+  padding: 30px;
   max-width: 800px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto; /* 가운데 정렬 */
+  background-color: #ffffff; /* 배경을 흰색으로 */
+  border: 1px solid #ddd; /* 테두리 */
+  border-radius: 10px; /* 둥근 모서리 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
 
-/* 상단 섹션 스타일 */
-.loan-header {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.loan-title-section {
-  margin-bottom: 20px;
-}
-
-.loan-title-section h2 {
-  font-size: 24px;
+/* 제목 스타일 */
+.deposit-main h1 {
+  font-size: 28px;
   color: #333;
-  margin-bottom: 5px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-align: center; /* 가운데 정렬 */
 }
 
-.loan-title-section p {
-  font-size: 16px;
+/* 설명 텍스트 스타일 */
+.deposit-main p {
+  font-size: 18px;
+  line-height: 1.6;
   color: #666;
-}
-
-/* 상품 정보 섹션 */
-.loan-details {
-  display: flex;
-  align-items: center;
-  justify-content: center; 
-}
-
-.loan-info {
-  display: flex;
-  gap: 40px;
-  margin-left: 20px;
-
-}
-
-
-.loan-info-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin-bottom: 30px;
   text-align: center;
 }
 
-.loan-info-item img {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-}
-
-.loan-info-item p {
-  margin: 0;
-}
-
-.loan-info-item p:nth-child(2) {
-  font-size: 14px;
-  color: #888;
-}
-
-.loan-info-item p:nth-child(3) {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* 버튼 스타일 수정 */
-.loan-buttons {
-  display: flex;
-  justify-content: center; /* 버튼을 가운데 정렬 */
-  margin-top: 20px; /* 텍스트와 버튼 사이에 간격 추가 */
-  gap: 10px; /* 버튼 사이의 간격 유지 */
-  margin-top: 20px;
-}
-
-.loan-buttons button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+/* 가입하기 버튼 스타일 */
+.join-button {
+  padding: 12px 25px;
   background-color: #007bff;
   color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  margin-top: 20px;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.loan-buttons button:hover {
+/* 가입하기 버튼 Hover 효과 */
+.join-button:hover {
   background-color: #0056b3;
+  transform: translateY(-2px); /* Hover 시 살짝 올라가는 효과 */
 }
 
-/* 대출 계산기 섹션 스타일 */
-.loan-calculator {
-  background-color: #fff;
-  padding: 20px;
+/* 예금 계산기 컨테이너 스타일 */
+.deposit-calculator {
+  margin-top: 40px;
+  padding: 30px;
+  border: 1px solid #ddd;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  transition: box-shadow 0.3s ease; /* Hover 시 그림자 변화 */
 }
 
-.loan-calculator h3 {
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #333;
+/* 계산기 Hover 효과 */
+.deposit-calculator:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* 그림자 강화 */
 }
 
-.calculator-options {
+/* 입력 그룹 스타일 */
+.input-group {
   display: flex;
-  gap: 20px;
+  align-items: center;
   margin-bottom: 20px;
+  justify-content: center;
 }
 
-.calculator-options button {
-  padding: 10px 20px;
-  border: 1px solid #ccc;
-  background-color: #f8f8f8;
-  cursor: pointer;
-  font-size: 14px;
-  border-radius: 5px;
-}
-
-.calculator-options button:hover {
-  background-color: #e0e0e0;
-}
-
-.calculator-inputs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.calculator-inputs input {
-  padding: 10px;
-  font-size: 14px;
+/* 입력 필드 스타일 */
+.input-group input {
   width: 150px;
+  padding: 12px;
+  margin-right: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  transition: border-color 0.3s ease;
+  text-align: right; /* 입력 내용 우측 정렬 */
 }
 
-.calculator-inputs button {
-  padding: 10px 20px;
+/* 입력 필드 Hover 및 Focus 효과 */
+.input-group input:focus,
+.input-group input:hover {
+  border-color: #007bff; /* Hover 및 Focus 시 테두리 색상 변경 */
+}
+
+/* 입력 필드 설명 텍스트 스타일 */
+.input-group span {
+  margin-right: 10px;
+  font-size: 16px;
+  color: #555;
+}
+
+/* 계산하기 버튼 스타일 */
+.calculate-button {
+  padding: 12px 25px;
   background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.calculator-inputs button:hover {
+/* 계산하기 버튼 Hover 효과 */
+.calculate-button:hover {
   background-color: #218838;
+  transform: translateY(-2px); /* Hover 시 살짝 올라가는 효과 */
 }
 
-/* 하단 상품 설명 섹션 */
-.loan-description {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.loan-description h3 {
+/* 계산 결과 텍스트 스타일 */
+.calculation-result {
+  margin-top: 30px;
   font-size: 20px;
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.loan-description table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-.loan-description th, .loan-description td {
-  padding: 10px;
-  border: 1px solid #ddd;
-  text-align: left;
-  font-size: 14px;
-  color: #555;
-}
-
-.loan-description th {
-  background-color: #f4f4f4;
   font-weight: bold;
-}
-
-.loan-description td {
-  background-color: #fff;
+  color: #333;
+  text-align: center;
+  background-color: #e9f7ef; /* 강조 배경색 추가 */
+  padding: 15px;
+  border: 1px solid #d4edda;
+  border-radius: 5px;
 }

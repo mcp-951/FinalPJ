@@ -1,0 +1,126 @@
+/* 전체 컨테이너 */
+.FindIdAndPw-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 헤더 스타일 */
+.FindIdAndPw-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.FindIdAndPw-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 탭 스타일 */
+.FindIdAndPw-tabs {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.FindIdAndPw-tabs button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #74a1d2;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+}
+
+.FindIdAndPw-tabs button.active {
+    background-color: #74a1d2;
+    color: white;
+}
+
+.FindIdAndPw-tabs button:hover {
+    background-color: #5d95d1;
+    color: white;
+}
+
+/* 인증 방법 섹션 */
+.FindIdAndPw-methods {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* 라벨 스타일 */
+.FindIdAndPw-methods label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* 입력 필드 스타일 */
+.FindIdAndPw-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+/* 인증 버튼 스타일 */
+.FindIdAndPw-auth-btn {
+    padding: 10px 20px;
+    background-color: #74a1d2;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.FindIdAndPw-auth-btn:hover {
+    background-color: #5d95d1;
+}
+
+/* 찾은 아이디 및 인증 성공 메시지 스타일 */
+.FindIdAndPw-message {
+    font-size: 16px;
+    color: #28a745;
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .FindIdAndPw-container {
+        padding: 20px;
+    }
+
+    .FindIdAndPw-tabs button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .FindIdAndPw-input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .FindIdAndPw-auth-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}

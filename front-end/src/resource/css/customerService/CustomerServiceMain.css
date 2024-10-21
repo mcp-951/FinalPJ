@@ -1,0 +1,191 @@
+/* 전체 레이아웃 */
+.customer-service-main {
+  margin: 40px auto;
+  padding: 30px;
+  max-width: 1200px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.customer-service-main:hover {
+  transform: scale(1.02);
+}
+
+/* 제목 스타일 */
+.customer-service-main h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.customer-service-main span {
+  color: #0066cc;
+}
+
+/* 문의글 테이블 스타일 */
+.inquiry-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 15px;
+  margin-bottom: 30px;
+}
+
+.inquiry-table th {
+  background-color: #285b96;
+  color: white;
+  font-weight: bold;
+  padding: 15px;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+}
+
+.inquiry-table td {
+  background-color: #f8f8f8;
+  padding: 15px;
+  text-align: center;
+  color: #333;
+  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.inquiry-table tr {
+  transition: transform 0.2s;
+}
+
+.inquiry-table tr:hover {
+  transform: scale(1.01);
+  background-color: #e6f2ff;
+}
+
+.inquiry-table button {
+  color: #396490;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.inquiry-table button:hover {
+  text-decoration: underline;
+}
+
+/* 1:1 문의하기 버튼 */
+.inquiry-button {
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: 600;
+  background-color: #285b96;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 40px;
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.inquiry-button:hover {
+  background-color: #004c99;
+}
+
+/* 고객 상담 정보 섹션 */
+.customer-service-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.info-section {
+  background-color: #ffffff;
+  padding: 25px;
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.info-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #1a1a1a;
+}
+
+.info-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-section ul li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.info-section ul li:last-child {
+  border-bottom: none;
+}
+
+.info-section ul li::before {
+  content: "•";
+  color: #0066cc;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.info-section ul li:hover {
+  color: #0066cc;
+}
+
+/* 미디어 쿼리: 화면 크기에 따라 레이아웃 조정 */
+@media (max-width: 768px) {
+  .customer-service-info {
+    flex-direction: column;
+  }
+
+  .info-section {
+    margin-bottom: 20px;
+  }
+}
+
+.customer-service-main {
+  position: relative;
+  min-height: 100vh;
+  background-image: url('../../img/1234.png'); /* 이미지 경로 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(0px); /* 흐림 효과 */
+  opacity: 1; /* 투명도 조절 */
+}
+
+.customer-service-content {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.8); /* 배경색과 투명도 조절 */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
+}

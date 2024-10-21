@@ -1,0 +1,163 @@
+/* 전체 레이아웃 */
+.DepositProduct-app-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+/* 메인 컨텐츠 레이아웃 */
+.DepositProduct-alog-main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+}
+
+/* 예금 상품 관리 타이틀 */
+.DepositProduct-deposit-product-container h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* 검색 및 등록 버튼 컨트롤 */
+.DepositProduct-search-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 검색 바 */
+.DepositProduct-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.DepositProduct-search-bar select, 
+.DepositProduct-search-bar input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.DepositProduct-search-bar button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.DepositProduct-search-bar button:hover {
+  background-color: #0056b3;
+}
+
+/* 등록 버튼 스타일 */
+.DepositProduct-search-controls button {
+  padding: 10px 20px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.DepositProduct-search-controls button:hover {
+  background-color: #5d95d1;
+}
+
+/* 상품 테이블 스타일 */
+.DepositProduct-product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.DepositProduct-product-table th, 
+.DepositProduct-product-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 14px;
+}
+
+.DepositProduct-product-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  color: #333;
+}
+
+.DepositProduct-product-table td {
+  color: #555;
+}
+
+.DepositProduct-product-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.DepositProduct-product-table img {
+  width: 50px;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* 수정, 삭제 버튼 스타일 */
+.DepositProduct-product-table button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.DepositProduct-product-table .edit-button {
+  background-color: #ffc107;
+  color: white;
+}
+
+.DepositProduct-product-table .edit-button:hover {
+  background-color: #e0a800;
+}
+
+.DepositProduct-product-table .delete-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.DepositProduct-product-table .delete-button:hover {
+  background-color: #c82333;
+}
+
+/* 페이지네이션 컨트롤 */
+.DepositProduct-pagination-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.DepositProduct-pagination-controls label {
+  margin-right: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.DepositProduct-pagination-controls select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}

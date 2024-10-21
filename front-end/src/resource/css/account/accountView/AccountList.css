@@ -1,0 +1,110 @@
+/* AccountList.css */
+
+.account-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* 리스트 항목 간의 간격 */
+  width: 70%; /* 좌우 폭을 적당히 좁게 유지 */
+  margin: 0 auto; /* 중앙 정렬 */
+}
+
+.account-list-box {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 15px; /* 위아래 패딩을 넉넉하게 설정 */
+  border: 1px solid #ddd;
+  border-radius: 10px; /* 모서리를 둥글게 */
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* 부드러운 그림자 */
+}
+
+.account-list-number-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 20px; /* 계좌번호와 잔액을 오른쪽으로 이동 */
+}
+
+.account-list-number {
+  font-size: 20px; /* 계좌번호 크기를 키움 */
+  font-weight: bold;
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.account-list-number:hover {
+  text-decoration: underline;
+  color: #2980b9;
+}
+
+.account-list-balance {
+  margin-top: 15px; /* 잔액과 계좌번호 사이 간격 */
+  font-size: 18px; /* 잔액 크기를 키움 */
+  color: #7f8c8d;
+}
+
+/* 점 3개 버튼 */
+.list-more-icon {
+  position: absolute;
+  top: 20px; /* 위아래 간격을 더 넓게 설정 */
+  right: 20px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #7f8c8d;
+}
+
+.list-more-icon:hover {
+  color: #2980b9;
+}
+
+/* 이체 및 상세 버튼 컨테이너 */
+.account-list-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 40px; /* 더보기 버튼과의 위아래 간격을 넓힘 */
+}
+
+.list-detail-button, .list-transfer-button {
+  padding: 12px 24px; /* 버튼 크기를 동일하게 설정 */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: white;
+}
+
+.list-detail-button {
+  background-color: #28a745;
+}
+
+.list-detail-button:hover {
+  background-color: #218838;
+}
+
+.list-transfer-button {
+  background-color: #007bff;
+}
+
+.list-transfer-button:hover {
+  background-color: #0056b3;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .account-list-container {
+    width: 90%; /* 작은 화면에서는 폭을 더 넓게 */
+  }
+
+  .account-list-box {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 30px 20px;
+  }
+
+  .account-list-buttons {
+    justify-content: center;
+    margin-top: 10px;
+  }
+}

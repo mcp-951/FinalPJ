@@ -1,0 +1,142 @@
+/* 테이블 전체 레이아웃 */
+.boardTable {
+  width: 80%; /* 테이블 너비 */
+  margin: 30px auto; /* 화면 중앙 정렬 */
+  border-collapse: collapse; /* 셀 간의 경계선 제거 */
+  table-layout: fixed; /* 셀 너비 균일 설정 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 테두리 그림자 */
+  border-radius: 12px;
+  overflow: hidden; /* 모서리 둥글게 */
+}
+
+/* 테이블 헤더 */
+.boardTable thead {
+  background-color: #a7d3ee; /* 헤더 배경색 */
+  color: white;
+  text-align: center;
+}
+
+/* 셀 기본 스타일 */
+.boardTable th, .boardTable td {
+  padding: 18px; /* 셀 내부 여백 */
+  text-align: left; /* 텍스트 왼쪽 정렬 */
+  vertical-align: middle; /* 수직 중앙 정렬 */
+  border-bottom: 1px solid #ddd; /* 셀 하단 경계선 */
+  font-size: 16px;
+}
+
+/* 헤더 셀 스타일 */
+.boardTable th {
+  font-weight: 700; /* 굵기 */
+  text-transform: uppercase; /* 대문자 변환 */
+  letter-spacing: 1px; /* 글자 간격 */
+}
+
+/* 짝수 행 배경색 */
+.boardTable tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* 행 호버 효과 */
+.boardTable tbody tr:hover {
+  background-color: #e6f7ff;
+  transform: scale(1.01); /* 살짝 확대 */
+  transition: all 0.2s ease-in-out;
+}
+
+/* 셀 애니메이션 */
+.boardTable tbody td {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 제목 셀 */
+.title {
+  width: 70%; /* 제목 셀 너비 */
+  font-weight: 500;
+  color: #333;
+}
+
+/* 날짜 셀 */
+.date {
+  width: 30%; /* 날짜 셀 너비 */
+  text-align: right; /* 날짜 오른쪽 정렬 */
+  color: #666;
+}
+
+/* 버튼 스타일 */
+.boardPlus {
+  border: none;
+  background: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.boardPlus:hover {
+  color: #0056b3;
+}
+
+/* 뉴스 아이템 레이아웃 */
+.newsItem {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* 이미지와 텍스트 간격 */
+}
+
+/* 뉴스 이미지 스타일 */
+.newsItem img {
+  width: 100px;
+  height: 80px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.newsItem img:hover {
+  transform: scale(1.05); /* 호버 시 이미지 확대 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 페이지네이션 컨테이너 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 공통 버튼 스타일 */
+.pagination button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #314a64;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* 버튼 호버 효과 */
+.pagination button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05); /* 살짝 확대 */
+}
+
+/* 비활성화된 버튼 스타일 */
+.pagination button:disabled {
+  background-color: #e0e0e0;
+  color: #9f9b9b;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 페이지 정보 텍스트 */
+.page-info {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+}
