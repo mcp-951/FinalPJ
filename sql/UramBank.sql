@@ -9,23 +9,24 @@ CREATE TABLE ADMIN_TB(
 INSERT INTO ADMIN_TB(adminID, adminPW) VALUES ('123@naver.com', 'zxc123');
 COMMIT;
 
-CREATE TABLE USER_TB(
-	userNO INT AUTO_INCREMENT PRIMARY KEY,
-    userID VARCHAR(20) NOT NULL,
-    userEmail VARCHAR(30) NOT NULL,
-    userName VARCHAR(20) NOT NULL,
-    userRnum INT NOT NULL,
-    OCRcheck CHAR(1),
-    userBirth DATE NOT NULL,
-    userHP VARCHAR(15) NOT NULL,
-    userAddress VARCHAR(100) NOT NULL,
-    userState VARCHAR(15) DEFAULT 'NORMAL',
-    userCreateDate DATE DEFAULT (CURRENT_DATE()),
-    lastAccess TIMESTAMP
-);
+CREATE TABLE userInfo (
+	userNo int(100) NOT NULL AUTO_INCREMENT,
+	userId VARCHAR(100) NOT NULL,
+	userPw VARCHAR(100) NOT NULL,
+	name VARCHAR(100) NOT NULL,
+	hp VARCHAR(20) NOT NULL,
+	birth DATETIME NOT NULL ,
+	email VARCHAR(100) NOT NULL,
+	address VARCHAR(100) NOT NULL,
+	residentNumber VARCHAR(100) NOT NULL,
+	joinDate DATETIME default NOW(),
+	state CHAR(1) default 'y',
+	grade int(1) default 9,
+	OCRCheck int(1) NOT NULL,
+	USER_ROLE VARCHAR(100) default 'USER',
+	PRIMARY KEY (userNo)
+	);
 
-INSERT INTO USER_TB(userID, userEmail, userName, userRnum, OCRcheck, userBirth, userHP, userAddress)
-VALUES('ace', 'ace@naver.com', '에이스동명', 951103-1111111, 'Y', '1995-11-03', '01012345678', '경기도 구리시');
 COMMIT;
 
 CREATE TABLE PRODUCT_TB(

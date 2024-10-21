@@ -54,10 +54,6 @@ const AdMemberEdit = () => {
       <form onSubmit={handleSubmit}>
         <label>아이디</label>
         <input type="text" value={formData.userId} disabled />
-
-        <label>비밀번호</label> {/* 비밀번호 입력 필드 추가 */}
-        <input type="password" name="userPw" value={formData.userPw} onChange={handleInputChange} />
-
         <label>이름</label>
         <input type="text" name="name" value={formData.name} onChange={handleInputChange} />
 

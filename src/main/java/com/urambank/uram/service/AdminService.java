@@ -31,7 +31,6 @@ import java.util.Map;
 @Service
 public class AdminService {
 
-
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
     private final LogRepository logRepository;
@@ -258,7 +257,6 @@ public class AdminService {
     public void updateDeposit(int depositNo, DepositDTO depositDTO) {
         DepositEntity depositEntity = depositRepository.findById(depositNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 적금 상품을 찾을 수 없습니다."));
-
         // DTO 데이터를 엔티티로 반영
         depositEntity.setDepositName(depositDTO.getDepositName());
         depositEntity.setDepositCategory(depositDTO.getDepositCategory());
@@ -270,11 +268,9 @@ public class AdminService {
         depositEntity.setDepositMinimumAmount(depositDTO.getDepositMinimumAmount());  // 최소 예치 금액 추가
         depositEntity.setDepositMinimumDate(depositDTO.getDepositMinimumDate());  // 최소 기간 추가
         depositEntity.setDepositMinimumRate(depositDTO.getDepositMinimumRate());  // 최소 금리 추가
-
         // 변경된 엔티티 저장
         depositRepository.save(depositEntity);
     }
-
     // 예금,적금 "삭제" 상태로 변경하는 메서드
     public void deleteDeposit(int depositNo) {
         depositRepository.updateDepositStateToN(depositNo);

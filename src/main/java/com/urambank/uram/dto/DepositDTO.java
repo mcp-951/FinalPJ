@@ -40,6 +40,7 @@ public class DepositDTO {
         return DepositDTO.builder()
                 .depositNo(depositEntity.getDepositNo())
                 .depositName(depositEntity.getDepositName())
+                .depositMinimumRate(depositEntity.getDepositMinimumRate())
                 .depositMaximumRate(depositEntity.getDepositMaximumRate())
                 .depositMinimumAmount(depositEntity.getDepositMinimumAmount())
                 .depositMaximumAmount(depositEntity.getDepositMaximumAmount())

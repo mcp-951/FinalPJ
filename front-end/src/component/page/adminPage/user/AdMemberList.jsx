@@ -34,7 +34,7 @@ const AdMemberList = () => {
 
   // 수정 버튼 클릭 시 해당 회원의 데이터를 수정 페이지로 이동
   const handleEdit = (member) => {
-    navigate('/adEditMember', { state: { memberData: member } });  // 수정 페이지로 이동하며 회원 데이터를 전달
+    navigate('/admin/adEditMember', { state: { memberData: member } });  // 수정 페이지로 이동하며 회원 데이터를 전달
   };
 
   // 회원 정지 및 정지 해제 처리

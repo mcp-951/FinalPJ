@@ -27,7 +27,7 @@ const DepositSearch = () => {
                     const accountParts = account.accountNumber.split('-');
                     return (
                         (accountParts[1] === '01' || accountParts[1] === '02') &&
-                        !(account.deposit && account.depositName.includes('입출금'))
+                        !(account.depositName && account.depositName.includes('입출금'))
                     );
                 });
 
