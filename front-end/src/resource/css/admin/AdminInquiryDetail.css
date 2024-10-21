@@ -1,0 +1,72 @@
+/* AdminInquiryDetail.css */
+
+/* 전체 페이지 레이아웃 */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* 사이드바와 본문 간격 */
+  .AdminInquiryDetail-main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #f4f6f9;
+  }
+  
+  /* 제목 스타일 */
+  .AdminInquiryDetail-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* 문의글 제목, 내용 스타일 */
+  .AdminInquiryDetail-inquiry, .AdminInquiryDetail-message {
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  
+  /* 답변 텍스트 에어리어 스타일 */
+  .AdminInquiryDetail-answer textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* 답변 저장 버튼 */
+  .AdminInquiryDetail-save-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .AdminInquiryDetail-save-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* 반응형 디자인 */
+  @media (max-width: 768px) {
+    .AdminInquiryDetail-main-content {
+      padding: 15px;
+    }
+  
+    .AdminInquiryDetail-title {
+      font-size: 20px;
+    }
+  
+    .AdminInquiryDetail-save-btn {
+      width: 100%;
+    }
+  }
+  

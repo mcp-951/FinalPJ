@@ -9,6 +9,7 @@ function ChatBotButton() {
     const [showModal, setShowModal] = useState(false);
     const [getChat, setGetChat] = useState(false);
     const [messages, setMessages] = useState([]); // 채팅 메시지 상태 추가
+    const [isRecording, setIsRecording] = useState(false); // 녹음 상태 추가
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -46,11 +47,27 @@ function ChatBotButton() {
         setForm({ message: '' });
     };
 
-    const getRec = async () => {
-        const response = await fetch('http://localhost:5000/voice');
-        const text = await response.json();
-        const text2 = text.text;
-        setForm({ message: text2 });
+    const toggleRecording = async () => {
+        if (!isRecording) {
+            // 녹음 시작
+            setIsRecording(true); // 녹음 시작 상태로 변경
+            // 서버에 녹음 요청 (가정: 서버에서 텍스트 변환 후 응답)
+            try {
+                const response = await fetch('http://localhost:5000/voice');
+                const text = await response.json();
+                const text2 = text.text;
+
+                // 녹음 결과를 입력 필드에 반영
+                setForm({ message: text2 });
+            } catch (error) {
+                console.error("Error during recording:", error);
+            } finally {
+                setIsRecording(false); // 녹음 완료 후 상태 변경
+            }
+        } else {
+            // 녹음 완료
+            setIsRecording(false);
+        }
     };
 
     return (
@@ -70,7 +87,7 @@ function ChatBotButton() {
                         <div className="chatbotInfo">
                             <RiRobot2Line size={30} />
                         </div>
-                        <span className="chatbotName">도우미 챗봇</span>
+                        <span className="chatbotName">URAM 챗봇</span>
                     </div>
                     {getChat === false && (
                         <>
@@ -102,9 +119,20 @@ function ChatBotButton() {
                                     name="message"
                                     value={form.message}
                                     onChange={handleChange}
+                                    disabled={isRecording} // 녹음 중일 때 입력 비활성화
                                 />
-                                <button onClick={getRec}>녹음</button>
-                                <button className="startButton" onClick={sendMessage}>전송</button>
+                                <button
+                                    onClick={toggleRecording}
+                                >
+                                    {isRecording ? '녹음중..' : '녹음'}
+                                </button>
+                                <button
+                                    className="startButton"
+                                    onClick={sendMessage}
+                                    disabled={isRecording} // 녹음 중일 때 전송 버튼 비활성화
+                                >
+                                    전송
+                                </button>
                             </div>
                         </>
                     )}

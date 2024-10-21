@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer from '../../util/Footer'; // Footer 컴포넌트 임포트
+import '../../../resource/css/exchange/ExchangeRate.css'; 
 import euFlag from './free-icon-european-union-206593.png'; // 유로 깃발 이미지 임포트
 
 const ExchangeRate = () => {
@@ -50,22 +51,22 @@ const ExchangeRate = () => {
     }, []);
 
     return (
-        <div style={{ textAlign: 'center' }}>
-            <h2 style={{ fontSize: '24px' }}>실시간 환율</h2>
+        <div className="ExchangeRate-container">
+            <h2 className="ExchangeRate-title">실시간 환율</h2>
             {loading ? (
-                <p style={{ fontSize: '18px' }}>로딩 중...</p>
+                <p className="ExchangeRate-loading">로딩 중...</p>
             ) : (
                 <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
                     <select
                         onChange={(e) => setActiveTab(e.target.value)}
-                        style={{ position: 'absolute', top: '-30px', right: 0, fontSize: '18px' ,width: '10%'}}
+                        className="ExchangeRate-dropdown"
                     >
                         <option value="buy">살 때</option>
                         <option value="sell">팔 때</option>
                     </select>
-                    <table border="1" style={{ margin: '20px auto', width: '100%', fontSize: '30px' }}>
+                    <table className="ExchangeRate-table">
                         <thead>
-                            <tr style={{ backgroundColor: '#66b2b2', color: 'white', fontSize: '30px' }}>
+                            <tr>
                                 <th>국가</th>
                                 <th>통화</th>
                                 <th>현재 환율 (원)</th>
@@ -74,15 +75,14 @@ const ExchangeRate = () => {
                         <tbody>
                             {exchangeRates.map((rate) => (
                                 <tr key={rate.cur_unit}>
-                                    <td style={{ backgroundColor: '#f2f2f2' }}>
+                                    <td>
                                         <img 
                                             src={rate.flag === euFlag ? euFlag : `https://flagsapi.com/${rate.flag}/flat/64.png`} 
                                             alt={`${rate.cur_unit} flag`} 
-                                            style={{ width: '80px', height: '60px' }} // 국기 크기 키움
                                         />
                                     </td>
                                     <td>
-                                        {rate.cur_unit} <span style={{ fontSize: '24px' }}>{rate.symbol}</span>
+                                        {rate.cur_unit} <span>{rate.symbol}</span>
                                     </td>
                                     <td>{(activeTab === 'buy' ? rate.bkpr : rate.tts).toFixed(2)}</td>
                                 </tr>
@@ -92,19 +92,19 @@ const ExchangeRate = () => {
                 </div>
             )}
 
-            <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '100px' }}>
+            <div className="ExchangeRate-buttons">
                 <Link to="/detail-rate">
-                    <button style={{ fontSize: '20px', backgroundColor: '#66b2b2', color: 'white', borderRadius: '10px', padding: '10px 70px' }}>국가별 환율</button>
+                    <button className="ExchangeRate-button">국가별 환율</button>
                 </Link>
                 <Link to="/exchange">
-                    <button style={{ fontSize: '20px', backgroundColor: '#66b2b2', color: 'white', borderRadius: '10px', padding: '10px 70px' }}>환전 신청</button>
+                    <button className="ExchangeRate-button">환전 신청</button>
                 </Link>
                 <Link to="/exchangeList">
-                    <button style={{ fontSize: '20px', backgroundColor: '#66b2b2', color: 'white', borderRadius: '10px', padding: '10px 70px' }}>환전 내역</button>
+                    <button className="ExchangeRate-button">환전 내역</button>
                 </Link>
             </div>
 
-            <div style={{ width: '100%', marginTop: '200px' }}>
+            <div className="ExchangeRate-footer">
                 <Footer />
             </div>
         </div>

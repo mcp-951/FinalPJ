@@ -9,7 +9,7 @@ const SavingsProduct = () => {
   const navigate = useNavigate();
   const location = useLocation(); // location 훅 사용
   const [savings, setSavings] = useState([]);  // 적금 상품 목록 상태 관리
-  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
+  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리
   const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
   const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 상품 수 상태 관리
   const token = localStorage.getItem("token");
@@ -62,13 +62,13 @@ const SavingsProduct = () => {
   };
   
   return (
-    <div className="app-container">
+    <div className="SavingsProduct-app-container">
       <Sidebar /> {/* 사이드바 추가 */}
-      <div className="alog-main-content">
-        <div className="savings-product-container">
+      <div className="SavingsProduct-alog-main-content">
+        <div className="SavingsProduct-savings-product-container">
           <h2>적금 상품 관리</h2>
-          <div className="search-controls">
-            <div className="search-bar">
+          <div className="SavingsProduct-search-controls">
+            <div className="SavingsProduct-search-bar">
               <select>
                 <option value="전체">전체</option>
                 <option value="분류">분류</option>
@@ -77,12 +77,12 @@ const SavingsProduct = () => {
                 <option value="금액">금액</option>
               </select>
               <input type="text" placeholder="검색어를 입력하세요" />
-              <button>검색</button>
+              <button className="SavingsProduct-search-button">검색</button>
             </div>
-            <button onClick={handleRegister}>등록</button>
+            <button className="SavingsProduct-register-button" onClick={handleRegister}>등록</button>
           </div>
 
-          <table className="product-table">
+          <table className="SavingsProduct-product-table">
             <thead>
               <tr>
                 <th>노출순서</th>
@@ -104,16 +104,16 @@ const SavingsProduct = () => {
                   <td>{deposit.depositCategory}</td>
                   <td>{deposit.depositRate}</td>
                   <td>{deposit.depositContent}</td>
-                  <td><img src={deposit.depositIMG} alt="상품 이미지" width="50" /></td> {/* 수정된 부분 */}
+                  <td><img src={deposit.depositIMG} alt="상품 이미지" width="50" /></td>
                   <td>{deposit.depositState}</td>          
-                  <td><button onClick={() => handleEdit(deposit)}>수정</button></td>
-                  <td><button onClick={() => handleDelete(deposit.depositNo)}>삭제</button></td>
+                  <td><button className="SavingsProduct-edit-button" onClick={() => handleEdit(deposit)}>수정</button></td>
+                  <td><button className="SavingsProduct-delete-button" onClick={() => handleDelete(deposit.depositNo)}>삭제</button></td>
                 </tr>
               ))}
             </tbody>
           </table>
           
-          <div className="pagination-controls">
+          <div className="SavingsProduct-pagination-controls">
             <label>페이지당 항목 수: </label>
             <select onChange={(e) => setDisplayCount(e.target.value)}>
               <option value={10}>10</option>

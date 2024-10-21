@@ -135,9 +135,10 @@ function Login() {
                     <a href="/FindIdAndPw">아이디/비밀번호 찾기</a> |  <a href="/signup">회원가입 </a>
                 </div>
                 <div>
-                    <button onClick={openPopup}>
-                        <img src={kakaoimg} alt="카카오 로그인" />
-                    </button>
+                <button onClick={openPopup} style={{ border: 'none', background: 'none' }}>
+                    <img src={kakaoimg} alt="카카오 로그인" />
+                </button>
+
                 </div>
             </div>
         </div>
