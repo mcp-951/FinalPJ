@@ -57,7 +57,7 @@ const Exchange = () => {
                 // 상태 코드가 NO_CONTENT(204)일 때 계좌 없음 처리
                 if (accountsResponse.status === 204) {
                     alert("신청할 수 있는 계좌가 필요합니다.");
-                    navigate('/');  // 메인 페이지로 이동
+                    navigate('/exchange-rate');  // 메인 페이지로 이동
                     return;
                 }
     
