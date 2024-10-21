@@ -6,7 +6,7 @@ const Sidebar = () => {
   const [showMemberDropdown, setShowMemberDropdown] = useState(false);
   const [showFinancialDropdown, setShowFinancialDropdown] = useState(false);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
-  const [showExchangeDropdown, setShowExchangeDropdown] = useState(false);
+  // const [showExchangeDropdown, setShowExchangeDropdown] = useState(false);
   const [showInquiryDropdown, setShowInquiryDropdown] = useState(false); // 문의 관리 드롭다운
 
   return (
@@ -23,10 +23,10 @@ const Sidebar = () => {
             {showMemberDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/memberList">회원 리스트</NavLink>
+                  <NavLink to="/adMemberList">회원 리스트</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/retiredMember">탈퇴 회원</NavLink>
+                  <NavLink to="/adRetiredMember">탈퇴 회원</NavLink>
                 </li>
               </ul>
             )}
@@ -40,16 +40,16 @@ const Sidebar = () => {
             {showFinancialDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/admin/financialProduct">전체</NavLink>
+                  <NavLink to="/admin/adFinancialProduct">전체</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/savingsProduct">예금상품 관리</NavLink>
+                  <NavLink to="/admin/adDepositProduct">예금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/depositProduct">적금상품 관리</NavLink>
+                  <NavLink to="/admin/adSavingsProduct">적금상품 관리</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/loanProduct">대출상품 관리</NavLink>
+                  <NavLink to="/admin/adLoanProduct">대출상품 관리</NavLink>
                 </li>
               </ul>
             )}
@@ -63,33 +63,22 @@ const Sidebar = () => {
             {showAccountDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/admin/transactionHistory">거래 현황</NavLink>
+                  <NavLink to="/admin/adAccount">정상 계좌</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/accountClosure">계좌 해지 관리</NavLink>
+                  <NavLink to="/admin/adAccountStop">정지 계좌</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/admin/adAccountClosure">해지 계좌</NavLink>
+                </li>
+                <li>
+                  <NavLink to="/admin/adTransactionHistory">거래 현황</NavLink>
                 </li>
               </ul>
             )}
           </li>
 
-          <li
-            onMouseEnter={() => setShowExchangeDropdown(true)}
-            onMouseLeave={() => setShowExchangeDropdown(false)}
-          >
-            환전 관리
-            {showExchangeDropdown && (
-              <ul className="dropdown">
-                <li>
-                  <NavLink to="/exchangeHistory">환전 현황</NavLink>
-                </li>
-                <li>
-                  <NavLink to="/exchangeLocation">수령 지점</NavLink>
-                </li>
-              </ul>
-            )}
-          </li>
-
-          <li
+          {/* <li
             onMouseEnter={() => setShowAccountDropdown(true)}
             onMouseLeave={() => setShowAccountDropdown(false)}
           >
@@ -97,10 +86,10 @@ const Sidebar = () => {
             {showAccountDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/taxInsert">청구서 작성</NavLink>
+                  <NavLink to="/adTaxInsert">청구서 작성</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/taxList">납부 현황</NavLink>
+                  <NavLink to="/adTaxList">납부 현황</NavLink>
                 </li>
               </ul>
             )}
@@ -118,13 +107,9 @@ const Sidebar = () => {
                   <NavLink to="/admin/support/inquiries">문의글 리스트</NavLink>
                 </li>
               </ul>
-            )}
+            )} 
           </li>
         </ul>
-      </div>
-
-      <div className="admin-manage">
-        <NavLink to="/adminList">관리자 관리</NavLink>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import Sidebar from '../Sidebar';
 import '../../../../resource/css/admin/RetiredMember.css'; // CSS 추가
 import localStorage from 'localStorage';
 
-const RetiredMember = () => {
+const AdRetiredMember = () => {
   const [retiredMembers, setRetiredMembers] = useState([]);
   const [searchField, setSearchField] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,7 +14,7 @@ const RetiredMember = () => {
 
   // 탈퇴 회원 목록 가져오기
   useEffect(() => {
-    ApiService.get('/retired',{
+    ApiService.get('/retired', {
       headers: {
         'Authorization': `Bearer ${token}`  // Authorization 헤더에 JWT 추가
       }
@@ -74,39 +74,43 @@ const RetiredMember = () => {
           </div>
         </div>
 
-        <table className="retired-member-table">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>아이디</th>
-              <th>이름</th>
-              <th>이메일</th>
-              <th>핸드폰</th>
-              <th>주소</th>
-              <th>생년월일</th>
-              <th>주민번호</th> {/* 주민번호 추가 */}
-              <th>상태</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredList.map((member, index) => (
-              <tr key={member.userNo}>
-                <td>{index + 1}</td>
-                <td>{member.userID}</td>
-                <td>{member.name}</td>
-                <td>{member.email}</td>
-                <td>{member.hp}</td>
-                <td>{member.address}</td>
-                <td>{member.birth}</td>
-                <td>{member.residentNumber}</td> {/* 주민번호 추가 */}
-                <td>{member.state}</td> {/* 상태 필드 추가 */}     
+        {retiredMembers.length === 0 ? (
+          <h1 style={{ textAlign: 'center' }}>탈퇴한 회원이 없습니다.</h1>  
+        ) : (
+          <table className="retired-member-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>핸드폰</th>
+                <th>주소</th>
+                <th>생년월일</th>
+                <th>주민번호</th> {/* 주민번호 추가 */}
+                <th>상태</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredList.map((member, index) => (
+                <tr key={member.userNo}>
+                  <td>{index + 1}</td>
+                  <td>{member.userID}</td>
+                  <td>{member.name}</td>
+                  <td>{member.email}</td>
+                  <td>{member.hp}</td>
+                  <td>{member.address}</td>
+                  <td>{member.birth}</td>
+                  <td>{member.residentNumber}</td> {/* 주민번호 추가 */}
+                  <td>{member.state}</td> {/* 상태 필드 추가 */}     
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
 };
 
-export default RetiredMember; // RetiredMember 컴포넌트 내보내기
+export default AdRetiredMember;

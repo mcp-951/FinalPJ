@@ -1,5 +1,6 @@
 .member-container {
   display: flex;
+  margin-left: 200px; /* 사이드바 너비만큼 메인 컨텐츠를 오른쪽으로 이동 */
 }
 
 .member-list-content {

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';  // ApiService 추가
 import localStorage from 'localStorage';
 
-const MemberEdit = () => {
+const AdMemberEdit = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { memberData } = location.state;
@@ -46,7 +46,7 @@ const MemberEdit = () => {
     })
       .then(() => {
         console.log('회원 정보 수정 성공');
-        navigate('/memberList');  // 수정 후 회원 리스트로 돌아감
+        navigate('/adMemberList');  // 수정 후 회원 리스트로 돌아감
       })
       .catch((error) => {
         console.error('회원 정보 수정 중 오류 발생:', error);
@@ -94,10 +94,10 @@ const MemberEdit = () => {
         </select>
 
         <button type="submit">수정 완료</button>
-        <button type="button" onClick={() => navigate('/memberList')}>취소</button>
+        <button type="button" onClick={() => navigate('/adMemberList')}>취소</button>
       </form>
     </div>
   );
 };
 
-export default MemberEdit;
+export default AdMemberEdit;

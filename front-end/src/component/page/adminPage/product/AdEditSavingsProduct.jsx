@@ -4,7 +4,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar'; // 사이드바 추가
 import '../../../../resource/css/admin/EditSavingsProduct.css'; // 적절한 CSS 파일 경로 사용
 
-const EditSavingsProduct = () => {
+const AdEditSavingsProduct = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true); // 로딩 상태
@@ -176,4 +176,4 @@ const EditSavingsProduct = () => {
   );
 };
 
-export default EditSavingsProduct;
+export default AdEditSavingsProduct;

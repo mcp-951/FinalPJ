@@ -11,7 +11,9 @@
   display: flex; /* Flexbox 사용 */
   flex-direction: column; /* 자식 요소들을 수직으로 배치 */
   justify-content: space-between; /* 사이드바 안의 요소들을 위아래로 공간 분배 */
+  z-index: 1000; /* 사이드바가 다른 요소 위에 표시되도록 설정 */
 }
+
 
 .middle-menu {
   flex-grow: 1; /* 이 섹션이 중간 공간을 채우도록 성장 */

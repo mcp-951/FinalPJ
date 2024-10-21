@@ -2,36 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar'; // 사이드바 추가
-import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 파일 추가
+import '../../../../resource/css/admin/DepositProduct.css'; // CSS 파일 추가
 
-// 적금 상품 가져오기
-const SavingsProduct = () => {
+// 예금 상품 가져오기
+const AdDepositProduct = () => {
   const navigate = useNavigate();
   const location = useLocation(); // location 훅 사용
-  const [savings, setSavings] = useState([]);  // 적금 상품 목록 상태 관리
-  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
-  const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
+  const [deposits, setDeposits] = useState([]);  // 예금 상품 목록 상태 관리
+  // const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
+  // const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
   const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 상품 수 상태 관리
   const token = localStorage.getItem("token");
 
-  // 적금 상품 목록 불러오기
-  const fetchSavings = () => {
-    axios.get('http://localhost:8081/admin/savings', {
+  // 예금 상품 목록 불러오기
+  const fetchDeposits = () => {
+    console.log("예금")
+    axios.get('http://localhost:8081/admin/deposits', {
       headers: {
         'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가   
       }
     })
     .then((response) => {
-      setSavings(response.data);  // 불러온 데이터를 savings 상태로 설정
+      setDeposits(response.data);  // 불러온 데이터를 savings 상태로 설정
     })
     .catch((error) => {
-      console.error('적금 상품 목록을 불러오는 중 오류 발생:', error);  // 오류 처리
+      console.error('예금 상품 목록을 불러오는 중 오류 발생:', error);  // 오류 처리
     });
   };
 
-  // 페이지가 처음 로드될 때 적금 상품 목록을 가져옴
+  // 페이지가 처음 로드될 때 예금 상품 목록을 가져옴
   useEffect(() => {
-    fetchSavings(); // 페이지 로드 시 적금 상품 목록 불러오기
+    fetchDeposits(); // 페이지 로드 시 예금 상품 목록 불러오기
   }, []);
 
   // 수정 버튼 클릭 시 수정 페이지로 이동
@@ -42,14 +43,14 @@ const SavingsProduct = () => {
   // 삭제 버튼 클릭 시 depositState를 'n'으로 변경
   const handleDelete = async (depositNo) => {
     try {
-      await axios.put(`http://localhost:8081/admin/deleteSavings/${depositNo}`, null, {
+      await axios.put(`http://localhost:8081/admin/deleteDeposit/${depositNo}`, null, {
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }
       });
-      // 삭제 후 적금 상품 목록 다시 불러오기
+      // 삭제 후 예금 상품 목록 다시 불러오기
       alert('해당 상품이 삭제되었습니다.');
-      fetchSavings();
+      fetchDeposits();
     } catch (error) {
       console.error('삭제 중 오류 발생:', error);
       alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
@@ -60,13 +61,13 @@ const SavingsProduct = () => {
   const handleRegister = () => {
     navigate('/admin/RegisterProduct'); // RegisterProduct 페이지로 이동
   };
-  
+
   return (
     <div className="app-container">
       <Sidebar /> {/* 사이드바 추가 */}
       <div className="alog-main-content">
-        <div className="savings-product-container">
-          <h2>적금 상품 관리</h2>
+        <div className="deposit-product-container">
+          <h2>예금 상품 관리</h2>
           <div className="search-controls">
             <div className="search-bar">
               <select>
@@ -88,7 +89,12 @@ const SavingsProduct = () => {
                 <th>노출순서</th>
                 <th>상품이름</th>
                 <th>상품 종류</th>
-                <th>금리</th>
+                <th>최대 금액</th>
+                <th>최대 기간</th>
+                <th>최대 금리</th>
+                <th>최소 금액</th>
+                <th>최소 기간</th>
+                <th>최소 금리</th>
                 <th>상품 설명</th>
                 <th>이미지</th>
                 <th>상태</th>
@@ -97,12 +103,17 @@ const SavingsProduct = () => {
               </tr>
             </thead>
             <tbody>
-              {savings.map((deposit, index) => (
+              {deposits.map((deposit, index) => (
                 <tr key={deposit.depositNo}>
                   <td>{index + 1}</td>
                   <td>{deposit.depositName}</td>
                   <td>{deposit.depositCategory}</td>
-                  <td>{deposit.depositRate}</td>
+                  <td>{deposit.depositMaximumAmount}</td>
+                  <td>{deposit.depositMaximumDate}</td>
+                  <td>{deposit.depositMaximumRate}</td>
+                  <td>{deposit.depositMinimumAmount}</td>
+                  <td>{deposit.depositMinimumDate}</td>
+                  <td>{deposit.depositMinimumRate}</td>
                   <td>{deposit.depositContent}</td>
                   <td><img src={deposit.depositIMG} alt="상품 이미지" width="50" /></td> {/* 수정된 부분 */}
                   <td>{deposit.depositState}</td>          
@@ -112,7 +123,7 @@ const SavingsProduct = () => {
               ))}
             </tbody>
           </table>
-          
+
           <div className="pagination-controls">
             <label>페이지당 항목 수: </label>
             <select onChange={(e) => setDisplayCount(e.target.value)}>
@@ -127,4 +138,4 @@ const SavingsProduct = () => {
   );
 };
 
-export default SavingsProduct;
+export default AdDepositProduct;

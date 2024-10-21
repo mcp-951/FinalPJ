@@ -5,7 +5,7 @@ import Sidebar from '../Sidebar'; // 사이드바
 import { Chart } from 'react-google-charts'; // 구글 차트 사용
 import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 추가
 
-const FinancialProduct = () => {
+const AdFinancialProduct = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]); // 상품 리스트 관리
     // const [filterState, setFilterState] = useState('all'); // 필터 상태: 'all', 'y', 'n'
@@ -36,32 +36,35 @@ const FinancialProduct = () => {
   };
 
   // 차트 데이터 API 호출
-  const fetchChartData = () => {
-    console.log("fetchChartData...");
-    axios.get('http://localhost:8081/admin/product-counts', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-    .then((response) => {
-      console.log("Chart data fetched:", response.data);
-  
-      // 실제 데이터를 차트 라이브러리 형식으로 변환
-      const chartDataArray = [
-        ['상품 유형', '갯수'],
-        ['예금', response.data.Deposits  || 0],
-        ['적금', response.data.Savings  || 0],
-        ['대출', response.data.Loans  || 0],
-      ];
-  
-      setChartData(chartDataArray); // 변환된 데이터 설정
-      setLoading(false); // 로딩 완료 시 로딩 상태 false로 변경
-    })
-    .catch((error) => {
-      console.error('차트 데이터를 불러오는 중 오류 발생:', error);
-      setLoading(false); // 오류 발생 시에도 로딩 상태 false로 변경
-    });
-  };
+  // 차트 데이터 API 호출
+const fetchChartData = () => {
+  console.log("fetchChartData...");
+  axios.get('http://localhost:8081/admin/product-counts', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+  .then((response) => {
+    console.log("Chart data fetched from server:", response.data); // 응답 데이터 로그 확인
+
+    // 실제 데이터를 차트 라이브러리 형식으로 변환
+    const chartDataArray = [
+      ['상품 유형', '갯수'],
+      ['예금', response.data.Deposits || 0],
+      ['적금', response.data.Savings || 0],
+      ['대출', response.data.Loans || 0],
+    ];
+
+    console.log("Chart data after formatting:", chartDataArray); // 변환된 차트 데이터 로그 확인
+    setChartData(chartDataArray); // 변환된 데이터 설정
+    setLoading(false); // 로딩 완료 시 로딩 상태 false로 변경
+  })
+  .catch((error) => {
+    console.error('차트 데이터를 불러오는 중 오류 발생:', error);
+    setLoading(false); // 오류 발생 시에도 로딩 상태 false로 변경
+  });
+};
+
 
   useEffect(() => {
     fetchProducts(); // 페이지 로드시 상품 데이터 호출
@@ -70,16 +73,15 @@ const FinancialProduct = () => {
 
   // 예/적금 등록 버튼 클릭 시
   const handleSavingsRegister = () => {
-    navigate('/admin/RegisterProduct'); // 예/적금 등록 페이지로 이동
+    navigate('/admin/adRegisterProduct'); // 예/적금 등록 페이지로 이동
   };
 
   // 대출 등록 버튼 클릭 시
   const handleLoanRegister = () => {
-    navigate('/admin/RegisterLoanProduct'); // 대출 등록 페이지로 이동
+    navigate('/admin/adRegisterLoanProduct'); // 대출 등록 페이지로 이동
   };
 
   // 수정 버튼 클릭 시 해당 상품의 타입에 맞는 수정 페이지로 이동
-  // 대출 수정 페이지로 이동
   const handleEdit = (product) => {
     console.log("Product 정보:", product); // product 정보 확인
   
@@ -88,11 +90,11 @@ const FinancialProduct = () => {
       if (product.loanName && product.loanName.includes("대출")) {
         console.log("product(loan) : "+ product.loanName)
         console.log("product(loan) : "+ product)
-        navigate("/EditLoanProduct", { state: { loan: product } }); // 대출 수정 페이지로 이동
+        navigate("/adEditLoanProduct", { state: { loan: product } }); // 대출 수정 페이지로 이동
       } else if (product.depositName) {
         console.log("product(loan) : "+ product.depositName)
         console.log("product(loan) : "+ product)
-        navigate("/EditSavingsProduct", { state: { deposit: product } }); // 예/적금 수정 페이지로 이동
+        navigate("/adEditSavingsProduct", { state: { deposit: product } }); // 예/적금 수정 페이지로 이동
       } else {
         console.error("상품 정보가 유효하지 않습니다.", product);
         alert("유효하지 않은 상품입니다.");
@@ -166,8 +168,12 @@ const FinancialProduct = () => {
                     <th>노출순서</th>
                     <th>상품명</th>
                     <th>상품 종류</th>
-                    <th>금리</th>
+                    <th>최소/최대 금리</th>
+                    <th>최소/최대 금액</th>
+                    <th>최소/최대 기간</th>
+                    <th>상품 특성</th>
                     <th>상품 설명</th>
+                    <th>이미지</th>
                     <th>상태</th>
                     <th>수정</th>
                     <th>삭제</th>
@@ -178,31 +184,31 @@ const FinancialProduct = () => {
                     <tr key={product.productNo || index}>
                       <td>{index + 1}</td>
 
-                      {/* 상품이 예금일 때 */}
+                      {/* 예금/적금 상품일 때 */}
                       {product.depositName ? (
                         <>
                           <td>{product.depositName}</td>
-                          <td>{product.depositCategory === 1
-                              ? "예금"
-                              :product.depositCategory === 2
-                              ? "외환"
-                              : "적금"}</td>
-                          <td>{product.depositRate}%</td>
+                          <td>{product.depositCategory === 1 ? "예금" : product.depositCategory === 3 ? "적금" : "외환"}</td>
+                          <td>{product.depositMinimumRate}% / {product.depositMaximumRate}%</td>
+                          <td>{product.depositMinimumAmount} / {product.depositMaximumAmount}원</td>
+                          <td>{product.depositMinimumDate} / {product.depositMaximumDate}개월</td>
+                          <td>{product.depositCharacteristic}</td>
                           <td>{product.depositContent}</td>
-                          <td>{product.depositState === 'Y'
-                              ? "판매중인 상품"
-                              : "판매금지된 상품"}</td>
+                          <td><img src={product.depositIMG} alt="상품 이미지" width="50" /></td>
+                          <td>{product.depositState === 'Y' ? "판매중" : "판매 중지"}</td>
                         </>
                       ) : (
-                        // 상품이 대출일 때
+                        // 대출 상품일 때
                         <>
-                          <td>{product.loanName}</td>
+                          <td>{product.loanProductTitle}</td>
                           <td>대출</td>
-                          <td>{product.loanRate}%</td>
+                          <td>{product.minInterestRate}% / {product.maxInterestRate}%</td>
+                          <td>{product.loanMinLimit} / {product.loanMaxLimit}원</td>
+                          <td>{product.loanMinTern} / {product.loanMaxTern}개월</td>
+                          <td>-</td> {/* 대출 상품에는 상품 특성이 없으므로 빈 칸 */}
                           <td>{product.loanContent}</td>
-                          <td>{product.loanState === 'Y'
-                              ? "판매중인 상품"
-                              : "판매금지된 상품"}</td>
+                          <td>-</td> {/* 대출 상품에 이미지는 없으므로 빈 칸 */}
+                          <td>{product.viewPoint === 'Y' ? "판매중" : "판매 중지"}</td>
                         </>
                       )}
                       <td>
@@ -214,12 +220,12 @@ const FinancialProduct = () => {
                     </tr>
                   ))}
                 </tbody>
-
               </table>
+
           </div>    
         </div>
       </div>
   );
 };
 
-export default FinancialProduct;
+export default AdFinancialProduct;

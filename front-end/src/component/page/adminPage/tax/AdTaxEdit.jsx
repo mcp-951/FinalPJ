@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import '../../../../resource/css/admin/TaxEdit.css'; // CSS 파일 추가
 
-const TaxEdit = () => {
+const AdTaxEdit = () => {
   const { taxNo } = useParams();
   const location = useLocation();
   const [tax, setTax] = useState({
@@ -82,7 +82,7 @@ const TaxEdit = () => {
       },
     })
     .then(() => {
-      navigate('/taxList'); // 업데이트 후 리스트로 돌아가기
+      navigate('/adTaxList'); // 업데이트 후 리스트로 돌아가기
     })
     .catch(error => console.error('Error updating tax:', error));
   };
@@ -218,9 +218,9 @@ const TaxEdit = () => {
       </div>
 
       <button type="submit" className="edit-button">수정</button>
-      <button type="button" className="return-button" onClick={() => navigate('/taxList')}>돌아가기</button>
+      <button type="button" className="return-button" onClick={() => navigate('/adTaxList')}>돌아가기</button>
     </form>
   );
 };
 
-export default TaxEdit;
+export default AdTaxEdit;

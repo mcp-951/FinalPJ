@@ -3,7 +3,7 @@ package com.urambank.uram.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -54,4 +54,9 @@ public class AccountEntity {
 
     @Column(name = "agreement")
     private char agreement;
+
+    @Column(name = "withdrawal")
+    private Character withdrawal;
+
+
 }

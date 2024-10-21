@@ -31,7 +31,7 @@ const ADLoanProduct = () => {
 
   // 수정 버튼 클릭 시 수정 페이지로 이동
   const handleEdit = (loan) => {
-    navigate('/EditLoanProduct', { state: { loan } }); // 상품 정보를 상태로 전달하여 수정 페이지로 이동
+    navigate('/adEditLoanProduct', { state: { loan } }); // 상품 정보를 상태로 전달하여 수정 페이지로 이동
   };
 
   // 삭제 버튼 클릭 시 loanState를 'Closed'로 변경
@@ -52,7 +52,7 @@ const ADLoanProduct = () => {
 
   // 등록 버튼 클릭 시 RegisterLoanProduct 페이지로 이동
   const handleRegister = () => {
-    navigate('/admin/RegisterLoanProduct');
+    navigate('/admin/adRegisterLoanProduct');
   };
 
   return (
@@ -66,9 +66,15 @@ const ADLoanProduct = () => {
             <thead>
               <tr>
                 <th>노출순서</th>
-                <th>상품이름</th>
-                <th>금리</th>
-                <th>상품 설명</th>
+                <th>상품명</th>
+                <th>최대 한도</th>
+                <th>최소 한도</th>
+                <th>최대 기간</th>
+                <th>최소 기간</th>
+                <th>최소 금리</th>
+                <th>최대 금리</th>
+                <th>중도 상환 수수료</th>
+                <th>최소 신용등급</th>
                 <th>상태</th>
                 <th>수정</th>
                 <th>삭제</th>
@@ -76,14 +82,20 @@ const ADLoanProduct = () => {
             </thead>
             <tbody>
               {loans.map((loan, index) => (
-                <tr key={loan.loanNo}>
+                <tr key={loan.loanProductNo}>
                   <td>{index + 1}</td>
-                  <td>{loan.loanName}</td>
-                  <td>{loan.loanRate}</td>
-                  <td>{loan.loanContent}</td>
-                  <td>{loan.loanState}</td>
+                  <td>{loan.loanProductTitle}</td>
+                  <td>{loan.loanMaxLimit}</td>
+                  <td>{loan.loanMinLimit}</td>
+                  <td>{loan.loanMaxTern}</td>
+                  <td>{loan.loanMinTern}</td>
+                  <td>{loan.minInterestRate}</td>
+                  <td>{loan.maxInterestRate}</td>
+                  <td>{loan.earlyRepaymentFee}</td>
+                  <td>{loan.minCreditScore}</td>
+                  <td>{loan.viewPoint}</td>
                   <td><button onClick={() => handleEdit(loan)}>수정</button></td>
-                  <td><button onClick={() => handleDelete(loan.loanNo)}>삭제</button></td>
+                  <td><button onClick={() => handleDelete(loan.loanProductNo)}>삭제</button></td>
                 </tr>
               ))}
             </tbody>

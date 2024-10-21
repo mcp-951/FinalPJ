@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../../../resource/css/admin/TaxList.css'; // CSS 파일 추가
 
-const TaxInsert = () => {
+const AdTaxInsert = () => {
   const [tax, setTax] = useState({
     fee1: 0,
     fee2: 0,
@@ -82,7 +82,7 @@ const TaxInsert = () => {
       },
     })
     .then(() => {
-      navigate('/taxList'); // 삽입 완료 후 세금 목록으로 이동
+      navigate('/adTaxList'); // 삽입 완료 후 세금 목록으로 이동
     })
     .catch((error) => console.error('Error inserting tax:', error));
   };
@@ -185,9 +185,9 @@ const TaxInsert = () => {
       </div>
 
       <button type="submit" className="submit-button">생성</button>
-      <button type="button" className="cancel-button" onClick={() => navigate('/taxList')}>취소</button>
+      <button type="button" className="cancel-button" onClick={() => navigate('/adTaxList')}>취소</button>
     </form>
   );
 };
 
-export default TaxInsert;
+export default AdTaxInsert;

@@ -29,7 +29,7 @@ const AdminLogin = ({ setIsLoggedIn, isLoggedIn }) => {  // isLoggedIn과 상태
         const token = response.data.accessToken;
         localStorage.setItem("token",token);
         console.log(token);
-        navigate('/memberList');
+        navigate('/adMemberList');
       }
     } catch (error) {
       // 에러 처리: 서버 응답이 있는 경우와 없는 경우 구분

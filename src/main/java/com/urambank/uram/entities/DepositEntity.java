@@ -3,6 +3,7 @@ package com.urambank.uram.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -17,21 +18,40 @@ public class DepositEntity {
     @Column(name = "depositNo")
     private int depositNo;
 
-    @Column(name = "depositName")
-    private String depositName;
-
-    @Column(name = "depositRate")
-    private float depositRate;
-
-    @Column(name = "depositContent")
-    private String depositContent;
-
-    @Column(name = "depositCategory")
+    @Column(name = "depositCategory", nullable = false)
     private int depositCategory;
 
-    @Column(name = "depositIMG")
+    @Column(name = "depositContent", length = 255)
+    private String depositContent;
+
+    @Column(name = "depositIMG", length = 255)
     private String depositIMG;
 
-    @Column(name = "depositState")
+    @Column(name = "depositName", length = 255)
+    private String depositName;
+
+    @Column(name = "depositState", nullable = false, columnDefinition = "char(1) default 'Y'")
     private char depositState;
+
+    @Column(name = "depositCharacteristic", length = 255)
+    private String depositCharacteristic;
+
+    @Column(name = "depositMaximumAmount", nullable = false)
+    private int depositMaximumAmount;
+
+    @Column(name = "depositMaximumDate", nullable = false)
+    private int depositMaximumDate;
+
+    @Column(name = "depositMaximumRate", nullable = false)
+    private float depositMaximumRate;
+
+    @Column(name = "depositMinimumAmount", nullable = false)
+    private int depositMinimumAmount;
+
+    @Column(name = "depositMinimumDate", nullable = false)
+    private int depositMinimumDate;
+
+    @Column(name = "depositMinimumRate", nullable = false)
+    private float depositMinimumRate;
+
 }
