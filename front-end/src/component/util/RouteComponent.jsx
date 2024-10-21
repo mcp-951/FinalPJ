@@ -116,6 +116,19 @@ const RouteComponent = () => {
     const addInquiry = (newInquiry) => setInquiries([...inquiries, newInquiry]); // addInquiry 함수 정의
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    if(window.location.pathname === '/getAddress'){
+        return (
+        <div>
+            <BrowserRouter>
+                <div style={style}>
+                    <Routes>
+                        <Route path="/getAddress" exact={true} element={<GetAddress />} />
+                   </Routes>
+                </div>
+            </BrowserRouter>
+        </div>
+        );
+    }
     return (
         <div>
             <BrowserRouter>
@@ -183,10 +196,6 @@ const RouteComponent = () => {
                         <Route path="/admin/adAccountStop" element={<AdAccountStop />} />
                         <Route path="/admin/adAccountClosure" element={<AdAccountClosure />} />
 
-                        {/* 로그인하지 않았을 때는 관리자 로그인 페이지로 리다이렉트 */}
-
-
-                        {/*상품 라우터_민우님*/}
                         {/* 예금, 적금, 대출 상품 관련 */}
                         <Route path="/DepositMain" exact={true} element={<DepositMain />} />
                         <Route path="/deposit-list" exact={true} element={<DepositList />} />
@@ -202,7 +211,6 @@ const RouteComponent = () => {
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
-{/*                         <Route path="/account/transaction-history" element={<TransactionCalendar />} /> */}
 
 
                         {/* 비밀번호 확인 페이지 */}
@@ -243,10 +251,7 @@ const RouteComponent = () => {
                         <Route path="/taxInsert" exact={true} element={<TaxInsert />} />
                         <Route path="/taxEdit/:taxNo" exact={true} element={<TaxEdit />} />
 
-                        <Route path="/getAddress" exact={true} element={<GetAddress />} />
                         <Route path="/kakaoLogin" exact={true} element={<RedirectPage />} />
-                        
-
                    </Routes>
                 </div>
                 <footer>

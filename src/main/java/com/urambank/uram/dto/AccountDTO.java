@@ -3,7 +3,7 @@ package com.urambank.uram.dto;
 import com.urambank.uram.entities.AccountEntity;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -46,5 +46,4 @@ public class AccountDTO {
 
         return accountDTO;
     }
-
 }

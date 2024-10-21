@@ -1,6 +1,5 @@
 package com.urambank.uram.repository;
 
-import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.entities.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,9 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
 public class CustomUserDetails implements UserDetails {
-
 
     private final User user;
 

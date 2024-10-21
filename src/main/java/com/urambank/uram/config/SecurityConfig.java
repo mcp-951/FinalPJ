@@ -56,7 +56,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/signup", "/findById/**", "/checkHp/**", "/products/**","/ocr/**","/doKakaoLogin/**", "/findUserId", "/resetPassword").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
         http
                 .addFilterAfter(new JWTFilter(jwtUtil), LoginFilter.class);

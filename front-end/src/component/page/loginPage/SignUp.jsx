@@ -163,8 +163,8 @@ function SignUp() {
     // 주소
     const openPopup = link => {
         // 팝업 window의 크기 지정
-        const width = 500;
-        const height = 400;
+        const width = 700;
+        const height = 800;
 
         // 팝업을 부모 브라우저의 정 중앙에 나열
         const left = window.screenX + (window.outerWidth - width) / 2;
@@ -186,7 +186,6 @@ function SignUp() {
 
         return () => {
             window.removeEventListener('message', receiveMessage);
-
         };
     }, []);
     const getPlusAddress = () => {
