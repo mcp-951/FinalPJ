@@ -103,37 +103,48 @@ const filteredList = accounts.filter(account => {
             </div>
           </div>
 
-          <table className="AdAccount-transaction-table">  {/* 계좌 목록 테이블 */}
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>유저 No</th>
-                <th>계좌 종류</th>
-                <th>계좌 번호</th>
-                <th>만든 날짜</th>
-                <th>상태</th>
-                <th>정지</th> {/* 정지 버튼 추가 */}
+        <table className="transaction-table">  {/* 회원 목록 테이블 */}
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>유저 No</th>
+              <th>계좌 번호</th>
+              <th>은행 이름</th>
+              <th>잔액</th>
+              <th>상태</th>
+              <th>계좌 개설일</th>
+              <th>계좌 종료일</th>
+              <th>이자율</th>
+              <th>약정 여부</th>
+              <th>출금 여부</th>
+              <th>정지</th> {/* 정지 버튼 추가 */}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredList.map((account, index) => (
+              <tr key={account.accountNo}>
+                <td>{index + 1}</td>
+                <td>{account.userNo}</td>
+                <td>{account.accountNumber}</td>
+                <td>{account.bankName}</td>
+                <td>{account.accountBalance}</td>
+                <td>{account.accountState}</td>
+                <td>{account.accountOpen ? new Date(account.accountOpen).toLocaleDateString() : 'N/A'}</td>
+                <td>{account.accountClose ? new Date(account.accountClose).toLocaleDateString() : 'N/A'}</td>
+                <td>{account.accountRate}%</td>
+                <td>{account.agreement === 'Y' ? '약정 있음' : '약정 없음'}</td>
+                <td>{account.withdrawal === 'Y' ? '가능' : '불가능'}</td>
+                <td>
+                  <button onClick={() => stopAccount(account.accountNo)}>정지</button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredList.map((account, index) => (
-                <tr key={account.accountNo}>  {/* 계좌별 데이터를 행으로 표시 */}
-                  <td>{index + 1}</td>  {/* 계좌 No */}
-                  <td>{account.userNo}</td>  {/* 회원 번호 */}
-                  <td>{account.productCategory}</td>  {/* 상품 종류 */}
-                  <td>{account.accountNumber}</td>  {/* 계좌 번호 */}
-                  <td>{account.accountOpen}</td>  {/* 계좌 탄생일 */}
-                  <td>{account.accountState}</td>  {/* 계좌 상태 (NORMAL) */}
-                  <td>
-                    <button className="AdAccount-stop-button" onClick={() => stopAccount(account.accountNo)}>정지</button>  {/* 정지 버튼 */}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
+
       </div>
-    </div> 
+    </div>
+   </div> 
   );
 };
 

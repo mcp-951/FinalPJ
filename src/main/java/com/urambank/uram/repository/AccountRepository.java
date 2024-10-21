@@ -78,6 +78,8 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     @Query("SELECT a.accountNumber FROM AccountEntity a WHERE a.accountNo = :accountNo AND a.bankName = :bankName")
     String findAccountNumberByAccountNoAndBankName(@Param("accountNo") int accountNo, @Param("bankName") String bankName);  // Integer 대신 String으로 변경
 
+    @Query("SELECT a FROM AccountEntity a JOIN FETCH a.deposit WHERE a.userNo = :userNo AND a.accountState = :state")
+    List<AccountEntity> findAccountsWithDeposit(@Param("userNo") int userNo, @Param("state") String state);
 
 
     List<AccountEntity> findByUserNoAndAccountState(@Param("userNo")int userNo,@Param("accountState") String accountState);
@@ -93,5 +95,15 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     @Transactional
     @Query("UPDATE AccountEntity a SET a.accountState = :accountState WHERE a.accountNo = :accountNo")
     void updateAccountState(@Param("accountState") String accountState, @Param("accountNo") int accountNo);
+
+    Optional<AccountEntity> findByAccountNumberAndUserNo(String accountNumber, int userNo);
+
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, d.depositNo, d.depositName " +
+            "FROM AccountEntity a JOIN a.deposit d WHERE a.userNo = :userNo AND a.accountState = :state")
+    List<Object[]> findAccountDataWithDeposit(@Param("userNo") int userNo, @Param("state") String state);
+
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, a.withdrawal, d.depositNo, d.depositName, d.depositCategory " +
+            "FROM AccountEntity a JOIN a.deposit d WHERE a.userNo = :userNo AND a.accountState = :state")
+    List<Object[]> findUserDepositAccounts(@Param("userNo") int userNo, @Param("state") String state);
 
 }

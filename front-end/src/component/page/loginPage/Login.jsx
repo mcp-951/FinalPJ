@@ -50,27 +50,34 @@ function Login() {
         };
     }, [popup]);
 
-    // 카카오로그인 처리
+    // 카카오 로그인 처리
     const handleKakaoLogin = async (code) => {
         try {
             const response = await apiSer.kakaoLogin(code);
+            console.log(response.data)
             const kakaoId = response.data;
-            const response2 = apiSer.checkId(kakaoId);
 
-            if(response2.data === "" || response2.data === null || response2.data === undefined) {
+            // 아이디 체크 API 호출 시 await 추가
+            const response2 = await apiSer.checkId(kakaoId);
+            console.log(response2.data);  // 서버에서 받은 데이터
+
+
+            if (response2.data === "" || response2.data === null || response2.data === undefined) {
                 alert('추가 회원가입이 필요합니다.');
+                // 회원가입 페이지로 이동
                 navigate('/signupForKakao', { state: { kakaoId: kakaoId } });
-                }else{
-                    const data = {
-                        "userId" : kakaoId,
-                        "userPw" : kakaoId
-                    }
-                    const response = await apiSer.login(data);
-                    const token = response.data.accessToken;
-                    localStorage.setItem('token', token); // 로그인 성공 시 토큰 저장
-                    localStorage.setItem('userNo', response.data.userNo);
-                    navigate('/'); // 메인 페이지로 이동
-                }
+            } else {
+                // 로그인 처리
+                const data = {
+                    "userId" : kakaoId,
+                    "userPw" : kakaoId
+                };
+                const response = await apiSer.login(data);
+                const token = response.data.accessToken;
+                localStorage.setItem('token', token); // 로그인 성공 시 토큰 저장
+                localStorage.setItem('userNo', response.data.userNo);
+                navigate('/'); // 메인 페이지로 이동
+            }
         } catch (error) {
             console.error('카카오 로그인 실패:', error);
         }

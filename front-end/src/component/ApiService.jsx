@@ -47,14 +47,19 @@ const apiSer = {
         console.log("info : " + datas);
         return axios.put(`${API_BASE_URL}/resetPassword`,datas)
     },
-    getUserInfo: (userNo) => {
+    getUserInfo: (userNo,token) => {
         console.log("info:" + userNo);
-        return axios.get(`${API_BASE_URL}/getUserInfo`+ '/' + userNo,{
+        console.log("token : "+ token);
+        return axios.get(`${API_BASE_URL}/getUserInfo`+ '/' + userNo,token)
+    },
+    changePassword:(data) => {
+        console.log("userPw : " + data);
+        return axios.put(`${API_BASE_URL}/changePassword`,data,{
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }
       })
-        },
+    },
 
   // 자동이체 리스트 가져오기
   getAutoTransfers: async () => {
@@ -100,7 +105,7 @@ const apiSer = {
   // 사용자 계좌 정보 가져오기 (토큰 필요)
   getUserAccounts: async () => {
     try {
-      return await axios.get(`${BASE_URL}/products/loans/account`, {
+      return await axios.get(`${BASE_URL}/products/deposits/findAccount`, {
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }
@@ -111,48 +116,6 @@ const apiSer = {
     }
   },
 
-  saveLoanJoin: async (loanData, token) => {
-    try {
-      return await axios.post(`${BASE_URL}/products/loans/save`, loanData, {
-        headers: {
-          Authorization: `Bearer ${token}` // JWT 토큰을 Authorization 헤더에 포함
-        }
-      });
-    } catch (error) {
-      console.error('LoanJoin 저장 실패:', error);
-      throw error;
-    }
-  },
-
-  getActiveLoans: async () => {
-    try {
-      return await axios.get(`${BASE_URL}/products/loans/userLoans`, {
-        headers: {
-          Authorization: `Bearer ${token}` // Authorization 헤더에 JWT 추가
-        }
-      });
-    } catch (error) {
-      console.error('대출 정보 조회 오류:', error);
-      throw error;
-    }
-  },
-
-  processRepayment: async (repaymentData, token) => {
-    try {
-      const response = await axios.post(`${BASE_URL}/products/loans/repayment`,
-      repaymentData, // 객체로 데이터를 전달
-      {
-        headers: {
-          Authorization: `Bearer ${token}` // 헤더로 토큰 전달
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error('상환 처리 오류:', error);
-      throw error;
-    }
-
-  },
   // 적금 상품 페이징 처리하여 가져오기
   fetchDepositProductsPaged: async (page, size) => {
     try {
@@ -166,9 +129,24 @@ const apiSer = {
     }
   },
 
-  saveDepositJoin: async (depositData, token) => {
+
+  // 사용자 예적금 정보 가져오기 (토큰 필요)
+  getUsersDeposit: async () => {
     try {
-      return await axios.post(`${BASE_URL}/products/deposits/save`, depositData, {
+      return await axios.get(`${BASE_URL}/products/deposits/findDeposit`, {
+        headers: {
+          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+        }
+      });
+    } catch (error) {
+      console.error('사용자 계좌 정보 조회 오류:', error);
+      throw error;
+    }
+  },
+   // 적금상품 가입
+   saveDepositJoin: async (depositData, token) => {
+    try {
+      return await axios.post(`${BASE_URL}/products/deposits/savings`, depositData, {
         headers: {
           Authorization: `Bearer ${token}` // JWT 토큰을 Authorization 헤더에 포함
         },
@@ -179,37 +157,24 @@ const apiSer = {
     }
   },
 
-  // 적금 중도 해지 처리
-  terminateDeposit: async (terminationData, token) => {
+  // 정기예금상품 가입
+  savingsJoin: async (depositData, token) => {
     try {
-      return await axios.post(`${BASE_URL}/products/deposits/terminate`, terminationData, {
+      return await axios.post(`${BASE_URL}/products/deposits/deposit`, depositData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}` // JWT 토큰을 Authorization 헤더에 포함
         },
       });
     } catch (error) {
-      console.error('적금 중도 해지 처리 중 오류 발생:', error);
+      console.error('LoanJoin 저장 실패:', error);
       throw error; // 에러 발생 시 상위로 전달
     }
   },
 
-  getDepositAccounts: async () => {
+  // 정기예금 가입 정보를 저장하는 메서드
+  saveAccount: async (depositData, token) => {
     try {
-      return await axios.get(`${BASE_URL}/products/deposits/account` , {
-        headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-        }
-      });
-    } catch (error) {
-      console.error('사용자 계좌 정보 조회 오류:', error);
-      throw error;
-    }
-  },
-
-  // 적금 가입 정보를 저장하는 메서드
-  saveDepJoin: async (depositData, token) => {
-    try {
-      return await axios.post(`${BASE_URL}/products/deposits/join`, depositData, {
+      return await axios.post(`${BASE_URL}/products/deposits/account`, depositData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -219,7 +184,49 @@ const apiSer = {
       console.error('적금 가입 오류:', error);
       throw error;
     }
+  },
+
+  // 긴급 출금 API 호출
+  emergencyWithdraw: async (withdrawData, token) => {
+    try {
+        return await axios.post(`${BASE_URL}/products/deposits/emergencyWithdraw`, withdrawData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+    } catch (error) {
+        console.error('긴급 출금 오류:', error);
+        throw error;
+    }
+},
+
+// 정기예금상품 가입
+savingsReceive: async (depositData, token) => {
+  try {
+    return await axios.post(`${BASE_URL}/products/deposits/ReceivedPaid`, depositData, {
+      headers: {
+        Authorization: `Bearer ${token}` // JWT 토큰을 Authorization 헤더에 포함
+      },
+    });
+  } catch (error) {
+    console.error('LoanJoin 저장 실패:', error);
+    throw error; // 에러 발생 시 상위로 전달
   }
-};
+},
+  getUserPhoneNumber: async (token) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/products/deposits/phone`, { // BASE_URL을 명시적으로 추가
+        headers: {
+          Authorization: `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 포함
+        },
+      });
+      return response.data; // 유저의 휴대폰 번호 반환
+    } catch (error) {
+      console.error('휴대폰 번호 정보를 불러오는 중 오류 발생:', error);
+      throw error; // 에러 발생 시 상위로 전달
+    }
+  }
+}
 
 export default apiSer;

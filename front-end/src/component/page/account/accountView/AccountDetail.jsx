@@ -24,6 +24,15 @@ const AccountDetail = () => {
   const userNo = localStorage.getItem("userNo");
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     const fetchAccountDetail = async () => {
       try {
         const accountResponse = await ApiService.getAccountDetail(userNo, accountNumber, token);
@@ -269,7 +278,7 @@ const AccountDetail = () => {
 
       <div className="account-detail-pagination">
         <div className="pagination-center">
-          <button className="account-detail-back-button" onClick={() => navigate(`/users/${userNo}/accounts`)}>
+          <button className="account-detail-back-button" onClick={() => navigate(`/accounts`)}>
             목록
           </button>
         </div>

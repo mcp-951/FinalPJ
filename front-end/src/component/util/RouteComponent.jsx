@@ -34,40 +34,41 @@ import TaxHistory from 'component/page/tax/TaxHistory';
 import ImgSelect from 'component/page/ocrPage/ImgSelect';
 
 // 어드민 라우터 임포트
-import AdminList from '../page/adminPage/admin/AdminList';
 import AdminLogin from '../page/adminPage/admin/AdminLogin';
 import EditAdmin from '../page/adminPage/admin/EditAdmin';
-import MemberList from '../page/adminPage/user/MemberList';
-import RetiredMember from '../page/adminPage/user/RetiredMember';
-import FinancialProduct from '../page/adminPage/product/FinancialProduct';
-import SavingsProduct from '../page/adminPage/product/SavingsProduct';
-import DepositProduct from '../page/adminPage/product/DepositProduct';
-import ADLoanProduct from '../page/adminPage/product/ADLoanProduct';
-import MemberEdit from '../page/adminPage/user/MemberEdit';
-import EditSavingsProduct from '../page/adminPage/product/EditSavingsProduct';
-import EditLoanProduct from '../page/adminPage/product/EditLoanProduct';
+import AdMemberList from '../page/adminPage/user/AdMemberList';
+import AdMemberEdit from '../page/adminPage/user/AdMemberEdit';
+import AdRetiredMember from '../page/adminPage/user/AdRetiredMember';
+import AdFinancialProduct from '../page/adminPage/product/AdFinancialProduct';
+import AdDepositProduct from '../page/adminPage/product/AdDepositProduct';
+import AdSavingsProduct from '../page/adminPage/product/AdSavingsProduct';
+import AdLoanProduct from 'component/page/adminPage/product/ADLoanProduct';
+import AdRegisterProduct from '../page/adminPage/product/AdRegisterProduct';
+import AdRegisterLoanProduct from '../page/adminPage/product/AdRegisterLoanProduct ';
+import AdEditSavingsProduct from '../page/adminPage/product/AdEditSavingsProduct';
+import AdEditLoanProduct from '../page/adminPage/product/AdEditLoanProduct';
+import AdAccount from 'component/page/adminPage/account/AdAccount';
+import AdAccountStop from 'component/page/adminPage/account/AdAccountStop';
+import AdAccountClosure from 'component/page/adminPage/account/AdAccountClosure';
+import AdTransactionHistory from 'component/page/adminPage/account/AdTransactionHistory';
+import AdTaxList from '../page/adminPage/tax/AdTaxList';
+import AdTaxEdit from '../page/adminPage/tax/AdTaxEdit';
+import AdTaxInsert from '../page/adminPage/tax/AdTaxInsert';
 import Sidebar from '../page/adminPage/Sidebar';
-import TaxList from '../page/adminPage/tax/taxList';
-import TaxEdit from '../page/adminPage/tax/taxEdit';
-import TaxInsert from '../page/adminPage/tax/taxInsert';
-import AdAccount from '../page/adminPage/account/AdAccount';
-import AdAccountStop from '../page/adminPage/account/AdAccountStop';
-import AdAccountClosure from '../page/adminPage/account/AdAccountClosure';
-import AdTransactionHistory from '../page/adminPage/account/AdTransactionHistory';
-import RegisterProduct from '../page/adminPage/product/RegisterProduct';
-import RegisterLoanProduct from '../page/adminPage/product/RegisterLoanProduct ';
-import AdminInquiryList from '../page/adminPage/support/AdminInquiryList';  // 문의 목록
-import AdminInquiryDetail from '../page/adminPage/support/AdminInquiryDetail';  // 문의 상세
+import AdminInquiryDetail from 'component/page/adminPage/support/AdminInquiryDetail';
+import AdminInquiryList from 'component/page/adminPage/support/AdminInquiryList';
 
 // 예금 적금
-import DepositMain from 'component/page/product/Deposit/DepositMain';
-import DepositList from 'component/page/product/Deposit/DepositList';
-import Depositchap1 from 'component/page/product/Deposit/Depositchap1';
-import Depositchap2 from 'component/page/product/Deposit/Depositchap2';
-import Depositchap3 from 'component/page/product/Deposit/Depositchap3';
-import DepositchapO1 from 'component/page/product/Deposit/DepositchapO1';
-import DepositchapO2 from 'component/page/product/Deposit/DepositchapO2';
-import Termination from 'component/page/product/Deposit/Termination';
+import DepositMain from 'component/page/product/deposit/DepositMain';
+import DepositList from 'component/page/product/deposit/DepositList';
+import DepositJoin from 'component/page/product/deposit/DepositJoin';
+import DepositTerms from 'component/page/product/deposit/DepositTerms';
+import DepositJoinFinish from 'component/page/product/deposit/DepositJoinFinish';
+import DepositSearch from 'component/page/product/deposit/DepositSearch';
+import EmergencyWithdrawal from 'component/page/product/deposit/EmergencyWithdrawal';
+import SavingsJoin from 'component/page/product/deposit/SavingsJoin';
+import ReceivedPaidMain from 'component/page/product/deposit/ReceivedPaidMain';
+import ReceivedPaidMainJoin from 'component/page/product/deposit/ReceivedPaidMainJoin';
 
 
 // 계좌 관련 (채림)
@@ -84,6 +85,7 @@ import AccountTransferComplete from '../page/account/accountTransfer/AccountTran
 import AutoTransferRegister from '../page/account/autoTransfer/AutoTransferRegister'; // 자동이체 등록 페이지
 import AutoTransferRegister2 from '../page/account/autoTransfer/AutoTransferRegister2'; // 자동이체 등록 2단계 페이지
 import AutoTransferList from '../page/account/autoTransfer/AutoTransferList';
+import AutoTransferCancelPasswordCheck from '../page/account/autoTransfer/AutoTransferCancelPasswordCheck';
 
 // 에이스 동명
 import ExchangeRate from '../page/exchangePage/ExchangeRate';
@@ -111,6 +113,19 @@ const RouteComponent = () => {
     const addInquiry = (newInquiry) => setInquiries([...inquiries, newInquiry]); // addInquiry 함수 정의
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    if(window.location.pathname === '/getAddress'){
+        return (
+        <div>
+            <BrowserRouter>
+                <div style={style}>
+                    <Routes>
+                        <Route path="/getAddress" exact={true} element={<GetAddress />} />
+                   </Routes>
+                </div>
+            </BrowserRouter>
+        </div>
+        );
+    }
     return (
         <div>
             <BrowserRouter>
@@ -122,10 +137,10 @@ const RouteComponent = () => {
                         <Route path="/" exact={true} element={<Main />} />
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
-                        <Route path="/signup" exact={true} element={<Signup />} />        
+                        <Route path="/signup" exact={true} element={<Signup />} />
                         {/*}로그인 페이지{*/}
                         <Route path="/mypage" exact={true} element={<MyPage />} />
-                        <Route path="/mypageChangePw" exact={true} element={<MyPageChangePw />} />                   
+                        <Route path="/mypageChangePw" exact={true} element={<MyPageChangePw />} />
                         {/*검색바 리스트 이동*/}
                         <Route path="/searchresult" exact={true} element={<SearchResult/>} />
                         <Route path="/signupForKakao" exact={true} element={<SignUpForKakao />} />
@@ -151,9 +166,9 @@ const RouteComponent = () => {
                         <Route path="/inquiry-form" element={<InquiryForm addInquiry={addInquiry} />} /> {/* InquiryForm 라우팅 설정 */}
                         
                         {/* 사용자 관리 페이지 */}
-                        <Route path="/memberList" element={<MemberList />} />
-                        <Route path="/retiredMember" element={<RetiredMember />} />
-                        <Route path="/editMember" element={<MemberEdit />} />
+                        <Route path="/adMemberList" element={<AdMemberList />} />
+                        <Route path="/adRetiredMember" element={<AdRetiredMember />} />
+                        <Route path="/admin/adEditMember" element={<AdMemberEdit />} />
 
                         {/* 관리자 페이지 문의 관리 목록 */}
                         <Route path="/admin/support/inquiries" element={<AdminInquiryList />} />
@@ -162,15 +177,15 @@ const RouteComponent = () => {
                         <Route path="/admin/support/inquiry/:qnaNo" element={<AdminInquiryDetail />} />
 
                         {/* 금융 상품 관리 페이지 */}
-                        <Route path="/admin/financialProduct" element={<FinancialProduct />} />
-                        <Route path="/admin/savingsProduct" element={<SavingsProduct />} />
-                        <Route path="/admin/depositProduct" element={<DepositProduct />} />
-                        <Route path="/admin/loanProduct" element={<ADLoanProduct />} />
+                        <Route path="/admin/adFinancialProduct" element={<AdFinancialProduct />} />
+                        <Route path="/admin/adSavingsProduct" element={<AdSavingsProduct />} />
+                        <Route path="/admin/adDepositProduct" element={<AdDepositProduct />} />
+                        <Route path="/admin/adLoanProduct" element={<AdLoanProduct />} />
                         {/* 금융 상품 수정 페이지 */}
-                        <Route path="/admin/RegisterLoanProduct" element={<RegisterLoanProduct  />} />
-                        <Route path="/admin/RegisterProduct" element={<RegisterProduct />} />
-                        <Route path="/EditSavingsProduct" element={<EditSavingsProduct />} />
-                        <Route path="/EditLoanProduct" element={<EditLoanProduct />} />
+                        <Route path="/admin/adRegisterLoanProduct" element={<AdRegisterLoanProduct  />} />
+                        <Route path="/admin/adRegisterProduct" element={<AdRegisterProduct />} />
+                        <Route path="/admin/adEditSavingsProduct" element={<AdEditSavingsProduct />} />
+                        <Route path="/admin/adEditLoanProduct" element={<AdEditLoanProduct />} />
 
                         {/* 거래 내역 및 계좌 관리 페이지 */}
                         <Route path="/admin/adTransactionHistory" element={<AdTransactionHistory />} />
@@ -178,36 +193,37 @@ const RouteComponent = () => {
                         <Route path="/admin/adAccountStop" element={<AdAccountStop />} />
                         <Route path="/admin/adAccountClosure" element={<AdAccountClosure />} />
 
-                    
 
-                        {/* 로그인하지 않았을 때는 관리자 로그인 페이지로 리다이렉트 */}
-
-
-                        
                         {/* 예금, 적금, 대출 상품 관련 */}
                         <Route path="/DepositMain" exact={true} element={<DepositMain />} />
                         <Route path="/deposit-list" exact={true} element={<DepositList />} />
-                        <Route path="/Depositchap1" exact={true} element={<Depositchap1 />} />
-                        <Route path="/Depositchap2" exact={true} element={<Depositchap2 />} />
-                        <Route path="/Depositchap3" exact={true} element={<Depositchap3 />} />
-                        <Route path="/DepositchapO1" exact={true} element={<DepositchapO1 />} />
-                        <Route path="/DepositchapO2" exact={true} element={<DepositchapO2 />} />
-                        <Route path="/Termination" exact={true} element={<Termination />} />
+                        <Route path="/SavingsJoin" exact={true} element={<SavingsJoin />} />
+                        <Route path="/DepositTerms" exact={true} element={<DepositTerms />} />
+                        <Route path="/DepositJoinFinish" exact={true} element={<DepositJoinFinish />} />
+                        <Route path="/DepositSearch" exact={true} element={<DepositSearch />} />
+                        <Route path="/EmergencyWithdrawal" exact={true} element={<EmergencyWithdrawal />} />
+                        <Route path="/DepositJoin" exact={true} element={<DepositJoin />} />
+                        <Route path="/ReceivedPaidMain" exact={true} element={<ReceivedPaidMain />} />
+                        <Route path="/ReceivedPaidMainJoin" exact={true} element={<ReceivedPaidMainJoin />} />
 
                         {/* 계좌 페이지 시작_채림님*/}
-                        {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />
+                        {/* 계좌 목록 페이지 */}<Route path="/accounts" element={<Account />} />
                         {/* 계좌 상세 페이지 */}<Route path="/account/detail/:accountNumber" element={<AccountDetail />} />
-{/*                         <Route path="/account/transaction-history" element={<TransactionCalendar />} /> */}
 
 
                         {/* 비밀번호 확인 페이지 */}
                         <Route path="/account/:accountNumber/password-check" element={<PasswordCheck title="비밀번호 확인" instructions="비밀번호를 확인해주세요." />} />
                         <Route path="/account/password-check" element={<PasswordCheck title="비밀번호 확인" instructions="비밀번호를 확인해주세요." />} />
 
-                        {/* 비밀번호 변경 페이지 */}<Route path="/account/:accountNumber/password-change" element={<PasswordChange />} />
-                        {/* 계좌 해지 페이지 */}<Route path="/account/:accountNumber/close" element={<AccountClose />} />
-                        {/* 이체 한도 조회 페이지 */}<Route path="/account/:accountNumber/limit-inquiry" element={<LimitInquiry />} />
-                        {/* 이체 한도 변경 페이지 */}<Route path="/account/:accountNumber/limit-change" element={<LimitChange />} />
+                        {/* 비밀번호 변경 페이지 */} 
+                        <Route path="/account/:accountNumber/password-change" element={<PasswordChange />} />
+                        {/* 계좌 해지 페이지 */} 
+                        <Route path="/account/:accountNumber/close" element={<AccountClose />} />
+                        {/* 이체 한도 조회 페이지 */} 
+                        <Route path="/account/:accountNumber/limit-inquiry" element={<LimitInquiry />} />
+                        {/* 이체 한도 변경 페이지 */} 
+                        <Route path="/account/:accountNumber/limit-change" element={<LimitChange />} />
+
                         {/* 계좌 이체 페이지 */}<Route path="/account/transfer" element={<AccountTransfer />} />
                         {/* 이체 확인 페이지 */}<Route path="/account/transfer-confirmation" element={<AccountTransferConfirmation />} />
                         {/* 이체 완료 페이지 */}<Route path="/account/transfer-complete" element={<AccountTransferComplete />} />
@@ -216,7 +232,7 @@ const RouteComponent = () => {
                         <Route path="/auto-transfer/list" element={<AutoTransferList />} />
                         <Route path="/new-transfer-modify/:autoTransNo" element={<AutoTransferRegister2 />} />
                         {/* 자동이체 해지 비밀번호 확인 페이지 */}
-{/*                         <Route path="/auto-transfer-password-check" element={<AutoTransferCancelPasswordCheck />} /> */}
+                        <Route path="/auto-transfer-password-check" element={<AutoTransferCancelPasswordCheck />} />
 
                         {/*여기는 에이스 클럽 원주민만 가능*/}
                         <Route path="/exchange-rate" exact={true} element={<ExchangeRate />} />
@@ -229,14 +245,11 @@ const RouteComponent = () => {
                         <Route path="/consumeAnalyse" exact={true} element={<AssetsAnalysis/>} />
                         <Route path="/AssetsAnalysis" exact={true} element={<AssetsAnalysis />} />
 
-                        <Route path="/taxList" exact={true} element={<TaxList />} />
-                        <Route path="/taxInsert" exact={true} element={<TaxInsert />} />
-                        <Route path="/taxEdit/:taxNo" exact={true} element={<TaxEdit />} />
+                        <Route path="/taxList" exact={true} element={<AdTaxList />} />
+                        <Route path="/taxInsert" exact={true} element={<AdTaxInsert />} />
+                        <Route path="/taxEdit/:taxNo" exact={true} element={<AdTaxEdit />} />
 
-                        <Route path="/getAddress" exact={true} element={<GetAddress />} />
                         <Route path="/kakaoLogin" exact={true} element={<RedirectPage />} />
-                        
-
                    </Routes>
                 </div>
                 <footer>

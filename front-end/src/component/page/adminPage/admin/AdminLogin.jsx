@@ -22,7 +22,7 @@ const AdminLogin = () => {
         const token = response.data.accessToken;
         localStorage.setItem("token", token);
         console.log(token);
-        navigate('/memberList');
+        navigate('/adMemberList');
       }
     } catch (error) {
       console.error("로그인 중 오류 발생:", error);

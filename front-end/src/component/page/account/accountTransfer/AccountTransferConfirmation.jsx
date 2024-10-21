@@ -24,6 +24,15 @@ const AccountTransferConfirmation = () => {
   const [recipientName, setRecipientName] = useState(null); // 수신자 이름 상태
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     // 수신자 이름을 가져오는 API 호출
     const fetchRecipientName = async () => {
       try {

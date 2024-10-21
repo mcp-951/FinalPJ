@@ -13,6 +13,7 @@ const AdAccountStop = () => {
 
   // 백엔드에서 STOP 상태 계좌 목록 가져오기
   const fetchAccounts = () => {
+    console.log("stop")
     axios.get('http://localhost:8081/admin/adAccountStop', {
       headers: {
         'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가   
@@ -98,37 +99,47 @@ const AdAccountStop = () => {
             </div>
           </div>
 
-          <table className="AdAccountStop-transaction-table">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>유저 No</th>
-                <th>계좌 종류</th>
-                <th>계좌 번호</th>
-                <th>만든 날짜</th>
-                <th>상태</th>
-                <th>정지 해제</th>
+        <table className="transaction-table">
+        <thead>
+            <tr>
+              <th>No</th>
+              <th>유저 No</th>
+              <th>계좌 번호</th>
+              <th>은행 이름</th>
+              <th>잔액</th>
+              <th>상태</th>
+              <th>계좌 개설일</th>
+              <th>계좌 종료일</th>
+              <th>이자율</th>
+              <th>약정 여부</th>
+              <th>출금 여부</th>
+              <th>정지</th> {/* 정지 버튼 추가 */}
+            </tr>
+          </thead>
+          <tbody>
+            {filteredList.map((account, index) => (
+              <tr key={account.accountNo}>
+                <td>{index + 1}</td>
+                <td>{account.userNo}</td>
+                <td>{account.accountNumber}</td>
+                <td>{account.bankName}</td>
+                <td>{account.accountBalance}</td>
+                <td>{account.accountState}</td>
+                <td>{account.accountOpen ? new Date(account.accountOpen).toLocaleDateString() : 'N/A'}</td>
+                <td>{account.accountClose ? new Date(account.accountClose).toLocaleDateString() : 'N/A'}</td>
+                <td>{account.accountRate}%</td>
+                <td>{account.agreement === 'Y' ? '약정 있음' : '약정 없음'}</td>
+                <td>{account.withdrawal === 'Y' ? '가능' : '불가능'}</td>
+                <td>
+                  <button onClick={() => normalAccount(account.accountNo)}>해제</button> {/* 해제 버튼 */}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredList.map((account, index) => (
-                <tr key={account.accountNo}>
-                  <td>{index + 1}</td>
-                  <td>{account.userNo}</td>
-                  <td>{account.productCategory}</td>
-                  <td>{account.accountNumber}</td>
-                  <td>{account.accountOpen}</td>
-                  <td>{account.accountState}</td>
-                  <td>
-                    <button className="AdAccountStop-normal-button" onClick={() => normalAccount(account.accountNo)}>해제</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div> 
+    </div>
+   </div> 
   );
 };
 

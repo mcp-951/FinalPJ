@@ -57,11 +57,13 @@ public class UserService {
 
     public String findByUserId(String userId) {
         System.out.println("<<< UserService - findByUserId() >>>");
-            User user = new User();
+
         try{
-            user = userRepository.findByUserId(userId);
+            User user = userRepository.findByUserId(userId);
+            System.out.println("userid :" + user.getUserId());
             return user.getUserId();
         }catch(NullPointerException e){
+            System.out.println("userid :" );
             return "";
         }
     }
@@ -160,20 +162,18 @@ public class UserService {
     }
 
     public String resetPassword(UserDTO dto) {
-        User user = new User();
         try{
-            user.setName(dto.getName());
-            user.setHp(dto.getHp());
-            user = userRepository.findByNameAndHp(user.getName(),user.getHp());
-            user.setUserPw(dto.getUserPw());
+            User user = userRepository.findByNameAndHp(dto.getName(),dto.getHp());
+            String pw = passwordEncoder.encode(dto.getUserPw());
+            user.setUserPw(pw);
             user = userRepository.save(user);
             return user.getUserPw();
         }catch(NullPointerException e){
-            return "";
+            return "error";
         }
     }
     public List<User> getUsersByRoleUser() {
-        return userRepository.findByUserRole("ROLE_USER");
+        return userRepository.findByUserRole("USER");
     }
 
     // userId로 userNo 가져오기
@@ -206,5 +206,17 @@ public class UserService {
         dto.setResidentNumber(user.getResidentNumber());
         dto.setGrade(user.getGrade());
         return dto;
+    }
+
+    public String changePassword(int userNo, String userPw, String newUserPw) {
+        String encodedNewPw = passwordEncoder.encode(newUserPw);
+        User user = userRepository.findByUserNo(userNo);
+        if(passwordEncoder.matches(userPw,user.getUserPw())) {
+            user.setUserPw(encodedNewPw);
+            userRepository.save(user);
+            return "ok";
+        }else{
+            return "error";
+        }
     }
 }

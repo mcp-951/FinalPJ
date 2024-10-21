@@ -71,6 +71,7 @@ public class UserController {
     @PutMapping("/resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody UserDTO userdto) {
         logger.info("<<< resetPassword >>>");
+        System.out.println("userPw :" + userdto.getUserPw());
 
         String userPw = userService.resetPassword(userdto); // 서비스 호출
         return ResponseEntity.ok(userPw);
@@ -84,5 +85,14 @@ public class UserController {
         UserDTO dto = userService.getUserInfo(userNo); // 서비스 호출
         return ResponseEntity.ok(dto); // 찾은 userId 반환
     }
+    // 비밀번호 재설정
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody UserDTO userdto) {
+        logger.info("<<< changePassword >>>");
+        logger.info("userNo : " + userdto.getUserNo());
+        logger.info("userPw : " + userdto.getUserPw());
+        logger.info("newUserPw : " + userdto.getNewUserPw());
 
+        return ResponseEntity.ok(userService.changePassword(userdto.getUserNo(),userdto.getUserPw(),userdto.getNewUserPw()));
+    }
 }

@@ -1,25 +1,45 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../../../resource/css/user/MyPageChangePw.css'; // CSS 파일 경로 추가
+import { useNavigate, useLocation } from 'react-router-dom';
+import apiSer from '../../ApiService';
+import localStorage from 'localStorage';
+import 'resource/css/user/MyPageChangePw.css';
 
 function MyPageChangePw() {
-  const navigate = useNavigate();
-  const [form, setForm] = useState({
-    userPw: '',
-    newUserPw: '',
-    confirmNewUserPw: ''
-  });
+    const userNo = localStorage.getItem("userNo")
+    const navigate = useNavigate();
+    const [form, setForm] = useState({
+        userNo : userNo,
+        userPw:'',
+        newUserPw:'',
+        confirmNewUserPw:''
+    });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
+    };
 
-  const backToMyPage = () => {
-    navigate("/mypage");
-  };
+    const backToMyPage = () =>{
+        navigate("/mypage");
+    }
 
-  return (
+    const submitNewPw = () => {
+        const response = apiSer.changePassword(form)
+        .then((response) => {
+            console.log(response.data)
+            if(response.data === 'ok'){
+                alert("비밀번호가 변경되었습니다.")
+                navigate("/mypage");
+                }else{
+                    alert("기존 비밀번호가 일치하지 않습니다.")
+                    return;
+                    }
+        }).catch((error) => {
+            console.error("Error checking Hp: ", error);
+        });
+        }
+
+    return (
     <div className="MyPageChangePw-container">
       <h2 className="MyPageChangePw-title">비밀번호 변경</h2>
       <div className="MyPageChangePw-form">
@@ -70,6 +90,7 @@ function MyPageChangePw() {
       </div>
     </div>
   );
-}
+
+    }
 
 export default MyPageChangePw;

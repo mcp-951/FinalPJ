@@ -6,7 +6,7 @@ import '../../../../resource/css/account/autoTransfer/AutoTransferRegister2.css'
 const AutoTransferRegister2 = () => {
   const { autoTransNo } = useParams(); // 수정 모드 시 URL에서 자동이체 번호 가져오기
   const location = useLocation();
-  const { fromAccountNumber: initialAccount } = location.state || {}; // 출금 계좌번호를 초기값으로 받기
+  const { fromAccountNumber: initialAccount, autoAgreement } = location.state || {}; // 출금 계좌번호와 약관 동의 여부 받기
 
   const [selectedAutoAccount, setSelectedAutoAccount] = useState(initialAccount || ''); // 선택된 자동이체 계좌
   const [availableAutoBalance, setAvailableAutoBalance] = useState(null); // 출금 가능 금액
@@ -29,6 +29,14 @@ const AutoTransferRegister2 = () => {
   const userNo = localStorage.getItem("userNo");
 
   useEffect(() => {
+    const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     console.log('Location State:', location.state); // 전달된 state 값 확인
     fetchAccounts(); 
     if (autoTransNo) {
@@ -41,9 +49,12 @@ const AutoTransferRegister2 = () => {
   
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+      const response = await axios.get('http://localhost:8081/uram/accounts', {
         headers: {
           'Authorization': `Bearer ${token}`
+        },
+        params: {
+          userNo: userNo // userNo를 쿼리 파라미터로 추가
         }
       });
 
@@ -229,13 +240,17 @@ const AutoTransferRegister2 = () => {
       hasError = true;
     }
 
-    if (selectedAutoAccount === autoTargetAccount) {
+    if (selectedAutoAccount && autoTargetAccount && selectedAutoAccount === autoTargetAccount) {
       newErrorMessages.autoTargetAccount = '출금 계좌와 입금 계좌가 동일할 수 없습니다.';
       hasError = true;
     }
 
+    // 이체 금액 검증 추가 (이체 금액은 0원 이상이어야 하며 입력이 필요함)
     if (!autoTransferAmount) {
-      newErrorMessages.autoTransferAmount = '이체 금액을 입력하세요.';
+      newErrorMessages.autoTransferAmount = '이체 금액을 입력해주세요.';
+      hasError = true;
+    } else if (parseInt(autoTransferAmount) <= 0) {
+      newErrorMessages.autoTransferAmount = '이체 금액은 0원보다 커야 합니다.';
       hasError = true;
     } else if (parseInt(autoTransferAmount) > availableAutoBalance) {
       newErrorMessages.autoTransferAmount = '이체 금액이 잔액보다 큽니다.';
@@ -250,8 +265,19 @@ const AutoTransferRegister2 = () => {
       hasError = true;
     }
 
+    const currentDate = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // 이체 기간 검증 추가
     if (!startDate || !endDate) {
       newErrorMessages.transferPeriod = '이체 기간을 설정하세요.';
+      hasError = true;
+    } else if (start <= currentDate) {
+      newErrorMessages.transferPeriod = '시작일은 현재 날짜보다 미래여야 합니다.';
+      hasError = true;
+    } else if (end <= start) {
+      newErrorMessages.transferPeriod = '종료일은 시작일보다 미래여야 합니다.';
       hasError = true;
     }
 
@@ -263,7 +289,6 @@ const AutoTransferRegister2 = () => {
       const formattedStartDate = `${startYearMonth[0]}-${startYearMonth[1]}-${String(transferDay).padStart(2, '0')}`;
       const formattedEndDate = `${endYearMonth[0]}-${endYearMonth[1]}-${String(transferDay).padStart(2, '0')}`;
 
-      // 내부 계좌와 외부 계좌 분리
       const autoTransferData = {
         fromAccountDTO: { accountNumber: selectedAutoAccount },
         toAccountDTO: selectedAutoBank === '우람은행' ? { accountNumber: autoTargetAccount, bankName: selectedAutoBank } : null,
@@ -273,6 +298,7 @@ const AutoTransferRegister2 = () => {
         endDate: formattedEndDate,
         transferDay: parseInt(transferDay, 10),
         userNo: parseInt(userNo, 10),
+        autoAgreement, // 필수 약관 동의 여부 추가
       };
 
       // 백엔드로 보내는 데이터 로그 출력
@@ -310,7 +336,7 @@ const AutoTransferRegister2 = () => {
         setErrorMessages({ general: '자동이체 처리 중 오류가 발생했습니다.' });
       }
     }
-};
+  };
 
   return (
     <div className="transfer-container">
@@ -337,6 +363,7 @@ const AutoTransferRegister2 = () => {
                       setErrorMessages({ ...errorMessages, selectedAutoAccount: '' });
                       fetchAutoTransferLimits(e.target.value);
                     }}
+                    disabled={isAutoPasswordValid} // 비밀번호가 확인되면 계좌 선택 불가
                   >
                     <option value="">계좌 선택</option>
                     {accounts.map((account) => (
@@ -411,7 +438,7 @@ const AutoTransferRegister2 = () => {
                 <input
                   type="text"
                   value={autoTransferAmount}
-                  onChange={(e) => setAutoTransferAmount(e.target.value)}
+                  onChange={(e) => setAutoTransferAmount(e.target.value)}  // 금액 입력 시 바로 설정
                   placeholder="금액 입력"
                 />
                 {errorMessages.autoTransferAmount && <span className="error-message">{errorMessages.autoTransferAmount}</span>}
@@ -425,6 +452,7 @@ const AutoTransferRegister2 = () => {
                   value={autoTransferPassword}
                   onChange={(e) => setAutoTransferPassword(e.target.value)}
                   placeholder="비밀번호 입력"
+                  disabled={isAutoPasswordValid} // 비밀번호가 확인되면 비밀번호 입력 불가
                 />
                 <button type="button" onClick={handleAutoPasswordCheck}>
                   확인

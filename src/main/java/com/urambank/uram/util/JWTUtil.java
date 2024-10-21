@@ -58,6 +58,15 @@ public class JWTUtil {
                 .get("role", String.class);
     }
 
+    public char getState(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("state", char.class);
+    }
+
     public Boolean isExpired(String token) {
         Date expiration = Jwts.parser()
                 .setSigningKey(secretKey)
