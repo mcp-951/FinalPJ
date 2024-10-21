@@ -19,15 +19,15 @@ const DepositSearch = () => {
             }
 
             try {
-                const response = await ApiService.getUserAccounts(); // 계좌 정보 가져오는 ApiService 호출
+                const response = await ApiService.getUsersDeposit(); // 계좌 정보 가져오는 ApiService 호출
                 console.log('API 응답 데이터:', response.data);
 
-                // 가운데가 "02" 또는 "03"인 계좌만 필터링하고, 상품명에 "입출금"이 포함되지 않은 계좌만
+                // 가운데가 "01" 또는 "02"인 계좌만 필터링하고, 상품명에 "입출금"이 포함되지 않은 계좌만
                 const filteredAccounts = response.data.filter(account => {
                     const accountParts = account.accountNumber.split('-');
                     return (
                         (accountParts[1] === '01' || accountParts[1] === '02') &&
-                        !(account.deposit && account.deposit.depositName.includes('입출금'))
+                        !(account.deposit && account.depositName.includes('입출금'))
                     );
                 });
 
@@ -64,10 +64,10 @@ const DepositSearch = () => {
                     {accounts.map((account, index) => (
                         <tr key={index}>
                             <td className="account-type">
-                                {account.deposit ? (account.deposit.depositCategory === 1 ? '예금' : '적금') : '알 수 없음'}
+                                {account.depositCategory ? (account.depositCategory === 1 ? '예금' : '적금') : '알 수 없음'}
                             </td>
                             <td className="account-info">
-                                <span>{account.deposit ? account.deposit.depositName : '상품 정보 없음'}</span>
+                                <span>{account.depositName ? account.depositName : '상품 정보 없음'}</span>
                                 <span>{account.accountNumber}</span>
                                 <span className="account-balance">잔액 {account.accountBalance.toLocaleString()}원</span>
                             </td>

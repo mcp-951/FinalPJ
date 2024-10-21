@@ -15,8 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,13 +30,30 @@ public class DepositService {
     private final AutoTransferRepository autoTransferRepository; // AutoTransferRepository 추가
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public List<AccountEntity> getNormalAccounts(String token) {
+    public List<Map<String, Object>> getNormalAccountData(String token) {
         int userNo = jwtUtil.getUserNo(token);
-        return accountRepository.findAccountsWithDeposit(userNo, "NORMAL");
+        List<Object[]> results = accountRepository.findAccountDataWithDeposit(userNo, "NORMAL");
+
+        List<Map<String, Object>> accountDataList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            Map<String, Object> accountData = new HashMap<>();
+            accountData.put("accountNo", result[0]);
+            accountData.put("accountNumber", result[1]);
+            accountData.put("accountBalance", result[2]);
+            accountData.put("accountOpen", result[3]);
+            accountData.put("accountClose", result[4]);
+            accountData.put("depositNo", result[5]);
+            accountData.put("depositName", result[6]);
+
+            accountDataList.add(accountData);
+        }
+
+        return accountDataList;
     }
 
-    public Page<DepositEntity> getDepositProductsPaged(Pageable pageable) {
-        return depositRepository.findByDepositState('Y', pageable);
+    public Page<DepositDTO> getDepositProductsPaged(Pageable pageable) {
+        return depositRepository.findByDepositState('Y', pageable).map(DepositDTO::toDepositDTO);
     }
 
     // 적금가입 , 자동이체
@@ -225,23 +241,37 @@ public class DepositService {
 
 
     // 가입 예적금찾기
-    @Transactional
-    public List<AccountEntity> getUserDepositAccounts(String token) {
-        int userNo = jwtUtil.getUserNo(token); // JWT 유틸을 사용해 토큰에서 userNo 추출
-        List<AccountEntity> accounts = accountRepository.findByUserNoAndAccountState(userNo, "NORMAL");
+    public List<Map<String, Object>> getUserDepositAccounts(String token) {
+        int userNo = jwtUtil.getUserNo(token);
+        List<Object[]> results = accountRepository.findUserDepositAccounts(userNo, "NORMAL");
 
-        // 콘솔 로그 추가: 사용자 번호 및 조회된 계좌 정보 확인
         System.out.println("사용자 번호: " + userNo);
-        System.out.println("조회된 계좌 수: " + accounts.size());
+        System.out.println("조회된 계좌 수: " + results.size());
 
-        // 계좌의 상품명(depositName)을 포함하여 반환
-        return accounts.stream().map(account -> {
-            DepositEntity deposit = depositRepository.findById(account.getDeposit().getDepositNo())
-                    .orElseThrow(() -> new IllegalArgumentException("대출 상품을 찾을 수 없습니다."));
-            System.out.println("찾은 예적금 상품명: " + deposit.getDepositName());
-            account.setDeposit(deposit); // DepositEntity를 계좌에 설정
-            return account;
-        }).collect(Collectors.toList());
+        List<Map<String, Object>> accountDataList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            // 각 배열 요소 출력
+            System.out.println("조회된 계좌 데이터13231231232:");
+            for (int i = 0; i < result.length; i++) {
+                System.out.println("Index " + i + ": " + result[i]);
+            }
+
+            Map<String, Object> accountData = new HashMap<>();
+            accountData.put("accountNo", result[0]);
+            accountData.put("accountNumber", result[1]);
+            accountData.put("accountBalance", result[2]);
+            accountData.put("accountOpen", result[3]);
+            accountData.put("accountClose", result[4]);
+            accountData.put("withdrawal", result[5]);
+            accountData.put("depositNo", result[6]);
+            accountData.put("depositName", result[7]);
+            accountData.put("depositCategory", result[8]);
+
+            accountDataList.add(accountData);
+        }
+
+        return accountDataList;
     }
 
     @Transactional

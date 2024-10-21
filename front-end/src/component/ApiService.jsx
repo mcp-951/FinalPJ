@@ -64,6 +64,7 @@ const apiSer = {
       })
     },
 
+  // 자동이체 리스트 가져오기
   getAutoTransfers: async () => {
     try {
       return await axios.get(`${BASE_URL}/auto-transfers`, {
@@ -214,6 +215,20 @@ savingsReceive: async (depositData, token) => {
   } catch (error) {
     console.error('LoanJoin 저장 실패:', error);
     throw error; // 에러 발생 시 상위로 전달
+  },
+
+  getUserPhoneNumber: async (token) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/products/deposits/phone`, { // BASE_URL을 명시적으로 추가
+        headers: {
+          Authorization: `Bearer ${token}`, // JWT 토큰을 Authorization 헤더에 포함
+        },
+      });
+      return response.data; // 유저의 휴대폰 번호 반환
+    } catch (error) {
+      console.error('휴대폰 번호 정보를 불러오는 중 오류 발생:', error);
+      throw error; // 에러 발생 시 상위로 전달
+    }
   }
 },
 

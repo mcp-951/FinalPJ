@@ -47,6 +47,6 @@ public class DepositEntity {
     private int depositCategory; // 예금 1, 적금 2
 
     @Column(name = "depositState")
-    private Character depositState; // 상품 상태 (Y: 활성, N: 비활성)
+    private char depositState = 'Y'; // 상품 상태 (Y: 활성, N: 비활성)
 
 }

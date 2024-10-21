@@ -246,20 +246,21 @@ const SavingsJoin = () => {
     navigate('/DepositList');
   };
 
-  // 계좌 정보 가져오기
+  // 계좌정보 가져오기
   useEffect(() => {
     ApiService.getUserAccounts()
-      .then((response) => {
-        const filteredAccounts = response.data.filter(account => {
-          return account.deposit && account.deposit.depositName && account.deposit.depositName.includes('입출금');
-        });
-        setAccounts(filteredAccounts);
-      })
-      .catch((error) => {
-        console.error('계좌 정보를 불러오는 중 오류 발생:', error);
-        setErrorMessages({ ...errorMessages, fetchError: '계좌 정보를 불러오는 중 오류가 발생했습니다.' });
+    .then((response) => {
+      console.log("계좌 정보:", response.data); // 응답 데이터 확인
+      const filteredAccounts = response.data.filter(account => {
+        return account.depositName && account.depositName.includes('입출금');
       });
-  }, []);
+      setAccounts(filteredAccounts);
+    })
+    .catch((error) => {
+      console.error('계좌 정보를 불러오는 중 오류 발생:', error); // 오류 상세 정보 출력
+      setErrorMessages({ ...errorMessages, fetchError: '계좌 정보를 불러오는 중 오류가 발생했습니다.' });
+    });
+}, []);
 
   const handleCheckBalance = () => {
     const selectedAcc = accounts.find(account => account.accountNumber === selectedAccount);
@@ -353,7 +354,7 @@ const SavingsJoin = () => {
             <option value="">계좌 선택</option>
             {accounts.map(account => (
               <option key={account.accountNo} value={account.accountNumber}>
-                {account.accountNumber} - {account.deposit.depositName}
+                {account.accountNumber} - {account.depositName ? account.depositName : "기타 예금"}
               </option>
             ))}
           </select>

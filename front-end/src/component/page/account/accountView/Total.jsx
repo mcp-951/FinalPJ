@@ -6,7 +6,7 @@ import '../../../../resource/css/account/accountView/Total.css';
 const Total = () => {
   const [accounts, setAccounts] = useState([]); // 계좌 목록을 저장할 상태
   const [userName, setUserName] = useState(''); // 사용자 이름을 저장할 상태
-  const token = localStorage.getItem("token"); // localStorage에서 token 가져오기
+  const token = localStorage.getItem("token")?.trim(); // localStorage에서 token 가져오기
   const userNo = localStorage.getItem("userNo"); // localStorage에서 userNo 가져오기
   const navigate = useNavigate(); // 페이지 이동을 위한 navigate 추가
 
@@ -22,9 +22,9 @@ const Total = () => {
   const fetchData = async () => {
     try {
       // 전체 계좌와 사용자 이름을 함께 가져오는 API 호출
-      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+      const response = await axios.get(`http://localhost:8081/uram/accounts`, {
         headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+          'Authorization': `Bearer ${token.trim()}` // Authorization 헤더에 JWT 추가
         }
       });
 

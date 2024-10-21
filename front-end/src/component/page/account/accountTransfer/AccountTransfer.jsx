@@ -60,9 +60,12 @@ const AccountTransfer = () => {
   // 백엔드에서 계좌 목록 가져오기
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+      const response = await axios.get('http://localhost:8081/uram/accounts', {
         headers: {
           'Authorization': `Bearer ${token}`
+        },
+        params: {
+          userNo: userNo // userNo를 쿼리 파라미터로 추가
         }
       });
 
@@ -114,8 +117,11 @@ const AccountTransfer = () => {
 
   // 금액 클릭 시 설정
   const handleAmountClick = (amount) => {
-    setTransferAmount(amount);
-    setErrorMessages({ ...errorMessages, transferAmount: '' });
+    setTransferAmount(amount); // 클릭한 금액을 설정
+    setErrorMessages((prevState) => ({
+      ...prevState,
+      transferAmount: '',
+    }));
   };
 
   // 비밀번호 확인 로직 (API 호출)
@@ -146,7 +152,7 @@ const AccountTransfer = () => {
     } catch (error) {
       console.error('비밀번호 확인 실패:', error);
       setIsPasswordValid(false);
-      setErrorMessages({ ...errorMessages, password: '비밀번호 확인 중 오류가 발생했습니다.' });
+      setErrorMessages({ ...errorMessages, password: '비밀번호가 일치하지 않습니다.' });
     }
   };
 
@@ -195,6 +201,7 @@ const AccountTransfer = () => {
       hasError = true;
     }
 
+    // 출금 가능 금액을 확인했는지 여부 확인
     if (availableBalance === null) {
       newErrorMessages.availableBalance = '출금 가능 금액을 확인하세요.';
       hasError = true;
@@ -213,19 +220,23 @@ const AccountTransfer = () => {
       hasError = true;
     }
 
-    if (selectedAccount === targetAccountNumber) {
+    if (selectedAccount && targetAccountNumber && selectedAccount === targetAccountNumber) {
       newErrorMessages.targetAccountNumber = '출금 계좌와 입금 계좌가 동일할 수 없습니다.';
       hasError = true;
     }
 
+    // 금액 검증: 0원 초과여야 함
     if (!transferAmount) {
-      newErrorMessages.transferAmount = '이체 금액을 입력하세요.';
+      newErrorMessages.transferAmount = '이체 금액을 입력해주세요.';
       hasError = true;
-    } else if (parseInt(transferAmount, 10) > availableBalance) {
+    } else if (parseInt(transferAmount, 10) <= 0) {
+      newErrorMessages.transferAmount = '이체 금액은 0원보다 커야 합니다.';
+      hasError = true;
+    } else if (availableBalance !== null && parseInt(transferAmount, 10) > availableBalance) {
       newErrorMessages.transferAmount = '이체 금액이 잔액보다 큽니다.';
       hasError = true;
-    } else if (parseInt(transferAmount, 10) > onceLimit) {
-      newErrorMessages.transferAmount = `이체 금액이 1회 이체 한도(${onceLimit.toLocaleString()}원)를 초과했습니다.`;
+    } else if (onceLimit !== null && parseInt(transferAmount, 10) > onceLimit) {  // onceLimit이 null인지 확인
+      newErrorMessages.transferAmount = `이체 금액이 1회 이체 한도(${onceLimit?.toLocaleString() ?? 'N/A'}원)를 초과했습니다.`;
       hasError = true;
     }
 
@@ -283,12 +294,12 @@ const AccountTransfer = () => {
                     )}
                   </select>
                   <button type="button" onClick={handleCheckBalance} className="balance-button">
-                    출금가능금액
+                  출금가능금액
                   </button>
                   {availableBalance !== null ? (
                     <span className="balance-info">{availableBalance.toLocaleString()}원</span>
                   ) : (
-                    <span className="error-message">{errorMessages.selectedAccount}</span>
+                    <span className="error-message">{errorMessages.selectedAccount}</span> // 출금 가능 금액 확인 경고 메시지
                   )}
                 </div>
               </td>
@@ -338,7 +349,7 @@ const AccountTransfer = () => {
                 <input
                   type="text"
                   value={transferAmount}
-                  onChange={(e) => setTransferAmount(e.target.value)}
+                  onChange={(e) => setTransferAmount(e.target.value)} // 금액 입력 시 바로 설정
                   placeholder="금액 입력"
                 />
                 {errorMessages.transferAmount && <span className="error-message">{errorMessages.transferAmount}</span>}

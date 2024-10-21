@@ -101,18 +101,23 @@ public class AccountService {
 
 
     public Map<String, Object> getAccountDetail(String accountNumber, int userNo) {
+        System.out.println("accountNumber: " + accountNumber + ", userNo: " + userNo);
         AccountEntity accountEntity = accountRepository.findAccountDetailWithDeposit(accountNumber, "NORMAL", userNo);
+
         if (accountEntity != null) {
             Map<String, Object> accountData = new HashMap<>();
             accountData.put("accountNumber", accountEntity.getAccountNumber());
             accountData.put("accountBalance", accountEntity.getAccountBalance());
             accountData.put("accountLimit", accountEntity.getAccountLimit());
             accountData.put("depositName", accountEntity.getDeposit().getDepositName());
+            System.out.println("Account found: " + accountData);
             return accountData;
         } else {
+            System.out.println("Account not found");
             return null;
         }
     }
+
 
     // 계좌의 거래 내역 조회 (성공한 거래만)
     public List<LogDTO> getTransactionLogs(String accountNumber) {
@@ -404,21 +409,17 @@ public class AccountService {
             AccountEntity fromAccount = accountRepository.findByAccountNumber(autoTransferDTO.getFromAccountDTO().getAccountNumber())
                     .orElseThrow(() -> new Exception("출금 계좌를 찾을 수 없습니다."));
 
-            // 입금 계좌 조회
+            // 입금 계좌 조회 및 설정
             AccountEntity toAccount = null;
-            Integer receiveAccountNo = null; // 입금 계좌 번호
-            String toBankName = autoTransferDTO.getToBankName();  // 은행명 설정
+            Integer receiveAccountNo = null;
+            String toBankName = autoTransferDTO.getToBankName();
 
-            // 내부 계좌인 경우 처리
             if (autoTransferDTO.getToAccountDTO() != null && autoTransferDTO.getToAccountDTO().getAccountNumber() != null) {
                 toAccount = accountRepository.findByAccountNumber(autoTransferDTO.getToAccountDTO().getAccountNumber())
                         .orElseThrow(() -> new Exception("입금 계좌를 찾을 수 없습니다."));
-                receiveAccountNo = toAccount.getAccountNo(); // 내부 계좌일 때 계좌 번호 설정
-                toBankName = "우람은행";  // 내부 계좌일 때 은행명 설정
-            }
-            // 외부 계좌인 경우 처리
-            else if (autoTransferDTO.getOutAccountDTO() != null && autoTransferDTO.getOutAccountDTO().getOAccountNumber() != null) {
-                // 외부 계좌 처리 로직
+                receiveAccountNo = toAccount.getAccountNo();
+                toBankName = "우람은행";
+            } else if (autoTransferDTO.getOutAccountDTO() != null && autoTransferDTO.getOutAccountDTO().getOAccountNumber() != null) {
                 OutAccountEntity outAccount = outAccountRepository.findByOAccountNumberAndOBankName(
                         autoTransferDTO.getOutAccountDTO().getOAccountNumber(),
                         autoTransferDTO.getOutAccountDTO().getOBankName());
@@ -427,33 +428,30 @@ public class AccountService {
                     throw new Exception("외부 입금 계좌를 찾을 수 없습니다.");
                 }
 
-                // 여기서부터 외부 계좌 처리를 진행
-                receiveAccountNo = outAccount.getOAccountNo();  // 외부 계좌의 경우 계좌 번호 설정
-                toBankName = outAccount.getOBankName();  // 외부 계좌 은행명 설정
+                receiveAccountNo = outAccount.getOAccountNo();
+                toBankName = outAccount.getOBankName();
             }
 
             // 자동이체 엔티티 생성 및 저장
             AutoTransferEntity autoTransferEntity = AutoTransferEntity.builder()
                     .accountNo(fromAccount.getAccountNo())
-                    .receiveAccountNo(receiveAccountNo)  // 내부 또는 외부 계좌의 경우 처리
+                    .receiveAccountNo(receiveAccountNo)
                     .autoSendPrice(autoTransferDTO.getAutoSendPrice())
-                    .reservationDate(LocalDate.now())  // 예약일
+                    .reservationDate(LocalDate.now())
                     .startDate(autoTransferDTO.getStartDate())
                     .endDate(autoTransferDTO.getEndDate())
                     .transferDay(autoTransferDTO.getTransferDay())
-                    .toBankName(toBankName)  // 은행명 설정
+                    .toBankName(toBankName)
                     .reservationState("ACTIVE")
+                    .autoAgreement(autoTransferDTO.getAutoAgreement()) // 동의 여부 저장
                     .build();
 
             // 자동이체 정보 저장
             autoTransferRepository.save(autoTransferEntity);
 
-            // 성공 시 true 반환
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-
-            // 실패 시 false 반환
             return false;
         }
     }

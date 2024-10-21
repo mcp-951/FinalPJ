@@ -32,15 +32,16 @@ public class DepositController {
     private DepositService emergencyWithdrawalService;
 
     @GetMapping("/page")
-    public Page<DepositEntity> getDepositProductsPaged(Pageable pageable) {
-        return depositService.getDepositProductsPaged(pageable);
+    public ResponseEntity<Page<DepositDTO>> getDepositProductsPaged(Pageable pageable) {
+        Page<DepositDTO> depositProducts = depositService.getDepositProductsPaged(pageable);
+        return ResponseEntity.ok(depositProducts);
     }
 
     @GetMapping("/findAccount")
-    public List<AccountEntity> getNormalAccounts(@RequestHeader("Authorization") String token) {
-        // "Bearer " 접두사를 제거한 실제 토큰만 사용
+    public ResponseEntity<List<Map<String, Object>>> getNormalAccountData(@RequestHeader("Authorization") String token) {
         String cleanToken = token.replace("Bearer ", "");
-        return depositService.getNormalAccounts(cleanToken);
+        List<Map<String, Object>> normalAccounts = depositService.getNormalAccountData(cleanToken);
+        return ResponseEntity.ok(normalAccounts);
     }
     // 적금
     @PostMapping("/savings")
@@ -75,10 +76,10 @@ public class DepositController {
     }
 
     @GetMapping("/findDeposit")
-    public List<AccountEntity> getDepositAccounts(@RequestHeader("Authorization") String token) {
-        // "Bearer " 접두사를 제거한 실제 토큰만 사용
+    public ResponseEntity<List<Map<String, Object>>> getDepositAccounts(@RequestHeader("Authorization") String token) {
         String cleanToken = token.replace("Bearer ", "");
-        return depositService.getUserDepositAccounts(cleanToken);
+        List<Map<String, Object>> depositAccounts = depositService.getUserDepositAccounts(cleanToken);
+        return ResponseEntity.ok(depositAccounts);
     }
 
     // 정기예금가입

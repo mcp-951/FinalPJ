@@ -25,8 +25,8 @@ const DepositItem = ({ depositNo, depositName, depositMinimumRate, depositMaximu
   return (
     <div className="deposit-item">
       <div className="deposit-text">
-        <div>{depositNo}</div>
         <div>{depositName}</div>
+        <div>afsdfads{depositCategory}</div>
         <div>{depositContent}</div>
         <div>최대 {depositMaximumDate}개월</div>
         <div>최대 {depositMaximumRate}%</div>
@@ -87,7 +87,7 @@ const DepositList1 = () => {
 
   return (
     <div className="app">
-      <h1>적금 상품 리스트</h1>
+      <h1>상품 리스트</h1>
       <DepositList deposits={deposits} />
       <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
     </div>
