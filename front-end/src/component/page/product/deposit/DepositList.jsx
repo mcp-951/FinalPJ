@@ -4,24 +4,33 @@ import ApiService from 'component/ApiService'; // API 서비스 임포트
 import '../../../../resource/css/product/DepositList.css';
 
 // 상품 항목 컴포넌트 (DepositItem)
-const DepositItem = ({ depositName, depositContent, depositRate, depositCategory, depositNo }) => {
+const DepositItem = ({ depositNo, depositName, depositMinimumRate, depositMaximumRate, depositMinimumDate, depositMaximumDate, depositMinimumAmount, depositMaximumAmount, depositContent, depositCharacteristic, depositCategory, depositState }) => {
   const navigate = useNavigate();
 
   const handleDetailClick = () => {
     // 세션에 상품 정보 저장
     sessionStorage.setItem(
       'selectedDeposit',
-      JSON.stringify({ depositName, depositContent, depositRate, depositCategory, depositNo })
+      JSON.stringify({ depositNo, depositName, depositMinimumRate, depositMaximumRate, depositMinimumDate, depositMaximumDate, depositMinimumAmount, depositMaximumAmount, depositContent, depositCharacteristic, depositCategory, depositState })
     );
-    // 상세 페이지로 이동
-    navigate('/DepositMain');
+
+    // 상품 이름에 "입출금"이 포함된 경우 다른 페이지로 이동
+    if (depositName.includes("입출금")) {
+      navigate('/ReceivedPaidMain');
+    } else {
+      navigate('/DepositMain');
+    }
   };
 
   return (
     <div className="deposit-item">
-      <h3>{depositName}</h3>
-      <p>{depositContent}</p>
-      <strong>연 {depositRate}%</strong>
+      <div className="deposit-text">
+        <div>{depositNo}</div>
+        <div>{depositName}</div>
+        <div>{depositContent}</div>
+        <div>최대 {depositMaximumDate}개월</div>
+        <div>최대 {depositMaximumRate}%</div>
+      </div>
       <div className="buttons">
         <button onClick={handleDetailClick}>상세보기</button>
         <button onClick={handleDetailClick}>가입하기</button>
@@ -36,11 +45,17 @@ const DepositList = ({ deposits }) => (
     {deposits.map((deposit, index) => (
       <DepositItem
         key={index}
-        depositName={deposit.depositName}
-        depositContent={deposit.depositContent}
-        depositRate={deposit.depositRate}
-        depositCategory={deposit.depositCategory}
         depositNo={deposit.depositNo}
+        depositName={deposit.depositName}
+        depositMinimumRate={deposit.depositMinimumRate}
+        depositMaximumRate={deposit.depositMaximumRate}
+        depositMinimumDate={deposit.depositMinimumDate}
+        depositMaximumDate={deposit.depositMaximumDate}
+        depositMinimumAmount={deposit.depositMinimumAmount}
+        depositMaximumAmount={deposit.depositMaximumAmount}
+        depositContent={deposit.depositContent}
+        depositCharacteristic={deposit.depositCharacteristic}
+        depositCategory={deposit.depositCategory}
       />
     ))}
   </div>
@@ -85,7 +100,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => (
     {[...Array(totalPages)].map((_, index) => (
       <button
         key={index}
-        className={currentPage === index + 1 ? 'active' : ''} 
+        className={currentPage === index + 1 ? 'active' : ''}
         onClick={() => onPageChange(index + 1)}
         disabled={currentPage === index + 1}  // 현재 페이지는 비활성화
       >

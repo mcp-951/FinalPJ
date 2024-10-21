@@ -77,82 +77,82 @@ public class AdminService {
         return userDTO;
     }
 //-----------------------------------------상품 관련 ---------------------------------
-    // DTO -> Entity 변환
-    private DepositEntity convertToDepositEntity(DepositDTO depositDTO) {
-    return DepositEntity.builder()
-            .depositNo(depositDTO.getDepositNo())
-            .depositCategory(depositDTO.getDepositCategory())
-            .depositContent(depositDTO.getDepositContent())
-            .depositName(depositDTO.getDepositName())
-            .depositRate(depositDTO.getDepositRate())
-            .depositState(depositDTO.getDepositState())
-            .build();
-}
-
-    // Entity -> DTO 변환
-    private DepositDTO convertToDepositDTO(DepositEntity depositEntity) {
-        return DepositDTO.builder()
-                .depositNo(depositEntity.getDepositNo())
-                .depositName(depositEntity.getDepositName())
-                .depositCategory(depositEntity.getDepositCategory())
-                .depositRate(depositEntity.getDepositRate())
-                .depositContent(depositEntity.getDepositContent())
-                .depositState(depositEntity.getDepositState())
-                .build();  // 여기서 .build()를 추가
-    }
-
-    // 상품 등록 메서드
-    public void addDepositProduct(DepositDTO depositDTO) {
-        // DTO를 엔티티로 변환
-        DepositEntity depositEntity = DepositEntity.builder()
-                .depositName(depositDTO.getDepositName())
-                .depositCategory(depositDTO.getDepositCategory())
-                .depositRate(depositDTO.getDepositRate())
-                .depositContent(depositDTO.getDepositContent())
-                .depositState('Y')  // 신규 등록은 'Y'로 활성화 상태로 설정
-                .build();
-        // Repository를 통해 DB에 저장
-        System.out.println("<<< AdminService addDepositProduct - depositEntity >>> : " + depositEntity);
-        depositRepository.save(depositEntity);
-    }
-
-    // 전체 금융 상품 조회
-    public List<Object> getAllFinancialProducts() {
-        List<Object> allProducts = new ArrayList<>();
-
-        // 1. DepositEntity를 DepositDTO로 변환
-        List<DepositDTO> deposits = depositRepository.findAll()
-                .stream()  // DepositEntity 리스트를 스트림으로 변환
-                .map(deposit -> new DepositDTO(
-                        deposit.getDepositNo(),         // 예금 번호
-                        deposit.getDepositName(),       // 예금 이름
-                        deposit.getDepositCategory(),   // 예금 카테고리 (이 부분이 추가됨)
-                        deposit.getDepositRate(),       // 예금 금리
-                        deposit.getDepositContent(),    // 예금 설명
-                        deposit.getDepositState()       // 예금 상태
-                ))
-                .collect(Collectors.toList());  // 변환된 DepositDTO 리스트를 다시 리스트로 수집
-
-        // 2. 변환된 DepositDTO 리스트를 전체 상품 리스트에 추가
-        allProducts.addAll(deposits);
-
-        // 3. LoanEntity를 LoanDTO로 변환 (이 부분도 추가해야 함)
-        /*
-        List<LoanDTO> loans = loanRepository.findAll()
-                .stream()
-                .map(loan -> new LoanDTO(
-                        loan.getLoanNo(),
-                        loan.getLoanName(),
-                        loan.getLoanRate(),
-                        loan.getLoanContent(),
-                        loan.getLoanState()
-                ))
-                .collect(Collectors.toList());
-
-        allProducts.addAll(loans);
-        */
-        return allProducts;
-    }
+//    // DTO -> Entity 변환
+//    private DepositEntity convertToDepositEntity(DepositDTO depositDTO) {
+//    return DepositEntity.builder()
+//            .depositNo(depositDTO.getDepositNo())
+//            .depositCategory(depositDTO.getDepositCategory())
+//            .depositContent(depositDTO.getDepositContent())
+//            .depositName(depositDTO.getDepositName())
+//            .depositRate(depositDTO.getDepositRate())
+//            .depositState(depositDTO.getDepositState())
+//            .build();
+//}
+//
+//    // Entity -> DTO 변환
+//    private DepositDTO convertToDepositDTO(DepositEntity depositEntity) {
+//        return DepositDTO.builder()
+//                .depositNo(depositEntity.getDepositNo())
+//                .depositName(depositEntity.getDepositName())
+//                .depositCategory(depositEntity.getDepositCategory())
+//                .depositRate(depositEntity.getDepositRate())
+//                .depositContent(depositEntity.getDepositContent())
+//                .depositState(depositEntity.getDepositState())
+//                .build();  // 여기서 .build()를 추가
+//    }
+//
+//    // 상품 등록 메서드
+//    public void addDepositProduct(DepositDTO depositDTO) {
+//        // DTO를 엔티티로 변환
+//        DepositEntity depositEntity = DepositEntity.builder()
+//                .depositName(depositDTO.getDepositName())
+//                .depositCategory(depositDTO.getDepositCategory())
+//                .depositRate(depositDTO.getDepositRate())
+//                .depositContent(depositDTO.getDepositContent())
+//                .depositState('Y')  // 신규 등록은 'Y'로 활성화 상태로 설정
+//                .build();
+//        // Repository를 통해 DB에 저장
+//        System.out.println("<<< AdminService addDepositProduct - depositEntity >>> : " + depositEntity);
+//        depositRepository.save(depositEntity);
+//    }
+//
+//    // 전체 금융 상품 조회
+//    public List<Object> getAllFinancialProducts() {
+//        List<Object> allProducts = new ArrayList<>();
+//
+//        // 1. DepositEntity를 DepositDTO로 변환
+//        List<DepositDTO> deposits = depositRepository.findAll()
+//                .stream()  // DepositEntity 리스트를 스트림으로 변환
+//                .map(deposit -> new DepositDTO(
+//                        deposit.getDepositNo(),         // 예금 번호
+//                        deposit.getDepositName(),       // 예금 이름
+//                        deposit.getDepositCategory(),   // 예금 카테고리 (이 부분이 추가됨)
+//                        deposit.getDepositRate(),       // 예금 금리
+//                        deposit.getDepositContent(),    // 예금 설명
+//                        deposit.getDepositState()       // 예금 상태
+//                ))
+//                .collect(Collectors.toList());  // 변환된 DepositDTO 리스트를 다시 리스트로 수집
+//
+//        // 2. 변환된 DepositDTO 리스트를 전체 상품 리스트에 추가
+//        allProducts.addAll(deposits);
+//
+//        // 3. LoanEntity를 LoanDTO로 변환 (이 부분도 추가해야 함)
+//        /*
+//        List<LoanDTO> loans = loanRepository.findAll()
+//                .stream()
+//                .map(loan -> new LoanDTO(
+//                        loan.getLoanNo(),
+//                        loan.getLoanName(),
+//                        loan.getLoanRate(),
+//                        loan.getLoanContent(),
+//                        loan.getLoanState()
+//                ))
+//                .collect(Collectors.toList());
+//
+//        allProducts.addAll(loans);
+//        */
+//        return allProducts;
+//    }
 
 
     // 상품 판매량 차트 데이터 조회
@@ -165,74 +165,74 @@ public class AdminService {
         return productCounts;
     }
 //------------------------------------ 적금 관련 ------------------------------------------
-    // 적금 상품 목록 조회
-    public List<DepositDTO> savings() {
-        System.out.println("<<< AdminService savings >>>");
-        List<DepositDTO> list = new ArrayList<>();
-        // 적금 카테고리 3번이면서 depositState가 'Y'인 상품만 조회
-        List<DepositEntity> savings = depositRepository.findByDepositCategoryAndDepositState(3, 'Y');
-
-        // 조회된 적금 상품들을 DTO로 변환
-        for (DepositEntity eDto : savings) {
-            DepositDTO depositDTO = DepositDTO.builder()
-                    .depositNo(eDto.getDepositNo())
-                    .depositName(eDto.getDepositName())
-                    .depositCategory(eDto.getDepositCategory())
-                    .depositRate(eDto.getDepositRate())
-                    .depositContent(eDto.getDepositContent())
-                    .depositState(eDto.getDepositState())
-                    .build();  // 적금 DTO 생성
-
-            list.add(depositDTO);  // 적금 DTO를 리스트에 추가
-        }
-
-        System.out.println("<<< AdminService savings - list >>> : " + list);
-        return list;  // 적금 상품 목록 반환
-    }
-
-    // 적금 상품 수정
-    public void updateDeposit(int depositNo, DepositDTO depositDTO) {
-        DepositEntity depositEntity = depositRepository.findById(depositNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 적금 상품을 찾을 수 없습니다."));
-
-        // DTO 데이터를 엔티티로 반영
-        depositEntity.setDepositName(depositDTO.getDepositName());
-        depositEntity.setDepositCategory(depositDTO.getDepositCategory());
-        depositEntity.setDepositRate(depositDTO.getDepositRate());
-        depositEntity.setDepositContent(depositDTO.getDepositContent());
-
-        // 변경된 엔티티 저장
-        depositRepository.save(depositEntity);
-    }
-    // 적금 "삭제" 상태로 변경하는 메서드
-    public void deleteDeposit(int depositNo) {
-        depositRepository.updateDepositStateToN(depositNo);
-    }
-//----------------------------------------- 예금 ---------------------------------------
-// 예금 상품 목록 조회
-public List<DepositDTO> getDeposits() {
-    System.out.println("<<< AdminService getDeposits >>>");
-    List<DepositDTO> list = new ArrayList<>();
-    // 예금 카테고리 1번이면서 depositState가 'Y'인 상품만 조회
-    List<DepositEntity> deposits = depositRepository.findByDepositCategoryAndDepositState(1, 'Y');
-
-    // 조회된 예금 상품들을 DTO로 변환
-    for (DepositEntity eDto : deposits) {
-        DepositDTO depositDTO = DepositDTO.builder()
-                .depositNo(eDto.getDepositNo())
-                .depositName(eDto.getDepositName())
-                .depositCategory(eDto.getDepositCategory())
-                .depositRate(eDto.getDepositRate())
-                .depositContent(eDto.getDepositContent())
-                .depositState(eDto.getDepositState())
-                .build();  // 예금 DTO 생성
-
-        list.add(depositDTO);  // 예금 DTO를 리스트에 추가
-    }
-
-    return list;  // 예금 상품 목록 반환
-}
-//------------------------------------ 대출 관련------------------------------------------------------
+//    // 적금 상품 목록 조회
+//    public List<DepositDTO> savings() {
+//        System.out.println("<<< AdminService savings >>>");
+//        List<DepositDTO> list = new ArrayList<>();
+//        // 적금 카테고리 3번이면서 depositState가 'Y'인 상품만 조회
+//        List<DepositEntity> savings = depositRepository.findByDepositCategoryAndDepositState(3, 'Y');
+//
+//        // 조회된 적금 상품들을 DTO로 변환
+//        for (DepositEntity eDto : savings) {
+//            DepositDTO depositDTO = DepositDTO.builder()
+//                    .depositNo(eDto.getDepositNo())
+//                    .depositName(eDto.getDepositName())
+//                    .depositCategory(eDto.getDepositCategory())
+//                    .depositRate(eDto.getDepositRate())
+//                    .depositContent(eDto.getDepositContent())
+//                    .depositState(eDto.getDepositState())
+//                    .build();  // 적금 DTO 생성
+//
+//            list.add(depositDTO);  // 적금 DTO를 리스트에 추가
+//        }
+//
+//        System.out.println("<<< AdminService savings - list >>> : " + list);
+//        return list;  // 적금 상품 목록 반환
+//    }
+//
+//    // 적금 상품 수정
+//    public void updateDeposit(int depositNo, DepositDTO depositDTO) {
+//        DepositEntity depositEntity = depositRepository.findById(depositNo)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 적금 상품을 찾을 수 없습니다."));
+//
+//        // DTO 데이터를 엔티티로 반영
+//        depositEntity.setDepositName(depositDTO.getDepositName());
+//        depositEntity.setDepositCategory(depositDTO.getDepositCategory());
+//        depositEntity.setDepositRate(depositDTO.getDepositRate());
+//        depositEntity.setDepositContent(depositDTO.getDepositContent());
+//
+//        // 변경된 엔티티 저장
+//        depositRepository.save(depositEntity);
+//    }
+//    // 적금 "삭제" 상태로 변경하는 메서드
+//    public void deleteDeposit(int depositNo) {
+//        depositRepository.updateDepositStateToN(depositNo);
+//    }
+////----------------------------------------- 예금 ---------------------------------------
+//// 예금 상품 목록 조회
+//public List<DepositDTO> getDeposits() {
+//    System.out.println("<<< AdminService getDeposits >>>");
+//    List<DepositDTO> list = new ArrayList<>();
+//    // 예금 카테고리 1번이면서 depositState가 'Y'인 상품만 조회
+//    List<DepositEntity> deposits = depositRepository.findByDepositCategoryAndDepositState(1, 'Y');
+//
+//    // 조회된 예금 상품들을 DTO로 변환
+//    for (DepositEntity eDto : deposits) {
+//        DepositDTO depositDTO = DepositDTO.builder()
+//                .depositNo(eDto.getDepositNo())
+//                .depositName(eDto.getDepositName())
+//                .depositCategory(eDto.getDepositCategory())
+//                .depositRate(eDto.getDepositRate())
+//                .depositContent(eDto.getDepositContent())
+//                .depositState(eDto.getDepositState())
+//                .build();  // 예금 DTO 생성
+//
+//        list.add(depositDTO);  // 예금 DTO를 리스트에 추가
+//    }
+//
+//    return list;  // 예금 상품 목록 반환
+//}
+////------------------------------------ 대출 관련------------------------------------------------------
 
 //-------------------------------- 거래 관련 ---------------------------------------------------------
 // Entity -> DTO 변환

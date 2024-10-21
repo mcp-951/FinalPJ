@@ -64,14 +64,16 @@ import AdminInquiryList from '../page/adminPage/support/AdminInquiryList';  // �
 import AdminInquiryDetail from '../page/adminPage/support/AdminInquiryDetail';  // 문의 상세
 
 // 예금 적금
-import DepositMain from 'component/page/product/Deposit/DepositMain';
-import DepositList from 'component/page/product/Deposit/DepositList';
-import Depositchap1 from 'component/page/product/Deposit/Depositchap1';
-import Depositchap2 from 'component/page/product/Deposit/Depositchap2';
-import Depositchap3 from 'component/page/product/Deposit/Depositchap3';
-import DepositchapO1 from 'component/page/product/Deposit/DepositchapO1';
-import DepositchapO2 from 'component/page/product/Deposit/DepositchapO2';
-import Termination from 'component/page/product/Deposit/Termination';
+import DepositMain from 'component/page/product/deposit/DepositMain';
+import DepositList from 'component/page/product/deposit/DepositList';
+import DepositJoin from 'component/page/product/deposit/DepositJoin';
+import DepositTerms from 'component/page/product/deposit/DepositTerms';
+import DepositJoinFinish from 'component/page/product/deposit/DepositJoinFinish';
+import DepositSearch from 'component/page/product/deposit/DepositSearch';
+import EmergencyWithdrawal from 'component/page/product/deposit/EmergencyWithdrawal';
+import SavingsJoin from 'component/page/product/deposit/SavingsJoin';
+import ReceivedPaidMain from 'component/page/product/deposit/ReceivedPaidMain';
+import ReceivedPaidMainJoin from 'component/page/product/deposit/ReceivedPaidMainJoin';
 
 
 // 계좌 관련 (채림)
@@ -193,12 +195,14 @@ const RouteComponent = () => {
                         {/* 예금, 적금, 대출 상품 관련 */}
                         <Route path="/DepositMain" exact={true} element={<DepositMain />} />
                         <Route path="/deposit-list" exact={true} element={<DepositList />} />
-                        <Route path="/Depositchap1" exact={true} element={<Depositchap1 />} />
-                        <Route path="/Depositchap2" exact={true} element={<Depositchap2 />} />
-                        <Route path="/Depositchap3" exact={true} element={<Depositchap3 />} />
-                        <Route path="/DepositchapO1" exact={true} element={<DepositchapO1 />} />
-                        <Route path="/DepositchapO2" exact={true} element={<DepositchapO2 />} />
-                        <Route path="/Termination" exact={true} element={<Termination />} />
+                        <Route path="/SavingsJoin" exact={true} element={<SavingsJoin />} />
+                        <Route path="/DepositTerms" exact={true} element={<DepositTerms />} />
+                        <Route path="/DepositJoinFinish" exact={true} element={<DepositJoinFinish />} />
+                        <Route path="/DepositSearch" exact={true} element={<DepositSearch />} />
+                        <Route path="/EmergencyWithdrawal" exact={true} element={<EmergencyWithdrawal />} />
+                        <Route path="/DepositJoin" exact={true} element={<DepositJoin />} />
+                        <Route path="/ReceivedPaidMain" exact={true} element={<ReceivedPaidMain />} />
+                        <Route path="/ReceivedPaidMainJoin" exact={true} element={<ReceivedPaidMainJoin />} />
 
                         {/* 계좌 페이지 시작_채림님*/}
                         {/* 계좌 목록 페이지 */}<Route path="/users/:userNo/accounts" element={<Account />} />

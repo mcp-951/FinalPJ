@@ -1,5 +1,6 @@
 package com.urambank.uram.dto;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -26,6 +27,11 @@ public class DepositDTO {
     private int userNo;
     private String accountNumber;
 
-    public DepositDTO(int depositNo, String depositName, int depositCategory, float depositRate, String depositContent, char depositState) {
-    }
+    private float depositMinimumRate; // 최소이자율
+    private float depositMaximumRate; // 최대이자율
+    private int depositMinimumDate; // 최소가입일
+    private int depositMaximumDate; // 최대가입일
+    private int depositMinimumAmount; // 가입최소금액
+    private int depositMaximumAmount; // 가입최대금액
+    private String depositCharacteristic; // 상품 특징
 }
