@@ -14,18 +14,16 @@ const PasswordCheck = ({ title, instructions }) => {
   const [isPasswordDisabled, setIsPasswordDisabled] = useState(false); // 비밀번호 입력 비활성화 상태
 
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // location.state에서 값 가져오기
-  const { purpose: initialPurpose, accountNumber: accountNumberFromState, productName: productNameFromState } = location.state || {};
+  const location = useLocation(); // URL 쿼리 파라미터 가져오기
+  const query = new URLSearchParams(location.search); // 쿼리 파라미터 파싱
+  const purpose = query.get('purpose'); // purpose 값 추출
   
-  // 계좌번호와 목적을 상태로 관리
-  const [purpose, setPurpose] = useState(initialPurpose);
-  const accountNumber = selectedAccount || accountNumberFromState;
-  const productName = selectedProductName || productNameFromState || ''; // productName도 전달받은 값 사용
-
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");
+
+  // 계좌번호와 상품명을 상태로 관리
+  const [accountNumber, setAccountNumber] = useState('');
+  const [productName, setProductName] = useState('');
 
   useEffect(() => {
     if (!token) {
@@ -59,21 +57,17 @@ const PasswordCheck = ({ title, instructions }) => {
   };
 
   useEffect(() => {
-    if (!accountNumber) {
-      fetchAccounts();
-    } else {
-      setLoading(false);
-    }
-  }, [accountNumber]);
+    fetchAccounts();
+  }, []);
 
-  // 계좌 선택 시 처리, 선택한 계좌의 목적과 상품명도 설정
+  // 계좌 선택 시 처리
   const handleAccountSelect = (event) => {
     const selectedAccountNumber = event.target.value;
-    setSelectedAccount(selectedAccountNumber);
+    setAccountNumber(selectedAccountNumber);
 
     const selectedAccountData = accounts.find(account => account.accountNumber === selectedAccountNumber);
     if (selectedAccountData) {
-      setSelectedProductName(selectedAccountData.depositName);
+      setProductName(selectedAccountData.depositName);
     }
   };
 
@@ -110,7 +104,6 @@ const PasswordCheck = ({ title, instructions }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 비밀번호 유효성 여부 확인
     if (!isPasswordValid) {
       setErrorMessage('비밀번호를 인증하세요.');
       return;
@@ -127,7 +120,7 @@ const PasswordCheck = ({ title, instructions }) => {
     }
 
     if (targetUrl) {
-      navigate(targetUrl, { state: { productName, accountNumber, purpose } }); // purpose를 포함해 전달
+      navigate(targetUrl, { state: { productName, accountNumber } });
     } else {
       alert("올바른 목적이 설정되지 않았습니다.");
     }
@@ -143,21 +136,17 @@ const PasswordCheck = ({ title, instructions }) => {
       <p>{instructions}</p>
 
       {/* 계좌 선택 창 */}
-      {!accountNumber ? (
-        <div className="account-select">
-          <label>계좌 선택</label>
-          <select value={selectedAccount || ''} onChange={handleAccountSelect}>
-            <option value="">계좌를 선택하세요</option>
-            {accounts.map(account => (
-              <option key={account.accountNumber} value={account.accountNumber}>
-                {account.accountNumber} ({account.depositName})
-              </option>
-            ))}
-          </select>
-        </div>
-      ) : (
-        <p>선택된 계좌: {accountNumber} ({productName})</p>
-      )}
+      <div className="account-select">
+        <label>계좌 선택</label>
+        <select value={accountNumber} onChange={handleAccountSelect}>
+          <option value="">계좌를 선택하세요</option>
+          {accounts.map(account => (
+            <option key={account.accountNumber} value={account.accountNumber}>
+              {account.accountNumber} ({account.depositName})
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className="password-input">
         <label>비밀번호 입력</label>

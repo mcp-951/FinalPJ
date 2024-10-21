@@ -208,10 +208,15 @@ const RouteComponent = () => {
                         <Route path="/account/:accountNumber/password-check" element={<PasswordCheck title="비밀번호 확인" instructions="비밀번호를 확인해주세요." />} />
                         <Route path="/account/password-check" element={<PasswordCheck title="비밀번호 확인" instructions="비밀번호를 확인해주세요." />} />
 
-                        {/* 비밀번호 변경 페이지 */}<Route path="/account/:accountNumber/password-change" element={<PasswordChange />} />
-                        {/* 계좌 해지 페이지 */}<Route path="/account/:accountNumber/close" element={<AccountClose />} />
-                        {/* 이체 한도 조회 페이지 */}<Route path="/account/:accountNumber/limit-inquiry" element={<LimitInquiry />} />
-                        {/* 이체 한도 변경 페이지 */}<Route path="/account/:accountNumber/limit-change" element={<LimitChange />} />
+                        {/* 비밀번호 변경 페이지 */} 
+                        <Route path="/account/:accountNumber/password-change" element={<PasswordChange />} />
+                        {/* 계좌 해지 페이지 */} 
+                        <Route path="/account/:accountNumber/close" element={<AccountClose />} />
+                        {/* 이체 한도 조회 페이지 */} 
+                        <Route path="/account/:accountNumber/limit-inquiry" element={<LimitInquiry />} />
+                        {/* 이체 한도 변경 페이지 */} 
+                        <Route path="/account/:accountNumber/limit-change" element={<LimitChange />} />
+
                         {/* 계좌 이체 페이지 */}<Route path="/account/transfer" element={<AccountTransfer />} />
                         {/* 이체 확인 페이지 */}<Route path="/account/transfer-confirmation" element={<AccountTransferConfirmation />} />
                         {/* 이체 완료 페이지 */}<Route path="/account/transfer-complete" element={<AccountTransferComplete />} />
