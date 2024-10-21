@@ -49,7 +49,7 @@ const AutoTransferRegister2 = () => {
   
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/uram/accounts', {
+      const response = await axios.get('http://localhost:8081/uram/accounts/category-one', {
         headers: {
           'Authorization': `Bearer ${token}`
         },

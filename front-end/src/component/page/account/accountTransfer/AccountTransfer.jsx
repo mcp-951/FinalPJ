@@ -60,7 +60,7 @@ const AccountTransfer = () => {
   // 백엔드에서 계좌 목록 가져오기
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/uram/accounts', {
+      const response = await axios.get('http://localhost:8081/uram/accounts/category-one', {
         headers: {
           'Authorization': `Bearer ${token}`
         },
