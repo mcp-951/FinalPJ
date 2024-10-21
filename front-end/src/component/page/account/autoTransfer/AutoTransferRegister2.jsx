@@ -363,6 +363,7 @@ const AutoTransferRegister2 = () => {
                       setErrorMessages({ ...errorMessages, selectedAutoAccount: '' });
                       fetchAutoTransferLimits(e.target.value);
                     }}
+                    disabled={isAutoPasswordValid} // 비밀번호가 확인되면 계좌 선택 불가
                   >
                     <option value="">계좌 선택</option>
                     {accounts.map((account) => (
@@ -451,6 +452,7 @@ const AutoTransferRegister2 = () => {
                   value={autoTransferPassword}
                   onChange={(e) => setAutoTransferPassword(e.target.value)}
                   placeholder="비밀번호 입력"
+                  disabled={isAutoPasswordValid} // 비밀번호가 확인되면 비밀번호 입력 불가
                 />
                 <button type="button" onClick={handleAutoPasswordCheck}>
                   확인
