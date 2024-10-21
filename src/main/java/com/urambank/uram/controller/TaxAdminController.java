@@ -57,10 +57,10 @@ public class TaxAdminController {
         return ResponseEntity.ok("Tax inserted successfully");
     }
 
-    // "ROLE_USER" 역할을 가진 유저들의 userId를 가져오는 API
-    @GetMapping("/users/role-user")
+    // "ROLE_USER" 역할을 가진 유저 중 state가 'y'인 유저들의 userId 반환
+    @GetMapping("/role-user")
     public ResponseEntity<List<String>> getUsersByRoleUser() {
-        List<User> users = userService.getUsersByRoleUser();
+        List<User> users = userService.getActiveUsersByRoleUser();
         List<String> userIds = users.stream().map(User::getUserId).collect(Collectors.toList());
         return ResponseEntity.ok(userIds);
     }
