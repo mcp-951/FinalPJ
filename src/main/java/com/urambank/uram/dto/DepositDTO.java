@@ -1,7 +1,6 @@
 package com.urambank.uram.dto;
 
 import com.urambank.uram.entities.DepositEntity;
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -49,5 +48,4 @@ public class DepositDTO {
                 .depositCategory(depositEntity.getDepositCategory())
                 .build();
     }
-
 }

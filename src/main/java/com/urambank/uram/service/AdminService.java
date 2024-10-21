@@ -7,7 +7,6 @@ import com.urambank.uram.dto.DepositDTO;
 import com.urambank.uram.dto.LoanProductDTO;
 import com.urambank.uram.entities.LogEntity;
 import com.urambank.uram.entities.User;
-import com.urambank.uram.entities.LoanEntity;
 import com.urambank.uram.entities.AccountEntity;
 import com.urambank.uram.entities.DepositEntity;
 import com.urambank.uram.entities.LoanProductEntity;
@@ -17,8 +16,6 @@ import com.urambank.uram.repository.DepositRepository;
 import com.urambank.uram.repository.AccountRepository;
 import com.urambank.uram.repository.LoanProductRepository;
 import com.urambank.uram.repository.LoanRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; 
 import '../../../../resource/css/admin/AdminLogin.css';
 import localStorage from 'localStorage';
+import { jwtDecode } from 'jwt-decode';
 
 const AdminLogin = () => {
   const [adminID, setAdminID] = useState('');
@@ -11,19 +12,23 @@ const AdminLogin = () => {
 
   const handleLogin = async () => {
     try {
-      console.log("전송할 데이터:", { userId: adminID, userPw: adminPW });
-      const response = await axios.post('http://localhost:8081/login', {
-        userId: adminID,
-        userPw: adminPW
-      });
-
-      if (response.status === 200) {
-        alert('로그인 성공');
-        const token = response.data.accessToken;
-        localStorage.setItem("token", token);
-        console.log(token);
-        navigate('/adMemberList');
-      }
+        console.log("전송할 데이터:", { userId: adminID, userPw: adminPW });
+        const response = await axios.post('http://localhost:8081/login', {
+            userId: adminID,
+            userPw: adminPW
+        });
+        if (response.status === 200) {
+            const token = response.data.accessToken;
+            const decodedToken = jwtDecode(token);
+            if(decodedToken.role === "ROLE_ADMIN") {
+                navigate('/adMemberList');
+            }else{
+                localStorage.clear();
+                alert("존재하지 않는 아이디 입니다. ");
+                navigate("/");
+                return;
+            }
+        }
     } catch (error) {
       console.error("로그인 중 오류 발생:", error);
       if (error.response) {

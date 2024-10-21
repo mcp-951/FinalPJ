@@ -1,14 +1,5 @@
 USE UramBank;
 
-CREATE TABLE ADMIN_TB(
-	adminNo INT AUTO_INCREMENT PRIMARY KEY,
-    adminID VARCHAR(30) NOT NULL,
-    adminPW VARCHAR(30) NOT NULL
-);
-
-INSERT INTO ADMIN_TB(adminID, adminPW) VALUES ('123@naver.com', 'zxc123');
-COMMIT;
-
 CREATE TABLE userInfo (
 	userNo int(100) NOT NULL AUTO_INCREMENT,
 	userId VARCHAR(100) NOT NULL,
@@ -27,108 +18,130 @@ CREATE TABLE userInfo (
 	PRIMARY KEY (userNo)
 	);
 
-COMMIT;
-
-CREATE TABLE PRODUCT_TB(
-	productNo INT AUTO_INCREMENT PRIMARY KEY,
-    productName VARCHAR(50) NOT NULL,
-    productCategory VARCHAR(10) NOT NULL,
-    productRate FLOAT NOT NULL,
-    productPeriod INT NOT NULL,
-    productContent VARCHAR(255) NOT NULL,
-    productIMG VARCHAR(255)
+CREATE TABLE deposit_TB (
+    depositNo INT AUTO_INCREMENT PRIMARY KEY, -- 상품 번호 (자동 증가)
+    depositName VARCHAR(100) NOT NULL,        -- 상품 이름
+    depositMinimumRate FLOAT NOT NULL,        -- 최소이자율
+    depositMaximumRate FLOAT NOT NULL,        -- 최대이자율
+    depositMinimumDate INT NOT NULL,          -- 최소가입일
+    depositMaximumDate INT NOT NULL,          -- 최대가입일
+    depositMinimumAmount INT NOT NULL,        -- 가입최소금액
+    depositMaximumAmount INT NOT NULL,        -- 가입최대금액
+    depositContent TEXT,                      -- 상품 설명
+    depositCharacteristic TEXT,               -- 상품 특징
+    depositCategory INT NOT NULL,             -- 예금 1, 적금 2
+    depositState CHAR(1) NOT NULL DEFAULT 'Y' -- 상품 상태 (Y: 활성, N: 비활성)
 );
-INSERT INTO PRODUCT_TB(productName, productCategory, productRate, productPeriod, productContent)
-VALUES('에이스 예금통장', '예금', 8.8, 60, '역시 에이스 동명상 인생 첫예금');
+
 COMMIT;
 
 DROP TABLE ACCOUNT_TB;
 COMMIT;
-CREATE TABLE ACCOUNT_TB(
-	accountNo INT AUTO_INCREMENT PRIMARY KEY,
-	accountNumber INT NOT NULL,
-    userNo INT NOT NULL,
-    productNo INT NOT NULL,
-    accountBalance INT NOT NULL DEFAULT 0,
-    accountLimit INT NOT NULL,
-    accountMax INT NOT NULL,
-    accountPW INT NOT NULL,
-    accountState VARCHAR(10) DEFAULT 'NORMAR',
-    accountOpen DATE DEFAULT (CURRENT_DATE())
+CREATE TABLE ACCOUNT_TB (
+   accountNo int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   accountNumber varchar(255),
+   userNo int NOT NULL,
+   depositNo int,
+   accountBalance int NOT NULL,
+   accountLimit int NOT NULL DEFAULT 10000000,
+   accountPW varchar(255),
+   accountState varchar(255) DEFAULT 'NORMAL',
+   accountOpen datetime(6) DEFAULT (CURRENT_DATE()),
+   accountClose datetime(6) DEFAULT '2099-12-31',
+   bankName varchar(255) DEFAULT '우람은행',
+   accountRate double,
+   agreement char(1),
+   withdrawal char(1)
 );
 
-INSERT INTO ACCOUNT_TB(accountNumber, userNo, productNo, accountLimit, accountMax, accountPW)
-VALUES(123456789, 1, 1, 1000000, 10000000, 1234);
 COMMIT;
 
-CREATE TABLE O_ACCOUNT_TB(
-	oAccountNo INT AUTO_INCREMENT PRIMARY KEY,
-    oAccountNumber INT NOT NULL,
-    oUserName VARCHAR(20) NOT NULL,
-    oAccountState VARCHAR(10) NOT NULL DEFAULT 'NORMAL',
-    oBankName VARCHAR (30) NOT NULL
+CREATE TABLE O_ACCOUNT_TB (
+   oAccountNo int NOT NULL,
+   oAccountNumber varchar(255),
+   oUserName varchar(255),
+   oAccountState varchar(255),
+   oBankName varchar(255)
 );
 INSERT INTO O_ACCOUNT_TB(oAccountNumber, oUserName, oBankName)
 VALUES(0987654321, '동명에이스', '동명은행');
 COMMIT;
 
-CREATE TABLE Log_TB(
-	logNo INT AUTO_INCREMENT PRIMARY KEY,
-    sendAccountNo INT NOT NULL,
-	receiveAccountNo INT NOT NULL,
-    sendPrice INT NOT NULL,
-    sendDate TIMESTAMP NOT NULL,
-    logState VARCHAR(10)
+CREATE TABLE Log_TB (
+   logNo int NOT NULL,
+   sendAccountNumber varchar(255),
+   receiveAccountNumber varchar(255),
+   sendPrice int NOT NULL,
+   sendDate date NOT NULL,
+   logState varchar(255)
 );
 drop Table AUTO_TRANSFER_TB;
 COMMIT;
-CREATE TABLE AUTO_TRANSFER_TB(
-	autoTransNo INT AUTO_INCREMENT PRIMARY KEY,
-    accountNo INT NOT NULL,
-    receiveAccountNo INT NOT NULL,
-    autoSendPrice INT NOT NULL,
-    reservationDate DATE NOT NULL,
-    reservationState VARCHAR(10) NOT NULL,
-    autoShow CHAR(1) DEFAULT 'Y',
-    deleteDate TIMESTAMP DEFAULT NULL
+CREATE TABLE AUTO_TRANSFER_TB (
+   autoTransNo int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   accountNo int NOT NULL,
+   receiveAccountNo int NOT NULL,
+   autoSendPrice int NOT NULL,
+   reservationDate date NOT NULL DEFAULT (CURRENT_DATE()),
+   reservationState varchar(255) DEFAULT 'ACTIVE',
+   deleteDate date,
+   startDate date NOT NULL,
+   endDate date,
+   transferDay int NOT NULL,
+   toBankName varchar(255),
+   autoAgreement char(1)
 );
 
-CREATE TABLE CURRENCY_EXCHANGE_TB(
-	tradeNo INT AUTO_INCREMENT PRIMARY KEY,
-    userNO INT NOT NULL,
-    accountNo INT NOT NULL,
-    selectCountry VARCHAR(20) NOT NULL,
-    exchangeRate FLOAT NOT NULL,
-    tradeDate TIMESTAMP NOT NULL,
-    pickupPlace VARCHAR(20) NOT NULL,
-    tradePrice INT NOT NULL,
-    tradeAmount INT NOT NULL,
-    receiveDate TIMESTAMP
-);
+CREATE TABLE CURRENCY_EXCHANGE_TB (
+  tradeNo int auto_increment NOT NULL,
+  userNo int NOT NULL,
+  accountNo int NOT NULL,
+  exchangeRate float NOT NULL,
+  pickUpPlace varchar(255) NOT NULL,
+  selectCountry varchar(255) NOT NULL,
+  tradeAmount int NOT NULL,
+  receiveDate date NOT NULL,
+  tradeDate date DEFAULT (current_date),
+  tradePrice int NOT NULL,
+  PRIMARY KEY (`tradeNo`));
 
-CREATE TABLE TAX_TB(
-	taxNo INT AUTO_INCREMENT PRIMARY KEY,
-    fee1 INT NOT NULL,
-    fee2 INT NOT NULL,
-    fee3 INT NOt NULL,
-    BasicFee1 INT NOT NULL,
-    BasicFee2 INT NOT NULL,
-    BasicFee3 INT NOT NULL,
-    taxState CHAR(1) DEFAULT 'N',
-    taxDeadLine DATE NOT NULL,
-    taxWriteDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    userNo INT NOT NULL
-);
+CREATE TABLE TAX_TB (
+  taxNo int NOT NULL AUTO_INCREMENT,
+  fee1  int NOT NULL,
+  fee2  int NOT NULL,
+  fee3  int NOT NULL,
+ BasicFee1 int NOT NULL,
+ BasicFee2 int NOT NULL,
+ BasicFee3 int NOT NULL,
+  taxState char(1) DEFAULT 'N',
+  taxDeadLine date NOT NULL,
+  taxWriteDate date DEFAULT NULL,
+  userNo int NOT NULL,
+  taxCategory varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`taxNo`));
 
 DROP TABLE COINLIST_TB;
 COMMIT;
 CREATE TABLE COINLIST_TB(
-   coinNo INT auto_increment primary key,
+    coinNo INT auto_increment primary key,
     coinNick varchar(10) NOT NULL,
     coinName varchar(50) NOT NULL,
     coinPrice FLOAT NOT NULL,
     coinTotalPrice varchar(15) NOT NULL,
     coinIncrease FLOAT NOT NULL
+);
+
+CREATE TABLE SUPPORT_TB (
+    qnaNo INT PRIMARY KEY AUTO_INCREMENT,       -- 문의 ID
+    userId INT NOT NULL,                        -- 사용자 ID (외래키)
+    qnaTitle VARCHAR(255) NOT NULL,             -- 문의 제목
+    message TEXT NOT NULL,                      -- 문의 내용
+    answer TEXT,                                -- 답변 내용
+    status VARCHAR(10) NOT NULL,                -- 답변 상태 ('답변 전', '답변 완료')
+    isDeleted CHAR(1) DEFAULT 'N',              -- 삭제 상태 ('N': 미삭제, 'Y': 삭제)
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, -- 문의 일자
+    answerDay DATETIME,                         -- 답변 일자
+    FOREIGN KEY (userId) REFERENCES userInfo(userNo) -- 사용자 외래 키 참조
 );
 
 INSERT INTO COINLIST_TB(coinName, coinNick, coinPrice, coinTotalPrice, coinIncrease)
@@ -153,3 +166,5 @@ INSERT INTO COINLIST_TB(coinName, coinNick, coinPrice, coinTotalPrice, coinIncre
 VALUES ('시바이누', 'SHIB' , 0.000018, '$10.97B', -5.39);
 
 SELECT * FROM COINLIST_TB;
+
+COMMIT;

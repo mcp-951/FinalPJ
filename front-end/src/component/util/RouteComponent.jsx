@@ -254,9 +254,9 @@ const RouteComponent = () => {
                         <Route path="/consumeAnalyse" exact={true} element={<AssetsAnalysis/>} />
                         <Route path="/AssetsAnalysis" exact={true} element={<AssetsAnalysis />} />
 
-                        <Route path="/taxList" exact={true} element={<AdTaxList />} />
-                        <Route path="/taxInsert" exact={true} element={<AdTaxInsert />} />
-                        <Route path="/taxEdit/:taxNo" exact={true} element={<AdTaxEdit />} />
+                        <Route path="/adTaxList" exact={true} element={<AdTaxList />} />
+                        <Route path="/adTaxInsert" exact={true} element={<AdTaxInsert />} />
+                        <Route path="/adTaxEdit/:taxNo" exact={true} element={<AdTaxEdit />} />
 
                         <Route path="/kakaoLogin" exact={true} element={<RedirectPage />} />
                    </Routes>

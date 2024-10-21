@@ -7,25 +7,25 @@ import { jwtDecode } from 'jwt-decode';
 import apiSer from '../../ApiService';
 
 function LoanApply() {
-  const { loanProductNo } = useParams();
-  const [allChecked, setAllChecked] = useState(false);  // 전체 약관 동의
-  const [termsChecked, setTermsChecked] = useState({
-    personalInfo: false, 
-    loanInfo: false,     
-  });
-  const [loanData, setLoanData] = useState(null); // 초기값을 null로 설정
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
-  const navigate = useNavigate();
-  const [userData, setUserData] = useState(null);
-  const [firstNo, setFirstNo] = useState(null);
-  const [lastNo, setLastNo] = useState(null);
-  const [inputLastNo, setInputLastNo] = useState(null);
-  const [localNoCheck, setLocalNoCheck] = useState(false);
-  const [hpAuthKey, setHpAuthKey] = useState('');
-  const [startCheckHp, setStartCheckHp] = useState(false);
-  const [authHp, setAuthHp] = useState(false);
-  const [stateAuth, setStateAuth] = useState(false);
-  const [checkHpNo, setCheckHpNo] = useState('');
+    const { loanProductNo } = useParams();
+    const [allChecked, setAllChecked] = useState(false);  // 전체 약관 동의
+    const [termsChecked, setTermsChecked] = useState({
+        personalInfo: false,
+        loanInfo: false,
+    });
+    const [loanData, setLoanData] = useState(null); // 초기값을 null로 설정
+    const [loading, setLoading] = useState(true); // 로딩 상태 추가
+    const navigate = useNavigate();
+    const [userData, setUserData] = useState(null);
+    const [firstNo, setFirstNo] = useState(null);
+    const [lastNo, setLastNo] = useState(null);
+    const [inputLastNo, setInputLastNo] = useState(null);
+    const [localNoCheck, setLocalNoCheck] = useState(false);
+    const [hpAuthKey, setHpAuthKey] = useState('');
+    const [startCheckHp, setStartCheckHp] = useState(false);
+    const [authHp, setAuthHp] = useState(false);
+    const [stateAuth, setStateAuth] = useState(false);
+    const [checkHpNo, setCheckHpNo] = useState('');
   
     useEffect(() => {
         const fetchLoanProduct = async () => {
