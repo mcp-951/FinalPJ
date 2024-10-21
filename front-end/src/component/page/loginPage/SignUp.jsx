@@ -254,7 +254,7 @@ function SignUp() {
           <Col sm={12} className="d-flex justify-content-center align-items-center mt-3">
             <p name="checkingId" value="0">{idCheckMessage}</p>
           </Col>
-      </Form.Group>
+        </Form.Group>
 
       <Form.Group as={Row} controlId="userPw" className="mt-3">
         <Form.Label column sm={3} className="text-left">비밀번호</Form.Label>

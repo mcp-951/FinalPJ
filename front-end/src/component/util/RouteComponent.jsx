@@ -33,6 +33,13 @@ import TaxHistory from 'component/page/tax/TaxHistory';
 // OCR 데이터
 import ImgSelect from 'component/page/ocrPage/ImgSelect';
 
+// 대출
+import LoanMain from 'component/page/loan/LoanMain';
+import LoanDetail from 'component/page/loan/LoanDetail';
+import LoanApply from 'component/page/loan/LoanApply';
+import LoanApplyNext from 'component/page/loan/LoanApplyNext';
+import LoanProduct from 'component/page/loan/LoanProduct';
+
 // 어드민 라우터 임포트
 import AdminLogin from '../page/adminPage/admin/AdminLogin';
 import EditAdmin from '../page/adminPage/admin/EditAdmin';
@@ -103,8 +110,7 @@ import Footer from './Footer';
 import SignUpForKakao from 'component/page/loginPage/SignUpForKakao';
 import FindIdAndPw from 'component/page/loginPage/FindIdAndPw';
 import RedirectPage from 'component/page/loginPage/RedirectKakao';
-import LoanMain from 'component/page/loan/LoanMain';
-import LoanDetail from 'component/page/loan/LoanDetail';
+
 
 
 
@@ -138,7 +144,7 @@ const RouteComponent = () => {
                         {/*}로그인 페이지{*/}
                         <Route path="/login" exact={true} element={<Login />} />
                         <Route path="/signup" exact={true} element={<Signup />} />
-                        {/*}로그인 페이지{*/}
+                        {/*}마이페이지{*/}
                         <Route path="/mypage" exact={true} element={<MyPage />} />
                         <Route path="/mypageChangePw" exact={true} element={<MyPageChangePw />} />
                         {/*검색바 리스트 이동*/}
@@ -155,7 +161,10 @@ const RouteComponent = () => {
                         <Route path="/ocr" exact={true} element={<ImgSelect />} />
                         {/*대출*/}
                         <Route path="/loanmain" exact={true} element={<LoanMain />} />
-                        <Route path="/loanmain/loandetail" exact={true} element={<LoanDetail />} />
+                        <Route path="/loanmain/loandetail/:loanProductNo" exact={true} element={<LoanDetail />} />
+                        <Route path="/loanmain/loanapply/:loanProductNo" exact={true} element={<LoanApply />} />
+                        <Route path="/loanmain/applynext/:loanProductNo" exact={true} element={<LoanApplyNext />} />
+                        
                         {/* 어드민 관리자 */}
                         <Route path="/adLog" element={<AdminLogin setIsLoggedIn={setIsLoggedIn} />} />
                         {/* <Route path="/adminList" element={<AdminList />} /> */}

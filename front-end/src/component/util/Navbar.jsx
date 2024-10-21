@@ -62,7 +62,7 @@ function Navbar(){
                                         <ul>
                                             <li><a href='/deposit-list'>상품 리스트</a></li>
                                             <li><a href='/DepositSearch'>중도출금</a></li>
-                                            <li><a href='/LoanList'>대출상품 리스트</a></li>
+                                            <li><a href='/loanmain'>대출상품 리스트</a></li>
                                             <li><a href='/Repayment'>중도상환</a></li>
                                             <li><a href='/Calculatior'>대출 이자계산기</a></li>
                                         </ul>
