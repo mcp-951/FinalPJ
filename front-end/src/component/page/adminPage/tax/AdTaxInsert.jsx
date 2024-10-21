@@ -34,13 +34,13 @@ const AdTaxInsert = () => {
 
   // "ROLE_USER" 유저들의 userId 가져오기
   useEffect(() => {
-    axios.get('http://localhost:8081/tax/users/role-user', {
+    axios.get('http://localhost:8081/tax/role-user', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
     .then((response) => {
-      setUserIds(response.data); // userId 목록을 상태에 저장
+      setUserIds(response.data); // 백엔드에서 이미 필터링된 userId 목록을 상태에 저장
     })
     .catch(error => console.error('Error fetching userIds:', error));
   }, [token]);
@@ -178,7 +178,7 @@ const AdTaxInsert = () => {
               <th>요금내역</th>
               <th>사용요금</th>
               <th>기본요금</th>
-              <th>납부금액</th> {/* 정산액을 제거하고 납부금액만 남김 */}
+              <th>납부금액</th>
             </tr>
           </thead>
           <tbody>
