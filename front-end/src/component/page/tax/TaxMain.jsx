@@ -35,7 +35,7 @@ function TaxMain(){
                 try{
                     const response = await axios.get(`http://localhost:8081/tax/TaxMain/${decodedToken.userNo}/${category}`, {
                         headers: {
-                            Authorization: `Bearer ${token}` // JWT를 헤더에 추가
+                            Authorization: `Bearer ${token}`
                         }})
                         const data = response.data;
                         setTaxData(data);
