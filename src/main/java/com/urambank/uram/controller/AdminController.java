@@ -43,13 +43,6 @@ public class AdminController {
         System.out.println("<<< AdminController /product-counts >>>");
         return adminService.getProductCounts();
     }
-//    // 새로운 상품 등록
-//    @PostMapping("/register-product")
-//    public ResponseEntity<String> addDepositProduct(@RequestBody DepositDTO depositDTO) {
-//        System.out.println("<<< AdminService /addDepositProduct >>>");
-//        adminService.addDepositProduct(depositDTO);  // 서비스에서 적금 상품 등록
-//        return ResponseEntity.ok("상품이 성공적으로 등록되었습니다.");
-//    }
 //------------------- 적금 상품 관련 -------------------------------------
     // 적금 상품 목록 조회
     @GetMapping("/savings")
@@ -60,7 +53,7 @@ public class AdminController {
         return ResponseEntity.ok(savings);
     }
 
-    // 적금 상품 수정
+    // 예금,적금 상품 수정
     @PutMapping("/editSavings/{depositNo}")
     public ResponseEntity<String> editSavingsProduct(@PathVariable("depositNo") int depositNo, @RequestBody DepositDTO depositDTO) {
         // 로그 추가하여 전달된 파라미터 확인
@@ -71,22 +64,21 @@ public class AdminController {
         return ResponseEntity.ok("적금 상품이 수정되었습니다.");
     }
 
-
-    // 적금 상품 삭제 (depositState를 'n'으로 변경)
+    // 예금,적금 상품 삭제 (depositState를 'n'으로 변경)
     @PutMapping("/deleteSavings/{depositNo}")
     public ResponseEntity<String> deleteSavingsProduct(@PathVariable("depositNo") int depositNo) {
         System.out.println("<<< AdminController /deleteSavings >>>");
         adminService.deleteDeposit(depositNo);
         return ResponseEntity.ok("해당 적금 상품이 삭제되었습니다.");
     }
+    // 예금,적금 상품 등록
+    @PostMapping("/register-product")
+    public ResponseEntity<String> addDepositProduct(@RequestBody DepositDTO depositDTO) {
+        System.out.println("<<< AdminService /addDepositProduct >>>");
+        adminService.addDepositProduct(depositDTO);  // 서비스에서 적금 상품 등록
+        return ResponseEntity.ok("상품이 성공적으로 등록되었습니다.");
+    }
 //--------------------------------- 예금 상품 관련 -----------------------------------------
-////예금 상품 등록
-//@PostMapping("/register-product")
-//public ResponseEntity<String> addDepositProduct(@RequestBody DepositDTO depositDTO) {
-//    System.out.println("<<< AdminService /addDepositProduct >>>");
-//    adminService.addDepositProduct(depositDTO);  // 서비스에서 적금 상품 등록
-//    return ResponseEntity.ok("상품이 성공적으로 등록되었습니다.");
-//}
     // 예금 상품 목록 조회
     @GetMapping("/deposits")
     public ResponseEntity<List<DepositDTO>> getDeposits() {
@@ -94,24 +86,7 @@ public class AdminController {
         List<DepositDTO> deposits = adminService.getDeposits();
         return ResponseEntity.ok(deposits);
     }
-//    // 예금 상품 수정
-//    @PutMapping("/editDeposit/{depositNo}")
-//    public ResponseEntity<String> editDepositProduct(@PathVariable("depositNo") int depositNo, @RequestBody DepositDTO depositDTO) {
-//        System.out.println("<<< AdminService /editDeposit >>>");
-//        adminService.updateDeposit(depositNo, depositDTO);
-//        return ResponseEntity.ok("예금 상품이 수정되었습니다.");
-//    }
-//
-//    // 예금 상품 삭제 (depositState를 'n'으로 변경)
-//    @PutMapping("/deleteDeposit/{depositNo}")
-//    public ResponseEntity<String> deleteDepositProduct(@PathVariable("depositNo") int depositNo) {
-//        System.out.println("<<< AdminService /deleteDeposit >>>");
-//        adminService.deleteDeposit(depositNo);
-//        return ResponseEntity.ok("해당 예금 상품이 삭제되었습니다.");
-//    }
-
-
-    //--------------------------------- 대출 관련 ----------------------------------------------------------// 새로운 상품 등록
+//--------------------------------- 대출 관련 ----------------------------------------------------------// 새로운 상품 등록
     //대출 상품 등록
     @PostMapping("/register-loan")
     public ResponseEntity<String> addLoanProduct(@RequestBody LoanProductDTO loanProductDTO) {
@@ -176,7 +151,7 @@ public class AdminController {
         return ResponseEntity.ok(accounts);
     }
 
-    //----------------------------------------계좌 상태값 바꾸기 -------------------------------
+//----------------------------------------계좌 상태값 바꾸기 -------------------------------
     // STOP으로 계좌 상태 변경
     @PutMapping("/stopAccount/{accountNo}")
     public ResponseEntity<String> stopAccount(@PathVariable("accountNo") int accountNo) {

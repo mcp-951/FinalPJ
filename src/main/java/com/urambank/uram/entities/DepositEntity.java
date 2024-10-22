@@ -48,5 +48,4 @@ public class DepositEntity {
 
     @Column(name = "depositState")
     private Character depositState = 'Y'; // 상품 상태 (Y: 활성, N: 비활성)
-
 }

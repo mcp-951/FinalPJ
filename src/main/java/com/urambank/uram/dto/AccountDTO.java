@@ -23,13 +23,10 @@ public class AccountDTO {
     private String accountState;
     private Date accountOpen;
     private Date accountClose;
-<<<<<<< HEAD
+
     private double accountRate;   // 이자율(double) 추가
     private Character agreement;  // 약정 여부(Character) 추가
     private Character withdrawal; // 출금 여부(Character) 추가
-=======
-    private Character withdrawal;
->>>>>>> origin/chaerim
 
     public static AccountDTO toAccountDTO(AccountEntity accountEntity) {
         AccountDTO accountDTO = new AccountDTO();

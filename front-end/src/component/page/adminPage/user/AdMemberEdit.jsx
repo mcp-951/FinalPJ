@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Sidebar from '../Sidebar'; // 사이드바 추가
-import '../../../../resource/css/admin/MemberEdit.css';  // CSS 파일 추가
+import axios from 'axios';  // ApiService 추가
+import Sidebar from '../Sidebar';  // 좌측에 사이드바 컴포넌트 추가
+import localStorage from 'localStorage';
 
 const AdMemberEdit = () => {
   const navigate = useNavigate();
@@ -10,9 +10,9 @@ const AdMemberEdit = () => {
   const { memberData } = location.state;
   const token = localStorage.getItem("token");
 
+  // formData 초기값 설정
   const [formData, setFormData] = useState({
     userId: memberData.userId,
-    userPw: memberData.userPw || '',
     name: memberData.name,
     email: memberData.email,
     hp: memberData.hp,
@@ -23,6 +23,7 @@ const AdMemberEdit = () => {
     state: memberData.state
   });
 
+  // input 변경 처리
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -31,12 +32,16 @@ const AdMemberEdit = () => {
     });
   };
 
+  // 수정 제출
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.put(`http://localhost:8081/admin/updateUser/${memberData.userNo}`, formData, {
+    console.log('수정할 데이터:', formData);  // 수정할 데이터 확인용
+
+    // 백엔드로 PUT 요청 전송
+    axios.put(`http://localhost:8081/admin/updateUser/${memberData.userNo}`, formData,{
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`  // Authorization 헤더에 JWT 추가
       }
     })
       .then(() => {
@@ -53,7 +58,8 @@ const AdMemberEdit = () => {
       <h2>회원 수정</h2>
       <form onSubmit={handleSubmit}>
         <label>아이디</label>
-        <input type="text" value={formData.userId} disabled />
+        <input type="text" name="userId" value={formData.userId} onChange={handleInputChange}/>
+
         <label>이름</label>
         <input type="text" name="name" value={formData.name} onChange={handleInputChange} />
 

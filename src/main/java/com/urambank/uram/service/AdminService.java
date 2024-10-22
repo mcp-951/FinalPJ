@@ -224,7 +224,7 @@ public class AdminService {
         List<DepositDTO> list = new ArrayList<>();
 
         // 적금 카테고리 3번이면서 depositState가 'Y'인 상품만 조회
-        List<DepositEntity> savings = depositRepository.findByDepositCategoryAndDepositState(3, 'Y');
+        List<DepositEntity> savings = depositRepository.findByDepositCategoryAndDepositState(2, 'Y');
 
         // 조회된 적금 상품들을 DTO로 변환
         for (DepositEntity entity : savings) {
@@ -272,7 +272,6 @@ public class AdminService {
     public void deleteDeposit(int depositNo) {
         depositRepository.updateDepositStateToN(depositNo);
     }
-
     //----------------------------------------- 예금 ---------------------------------------
 // 예금 상품 목록 조회
     public List<DepositDTO> getDeposits() {
@@ -407,6 +406,7 @@ public class AdminService {
 
     // 대출 상품 삭제 (viewPoint를 'n'으로 변경)
     public void deleteLoan(int loanProductNo) {
+        System.out.println("<<< AdminService deleteLoan >>>");
         loanProductRepository.updateLoanViewPointToN(loanProductNo);
     }
 

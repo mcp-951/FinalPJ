@@ -7,6 +7,9 @@ import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 파일 추가
 const ADLoanProduct = () => {
   const navigate = useNavigate();
   const [loans, setLoans] = useState([]);  // 대출 상품 목록 상태 관리
+  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리
+  const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
+  const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 상품 수 상태 관리
   const token = localStorage.getItem("token");
 
   // 대출 상품 목록 불러오기
@@ -31,7 +34,7 @@ const ADLoanProduct = () => {
 
   // 수정 버튼 클릭 시 수정 페이지로 이동
   const handleEdit = (loan) => {
-    navigate('/adEditLoanProduct', { state: { loan } }); // 상품 정보를 상태로 전달하여 수정 페이지로 이동
+    navigate('/admin/adEditLoanProduct', { state: { loan } }); // 상품 정보를 상태로 전달하여 수정 페이지로 이동
   };
 
   // 삭제 버튼 클릭 시 loanState를 'Closed'로 변경
@@ -55,13 +58,46 @@ const ADLoanProduct = () => {
     navigate('/admin/adRegisterLoanProduct');
   };
 
+  // 검색 및 필터링 로직
+  const filteredList = loans.filter(loan => {
+    if (searchField === '상품명') {
+      return loan.loanProductTitle.toLowerCase().includes(searchTerm.toLowerCase()); // 상품명에서 검색
+    } else if (searchField === '최대 한도') {
+      return loan.loanMaxLimit.toString().includes(searchTerm); // 최대 한도에서 검색
+    } else if (searchField === '최소 한도') {
+      return loan.loanMinLimit.toString().includes(searchTerm); // 최소 한도에서 검색
+    } else if (searchField === '최소 금리') {
+      return loan.minInterestRate.toString().includes(searchTerm); // 최소 금리에서 검색
+    }
+    return true;  // 전체를 선택한 경우 필터링 없이 전체 목록 반환
+  }).slice(0, displayCount);  // 표시 개수만큼 잘라내기
+
   return (
     <div className="app-container">
       <Sidebar /> {/* 사이드바 추가 */}
       <div className="alog-main-content">
         <div className="loan-product-container">
           <h2>대출 상품 관리</h2>
-          <button onClick={handleRegister}>등록</button>
+          <div className="search-controls">
+            <div className="search-bar">
+              <select value={searchField} onChange={(e) => setSearchField(e.target.value)}>
+                <option value="전체">전체</option>
+                <option value="상품명">상품명</option>
+                <option value="최대 한도">최대 한도</option>
+                <option value="최소 한도">최소 한도</option>
+                <option value="최소 금리">최소 금리</option>
+              </select>
+              <input
+                type="text"
+                placeholder="검색어를 입력하세요"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button>검색</button>
+            </div>
+            <button onClick={handleRegister}>등록</button>
+          </div>
+
           <table className="product-table">
             <thead>
               <tr>
@@ -81,7 +117,7 @@ const ADLoanProduct = () => {
               </tr>
             </thead>
             <tbody>
-              {loans.map((loan, index) => (
+              {filteredList.map((loan, index) => (
                 <tr key={loan.loanProductNo}>
                   <td>{index + 1}</td>
                   <td>{loan.loanProductTitle}</td>

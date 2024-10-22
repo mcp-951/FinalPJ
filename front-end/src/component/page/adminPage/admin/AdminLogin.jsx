@@ -18,9 +18,11 @@ const AdminLogin = () => {
             userPw: adminPW
         });
         if (response.status === 200) {
+            localStorage.clear();
             const token = response.data.accessToken;
             const decodedToken = jwtDecode(token);
             if(decodedToken.role === "ROLE_ADMIN") {
+                localStorage.setItem("token",token);
                 navigate('/adMemberList');
             }else{
                 localStorage.clear();

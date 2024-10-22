@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';  // 좌측에 사이드바 컴포넌트 추가
-import '../../../../resource/css/admin/AdTransactionHistory.css';
 
 const AdTransactionHistory = () => {
   const [logs, setLogs] = useState([]);  // 거래 내역 상태 관리
-  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (보낸 계좌, 받는 계좌, 거래 날짜 등)
+  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리
   const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
   const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 거래 내역 수 상태 관리
   const token = localStorage.getItem("token");
@@ -24,28 +23,42 @@ const AdTransactionHistory = () => {
       console.error('거래 내역을 불러오는 중 오류 발생:', error);  // 오류 처리
     });
   }, [token]);  // token을 의존성으로 추가
-  
 
-  // 필터링 로직: 선택한 검색 필드와 검색어에 맞게 거래 내역 필터링
+  // 검색 및 필터링 로직
   const filteredList = logs.filter(log => {
-    if (searchField === '보낸 계좌') {
-      return log.sendAccountNo.toString().includes(searchTerm);
-    } else if (searchField === '받는 계좌') {
-      return log.receiveAccountNo.toString().includes(searchTerm);
-    } else if (searchField === '거래 날짜') {
-      return log.sendDate.includes(searchTerm);
+    if (searchTerm.length < 2) {
+      return true; // 검색어가 두 글자 미만이면 필터링하지 않음
     }
-    return true;  // 전체를 선택한 경우 필터링 없이 전체 목록 반환
+
+    const lowerSearchTerm = searchTerm.toLowerCase();
+
+    switch (searchField) {
+      case '보낸 계좌':
+        return log.sendAccountNumber?.toString().includes(lowerSearchTerm) || false; // 보낸 계좌에서 검색
+      case '받는 계좌':
+        return log.receiveAccountNumber?.toString().includes(lowerSearchTerm) || false; // 받는 계좌에서 검색
+      case '거래 날짜':
+        return log.sendDate.includes(lowerSearchTerm); // 거래 날짜에서 검색
+      case '전체':
+        return (
+          log.sendAccountNumber?.toString().includes(lowerSearchTerm) ||
+          log.receiveAccountNumber?.toString().includes(lowerSearchTerm) ||
+          log.sendDate.includes(lowerSearchTerm)
+        ) || false; // 전체 검색
+      default:
+        return true; // 전체를 선택한 경우 필터링 없이 전체 목록 반환
+    }
   }).slice(0, displayCount);  // 표시 개수만큼 잘라내기
 
   return (
-    <div className="AdTransactionHistory-transaction-history-container">
+    <div className="transaction-history-container">
       <Sidebar />  {/* 좌측에 사이드바 컴포넌트 렌더링 */}
-        <div className="AdTransactionHistory-member-list-content">
+      <div className="alog-main-content"> 
+        <div className="member-list-content">
           <h2>거래 현황</h2>
 
-          <div className="AdTransactionHistory-search-controls">
-            <div className="AdTransactionHistory-search-bar">
+          <div className="search-controls">
+            <div className="search-bar">
               <select value={searchField} onChange={(e) => setSearchField(e.target.value)}>
                 <option value="전체">전체</option>
                 <option value="보낸 계좌">보낸 계좌</option>
@@ -58,10 +71,9 @@ const AdTransactionHistory = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}  // 검색어 상태 업데이트
               />
-              <button>검색</button>
             </div>
 
-            <div className="AdTransactionHistory-pagination-controls">
+            <div className="pagination-controls">
               <label>표시 개수: </label>
               <select value={displayCount} onChange={(e) => setDisplayCount(Number(e.target.value))}>
                 <option value={10}>10 개</option>
@@ -72,7 +84,7 @@ const AdTransactionHistory = () => {
           </div>
 
           {/* 거래 내역 리스트 테이블 */}
-          <table className="AdTransactionHistory-transaction-table">
+          <table className="transaction-table">
             <thead>
               <tr>
                 <th>거래 번호</th>
@@ -98,8 +110,8 @@ const AdTransactionHistory = () => {
           </table>
         </div>
       </div>
-
+    </div>
   );
 };
 
-export default AdTransactionHistory;
+export default AdTransactionHistory; 
