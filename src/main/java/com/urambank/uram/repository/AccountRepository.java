@@ -107,4 +107,8 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
             "FROM AccountEntity a JOIN a.deposit d WHERE a.userNo = :userNo AND a.accountState = :state")
     List<Object[]> findUserDepositAccounts(@Param("userNo") int userNo, @Param("state") String state);
 
+    @Modifying
+    @Query("UPDATE AccountEntity a SET a.accountBalance = a.accountBalance + :price WHERE a.accountNo = :accountNo")
+    void updateAccountBalance(@Param("accountNo") int accountNo, @Param("price") int price);
+
 }
