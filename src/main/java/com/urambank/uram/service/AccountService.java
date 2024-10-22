@@ -464,6 +464,7 @@ public class AccountService {
                 .map(autoTransfer -> {
                     // 출금 계좌 번호 조회
                     String fromAccountNumber = accountRepository.findAccountNumberByAccountNo(autoTransfer.getAccountNo());
+                    fromAccountNumber = fromAccountNumber != null ? fromAccountNumber : "N/A"; // null 처리
 
                     // 입금 계좌 번호 조회 (내부 계좌일 경우)
                     String receiveAccountNumber = accountRepository.findAccountNumberByAccountNoAndBankName(
@@ -474,6 +475,7 @@ public class AccountService {
                         receiveAccountNumber = outAccountRepository.findOAccountNumberByOAccountNoAndOBankName(
                                 autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
                     }
+                    receiveAccountNumber = receiveAccountNumber != null ? receiveAccountNumber : "N/A"; // null 처리
 
                     // 계좌주명 조회
                     String recipientName;
@@ -498,17 +500,18 @@ public class AccountService {
                             .transferDay(autoTransfer.getTransferDay())
                             .reservationState(autoTransfer.getReservationState())
                             .deleteDate(autoTransfer.getDeleteDate())
-                            .toBankName(autoTransfer.getToBankName()) // toBankName 추가
+                            .toBankName(autoTransfer.getToBankName())
                             .build());
 
                     responseMap.put("fromAccountNumber", fromAccountNumber);
                     responseMap.put("receiveAccountNumber", receiveAccountNumber);
-                    responseMap.put("recipientName", recipientName); // 계좌주명 추가
+                    responseMap.put("recipientName", recipientName);
 
                     return responseMap;
                 })
                 .collect(Collectors.toList());
     }
+
 
     public Integer getAccountNoByAccountNumber(String accountNumber) {
         AccountEntity accountEntity = accountRepository.findByAccountNumber(accountNumber)
