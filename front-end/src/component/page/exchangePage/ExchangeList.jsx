@@ -241,7 +241,7 @@ const ExchangeList = () => {
                 뒤로
             </button>
 
-            <Footer className="ExchangeList-footer" />
+            
         </div>
     );
 };
