@@ -1,76 +1,65 @@
-/* AccountTransferConfirmation.css */
+/* 전체 컨테이너 */
+.AccountTransferConfirmation-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
-.confirmation-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .confirmation-message {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    font-size: 18px;
-  }
-  
-  .confirmation-explanation ul {
-    list-style: none;
-    padding-left: 0;
-    text-align: center;
-    color: #555;
-  }
-  
-  .confirmation-explanation li {
-    margin-bottom: 10px;
-  }
-  
-  .confirmation-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .confirmation-table th,
-  .confirmation-table td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ddd;
-  }
-  
-  .confirmation-table th {
-    background-color: #f1f1f1;
-  }
-  
-  .confirmation-buttons {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .confirm-button,
-  .cancel-button {
-    padding: 10px 20px;
-    margin: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .confirm-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .cancel-button:hover {
-    background-color: #dc3545;
-  }
-  
+/* 메시지 */
+.AccountTransferConfirmation-message {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* 테이블 */
+.AccountTransferConfirmation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.AccountTransferConfirmation-table th, 
+.AccountTransferConfirmation-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.AccountTransferConfirmation-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.AccountTransferConfirmation-table td {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* 버튼들 */
+.AccountTransferConfirmation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.AccountTransferConfirmation-confirm-button,
+.AccountTransferConfirmation-cancel-button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.AccountTransferConfirmation-confirm-button:hover,
+.AccountTransferConfirmation-cancel-button:hover {
+  background-color: #5f90bf;
+}

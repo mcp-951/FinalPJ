@@ -55,11 +55,11 @@ public class User {
     @Column(length = 100, nullable = true, unique = false)
     private String residentNumber;
 
-    @Column(length = 1)
+    @Column(name = "grade")
     private int grade;
 
     @Builder
-    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck) {
+    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck, int grade) {
         this.userNo = userNo;
         this.userId = userId;
         this.userPw = userPw;
@@ -70,6 +70,7 @@ public class User {
         this.joinDate = joinDate;
         this.state = state;
         this.OCRCheck = ocrCheck;
+        this.grade = grade;
     }
 
 

@@ -1,0 +1,138 @@
+.deposit-form-container {
+  width: 60%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group input[type="radio"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+.form-group div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.period-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.period-container input {
+  width: 100px;
+  padding: 8px;
+  border: 1px solid #000;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.period-options {
+  display: flex;
+  gap: 10px;
+}
+
+.period-options button {
+  padding: 10px 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.period-options button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.date-display {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.amount-container {
+  display: flex;
+  align-items: center; /* 금액 입력 필드와 버튼을 나란히 배치 */
+  gap: 10px; /* 필드와 버튼 간의 간격 */
+}
+
+.amount-container input {
+  width: 300px; /* 입력 필드 크기 조정 */
+  padding: 10px;
+}
+
+.amount-options {
+  display: flex;
+  gap: 10px;
+}
+
+.amount-options button {
+  padding: 12px 15px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.amount-options button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.form-buttons {
+  margin: 0 auto;
+  margin-top: 30px;
+  gap:1000px;  
+}
+
+.form-buttons button {
+  padding: 12px 30px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px; /* 두 버튼 사이에 10px 간격 추가 */
+}
+
+.form-buttons button:hover {
+  background-color: #0056b3;
+}
+
+
+.form-buttons button:last-child {
+  margin-right: 0; /* 마지막 버튼에 오른쪽 마진을 제거 */
+}

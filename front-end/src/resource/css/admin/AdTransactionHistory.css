@@ -1,0 +1,78 @@
+.AdTransactionHistory-container {
+  display: flex;
+}
+
+.AdTransactionHistory-main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.AdTransactionHistory-list-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.AdTransactionHistory-search-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.AdTransactionHistory-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.AdTransactionHistory-search-bar input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.AdTransactionHistory-search-bar select, 
+.AdTransactionHistory-search-button {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #74a1d2;
+  color: white;
+  cursor: pointer;
+}
+
+.AdTransactionHistory-pagination-controls {
+  display: flex;
+  align-items: center;
+}
+
+.AdTransactionHistory-pagination-controls select {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.AdTransactionHistory-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AdTransactionHistory-table th, 
+.AdTransactionHistory-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.AdTransactionHistory-table th {
+  background-color: #f2f2f2;
+}
+
+.AdTransactionHistory-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.AdTransactionHistory-table td {
+  white-space: nowrap;
+}

@@ -1,91 +1,115 @@
-.transfer-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .transfer-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .transfer-table th, 
-  .transfer-table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .transfer-table th {
-    background-color: #f1f1f1;
-    width: 30%;
-  }
-  
-  .account-balance-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .balance-button {
-    padding: 8px 16px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .balance-info {
-    font-size: 14px;
-    color: green;
-  }
-  
-  .error-message {
-    font-size: 14px;
-    color: red;
-  }
-  
-  .amount-buttons {
-    display: flex;
-    gap: 10px; /* 금액 버튼 간의 간격 */
-    margin-bottom: 10px; /* 금액 버튼과 입력 필드 사이 간격 */
-  }
-  
-  .amount-buttons button {
-    padding: 5px 10px; /* 버튼의 패딩을 줄여 크기 조정 */
-    font-size: 12px; /* 텍스트 크기 축소 */
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .amount-buttons button:hover {
-    background-color: #0056b3;
-  }
-  
-  .valid-check {
-    margin-left: 10px;
-    color: green;
-  }
-  
-  .submit-button {
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .submit-button:hover {
-    background-color: #218838;
-  }
-  
+.AccountTransfer-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.AccountTransfer-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.AccountTransfer-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AccountTransfer-table th {
+  text-align: left;
+  padding: 12px;
+  background-color: #f1f1f1;
+  color: #333;
+  font-weight: bold;
+  width: 30%;
+}
+
+.AccountTransfer-table td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+.AccountTransfer-table select,
+.AccountTransfer-table input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.AccountTransfer-table .AccountTransfer-balance-button,
+.AccountTransfer-table .AccountTransfer-submit-button,
+.AccountTransfer-table .AccountTransfer-amount-buttons button,
+.AccountTransfer-table button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.AccountTransfer-table .AccountTransfer-balance-button:hover,
+.AccountTransfer-table .AccountTransfer-submit-button:hover,
+.AccountTransfer-table .AccountTransfer-amount-buttons button:hover,
+.AccountTransfer-table button:hover {
+  background-color: #5b8bbb;
+}
+
+.AccountTransfer-table .AccountTransfer-amount-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: nowrap; /* 한 줄에 버튼들이 나열되도록 설정 */
+}
+
+.AccountTransfer-table .AccountTransfer-amount-buttons button {
+  flex-grow: 1; /* 버튼이 동일한 크기를 차지하도록 설정 */
+  margin-bottom: 5px;
+  padding: 10px;
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.AccountTransfer-table .AccountTransfer-valid-check {
+  color: #28a745;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.AccountTransfer-table .AccountTransfer-error-message {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
+}
+
+.AccountTransfer-table .AccountTransfer-balance-info {
+  display: block;
+  margin-top: 10px;
+  color: #333;
+}
+
+.AccountTransfer-container .AccountTransfer-submit-button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.AccountTransfer-container .AccountTransfer-submit-button:hover {
+  background-color: #5b8bbb;
+}

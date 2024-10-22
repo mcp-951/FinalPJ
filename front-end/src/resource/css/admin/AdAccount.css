@@ -1,0 +1,87 @@
+.AdAccount-container {
+  display: flex;
+}
+
+.AdAccount-main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.AdAccount-list-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.AdAccount-search-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.AdAccount-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.AdAccount-search-bar input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.AdAccount-search-bar select, 
+.AdAccount-search-button {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #74a1d2;
+  color: white;
+  cursor: pointer;
+}
+
+.AdAccount-pagination-controls {
+  display: flex;
+  align-items: center;
+}
+
+.AdAccount-pagination-controls select {
+  margin-left: 10px;
+  padding: 5px;
+}
+
+.AdAccount-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AdAccount-table th, 
+.AdAccount-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.AdAccount-table th {
+  background-color: #f2f2f2;
+}
+
+.AdAccount-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.AdAccount-table td {
+  white-space: nowrap;
+}
+
+.AdAccount-stop-button {
+  padding: 5px 10px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}

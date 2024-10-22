@@ -32,7 +32,7 @@ const AccountList = ({ type }) => {
         if (type === '예금') {
           depositCategory = 1;
         } else if (type === '적금') {
-          depositCategory = 3;
+          depositCategory = 2;
         }
     
         const response = await axios.get(`http://localhost:8081/uram/category/${depositCategory}`, {
@@ -45,20 +45,26 @@ const AccountList = ({ type }) => {
         });
     
         const accountList = response.data;
-        const uniqueAccounts = accountList.filter((account, index, self) =>
-          index === self.findIndex((acc) => acc.accountNumber === account.accountNumber)
-        );
-    
+
+        // Set을 사용하여 중복된 계좌 번호 제거
+        const uniqueAccounts = [];
+        const seenAccounts = new Set();
+
+        accountList.forEach(account => {
+          if (!seenAccounts.has(account.accountNumber)) {
+            uniqueAccounts.push(account);
+            seenAccounts.add(account.accountNumber);
+          }
+        });
+
         setAccounts(uniqueAccounts);
       } catch (error) {
         console.error('계좌 불러오기 실패:', error);
-        setError('등록된 계좌가 없습니다. 새로운 계좌를 생성해주세요.');
-        navigate('/getNewAccount');
-        setAccounts([]);
+        setError('등록된 계좌가 없습니다.');
+        setAccounts([]);  // 오류 발생 시 빈 배열 설정
       }
     };
     
-
     // type이 변경될 때마다 fetchData 호출
     if (type && token && userNo) {
       fetchData();
@@ -81,28 +87,31 @@ const AccountList = ({ type }) => {
   return (
     <div>
       <h5>{type} 계좌 조회 | 총 잔액: {accounts.reduce((acc, account) => acc + (account.accountBalance || 0), 0).toLocaleString()}원</h5>
-      <div className="account-list-container">
+      <div className="AccountList-container">
         {error ? (
           <p>{error}</p>
         ) : accounts.length > 0 ? (
           accounts.map((account) => (
-            <div className="account-list-box" key={account.accountNumber}>
-              <div className="list-more-icon" onClick={() => handleMoreClick(account)}>
+            <div className="AccountList-box" key={account.accountNumber}>
+              <div className="AccountList-more-icon" onClick={() => handleMoreClick(account)}>
                 <FaEllipsisV />
               </div>
 
-              <div className="account-list-number-section">
-                <Link to={`/account/detail/${account.accountNumber}`} className="account-list-number">
+              <div className="AccountList-number-section">
+                <Link to={`/account/detail/${account.accountNumber}`} className="AccountList-number">
                   <span>계좌번호: {account.accountNumber} | 계좌명: {account.depositName}</span>
                 </Link>
-                <div className="account-list-balance">잔액: {account.accountBalance.toLocaleString()}원</div>
+                <div className="AccountList-balance">잔액: {account.accountBalance.toLocaleString()}원</div>
               </div>
 
-              <div className="account-list-buttons">
+              <div className="AccountList-buttons">
                 <Link to={`/account/detail/${account.accountNumber}`}>
-                  <button className="list-detail-button">상세</button>
+                  <button className="AccountList-detail-button">상세</button>
                 </Link>
-                <button className="list-transfer-button" onClick={() => handleTransferClick(account.accountNumber)}>이체</button>
+                {/* 적금 계좌가 아닐 경우에만 이체 버튼 표시 */}
+                {type !== '적금' && (
+                <button className="AccountList-transfer-button" onClick={() => handleTransferClick(account.accountNumber)}>이체</button>
+                )}
               </div>
             </div>
           ))

@@ -3,47 +3,50 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from "axios";
 
-import '../../../resource/css/tax/TaxHistory.css'
+import '../../../resource/css/tax/TaxHistory.css';
 
-function TaxHistory(){
+function TaxHistory() {
     const navigate = useNavigate();
-    const [logData, setLogData] =useState([]);
-    useEffect(() =>{
+    const [logData, setLogData] = useState([]);
+
+    useEffect(() => {
         const token = localStorage.getItem('token');
 
-        
-        if(token == null){
+        if (token == null) {
             alert("로그인이 필요합니다.");
             navigate('/');
             return;
-        }
-
-        else{
+        } else {
             const decodedToken = jwtDecode(token);
-            const taxUserLog = async () =>{
-                try{
+            const taxUserLog = async () => {
+                try {
                     const response = await axios.get(`http://localhost:8081/tax/taxHistory/${decodedToken.userNo}`, {
                         headers: {
                             Authorization: `Bearer ${token}` // JWT를 헤더에 추가
-                        }})
+                        }
+                    });
                     const data = response.data;
-                    console.log(data)
-                    setLogData(data)
-                }catch(error){
-                    console.error("값을 못가져왔음" ,error);
+                    console.log(data);
+                    setLogData(data);
+                } catch (error) {
+                    console.error("값을 못가져왔음", error);
                 }
-            } 
+            };
             taxUserLog();
         }
-    }, []);
+    }, [navigate]);
 
-    const goPage = () =>{
-        navigate('/tax/Detail')
-    }
-    return(
-        <div className="HistoryContainer">
-            <div className="HistoryList">
-                <table>
+    const goPage = () => {
+        navigate('/tax/Detail');
+    };
+
+    return (
+        <div className="TaxHistory-container">
+            <div className="TaxHistory-header">
+                <h1>공과금 납부 내역</h1>
+            </div>
+            <div className="TaxHistory-list">
+                <table className="TaxHistory-table">
                     <thead>
                         <tr>
                             <th>관리번호</th>
@@ -56,16 +59,16 @@ function TaxHistory(){
                         </tr>
                     </thead>
                     <tbody>
-                    {logData.length > 0 ? ( // logData가 비어있지 않은 경우
-                            logData.map((item) => ( // logData의 각 항목을 반복하여 렌더링
+                        {logData.length > 0 ? (
+                            logData.map((item) => (
                                 <tr key={item.taxNo}>
                                     <td>{item.taxNo || '-'}</td>
-                                    <td>{item.taxCategory =='electro' ? ('전기세') : ('수도세') || '-'}</td>
+                                    <td>{item.taxCategory === 'electro' ? '전기세' : '수도세'}</td>
                                     <td>{item.basicFee1 + item.basicFee2 + item.basicFee3 || '-'}</td>
                                     <td>{item.fee1 + item.fee2 + item.fee3 || '-'}</td>
                                     <td>{item.basicFee1 + item.basicFee2 + item.basicFee3 + item.fee1 + item.fee2 + item.fee3 || '-'}</td>
                                     <td>{item.taxDeadLine || '-'}</td>
-                                    <td>{item.taxState == 'N' ? (<button onClick={goPage}>납부하기</button>) : ('납부완료') || '-'}</td>
+                                    <td>{item.taxState === 'N' ? (<button onClick={goPage} className="TaxHistory-button">납부하기</button>) : '납부완료'}</td>
                                 </tr>
                             ))
                         ) : (

@@ -1,0 +1,47 @@
+/* 검색결과 페이지 전체 레이아웃 */
+.search-result-container {
+    display: flex;
+    justify-content: flex-start; /* 위로 정렬 */
+    align-items: center;
+    flex-direction: column;
+    padding: 10px; /* 패딩을 줄임 */
+    min-height: 80vh; /* 화면 높이를 줄여 위로 붙임 */
+    background-color: #f5f5f5; /* 부드러운 배경색 */
+}
+
+.search-result-table {
+    width: 60%; /* 표의 너비를 적절히 설정 */
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.search-result-table th {
+    background-color: #74a1d2; /* 상단 배경색 */
+    color: white;
+    font-size: 18px;
+    padding: 15px;
+    text-align: center;
+}
+
+.search-result-table td {
+    padding: 10px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd; /* 구분선 */
+    font-size: 16px;
+}
+
+.search-result-table tr:last-child td {
+    border-bottom: none; /* 마지막 행의 구분선 제거 */
+}
+
+.search-result-table a {
+    color: #007bff; /* 링크 색상 */
+    text-decoration: none;
+}
+
+.search-result-table a:hover {
+    color: #0056b3; /* 링크 hover 시 색상 */
+}

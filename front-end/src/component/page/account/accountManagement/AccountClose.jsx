@@ -22,12 +22,21 @@ const AccountClose = () => {
   // 로컬 스토리지에서 JWT 토큰과 userNo를 가져오기
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");
+  
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   // 잔액 조회 API 호출
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+        const response = await axios.get(`http://localhost:8081/uram/account/detail/${accountNumber}`, {
           headers: {
             'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
           },
@@ -46,6 +55,23 @@ const AccountClose = () => {
       fetchBalance();
     }
   }, [accountNumber, userNo, token]);
+
+  useEffect(() => {
+    const fetchPhoneNumber = async () => {
+      try {
+        const phoneNumber = await apiSer.getUserPhoneNumber(token);
+        console.log('Fetched phone number:', phoneNumber); // 핸드폰 번호 콘솔에 출력
+        setHp(phoneNumber); // API로부터 받은 핸드폰 번호를 상태에 저장
+      } catch (error) {
+        console.error('핸드폰 번호 정보를 불러오는 중 오류 발생:', error);
+        setErrorMessage('핸드폰 번호 정보를 불러오는 중 오류가 발생했습니다.');
+      }
+    };
+  
+    if (token) {
+      fetchPhoneNumber(); // 핸드폰 번호 가져오기
+    }
+  }, [token]);
 
   // 휴대폰 인증번호 받기 로직
   const handleCheckHp = async () => {
@@ -113,9 +139,9 @@ const AccountClose = () => {
   };
 
   return (
-    <div className="account-close-container">
+    <div className="AccountClose-container">
       <h2>계좌 해지</h2>
-      <table className="account-info-table">
+      <table className="AccountClose-info-table">
         <tbody>
           <tr>
             <th>해지 계좌번호</th>
@@ -128,12 +154,12 @@ const AccountClose = () => {
           <tr>
             <th>잔액</th>
             <td>
-              <div className="balance-section">
+              <div className="AccountClose-balance-section">
                 {balance !== null ? `${balance.toLocaleString()}원` : '로딩 중...'}
                 {balance > 0 && (
                   <>
-                    <span className="balance-warning">잔액이 0원이 아닙니다.</span>
-                    <button onClick={handleTransfer} className="transfer-button">이체하기</button>
+                    <span className="AccountClose-balance-warning">잔액이 0원이 아닙니다.</span>
+                    <button onClick={handleTransfer} className="AccountClose-transfer-button">이체하기</button>
                   </>
                 )}
               </div>
@@ -147,8 +173,9 @@ const AccountClose = () => {
                 value={hp}
                 onChange={(e) => setHp(e.target.value)}
                 placeholder="01012345678"
+                readOnly
               />
-              <button onClick={handleCheckHp} className="verify-button">
+              <button onClick={handleCheckHp} className="AccountClose-verify-button">
                 인증번호 받기
               </button>
             </td>
@@ -162,26 +189,26 @@ const AccountClose = () => {
                 onChange={(e) => setEnteredAuthKey(e.target.value)}
                 placeholder="인증번호 입력"
               />
-              <button onClick={handleAuthKeyCheck} className="verify-button">
+              <button onClick={handleAuthKeyCheck} className="AccountClose-verify-button">
                 인증하기
               </button>
-              {authSuccess && <span className="success-message">✔ 인증 완료</span>}
+              {authSuccess && <span className="AccountClose-success-message">✔ 인증 완료</span>}
             </td>
           </tr>
         </tbody>
       </table>
-
-      <div className="close-button-container">
+  
+      <div className="AccountClose-close-button-container">
         <button
           onClick={handleAccountClose}
-          className="close-button"
+          className="AccountClose-close-button"
           disabled={!isVerified}
         >
           해지
         </button>
       </div>
-
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
+  
+      {errorMessage && <div className="AccountClose-error-message">{errorMessage}</div>}
     </div>
   );
 };

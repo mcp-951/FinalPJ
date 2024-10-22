@@ -6,7 +6,7 @@ import '../../../../resource/css/account/autoTransfer/AutoTransferRegister2.css'
 const AutoTransferRegister2 = () => {
   const { autoTransNo } = useParams(); // 수정 모드 시 URL에서 자동이체 번호 가져오기
   const location = useLocation();
-  const { fromAccountNumber: initialAccount } = location.state || {}; // 출금 계좌번호를 초기값으로 받기
+  const { fromAccountNumber: initialAccount, autoAgreement } = location.state || {}; // 출금 계좌번호와 약관 동의 여부 받기
 
   const [selectedAutoAccount, setSelectedAutoAccount] = useState(initialAccount || ''); // 선택된 자동이체 계좌
   const [availableAutoBalance, setAvailableAutoBalance] = useState(null); // 출금 가능 금액
@@ -29,6 +29,14 @@ const AutoTransferRegister2 = () => {
   const userNo = localStorage.getItem("userNo");
 
   useEffect(() => {
+    const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login'); // 로그인 페이지로 리다이렉트
+    }
+  }, [navigate]);
+
+  useEffect(() => {
     console.log('Location State:', location.state); // 전달된 state 값 확인
     fetchAccounts(); 
     if (autoTransNo) {
@@ -41,9 +49,12 @@ const AutoTransferRegister2 = () => {
   
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/users/${userNo}/accounts`, {
+      const response = await axios.get('http://localhost:8081/uram/accounts', {
         headers: {
           'Authorization': `Bearer ${token}`
+        },
+        params: {
+          userNo: userNo // userNo를 쿼리 파라미터로 추가
         }
       });
 
@@ -229,13 +240,17 @@ const AutoTransferRegister2 = () => {
       hasError = true;
     }
 
-    if (selectedAutoAccount === autoTargetAccount) {
+    if (selectedAutoAccount && autoTargetAccount && selectedAutoAccount === autoTargetAccount) {
       newErrorMessages.autoTargetAccount = '출금 계좌와 입금 계좌가 동일할 수 없습니다.';
       hasError = true;
     }
 
+    // 이체 금액 검증 추가 (이체 금액은 0원 이상이어야 하며 입력이 필요함)
     if (!autoTransferAmount) {
-      newErrorMessages.autoTransferAmount = '이체 금액을 입력하세요.';
+      newErrorMessages.autoTransferAmount = '이체 금액을 입력해주세요.';
+      hasError = true;
+    } else if (parseInt(autoTransferAmount) <= 0) {
+      newErrorMessages.autoTransferAmount = '이체 금액은 0원보다 커야 합니다.';
       hasError = true;
     } else if (parseInt(autoTransferAmount) > availableAutoBalance) {
       newErrorMessages.autoTransferAmount = '이체 금액이 잔액보다 큽니다.';
@@ -250,8 +265,19 @@ const AutoTransferRegister2 = () => {
       hasError = true;
     }
 
+    const currentDate = new Date();
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // 이체 기간 검증 추가
     if (!startDate || !endDate) {
       newErrorMessages.transferPeriod = '이체 기간을 설정하세요.';
+      hasError = true;
+    } else if (start <= currentDate) {
+      newErrorMessages.transferPeriod = '시작일은 현재 날짜보다 미래여야 합니다.';
+      hasError = true;
+    } else if (end <= start) {
+      newErrorMessages.transferPeriod = '종료일은 시작일보다 미래여야 합니다.';
       hasError = true;
     }
 
@@ -263,7 +289,6 @@ const AutoTransferRegister2 = () => {
       const formattedStartDate = `${startYearMonth[0]}-${startYearMonth[1]}-${String(transferDay).padStart(2, '0')}`;
       const formattedEndDate = `${endYearMonth[0]}-${endYearMonth[1]}-${String(transferDay).padStart(2, '0')}`;
 
-      // 내부 계좌와 외부 계좌 분리
       const autoTransferData = {
         fromAccountDTO: { accountNumber: selectedAutoAccount },
         toAccountDTO: selectedAutoBank === '우람은행' ? { accountNumber: autoTargetAccount, bankName: selectedAutoBank } : null,
@@ -273,6 +298,7 @@ const AutoTransferRegister2 = () => {
         endDate: formattedEndDate,
         transferDay: parseInt(transferDay, 10),
         userNo: parseInt(userNo, 10),
+        autoAgreement, // 필수 약관 동의 여부 추가
       };
 
       // 백엔드로 보내는 데이터 로그 출력
@@ -310,60 +336,60 @@ const AutoTransferRegister2 = () => {
         setErrorMessages({ general: '자동이체 처리 중 오류가 발생했습니다.' });
       }
     }
-};
+  };
 
   return (
-    <div className="transfer-container">
+    <div className="AutoTransferRegister2-container">
       <h2>{autoTransNo ? '자동이체 수정' : '자동이체 등록'}</h2>
       <form onSubmit={handleSubmit}>
-        <table className="transfer-table">
+        <table className="AutoTransferRegister2-table">
           <tbody>
-          <tr>
-            <th>출금계좌번호</th>
-            <td>
-              <div className="account-balance-section">
-                {initialAccount ? ( // 수정 모드일 경우 (출금 계좌번호가 전달된 경우)
-                  <input
-                    type="text"
-                    value={initialAccount} // 리스트에서 넘어온 출금 계좌번호를 고정
-                    disabled // 수정할 수 없도록 비활성화
-                  />
-                ) : ( // 등록 모드일 경우
-                  <select
-                    value={selectedAutoAccount}
-                    onChange={(e) => {
-                      setSelectedAutoAccount(e.target.value);
-                      setAvailableAutoBalance(null);
-                      setErrorMessages({ ...errorMessages, selectedAutoAccount: '' });
-                      fetchAutoTransferLimits(e.target.value);
-                    }}
+            <tr>
+              <th>출금계좌번호</th>
+              <td>
+                <div className="AutoTransferRegister2-account-balance-section">
+                  {initialAccount ? (
+                    <input
+                      type="text"
+                      value={initialAccount}
+                      disabled
+                    />
+                  ) : (
+                    <select
+                      value={selectedAutoAccount}
+                      onChange={(e) => {
+                        setSelectedAutoAccount(e.target.value);
+                        setAvailableAutoBalance(null);
+                        setErrorMessages({ ...errorMessages, selectedAutoAccount: '' });
+                        fetchAutoTransferLimits(e.target.value);
+                      }}
+                      disabled={isAutoPasswordValid}
+                    >
+                      <option value="">계좌 선택</option>
+                      {accounts.map((account) => (
+                        <option key={account.accountNumber} value={account.accountNumber}>
+                          {account.accountNumber}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleCheckAutoBalance}
+                    className="AutoTransferRegister2-balance-button"
                   >
-                    <option value="">계좌 선택</option>
-                    {accounts.map((account) => (
-                      <option key={account.accountNumber} value={account.accountNumber}>
-                        {account.accountNumber}
-                      </option>
-                    ))}
-                  </select>
-                )}
+                    출금가능금액
+                  </button>
 
-                {/* 수정 모드에서도 출금 가능 금액 확인을 활성화 상태로 유지 */}
-                <button
-                  type="button"
-                  onClick={handleCheckAutoBalance}
-                  className="balance-button"
-                >
-                  출금가능금액
-                </button>
-
-                {availableAutoBalance !== null ? (
-                  <span className="balance-info">{availableAutoBalance.toLocaleString()}원</span>
-                ) : (
-                  <span className="error-message">{errorMessages.selectedAutoAccount}</span>
-                )}
-              </div>
-            </td>
-          </tr>
+                  {availableAutoBalance !== null ? (
+                    <span className="AutoTransferRegister2-balance-info">{availableAutoBalance.toLocaleString()}원</span>
+                  ) : (
+                    <span className="AutoTransferRegister2-error-message">{errorMessages.selectedAutoAccount}</span>
+                  )}
+                </div>
+              </td>
+            </tr>
 
             <tr>
               <th>입금기관</th>
@@ -376,7 +402,7 @@ const AutoTransferRegister2 = () => {
                   <option value="동명은행">동명은행</option>
                   <option value="우람은행">우람은행</option>
                 </select>
-                {errorMessages.selectedAutoBank && <span className="error-message">{errorMessages.selectedAutoBank}</span>}
+                {errorMessages.selectedAutoBank && <span className="AutoTransferRegister2-error-message">{errorMessages.selectedAutoBank}</span>}
               </td>
             </tr>
             <tr>
@@ -388,21 +414,28 @@ const AutoTransferRegister2 = () => {
                   onChange={handleAutoTargetAccountChange}
                   placeholder="입금 계좌번호 입력"
                 />
-                <button type="button" onClick={handleAutoAccountCheck}>계좌 확인</button>
-                {isAutoAccountValid === true && <span className="valid-check">✔ 계좌 유효</span>}
-                {recipientName && <span className="recipient-name">계좌주: {recipientName}</span>} {/* 계좌주명 표시 */}
-                {errorMessages.autoTargetAccount && <span className="error-message">{errorMessages.autoTargetAccount}</span>}
+                <button
+                  type="button"
+                  className="AutoTransferRegister2-account-check-button"
+                  onClick={handleAutoAccountCheck}
+                >
+                  계좌 확인
+                </button>
+                {isAutoAccountValid === true && <span className="AutoTransferRegister2-valid-check">✔ 계좌 유효</span>}
+                {recipientName && <span className="AutoTransferRegister2-recipient-name">계좌주: {recipientName}</span>}
+                {errorMessages.autoTargetAccount && <span className="AutoTransferRegister2-error-message">{errorMessages.autoTargetAccount}</span>}
               </td>
             </tr>
             <tr>
               <th>이체금액</th>
               <td>
-                <div className="amount-buttons">
+                <div className="AutoTransferRegister2-amount-buttons">
                   {[1000000, 500000, 100000, 50000, 10000].map((amount) => (
                     <button
                       type="button"
                       key={amount}
                       onClick={() => handleAutoAmountClick(amount)}
+                      className="AutoTransferRegister2-amount-button"
                     >
                       {amount.toLocaleString()}원
                     </button>
@@ -414,7 +447,7 @@ const AutoTransferRegister2 = () => {
                   onChange={(e) => setAutoTransferAmount(e.target.value)}
                   placeholder="금액 입력"
                 />
-                {errorMessages.autoTransferAmount && <span className="error-message">{errorMessages.autoTransferAmount}</span>}
+                {errorMessages.autoTransferAmount && <span className="AutoTransferRegister2-error-message">{errorMessages.autoTransferAmount}</span>}
               </td>
             </tr>
             <tr>
@@ -425,12 +458,17 @@ const AutoTransferRegister2 = () => {
                   value={autoTransferPassword}
                   onChange={(e) => setAutoTransferPassword(e.target.value)}
                   placeholder="비밀번호 입력"
+                  disabled={isAutoPasswordValid}
                 />
-                <button type="button" onClick={handleAutoPasswordCheck}>
+                <button
+                  type="button"
+                  className="AutoTransferRegister2-password-check-button"
+                  onClick={handleAutoPasswordCheck}
+                >
                   확인
                 </button>
-                {isAutoPasswordValid === true && <span className="valid-check">✔ 비밀번호 확인</span>}
-                {errorMessages.autoTransferPassword && <span className="error-message">{errorMessages.autoTransferPassword}</span>}
+                {isAutoPasswordValid === true && <span className="AutoTransferRegister2-valid-check">✔ 비밀번호 확인</span>}
+                {errorMessages.autoTransferPassword && <span className="AutoTransferRegister2-error-message">{errorMessages.autoTransferPassword}</span>}
               </td>
             </tr>
             <tr>
@@ -439,7 +477,7 @@ const AutoTransferRegister2 = () => {
                 <select
                   value={transferDay}
                   onChange={(e) => setTransferDay(e.target.value)}
-                  className="transfer-day-select"
+                  className="AutoTransferRegister2-transfer-day-select"
                 >
                   <option value="1">1일</option>
                   <option value="10">10일</option>
@@ -450,31 +488,33 @@ const AutoTransferRegister2 = () => {
             <tr>
               <th>이체 기간</th>
               <td>
-                <div className="transfer-period">
+                <div className="AutoTransferRegister2-transfer-period">
                   <input
                     type="month"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="transfer-period-input"
+                    className="AutoTransferRegister2-transfer-period-input"
                   />
                   ~
                   <input
                     type="month"
                     value={endDate}
                     onChange={(e) => setEndDate(e.target.value)}
-                    className="transfer-period-input"
+                    className="AutoTransferRegister2-transfer-period-input"
                   />
                 </div>
-                {errorMessages.transferPeriod && <span className="error-message">{errorMessages.transferPeriod}</span>}
+                {errorMessages.transferPeriod && <span className="AutoTransferRegister2-error-message">{errorMessages.transferPeriod}</span>}
               </td>
             </tr>
           </tbody>
         </table>
-        <button type="submit" className="submit-button">확인</button>
+        <button type="submit" className="AutoTransferRegister2-submit-button">확인</button>
       </form>
-      {errorMessages.general && <div className="error-message">{errorMessages.general}</div>}
+      {errorMessages.general && <div className="AutoTransferRegister2-error-message">{errorMessages.general}</div>}
     </div>
   );
+
+
 };
 
 export default AutoTransferRegister2;

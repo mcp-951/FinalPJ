@@ -5,10 +5,10 @@ import com.urambank.uram.dto.AutoTransferDTO;
 import com.urambank.uram.dto.LogDTO;
 import com.urambank.uram.dto.OutAccountDTO;
 import com.urambank.uram.service.AccountService;
+import com.urambank.uram.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -23,11 +23,21 @@ import java.util.Map;
 public class AccountController {
 
     private final AccountService accountService;
+    private final JWTUtil jwtUtil;
 
     // 전체 계좌
-    @GetMapping("/users/{userNo}/accounts")
-    public ResponseEntity<Map<String, Object>> accountList(@PathVariable("userNo") int userNo) {
+    @GetMapping("/accounts")
+    public ResponseEntity<Map<String, Object>> accountList(@RequestHeader("Authorization") String token) {
         try {
+
+            // JWT 토큰에서 "Bearer " 제거
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7).trim(); // "Bearer " 제거 및 공백 제거
+            }
+
+            // JWT 토큰에서 userNo 추출
+            int userNo = jwtUtil.getUserNo(token);
+
             // 사용자 이름 가져오기
             String userName = accountService.getUserNameByUserNo(userNo);
 
@@ -48,11 +58,15 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    
+
+
     // 예금 계좌
-    @GetMapping("/users/{userNo}/accounts/category-one")
-    public ResponseEntity<Map<String, Object>> depositCategoryOneAccountList(@PathVariable("userNo") int userNo) {
+    @GetMapping("/accounts/category-one")
+    public ResponseEntity<Map<String, Object>> depositCategoryOneAccountList(@RequestHeader("Authorization") String token) {
         try {
+            // JWT 토큰에서 userNo 추출
+            int userNo = jwtUtil.getUserNo(token.replace("Bearer ", "").trim());
+
             // 사용자 이름 가져오기
             String userName = accountService.getUserNameByUserNo(userNo);
 
@@ -74,6 +88,7 @@ public class AccountController {
         }
     }
 
+
     // 카테고리별
     @GetMapping("/category/{depositCategory}")
     public ResponseEntity<List<Map<String, Object>>> categoryList(
@@ -94,7 +109,7 @@ public class AccountController {
     }
 
     // 계좌 상세
-    @GetMapping("/account/{accountNumber}")
+    @GetMapping("/account/detail/{accountNumber}")
     public ResponseEntity<Map<String, Object>> getAccountDetail(
             @PathVariable("accountNumber") String accountNumber,
             @RequestParam("userNo") int userNo) {
@@ -308,6 +323,7 @@ public class AccountController {
         }
     }
 
+
     // 계좌 유효성 검사
     @GetMapping("/account/validate")
     public ResponseEntity<Map<String, Object>> validateAccountNumber(
@@ -433,17 +449,17 @@ public class AccountController {
 
     // 자동이체 조회
     @GetMapping("/auto-transfer/list")
-    public ResponseEntity<List<Map<String, Object>>> getAllAutoTransfers(@RequestParam("userNo") int userNo) {
+    public ResponseEntity<List<AutoTransferDTO>> getAllAutoTransfers(@RequestParam("userNo") int userNo) {
         try {
             // 서비스에서 userNo에 해당하는 자동이체 데이터와 계좌 정보를 가져옴
-            List<Map<String, Object>> autoTransfers = accountService.getAllAutoTransfers(userNo);
+            List<AutoTransferDTO> autoTransfers = accountService.getAllAutoTransfers(userNo);
 
             // 자동이체 목록이 비어 있을 경우 204 응답
             if (autoTransfers.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);  // 데이터가 없을 경우 204 처리
             }
 
-            // 이미 서비스에서 계좌주명까지 가져왔기 때문에 추가적인 작업 없이 데이터 반환
+            // 데이터 반환
             return ResponseEntity.ok(autoTransfers);  // 정상 처리
 
         } catch (Exception e) {
@@ -451,6 +467,7 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 서버 오류 처리
         }
     }
+
 
     // 자동이체 변경
     @PutMapping("/auto-transfer/{autoTransNo}/update")

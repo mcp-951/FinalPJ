@@ -18,7 +18,7 @@ function Navbar() {
     };
 
     const [searchOpen, setSearchOpen] = useState(false);
-    const [activeDropdown, setActiveDropdown] = useState(null); // 드롭다운 활성화 상태 관리
+    const [activeDropdown, setActiveDropdown] = useState(null); // 활성화된 드롭다운 상태
 
     const handleSearchBar = () => {
         setSearchOpen(!searchOpen);
@@ -49,17 +49,13 @@ function Navbar() {
                     </div>
                     <div className='nav_menu'>
                         <ul>
-                            <li 
-                                onMouseEnter={() => setActiveDropdown('account')}
-                                onMouseLeave={() => activeDropdown !== 'account' && setActiveDropdown(null)} // 다른 메뉴 클릭 시에만 닫기
-                                onClick={() => toggleDropdown('account')} // 클릭 시 고정
-                            >
+                            <li onClick={() => toggleDropdown('account')}>
                                 <div>계좌</div>
-                                {(activeDropdown === 'account') && (
+                                {activeDropdown === 'account' && (
                                     <div className="dropdown_menu show">
                                         <div className="dropdown_menu_div">
                                             <ul>
-                                                <li><a href="/users/accounts">전체계좌조회</a></li>
+                                                <li><a href="/accounts">전체계좌조회</a></li>
                                                 <li><a href="/account/password-check?purpose=password-change">비밀번호 변경</a></li>
                                                 <li><a href="/account/password-check?purpose=close-account">계좌해지</a></li>
                                                 <li><a href="/account/password-check?purpose=limit-inquiry">이체한도 조회</a></li>
@@ -71,21 +67,15 @@ function Navbar() {
                                     </div>
                                 )}
                             </li>
-                            <li 
-                                onMouseEnter={() => setActiveDropdown('finance')}
-                                onMouseLeave={() => activeDropdown !== 'finance' && setActiveDropdown(null)}
-                                onClick={() => toggleDropdown('finance')}
-                            >
+                            <li onClick={() => toggleDropdown('finance')}>
                                 <div>금융상품</div>
-                                {(activeDropdown === 'finance') && (
+                                {activeDropdown === 'finance' && (
                                     <div className="dropdown_menu show">
                                         <div className="dropdown_menu_div">
                                             <ul>
-                                                <li><a href='/deposit-list'>예금상품 리스트</a></li>
-                                                <li><a href='/DepositMain'>예금상품 메인</a></li>
-                                                <li><a href='/saving-list'>적금상품 리스트</a></li>
-                                                <li><a href='/saving-main'>적금상품 메인</a></li>
-                                                <li><a href='/LoanList'>대출상품 리스트</a></li>
+                                                <li><a href='/deposit-list'>상품 리스트</a></li>
+                                                <li><a href='/DepositMain'>상품 메인</a></li>
+                                                <li><a href='/loanmain'>대출상품 리스트</a></li>
                                                 <li><a href='/Repayment'>중도상환</a></li>
                                                 <li><a href='/Calculatior'>대출 이자계산기</a></li>
                                             </ul>
@@ -93,13 +83,9 @@ function Navbar() {
                                     </div>
                                 )}
                             </li>
-                            <li 
-                                onMouseEnter={() => setActiveDropdown('exchange')}
-                                onMouseLeave={() => activeDropdown !== 'exchange' && setActiveDropdown(null)}
-                                onClick={() => toggleDropdown('exchange')}
-                            >
+                            <li onClick={() => toggleDropdown('exchange')}>
                                 <div>외환</div>
-                                {(activeDropdown === 'exchange') && (
+                                {activeDropdown === 'exchange' && (
                                     <div className="dropdown_menu show">
                                         <div className="dropdown_menu_div">
                                             <ul>
@@ -111,13 +97,9 @@ function Navbar() {
                                     </div>
                                 )}
                             </li>
-                            <li 
-                                onMouseEnter={() => setActiveDropdown('tax')}
-                                onMouseLeave={() => activeDropdown !== 'tax' && setActiveDropdown(null)}
-                                onClick={() => toggleDropdown('tax')}
-                            >
+                            <li onClick={() => toggleDropdown('tax')}>
                                 <div>공과금</div>
-                                {(activeDropdown === 'tax') && (
+                                {activeDropdown === 'tax' && (
                                     <div className="dropdown_menu show">
                                         <div className="dropdown_menu_div">
                                             <ul>
@@ -128,13 +110,9 @@ function Navbar() {
                                     </div>
                                 )}
                             </li>
-                            <li 
-                                onMouseEnter={() => setActiveDropdown('asset')}
-                                onMouseLeave={() => activeDropdown !== 'asset' && setActiveDropdown(null)}
-                                onClick={() => toggleDropdown('asset')}
-                            >
+                            <li onClick={() => toggleDropdown('asset')}>
                                 <div>자산관리</div>
-                                {(activeDropdown === 'asset') && (
+                                {activeDropdown === 'asset' && (
                                     <div className="dropdown_menu show">
                                         <div className="dropdown_menu_div">
                                             <ul>

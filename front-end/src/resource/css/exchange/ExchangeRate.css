@@ -1,0 +1,110 @@
+/* 전체 컨테이너 스타일 */
+.ExchangeRate-container {
+    text-align: center;
+    padding: 10px; /* 패딩을 줄여서 더 컴팩트하게 */
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+/* 제목 스타일 - 크기와 마진을 줄여 더 간결하게 */
+.ExchangeRate-title {
+    font-size: 1.8rem; /* 폰트 크기 줄임 */
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px; /* 마진 줄임 */
+}
+
+/* 로딩 메시지 스타일 */
+.ExchangeRate-loading {
+    font-size: 1.4rem;
+    color: #95a5a6;
+}
+
+/* 환율 테이블 스타일 */
+.ExchangeRate-table {
+    margin: 15px auto; /* 테이블 위아래 마진 줄임 */
+    width: 90%; /* 테이블 너비를 줄여 여백 확보 */
+    border-collapse: collapse;
+    font-size: 1.3rem; /* 폰트 크기 줄임 */
+}
+
+.ExchangeRate-table thead {
+    background-color: #3498db;
+    color: white;
+    font-size: 1.6rem; /* 헤더 글자 크기 줄임 */
+}
+
+.ExchangeRate-table th, .ExchangeRate-table td {
+    padding: 10px; /* 셀 내부 패딩 줄임 */
+    border: 1px solid #e0e0e0;
+}
+
+.ExchangeRate-table tbody tr:nth-child(odd) {
+    background-color: #f6f9fc;
+}
+
+.ExchangeRate-table tbody tr:nth-child(even) {
+    background-color: #eff4f7;
+}
+
+/* 이미지 크기 조정 */
+.ExchangeRate-table td img {
+    width: 60px; /* 이미지 크기 줄임 */
+    height: 45px;
+}
+
+/* 드롭다운 스타일 */
+.ExchangeRate-dropdown {
+    position: absolute;
+    top: -30px;
+    right: 0;
+    font-size: 1.1rem; /* 드롭다운 폰트 크기 줄임 */
+    padding: 8px; /* 패딩을 줄여 더 간결하게 */
+    border-radius: 5px;
+    border: 1px solid #3498db;
+    background-color: #ffffff;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.ExchangeRate-dropdown:hover {
+    background-color: #ebf5fb;
+    border-color: #3498db;
+}
+
+/* 버튼 스타일 - 크기와 패딩을 줄여서 더 간결하게 */
+.ExchangeRate-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+.ExchangeRate-button {
+    font-size: 1.1rem; /* 버튼 폰트 크기 줄임 */
+    background-color: #3498db;
+    color: white;
+    border-radius: 8px; /* 둥근 정도 약간 줄임 */
+    padding: 10px 40px; /* 패딩을 줄여 더 컴팩트하게 */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ExchangeRate-button:hover {
+    background-color: #3498db;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 푸터 스타일 */
+.ExchangeRate-footer {
+    width: 100%;
+    margin-top: 50px; /* 마진을 줄여서 공간 절약 */
+    background-color: #ecf0f1;
+    padding: 15px; /* 패딩 줄임 */
+    color: #7a7a7a;
+    font-size: 1rem;
+    text-align: center;
+}

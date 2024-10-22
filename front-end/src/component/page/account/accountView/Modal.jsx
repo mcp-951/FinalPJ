@@ -4,18 +4,17 @@ import '../../../../resource/css/account/accountView/Modal.css';
 
 const Modal = ({ show, onClose, account }) => {
   if (!show) {
-    return null; // 모달을 열지 않은 상태에서는 아무것도 렌더링하지 않음
+    return null; // 모달이 열리지 않았을 때는 아무것도 렌더링하지 않음
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <ul className="modal-links">
+    <div className="Modal-overlay">
+      <div className="Modal-content">
+        <ul className="Modal-links">
           {/* 계좌 비밀번호 변경 */}
           <li>
             <Link
-              to={`/account/${account.accountNumber}/password-check`}
-              state={{ purpose: 'password-change', accountNumber: account.accountNumber, productName: account.depositName }}
+              to={`/account/${account.accountNumber}/password-check?purpose=password-change`}
             >
               계좌 비밀번호 변경
             </Link>
@@ -24,8 +23,7 @@ const Modal = ({ show, onClose, account }) => {
           {/* 이체 한도 조회 */}
           <li>
             <Link
-              to={`/account/${account.accountNumber}/password-check`}
-              state={{ purpose: 'limit-inquiry', accountNumber: account.accountNumber, productName: account.depositName }}
+              to={`/account/${account.accountNumber}/password-check?purpose=limit-inquiry`}
             >
               이체 한도 조회
             </Link>
@@ -34,15 +32,14 @@ const Modal = ({ show, onClose, account }) => {
           {/* 계좌 해지 */}
           <li>
             <Link
-              to={`/account/${account.accountNumber}/password-check`}
-              state={{ purpose: 'close-account', accountNumber: account.accountNumber, productName: account.depositName }}
+              to={`/account/${account.accountNumber}/password-check?purpose=close-account`}
             >
               계좌 해지
             </Link>
           </li>
         </ul>
 
-        <button className="close-button" onClick={onClose}>닫기</button>
+        <button className="Modal-close-button" onClick={onClose}>닫기</button>
       </div>
     </div>
   );

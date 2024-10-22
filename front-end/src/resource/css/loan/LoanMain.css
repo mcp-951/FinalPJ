@@ -2,8 +2,9 @@
 .LoanMainContainer{
     width: 100%;
     background-color: black;
-    height: 40vw;
+    min-height: 40vw;
     padding-top: 3rem;
+    padding-bottom: 3rem;
 }
 
 .LoanMainContainer ui {
@@ -14,4 +15,5 @@
 
 .LoanMainContainer li {
     width: 100%;
+    margin-top: 2rem;
 }

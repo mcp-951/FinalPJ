@@ -3,7 +3,7 @@ package com.urambank.uram.dto;
 import com.urambank.uram.entities.AccountEntity;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -24,6 +24,10 @@ public class AccountDTO {
     private Date accountOpen;
     private Date accountClose;
 
+    private double accountRate;   // 이자율(double) 추가
+    private Character agreement;  // 약정 여부(Character) 추가
+    private Character withdrawal; // 출금 여부(Character) 추가
+
     public static AccountDTO toAccountDTO(AccountEntity accountEntity) {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setAccountNo(accountEntity.getAccountNo());
@@ -41,8 +45,8 @@ public class AccountDTO {
         accountDTO.setAccountState(accountEntity.getAccountState());
         accountDTO.setAccountOpen(accountEntity.getAccountOpen());
         accountDTO.setAccountClose(accountEntity.getAccountClose());
+        accountDTO.setWithdrawal(accountEntity.getWithdrawal());
 
         return accountDTO;
     }
-
 }

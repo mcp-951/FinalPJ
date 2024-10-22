@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import '../../../../resource/css/account/accountManagement/PasswordCheck.css';
+import '../../../../resource/css/account/accountManagement/AutoTransferCancelPasswordCheck.css';
 import axios from 'axios';
 
 const AutoTransferCancelPasswordCheck = () => {
@@ -71,18 +71,27 @@ const AutoTransferCancelPasswordCheck = () => {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
+
   return (
-    <div className="password-check-container">
+    <div className="AutoTransferCancelPasswordCheck-container">
       <h2>비밀번호 확인</h2>
       <p>자동이체 해지를 위해 비밀번호를 입력해주세요.</p>
 
       {/* 전달받은 계좌 번호 표시 */}
-      <div className="account-number-display">
+      <div className="AutoTransferCancelPasswordCheck-account-number-display">
         <p><strong>계좌 번호:</strong> {accountNumber}</p>
       </div>
 
       {/* 비밀번호 입력 필드 */}
-      <div className="password-input">
+      <div className="AutoTransferCancelPasswordCheck-password-input">
         <label>비밀번호 입력</label>
         <input
           type="password"
@@ -90,17 +99,17 @@ const AutoTransferCancelPasswordCheck = () => {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="비밀번호 입력"
         />
-        <button onClick={handlePasswordCheck} className="password-check-button">확인</button>
+        <button onClick={() => handlePasswordCheck(password)} className="AutoTransferCancelPasswordCheck-password-check-button">확인</button>
 
         {/* 오류 메시지 또는 성공 메시지 */}
-        <span className={`password-check-status ${isPasswordValid === false ? 'error' : isPasswordValid === true ? 'check-mark' : ''}`}>
+        <span className={`AutoTransferCancelPasswordCheck-password-check-status ${isPasswordValid === false ? 'error' : isPasswordValid === true ? 'check-mark' : ''}`}>
           {errorMessage}
         </span>
       </div>
 
       {/* 계좌 해지 버튼 */}
       {isPasswordValid && (
-        <button onClick={handleCancelTransfer} className="cancel-transfer-button">
+        <button onClick={handleCancelTransfer} className="AutoTransferCancelPasswordCheck-cancel-transfer-button">
           자동이체 해지
         </button>
       )}

@@ -57,11 +57,13 @@ public class UserService {
 
     public String findByUserId(String userId) {
         System.out.println("<<< UserService - findByUserId() >>>");
-            User user = new User();
+
         try{
-            user = userRepository.findByUserId(userId);
+            User user = userRepository.findByUserId(userId);
+            System.out.println("userid :" + user.getUserId());
             return user.getUserId();
         }catch(NullPointerException e){
+            System.out.println("userid :" );
             return "";
         }
     }
@@ -71,14 +73,17 @@ public class UserService {
         System.out.println("id : " + userDTO.getUserId());
         System.out.println("Pw : " + userDTO.getUserPw());
         Calendar cal = Calendar.getInstance();
-        int birthYear = cal.get(Calendar.YEAR) - userDTO.getBirth().getYear();
+        System.out.println("cal.get(Calendar.YEAR) : " + cal.get(Calendar.YEAR));
+        System.out.println("userDTO.getBirth().getYear() : " + userDTO.getBirth().toLocalDate().getYear());
+        int birthYear = cal.get(Calendar.YEAR) - userDTO.getBirth().toLocalDate().getYear();
 
-        UserDTO dto = new UserDTO();
         userDTO.setResidentNumber(userDTO.getResidentNumber1() + "-" + userDTO.getResidentNumber2());
         userDTO.setAddress(userDTO.getAddress1() + userDTO.getAddress2());
         userDTO.setEmail(userDTO.getEmail1()+ "@" + userDTO.getEmail2());
         userDTO.setGrade(getGrade(birthYear));
         userDTO.setOCRCheck(1);
+
+        UserDTO dto = new UserDTO();
 
         try {
             // 사용자 정보 설정 및 비밀번호 암호화
@@ -160,16 +165,14 @@ public class UserService {
     }
 
     public String resetPassword(UserDTO dto) {
-        User user = new User();
         try{
-            user.setName(dto.getName());
-            user.setHp(dto.getHp());
-            user = userRepository.findByNameAndHp(user.getName(),user.getHp());
-            user.setUserPw(dto.getUserPw());
+            User user = userRepository.findByNameAndHp(dto.getName(),dto.getHp());
+            String pw = passwordEncoder.encode(dto.getUserPw());
+            user.setUserPw(pw);
             user = userRepository.save(user);
             return user.getUserPw();
         }catch(NullPointerException e){
-            return "";
+            return "error";
         }
     }
     public List<User> getActiveUsersByRoleUser() {
@@ -206,5 +209,17 @@ public class UserService {
         dto.setResidentNumber(user.getResidentNumber());
         dto.setGrade(user.getGrade());
         return dto;
+    }
+
+    public String changePassword(int userNo, String userPw, String newUserPw) {
+        String encodedNewPw = passwordEncoder.encode(newUserPw);
+        User user = userRepository.findByUserNo(userNo);
+        if(passwordEncoder.matches(userPw,user.getUserPw())) {
+            user.setUserPw(encodedNewPw);
+            userRepository.save(user);
+            return "ok";
+        }else{
+            return "error";
+        }
     }
 }

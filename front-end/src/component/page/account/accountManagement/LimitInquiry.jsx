@@ -19,12 +19,21 @@ const LimitInquiry = () => {
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
+
   // 이체 한도 조회 API 호출 함수
   useEffect(() => {
     const fetchLimits = async () => {
       try {
         setIsLoading(true); // 로딩 상태 시작
-        const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+        const response = await axios.get(`http://localhost:8081/uram/account/detail/${accountNumber}`, {
           headers: {
             'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
           },
@@ -57,12 +66,12 @@ const LimitInquiry = () => {
   }
 
   return (
-    <div className="limit-inquiry-container">
+    <div className="LimitInquiry-container">
       <h2>이체한도 조회</h2>
 
       {errorMessage && <p className="error-message" style={{ color: 'red' }}>{errorMessage}</p>}
 
-      <table className="limit-info-table">
+      <table className="LimitInquiry-table">
         <tbody>
           <tr>
             <th>계좌번호</th>
@@ -79,8 +88,8 @@ const LimitInquiry = () => {
         </tbody>
       </table>
 
-      <div className="limit-change-button-container">
-        <button onClick={handleLimitChange} className="limit-change-button">
+      <div className="LimitInquiry-button-container">
+        <button onClick={handleLimitChange} className="LimitInquiry-button">
           이체한도 변경
         </button>
       </div>

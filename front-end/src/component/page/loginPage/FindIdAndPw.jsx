@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../../resource/css/Login.css';
+import '../../../resource/css/login/FindIdAndPw.css';
 import apiSer from '../../ApiService';
 
 function FindIdAndPw() {
@@ -12,7 +12,7 @@ function FindIdAndPw() {
         email2: '',
         hp: '',
         hpAuthkey: '',
-        newPassword: '', // 새로운 비밀번호 필드 추가
+        userPw: '', // 새로운 비밀번호 필드 추가
         confirmPassword: '' // 비밀번호 확인 필드 추가
     });
     const [selectedTab, setSelectedTab] = useState('id'); // 'id' 또는 'pw' 탭 상태값
@@ -102,15 +102,15 @@ function FindIdAndPw() {
 
     // 인증 성공 시 비밀번호 재설정
     const resetPw = () => {
-        const { newPassword, confirmPassword, userId, name, hp } = form;
+        const { userPw, confirmPassword, userId, name, hp } = form;
 
-        if (newPassword !== confirmPassword) {
+        if (userPw !== confirmPassword) {
             alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
             return;
         }
 
         // 비밀번호 재설정 API 호출
-        const response = apiSer.resetPassword({ userId,name, hp, newPassword })
+        const response = apiSer.resetPassword({ userId,name, hp, userPw })
             .then((response) => {
                 console.log(response.data)
                 if(response.data === ''){
@@ -135,7 +135,7 @@ function FindIdAndPw() {
             email2: '',
             hp: '',
             hpAuthkey: '',
-            newPassword: '', // 새로운 비밀번호 초기화
+            userPw: '', // 새로운 비밀번호 초기화
             confirmPassword: '' // 비밀번호 확인 초기화
         });
         setSelectedMethod('phone');
@@ -148,11 +148,10 @@ function FindIdAndPw() {
     };
 
     return (
-        <div className="find-id-pw-container">
-            <div className="header">
+        <div className="FindIdAndPw-container">
+            <div className="FindIdAndPw-header">
                 <h1>계정 찾기</h1>
-                <div className="tabs">
-                    {/* 탭 전환 버튼 */}
+                <div className="FindIdAndPw-tabs">
                     <button className={selectedTab === 'id' ? 'active' : ''} onClick={() => handleTabClick('id')}>
                         아이디 찾기
                     </button>
@@ -162,9 +161,8 @@ function FindIdAndPw() {
                 </div>
             </div>
 
-            {/* 아이디 찾기 UI */}
             {selectedTab === 'id' && (
-                <div className="find-methods">
+                <div className="FindIdAndPw-methods">
                     <div className="method">
                         <label>
                             <input
@@ -176,17 +174,15 @@ function FindIdAndPw() {
                             />
                             휴대폰으로 아이디 찾기
                         </label>
-
-                        {/* 휴대폰 인증 선택 시 */}
                         {selectedMethod === 'phone' && (
                             <>
-                                <p>본인확인(실명인증)이 완료된 아이디는 본인 명의의 휴대폰 인증으로 아이디를 찾을 수 있어요.</p>
                                 <input
                                     type="text"
                                     name="name"
                                     value={form.name}
                                     placeholder="이름을 입력하세요"
                                     onChange={handleChange}
+                                    className="FindIdAndPw-input"
                                 />
                                 <input
                                     type="tel"
@@ -194,9 +190,9 @@ function FindIdAndPw() {
                                     value={form.hp}
                                     placeholder="휴대폰 번호를 입력하세요"
                                     onChange={handleChange}
+                                    className="FindIdAndPw-input"
                                 />
-                                <button className="auth-button" onClick={handlePhoneAuth}>휴대폰 인증</button>
-
+                                <button className="FindIdAndPw-auth-btn" onClick={handlePhoneAuth}>휴대폰 인증</button>
                                 {startCheckHp && (
                                     <>
                                         <input
@@ -205,21 +201,20 @@ function FindIdAndPw() {
                                             value={form.hpAuthkey}
                                             placeholder="인증번호를 입력하세요"
                                             onChange={handleChange}
+                                            className="FindIdAndPw-input"
                                         />
-                                        {stateAuth && <p> 인증 성공 </p>}
-                                        <button className="auth-button" onClick={authingKey}>인증확인</button>
+                                        <button className="FindIdAndPw-auth-btn" onClick={authingKey}>인증 확인</button>
                                     </>
                                 )}
-                            {userId && <p>찾은 아이디: {userId}</p>} {/* 찾은 아이디 표시 */}
+                                {userId && <p>찾은 아이디: {userId}</p>}
                             </>
                         )}
                     </div>
                 </div>
             )}
 
-            {/* 비밀번호 찾기 UI */}
             {selectedTab === 'pw' && (
-                <div className="find-methods">
+                <div className="FindIdAndPw-methods">
                     <div className="method">
                         <label>
                             <input
@@ -231,17 +226,15 @@ function FindIdAndPw() {
                             />
                             휴대폰으로 비밀번호 찾기
                         </label>
-
-                        {/* 비밀번호 찾기 입력 */}
                         {selectedMethod === 'phone' && (
                             <>
-                                <p>본인확인(실명인증)이 완료된 아이디는 본인 명의의 휴대폰 인증으로 비밀번호를 찾을 수 있어요.</p>
                                 <input
                                     type="text"
                                     name="userId"
                                     value={form.userId}
                                     placeholder="아이디를 입력하세요"
                                     onChange={handleChange}
+                                    className="FindIdAndPw-input"
                                 />
                                 <input
                                     type="text"
@@ -249,6 +242,7 @@ function FindIdAndPw() {
                                     value={form.name}
                                     placeholder="이름을 입력하세요"
                                     onChange={handleChange}
+                                    className="FindIdAndPw-input"
                                 />
                                 <input
                                     type="tel"
@@ -256,9 +250,9 @@ function FindIdAndPw() {
                                     value={form.hp}
                                     placeholder="휴대폰 번호를 입력하세요"
                                     onChange={handleChange}
+                                    className="FindIdAndPw-input"
                                 />
-                                <button className="auth-button" onClick={handlePhoneAuth}>휴대폰 인증</button>
-
+                                <button className="FindIdAndPw-auth-btn" onClick={handlePhoneAuth}>휴대폰 인증</button>
                                 {startCheckHp && (
                                     <>
                                         <input
@@ -267,29 +261,30 @@ function FindIdAndPw() {
                                             value={form.hpAuthkey}
                                             placeholder="인증번호를 입력하세요"
                                             onChange={handleChange}
+                                            className="FindIdAndPw-input"
                                         />
-                                        {stateAuth && (<p> 인증 성공 </p>)}
-                                        <button className="auth-button" onClick={authingKey}>인증확인</button>
+                                        <button className="FindIdAndPw-auth-btn" onClick={authingKey}>인증 확인</button>
                                         {stateAuth && (
                                             <>
-                                            <input
-                                                type="password"
-                                                name="newPassword"
-                                                value={form.newPassword}
-                                                placeholder="새 비밀번호"
-                                                onChange={handleChange}
-                                            />
-                                            <input
-                                                type="password"
-                                                name="confirmPassword"
-                                                value={form.confirmPassword}
-                                                placeholder="비밀번호 확인"
-                                                onChange={handleChange}
-                                            />
-                                            <button className="auth-button" onClick={resetPw}>비밀번호 재설정</button>
+                                                <input
+                                                    type="password"
+                                                    name="userPw"
+                                                    value={form.userPw}
+                                                    placeholder="새 비밀번호"
+                                                    onChange={handleChange}
+                                                    className="FindIdAndPw-input"
+                                                />
+                                                <input
+                                                    type="password"
+                                                    name="confirmPassword"
+                                                    value={form.confirmPassword}
+                                                    placeholder="비밀번호 확인"
+                                                    onChange={handleChange}
+                                                    className="FindIdAndPw-input"
+                                                />
+                                                <button className="FindIdAndPw-auth-btn" onClick={resetPw}>비밀번호 재설정</button>
                                             </>
-                                            )}
-
+                                        )}
                                     </>
                                 )}
                             </>
@@ -300,5 +295,6 @@ function FindIdAndPw() {
         </div>
     );
 }
+
 
 export default FindIdAndPw;
