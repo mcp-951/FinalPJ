@@ -323,6 +323,7 @@ public class AccountController {
         }
     }
 
+
     // 계좌 유효성 검사
     @GetMapping("/account/validate")
     public ResponseEntity<Map<String, Object>> validateAccountNumber(
@@ -448,17 +449,17 @@ public class AccountController {
 
     // 자동이체 조회
     @GetMapping("/auto-transfer/list")
-    public ResponseEntity<List<Map<String, Object>>> getAllAutoTransfers(@RequestParam("userNo") int userNo) {
+    public ResponseEntity<List<AutoTransferDTO>> getAllAutoTransfers(@RequestParam("userNo") int userNo) {
         try {
             // 서비스에서 userNo에 해당하는 자동이체 데이터와 계좌 정보를 가져옴
-            List<Map<String, Object>> autoTransfers = accountService.getAllAutoTransfers(userNo);
+            List<AutoTransferDTO> autoTransfers = accountService.getAllAutoTransfers(userNo);
 
             // 자동이체 목록이 비어 있을 경우 204 응답
             if (autoTransfers.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);  // 데이터가 없을 경우 204 처리
             }
 
-            // 이미 서비스에서 계좌주명까지 가져왔기 때문에 추가적인 작업 없이 데이터 반환
+            // 데이터 반환
             return ResponseEntity.ok(autoTransfers);  // 정상 처리
 
         } catch (Exception e) {
@@ -466,6 +467,7 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // 서버 오류 처리
         }
     }
+
 
     // 자동이체 변경
     @PutMapping("/auto-transfer/{autoTransNo}/update")
