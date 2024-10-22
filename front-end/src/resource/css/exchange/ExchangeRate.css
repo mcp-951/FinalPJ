@@ -29,7 +29,7 @@
 }
 
 .ExchangeRate-table thead {
-    background-color: #3498db;
+    background-color: #74a1d2;
     color: white;
     font-size: 1.6rem; /* 헤더 글자 크기 줄임 */
 }
@@ -61,7 +61,7 @@
     font-size: 1.1rem; /* 드롭다운 폰트 크기 줄임 */
     padding: 8px; /* 패딩을 줄여 더 간결하게 */
     border-radius: 5px;
-    border: 1px solid #3498db;
+    border: 1px solid #74a1d2;
     background-color: #ffffff;
     color: #2c3e50;
     cursor: pointer;
@@ -70,7 +70,7 @@
 
 .ExchangeRate-dropdown:hover {
     background-color: #ebf5fb;
-    border-color: #3498db;
+    border-color: #5d95d1;
 }
 
 /* 버튼 스타일 - 크기와 패딩을 줄여서 더 간결하게 */
@@ -83,7 +83,7 @@
 
 .ExchangeRate-button {
     font-size: 1.1rem; /* 버튼 폰트 크기 줄임 */
-    background-color: #3498db;
+    background-color: #74a1d2;
     color: white;
     border-radius: 8px; /* 둥근 정도 약간 줄임 */
     padding: 10px 40px; /* 패딩을 줄여 더 컴팩트하게 */
@@ -94,7 +94,7 @@
 }
 
 .ExchangeRate-button:hover {
-    background-color: #3498db;
+    background-color: #5d95d1;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 

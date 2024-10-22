@@ -328,7 +328,7 @@ const Exchange = () => {
                 </div>
             </div>
             <button className='OkBtn' onClick={handleSubmit} style={{ marginTop: '20px' }}>환전 신청</button>
-            <Footer />
+            
         </div>
     );
 };

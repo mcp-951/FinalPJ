@@ -11,7 +11,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #4A90E2; /* 테마 색상 */
+    background-color: #74a1d2; /* 테마 색상 */
     padding: 8px; /* 패딩 줄임 */
     border-radius: 5px;
     margin: 20px auto;
@@ -35,7 +35,7 @@
 
 .ExchangeList-searchBar button {
     padding: 8px 16px; /* 버튼 크기 줄임 */
-    background-color: #2564ab;
+    background-color: #74a1d2;
     color: white;
     border-radius: 5px;
     border: none;
@@ -44,7 +44,7 @@
 }
 
 .ExchangeList-searchBar button:hover {
-    background-color: #4179c5;
+    background-color: #5d95d1;
 }
 
 /* 테이블 스타일 */
@@ -57,7 +57,7 @@
 }
 
 .ExchangeList-table thead {
-    background-color: #4A90E2;
+    background-color: #74a1d2;
     color: white;
 }
 
@@ -80,14 +80,22 @@
     background-color: #e0e7ff;
 }
 
-/* 지도 스타일 */
+/* 지도 스타일 수정 */
 .ExchangeList-map {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    margin-top: 10px;
+    margin-top: 20px;
+    position: absolute; /* 아이콘 바로 아래에 절대 위치 설정 */
+    top: 30px; /* 아이콘과의 간격 설정 */
+    left: 50%; /* 수평 중앙 정렬 */
+    transform: translateX(-50%); /* 정확한 중앙 정렬 */
+    width: 400px; /* 지도 너비 */
+    height: 300px; /* 지도 높이 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    z-index: 100; /* 지도 우선 순위 높임 */
+}
+
+/* 지도가 열리는 셀에서 위치 고정 */
+.ExchangeList-table td {
+    position: relative; /* 테이블 셀 기준으로 지도 위치 */
 }
 
 /* 페이지네이션 버튼 스타일 */
@@ -108,12 +116,12 @@
 }
 
 .ExchangeList-pagination button.active {
-    background-color: #4A90E2;
+    background-color: #74a1d2;
     color: white;
 }
 
 .ExchangeList-pagination button:hover {
-    background-color: #ddd;
+    background-color: #5d95d1;
 }
 
 /* 뒤로가기 버튼 스타일 */
@@ -121,7 +129,7 @@
     margin-top: 20px;
     margin-bottom: 50px;
     padding: 8px 16px; /* 패딩을 줄여 버튼 크기 축소 */
-    background-color: #4A90E2;
+    background-color: #74a1d2;
     color: white;
     border-radius: 5px;
     border: none;
@@ -130,7 +138,7 @@
 }
 
 .ExchangeList-backButton:hover {
-    background-color: #4179c5;
+    background-color: #5d95d1;
 }
 
 /* 푸터 스타일 */

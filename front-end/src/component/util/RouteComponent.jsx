@@ -99,9 +99,7 @@ import ExchangeRate from '../page/exchangePage/ExchangeRate';
 import Exchange from '../page/exchangePage/Exchange';
 import ExchangeList from '../page/exchangePage/ExchangeList';
 import DetailRate from '../page/exchangePage/DetailRate';
-import AssetsCal from '../page/assetsPage/AssetsCal';
-import AssetsList from '../page/assetsPage/AssetsList';
-import AssetsAnalysis from '../page/assetsPage/AssetsAnalysis';
+
 
 //팝업
 import GetAddress from 'component/page/loginPage/GetAddress';
@@ -249,10 +247,7 @@ const RouteComponent = () => {
                         <Route path="/exchangeList" exact={true} element={<ExchangeList />} /> {/* ExchangeList 경로 추가 */}
                         <Route path="/detail-rate" exact={true} element={<DetailRate />} />
                         <Route path="/exchange-result" exact={true} element={<ExchangeResult />} />
-                        <Route path="/asset-calendar" exact={true} element={<AssetsCal />} />
-                        <Route path="/myAsset" exact={true} element={<AssetsList />} />
-                        <Route path="/consumeAnalyse" exact={true} element={<AssetsAnalysis/>} />
-                        <Route path="/AssetsAnalysis" exact={true} element={<AssetsAnalysis />} />
+                        
 
                         <Route path="/adTaxList" exact={true} element={<AdTaxList />} />
                         <Route path="/adTaxInsert" exact={true} element={<AdTaxInsert />} />

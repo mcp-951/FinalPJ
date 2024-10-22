@@ -104,9 +104,7 @@ const ExchangeRate = () => {
                 </Link>
             </div>
 
-            <div className="ExchangeRate-footer">
-                <Footer />
-            </div>
+            
         </div>
     );
 };
