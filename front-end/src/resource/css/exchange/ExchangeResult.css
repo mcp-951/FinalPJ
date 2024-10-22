@@ -1,0 +1,33 @@
+.result-main-button{
+    width: auto;
+    padding: 10px 30px;
+    background-color: #74a1d2; /* 테마 색상 적용 */
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.result-location-button{
+    width: auto;
+    padding: 10px 30px;
+    background-color: #74a1d2; /* 테마 색상 적용 */
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.result-main-button:hover{
+    background-color: #5d95d1;
+}
+
+.result-location-button:hover{
+    background-color: #5d95d1;
+}

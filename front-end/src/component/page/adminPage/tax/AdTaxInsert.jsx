@@ -176,7 +176,7 @@ const AdTaxInsert = () => {
 
           <div className="AdTaxInsert-form-group">
             <label>사용자 선택: 
-              <select name="userId" onChange={handleUserChange} className="AdTaxInsert-input-field">
+              <select name="userId" onChange={handleUserChange} className="AdTaxInsert-input-field2">
                 <option value="">사용자 선택</option>
                 {userIds.map((id) => (
                   <option key={id} value={id}>
@@ -191,11 +191,11 @@ const AdTaxInsert = () => {
                 type="date"
                 value={tax.taxDeadLine}
                 onChange={handleChange}
-                className="AdTaxInsert-input-field"
+                className="AdTaxInsert-input-field2"
               />
             </label>
             <label>세금 종류: 
-              <select name="taxCategory" value={tax.taxCategory} onChange={handleChange} className="AdTaxInsert-input-field">
+              <select name="taxCategory" value={tax.taxCategory} onChange={handleChange} className="AdTaxInsert-input-field2">
                 {categories.map(category => (
                   <option key={category.value} value={category.value}>
                     {category.label}
