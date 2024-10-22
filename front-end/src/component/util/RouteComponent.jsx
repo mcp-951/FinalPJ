@@ -42,7 +42,7 @@ import AdRetiredMember from '../page/adminPage/user/AdRetiredMember';
 import AdFinancialProduct from '../page/adminPage/product/AdFinancialProduct';
 import AdDepositProduct from '../page/adminPage/product/AdDepositProduct';
 import AdSavingsProduct from '../page/adminPage/product/AdSavingsProduct';
-import AdLoanProduct from 'component/page/adminPage/product/ADLoanProduct';
+import AdLoanProduct from 'component/page/adminPage/product/AdLoanProduct';
 import AdRegisterProduct from '../page/adminPage/product/AdRegisterProduct';
 import AdRegisterLoanProduct from '../page/adminPage/product/AdRegisterLoanProduct ';
 import AdEditSavingsProduct from '../page/adminPage/product/AdEditSavingsProduct';
@@ -168,7 +168,7 @@ const RouteComponent = () => {
                         {/* 사용자 관리 페이지 */}
                         <Route path="/adMemberList" element={<AdMemberList />} />
                         <Route path="/adRetiredMember" element={<AdRetiredMember />} />
-                        <Route path="/admin/adEditMember" element={<AdMemberEdit />} />
+                        <Route path="/adEditMember" element={<AdMemberEdit />} />
 
                         {/* 관리자 페이지 문의 관리 목록 */}
                         <Route path="/admin/support/inquiries" element={<AdminInquiryList />} />
@@ -184,8 +184,8 @@ const RouteComponent = () => {
                         {/* 금융 상품 수정 페이지 */}
                         <Route path="/admin/adRegisterLoanProduct" element={<AdRegisterLoanProduct  />} />
                         <Route path="/admin/adRegisterProduct" element={<AdRegisterProduct />} />
-                        <Route path="/admin/adEditSavingsProduct" element={<AdEditSavingsProduct />} />
-                        <Route path="/admin/adEditLoanProduct" element={<AdEditLoanProduct />} />
+                        <Route path="/adEditSavingsProduct" element={<AdEditSavingsProduct />} />
+                        <Route path="/adEditLoanProduct" element={<AdEditLoanProduct />} />
 
                         {/* 거래 내역 및 계좌 관리 페이지 */}
                         <Route path="/admin/adTransactionHistory" element={<AdTransactionHistory />} />
@@ -245,9 +245,9 @@ const RouteComponent = () => {
                         <Route path="/consumeAnalyse" exact={true} element={<AssetsAnalysis/>} />
                         <Route path="/AssetsAnalysis" exact={true} element={<AssetsAnalysis />} />
 
-                        <Route path="/taxList" exact={true} element={<AdTaxList />} />
-                        <Route path="/taxInsert" exact={true} element={<AdTaxInsert />} />
-                        <Route path="/taxEdit/:taxNo" exact={true} element={<AdTaxEdit />} />
+                        <Route path="/adTaxList" exact={true} element={<AdTaxList />} />
+                        <Route path="/adTaxInsert" exact={true} element={<AdTaxInsert />} />
+                        <Route path="/adTaxEdit/:taxNo" exact={true} element={<AdTaxEdit />} />
 
                         <Route path="/kakaoLogin" exact={true} element={<RedirectPage />} />
                    </Routes>

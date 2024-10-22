@@ -1,89 +1,67 @@
-.account-close-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .account-info-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .account-info-table th, .account-info-table td {
-    padding: 10px;
-    text-align: left;
-    border: 1px solid #ddd;
-  }
-  
-  .account-info-table th {
-    background-color: #f1f1f1;
-    width: 30%;
-  }
-  
-  .account-info-table td {
-    width: 70%;
-  }
-  
-  .balance-section {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* 왼쪽은 잔액과 메시지, 오른쪽은 버튼 */
-  }
-  
-  .balance-warning {
-    color: red;
-    margin-left: 20px; /* 잔액과 메시지 사이의 여백 */
-  }
-  
-  .transfer-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .transfer-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .verify-button, .close-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .verify-button[disabled] {
-    background-color: #ccc;
-  }
-  
-  .close-button-container {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .close-confirm-popup {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-  
-  .confirm-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+.AccountClose-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.AccountClose-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.AccountClose-info-table th, .AccountClose-info-table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.AccountClose-balance-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.AccountClose-balance-warning {
+  color: #e74c3c;
+  font-size: 0.9rem;
+}
+
+.AccountClose-transfer-button,
+.AccountClose-verify-button,
+.AccountClose-close-button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.AccountClose-transfer-button:hover,
+.AccountClose-verify-button:hover,
+.AccountClose-close-button:hover {
+  background-color: #5b8bbb;
+}
+
+.AccountClose-close-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.AccountClose-success-message {
+  color: #28a745;
+  font-size: 0.9rem;
+  margin-left: 10px;
+}
+
+.AccountClose-error-message {
+  color: #e74c3c;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+}

@@ -1,107 +1,124 @@
-.auto-transfer-step2-container {
-  width: 50%;
+.AutoTransferRegister2-container {
+  width: 100%;
+  max-width: 800px; /* 전체 테이블의 가로 너비를 살짝 늘림 */
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.auto-transfer-step2-table {
+.AutoTransferRegister2-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
 }
 
-.auto-transfer-step2-table th, 
-.auto-transfer-step2-table td {
-  padding: 10px;
+.AutoTransferRegister2-table th {
   text-align: left;
-  border: 1px solid #ddd;
-}
-
-.auto-transfer-step2-table th {
+  padding: 10px;
   background-color: #f1f1f1;
-  width: 30%;
+  color: #333;
+  width: 25%; /* 테이블 전체적으로 가로 공간을 더 확보 */
 }
 
-.auto-transfer-step2-balance-section {
+.AutoTransferRegister2-table td {
+  padding: 10px;
+}
+
+.AutoTransferRegister2-account-balance-section,
+.AutoTransferRegister2-transfer-period {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.auto-transfer-step2-balance-button {
-  padding: 8px 16px;
-  background-color: #007bff;
+.AutoTransferRegister2-balance-button,
+.AutoTransferRegister2-submit-button,
+.AutoTransferRegister2-account-check-button,
+.AutoTransferRegister2-password-check-button {
+  background-color: #74a1d2;
   color: white;
   border: none;
+  padding: 8px 12px; /* 버튼 크기를 조정하여 넘치지 않도록 함 */
   border-radius: 5px;
   cursor: pointer;
-}
-
-.auto-transfer-step2-balance-info {
   font-size: 14px;
-  color: green;
 }
 
-.auto-transfer-step2-error-message {
-  font-size: 14px;
-  color: red;
+.AutoTransferRegister2-balance-button {
+  flex-shrink: 0;
 }
 
-.transfer-amount-buttons {
-  display: flex;
-  gap: 10px; /* 금액 버튼 간의 간격 */
-  margin-bottom: 10px; /* 금액 버튼과 입력 필드 사이 간격 */
+.AutoTransferRegister2-account-check-button,
+.AutoTransferRegister2-password-check-button {
+  margin-top: 5px;
 }
 
-.transfer-amount-buttons button {
-  padding: 5px 10px; /* 버튼의 패딩을 줄여 크기 조정 */
-  font-size: 12px; /* 텍스트 크기 축소 */
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.AutoTransferRegister2-account-check-button:hover,
+.AutoTransferRegister2-password-check-button:hover,
+.AutoTransferRegister2-submit-button:hover {
+  background-color: #5b8bbb;
 }
 
-.transfer-amount-buttons button:hover {
-  background-color: #0056b3;
-}
-
-.auto-transfer-step2-valid-check {
-  margin-left: 10px;
-  color: green;
-}
-
-.auto-transfer-step2-submit-button {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.AutoTransferRegister2-submit-button {
+  width: 100%;
   margin-top: 20px;
+  padding: 15px;
 }
 
-.auto-transfer-step2-submit-button:hover {
-  background-color: #218838;
+.AutoTransferRegister2-balance-info,
+.AutoTransferRegister2-valid-check,
+.AutoTransferRegister2-error-message,
+.AutoTransferRegister2-recipient-name {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
 }
 
-/* 이체 기간 선택을 한 줄에 표시하도록 조정 */
-.transfer-period {
+.AutoTransferRegister2-error-message {
+  color: #e74c3c;
+}
+
+.AutoTransferRegister2-valid-check {
+  color: #28a745;
+}
+
+.AutoTransferRegister2-recipient-name {
+  color: #333;
+  font-weight: bold;
+}
+
+.AutoTransferRegister2-amount-buttons {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.transfer-period-input {
-  width: auto; /* 입력 필드 크기를 자동으로 설정 */
-  margin-right: 10px; /* 시작과 종료 날짜 사이에 약간의 간격 추가 */
+.AutoTransferRegister2-amount-buttons button {
+  flex: 1;
+  padding: 10px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
 }
 
-.recipient-name {
-  margin-left: 20px; /* 계좌주명을 오른쪽으로 20px 이동 */
-  font-weight: bold; /* 계좌주명 강조 */
-  color: #333; /* 텍스트 색상 */
+.AutoTransferRegister2-amount-buttons button:last-child {
+  margin-right: 0;
+}
+
+.AutoTransferRegister2-amount-buttons button:hover {
+  background-color: #5b8bbb;
+}
+
+.AutoTransferRegister2-transfer-day-select,
+.AutoTransferRegister2-transfer-period-input,
+.AutoTransferRegister2-table input,
+.AutoTransferRegister2-table select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
 }

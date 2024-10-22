@@ -1,52 +1,80 @@
-.transfer-complete-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-  }
-  
-  .transfer-result-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .transfer-result-table th, 
-  .transfer-result-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
-  
-  .transfer-result-table th {
-    background-color: #f1f1f1;
-  }
-  
-  .remaining-balance {
-    margin-top: 20px;
-    font-size: 16px;
-    font-weight: bold;
-  }
-  
-  .transfer-complete-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* 버튼 간격 추가 */
-    margin-top: 20px;
-  }
-  
-  .retry-button, .list-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .retry-button:hover, .list-button:hover {
-    background-color: #0056b3;
-  }
-  
+/* 전체 컨테이너 */
+.AccountTransferComplete-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* 제목 */
+.AccountTransferComplete-container h2 {
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+/* 설명 텍스트 */
+.AccountTransferComplete-container p {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+/* 이체 결과 테이블 */
+.AccountTransferComplete-result-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.AccountTransferComplete-result-table th, 
+.AccountTransferComplete-result-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.AccountTransferComplete-result-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.AccountTransferComplete-result-table td {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* 잔액 표시 */
+.AccountTransferComplete-remaining-balance {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+/* 버튼 섹션 */
+.AccountTransferComplete-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* 버튼 스타일 */
+.AccountTransferComplete-retry-button,
+.AccountTransferComplete-list-button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.AccountTransferComplete-retry-button:hover,
+.AccountTransferComplete-list-button:hover {
+  background-color: #5f90bf;
+}

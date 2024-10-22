@@ -2,39 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar'; // 사이드바 추가
-import '../../../../resource/css/admin/SavingsProduct.css'; // CSS 파일 추가
+import '../../../../resource/css/admin/AdLoanProduct.css'; // CSS 파일 추가
 
-const ADLoanProduct = () => {
+const AdLoanProduct = () => {
   const navigate = useNavigate();
-  const [loans, setLoans] = useState([]);  // 대출 상품 목록 상태 관리
+  const [loans, setLoans] = useState([]);
   const token = localStorage.getItem("token");
 
-  // 대출 상품 목록 불러오기
   const fetchLoans = () => {
     axios.get('http://localhost:8081/admin/loans', {
       headers: {
-        'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+        'Authorization': `Bearer ${token}`
       }
     })
     .then((response) => {
-      setLoans(response.data);  // 불러온 데이터를 loans 상태로 설정
+      setLoans(response.data);
     })
     .catch((error) => {
       console.error('대출 상품 목록을 불러오는 중 오류 발생:', error);
     });
   };
 
-  // 페이지가 처음 로드될 때 대출 상품 목록을 가져옴
   useEffect(() => {
     fetchLoans();
   }, []);
 
-  // 수정 버튼 클릭 시 수정 페이지로 이동
   const handleEdit = (loan) => {
-    navigate('/adEditLoanProduct', { state: { loan } }); // 상품 정보를 상태로 전달하여 수정 페이지로 이동
+    navigate('/adEditLoanProduct', { state: { loan } });
   };
 
-  // 삭제 버튼 클릭 시 loanState를 'Closed'로 변경
   const handleDelete = async (loanNo) => {
     try {
       await axios.put(`http://localhost:8081/admin/deleteLoan/${loanNo}`, null, {
@@ -43,26 +39,25 @@ const ADLoanProduct = () => {
         }
       });
       alert('해당 대출 상품이 삭제되었습니다.');
-      fetchLoans(); // 삭제 후 대출 상품 목록 다시 불러오기
+      fetchLoans();
     } catch (error) {
       console.error('삭제 중 오류 발생:', error);
       alert('삭제 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
 
-  // 등록 버튼 클릭 시 RegisterLoanProduct 페이지로 이동
   const handleRegister = () => {
     navigate('/admin/adRegisterLoanProduct');
   };
 
   return (
-    <div className="app-container">
-      <Sidebar /> {/* 사이드바 추가 */}
-      <div className="alog-main-content">
-        <div className="loan-product-container">
+    <div className="AdLoanProduct-container">
+      <Sidebar /> 
+      <div className="AdLoanProduct-main-content">
+        <div className="AdLoanProduct-product-container">
           <h2>대출 상품 관리</h2>
-          <button onClick={handleRegister}>등록</button>
-          <table className="product-table">
+          <button className="AdLoanProduct-register-button" onClick={handleRegister}>등록</button>
+          <table className="AdLoanProduct-table">
             <thead>
               <tr>
                 <th>노출순서</th>
@@ -93,9 +88,9 @@ const ADLoanProduct = () => {
                   <td>{loan.maxInterestRate}</td>
                   <td>{loan.earlyRepaymentFee}</td>
                   <td>{loan.minCreditScore}</td>
-                  <td>{loan.viewPoint}</td>
-                  <td><button onClick={() => handleEdit(loan)}>수정</button></td>
-                  <td><button onClick={() => handleDelete(loan.loanProductNo)}>삭제</button></td>
+                  <td>{loan.viewPoint === 'Y' ? '판매중' : '판매중지'}</td>
+                  <td><button className="AdLoanProduct-edit-button" onClick={() => handleEdit(loan)}>수정</button></td>
+                  <td><button className="AdLoanProduct-delete-button" onClick={() => handleDelete(loan.loanProductNo)}>삭제</button></td>
                 </tr>
               ))}
             </tbody>
@@ -106,4 +101,4 @@ const ADLoanProduct = () => {
   );
 };
 
-export default ADLoanProduct;
+export default AdLoanProduct;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar'; // 사이드바 추가
-import '../../../../resource/css/admin/MemberEdit.css';  // CSS 파일 추가
+import '../../../../resource/css/admin/AdMemberEdit.css';  // CSS 파일 추가
 
 const AdMemberEdit = () => {
   const navigate = useNavigate();
@@ -49,48 +49,53 @@ const AdMemberEdit = () => {
   };
 
   return (
-    <div>
-      <h2>회원 수정</h2>
-      <form onSubmit={handleSubmit}>
-        <label>아이디</label>
-        <input type="text" value={formData.userId} disabled />
+    <div className="AdMemberEdit-container">
+      <Sidebar />
+      <div className="AdMemberEdit-content">
+        <h2 className="AdMemberEdit-title">회원 수정</h2>
+        <form className="AdMemberEdit-form" onSubmit={handleSubmit}>
+          <label className="AdMemberEdit-label">아이디</label>
+          <input className="AdMemberEdit-input" type="text" value={formData.userId} disabled />
 
-        <label>비밀번호</label> {/* 비밀번호 입력 필드 추가 */}
-        <input type="password" name="userPw" value={formData.userPw} onChange={handleInputChange} />
+          <label className="AdMemberEdit-label">비밀번호</label>
+          <input className="AdMemberEdit-input" type="password" name="userPw" value={formData.userPw} onChange={handleInputChange} />
 
-        <label>이름</label>
-        <input type="text" name="name" value={formData.name} onChange={handleInputChange} />
+          <label className="AdMemberEdit-label">이름</label>
+          <input className="AdMemberEdit-input" type="text" name="name" value={formData.name} onChange={handleInputChange} />
 
-        <label>이메일</label>
-        <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
+          <label className="AdMemberEdit-label">이메일</label>
+          <input className="AdMemberEdit-input" type="email" name="email" value={formData.email} onChange={handleInputChange} />
 
-        <label>핸드폰</label>
-        <input type="text" name="hp" value={formData.hp} onChange={handleInputChange} />
+          <label className="AdMemberEdit-label">핸드폰</label>
+          <input className="AdMemberEdit-input" type="text" name="hp" value={formData.hp} onChange={handleInputChange} />
 
-        <label>주소</label>
-        <input type="text" name="address" value={formData.address} onChange={handleInputChange} />
+          <label className="AdMemberEdit-label">주소</label>
+          <input className="AdMemberEdit-input" type="text" name="address" value={formData.address} onChange={handleInputChange} />
 
-        <label>생년월일</label>
-        <input type="date" name="birth" value={formData.birth} onChange={handleInputChange} />
+          <label className="AdMemberEdit-label">생년월일</label>
+          <input className="AdMemberEdit-input" type="date" name="birth" value={formData.birth} onChange={handleInputChange} />
 
-        <label>주민번호</label>
-        <input type="text" name="residentNumber" value={formData.residentNumber} onChange={handleInputChange} />
+          <label className="AdMemberEdit-label">주민번호</label>
+          <input className="AdMemberEdit-input" type="text" name="residentNumber" value={formData.residentNumber} onChange={handleInputChange} />
 
-        <label>신분증 확인</label>
-        <select name="OCRcheck" value={formData.OCRcheck} onChange={handleInputChange}>
-          <option value="Y">확인 완료</option>
-          <option value="N">미확인</option>
-        </select>
+          <label className="AdMemberEdit-label">신분증 확인</label>
+          <select className="AdMemberEdit-select" name="OCRcheck" value={formData.OCRcheck} onChange={handleInputChange}>
+            <option value="Y">확인 완료</option>
+            <option value="N">미확인</option>
+          </select>
 
-        <label>상태</label>
-        <select name="state" value={formData.state} onChange={handleInputChange}>
-          <option value="NORMAL">정상</option>
-          <option value="탈퇴">탈퇴</option>
-        </select>
+          <label className="AdMemberEdit-label">상태</label>
+          <select className="AdMemberEdit-select" name="state" value={formData.state} onChange={handleInputChange}>
+            <option value="NORMAL">정상</option>
+            <option value="탈퇴">탈퇴</option>
+          </select>
 
-        <button type="submit">수정 완료</button>
-        <button type="button" onClick={() => navigate('/adMemberList')}>취소</button>
-      </form>
+          <div className="AdMemberEdit-buttons">
+            <button className="AdMemberEdit-submit" type="submit">수정 완료</button>
+            <button className="AdMemberEdit-cancel" type="button" onClick={() => navigate('/adMemberList')}>취소</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

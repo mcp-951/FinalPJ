@@ -5,13 +5,12 @@ import '../../../../resource/css/admin/AdAccountClosure.css';
 import localStorage from 'localStorage';
 
 const AdAccountClosure = () => {
-  const [accounts, setAccounts] = useState([]);  // 계좌 목록 상태 관리
-  const [searchField, setSearchField] = useState('전체');  // 검색 필드 상태 관리 (이름, 이메일, 핸드폰 등)
-  const [searchTerm, setSearchTerm] = useState('');  // 검색어 상태 관리
-  const [displayCount, setDisplayCount] = useState(10);  // 페이지당 표시할 회원 수 상태 관리
+  const [accounts, setAccounts] = useState([]);
+  const [searchField, setSearchField] = useState('전체');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [displayCount, setDisplayCount] = useState(10);
   const token = localStorage.getItem("token");
   
-  // 백엔드에서 TERMINATION 상태 계좌 목록 가져오기
   useEffect(() => {
     axios.get('http://localhost:8081/admin/adAccountClosure', {
       headers: {
@@ -19,34 +18,31 @@ const AdAccountClosure = () => {
       }
     })
     .then((response) => {
-      console.log(response.data);  // 서버에서 받은 데이터 출력
-      setAccounts(response.data);  // 상태 업데이트
+      setAccounts(response.data);
     })
     .catch((error) => {
       console.error('계좌 목록을 불러오는 중 오류 발생:', error);
     });
   }, []);
 
-
-  // 검색 및 필터링 로직
   const filteredList = accounts.filter(account => {
     if (searchField === '계좌 종류') {
-      return account.productCategory.includes(searchTerm);  // 계좌종류 필드에서 검색어 포함 여부 확인
+      return account.productCategory.includes(searchTerm);
     } else if (searchField === '계좌 번호') {
-      return account.accountNumber.toString().includes(searchTerm);  
+      return account.accountNumber.toString().includes(searchTerm);
     } else if (searchField === '유저No') {
-      return account.userNo.toString() === searchTerm;  
+      return account.userNo.toString() === searchTerm;
     } else if (searchField === '만든날짜') {
-      return new Date(account.accountOpen).toISOString().includes(searchTerm);  
+      return new Date(account.accountOpen).toISOString().includes(searchTerm);
     }
-    return true;  // 전체를 선택한 경우 필터링 없이 전체 목록 반환
-  }).slice(0, displayCount);  // 표시 개수만큼 잘라내기
+    return true;
+  }).slice(0, displayCount);
 
   return (
-    <div className="AdAccountClosure-transaction-history-container">
-      <Sidebar />  
-      <div className="AdAccountClosure-alog-main-content">
-        <div className="AdAccountClosure-member-list-content">
+    <div className="AdAccountClosure-container">
+      <Sidebar />
+      <div className="AdAccountClosure-main-content">
+        <div className="AdAccountClosure-list-content">
           <h2>해지 계좌 관리</h2>
 
           <div className="AdAccountClosure-search-controls">
@@ -64,7 +60,7 @@ const AdAccountClosure = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <button>검색</button>
+              <button className="AdAccountClosure-search-button">검색</button>
             </div>
 
             <div className="AdAccountClosure-pagination-controls">
@@ -77,42 +73,42 @@ const AdAccountClosure = () => {
             </div>
           </div>
 
-        <table className="transaction-table">
-        <thead>
-            <tr>
-              <th>No</th>
-              <th>유저 No</th>
-              <th>계좌 번호</th>
-              <th>은행 이름</th>
-              <th>잔액</th>
-              <th>상태</th>
-              <th>계좌 개설일</th>
-              <th>계좌 종료일</th>
-              <th>이자율</th>
-              <th>약정 여부</th>
-              <th>출금 여부</th>
-              <th>정지</th> {/* 정지 버튼 추가 */}
-            </tr>
-          </thead>
-          <tbody>
-            {filteredList.map((account, index) => (
-              <tr key={account.accountNo}>
-                <td>{index + 1}</td>
-                <td>{account.userNo}</td>
-                <td>{account.accountNumber}</td>
-                <td>{account.bankName}</td>
-                <td>{account.accountBalance}</td>
-                <td>{account.accountState}</td>
-                <td>{account.accountOpen ? new Date(account.accountOpen).toLocaleDateString() : 'N/A'}</td>
-                <td>{account.accountClose ? new Date(account.accountClose).toLocaleDateString() : 'N/A'}</td>
-                <td>{account.accountRate}%</td>
+          <table className="AdAccountClosure-table">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>유저 No</th>
+                <th>계좌 번호</th>
+                <th>은행 이름</th>
+                <th>잔액</th>
+                <th>상태</th>
+                <th>계좌 개설일</th>
+                <th>계좌 종료일</th>
+                <th>이자율</th>
+                <th>약정 여부</th>
+                <th>출금 여부</th>
+                <th>정지</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredList.map((account, index) => (
+                <tr key={account.accountNo}>
+                  <td>{index + 1}</td>
+                  <td>{account.userNo}</td>
+                  <td>{account.accountNumber}</td>
+                  <td>{account.bankName}</td>
+                  <td>{account.accountBalance}</td>
+                  <td>{account.accountState}</td>
+                  <td>{account.accountOpen ? new Date(account.accountOpen).toLocaleDateString() : 'N/A'}</td>
+                  <td>{account.accountClose ? new Date(account.accountClose).toLocaleDateString() : 'N/A'}</td>
+                  <td>{account.accountRate}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-   </div> 
   );
 };
 

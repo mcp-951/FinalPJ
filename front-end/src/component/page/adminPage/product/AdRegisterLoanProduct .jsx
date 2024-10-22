@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar'; // Sidebar 추가
-import '../../../../resource/css/admin/EditSavingsProduct.css'; // CSS 파일 추가
+import '../../../../resource/css/admin/AdRegisterLoanProduct.css'; // CSS 파일 추가
 
 const AdRegisterLoanProduct = () => {
   const navigate = useNavigate();
@@ -42,13 +42,13 @@ const AdRegisterLoanProduct = () => {
   };
 
   return (
-    <div className="app-container">
+    <div className="AdRegisterLoanProduct-container">
       <Sidebar />
-      <div className="alog-main-content">
-        <div className="register-product-container">
+      <div className="AdRegisterLoanProduct-main-content">
+        <div className="AdRegisterLoanProduct-form-container">
           <h2>대출 상품 등록</h2>
           <form onSubmit={handleRegister}>
-            <table className="register-table">
+            <table className="AdRegisterLoanProduct-table">
               <tbody>
                 <tr>
                   <td>상품명:</td>
@@ -88,9 +88,9 @@ const AdRegisterLoanProduct = () => {
                 </tr>
               </tbody>
             </table>
-            <div className="button-group">
-              <button type="button" onClick={handleCancel}>취소</button>
-              <button type="submit">등록</button>
+            <div className="AdRegisterLoanProduct-button-group">
+              <button type="button" className="AdRegisterLoanProduct-cancel-button" onClick={handleCancel}>취소</button>
+              <button type="submit" className="AdRegisterLoanProduct-submit-button">등록</button>
             </div>
           </form>
         </div>

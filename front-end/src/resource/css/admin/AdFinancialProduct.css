@@ -1,0 +1,80 @@
+/* SavingsProduct.css */
+.AdFinancialProduct-container {
+  display: flex;
+}
+
+.Adfinancial-main-content {
+  padding: 20px;
+  width: calc(100% - 200px); /* 사이드바 공간을 제외한 너비 */
+  box-sizing: border-box;
+}
+
+.AdFinancialProduct-chart-container {
+  margin-bottom: 10px; /* 차트와 표 간격 줄이기 */
+}
+
+.AdFinancialProduct-chart-container h2 {
+  font-size: 20px; /* 제목 폰트 크기 줄이기 */
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.AdFinancialProduct-button-container {
+  margin-bottom: 15px; /* 버튼과 표 간격 줄이기 */
+  display: flex;
+  gap: 10px;
+}
+
+.AdFinancialProduct-button-container button {
+  padding: 8px 15px; /* 버튼 크기 줄이기 */
+  font-size: 14px; /* 버튼 폰트 크기 줄이기 */
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.AdFinancialProduct-button-container button:hover {
+  background-color: #5f8bb2;
+}
+
+.AdFinancialProduct-table {
+  width: 100%;
+  max-width: 100%; /* 부모 요소에 맞게 테이블 너비를 조정 */
+  border-collapse: collapse;
+  font-size: 14px; /* 표 폰트 크기 줄이기 */
+}
+
+.AdFinancialProduct-table th, .AdFinancialProduct-table td {
+  padding: 10px; /* 셀 간격 줄이기 */
+  border: 1px solid #ddd;
+  text-align: center;
+  word-break: keep-all; /* 텍스트가 칸을 넘어가지 않도록 설정 */
+}
+
+.AdFinancialProduct-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.AdFinancialProduct-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.AdFinancialProduct-table button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 6px 12px; /* 버튼 크기 줄이기 */
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.AdFinancialProduct-table button:hover {
+  background-color: #5f8bb2;
+}
+
+.AdFinancialProduct-table td button {
+  margin: 0 auto;
+}

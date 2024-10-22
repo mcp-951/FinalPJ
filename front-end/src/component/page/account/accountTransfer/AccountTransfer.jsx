@@ -60,7 +60,7 @@ const AccountTransfer = () => {
   // 백엔드에서 계좌 목록 가져오기
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/uram/accounts', {
+      const response = await axios.get('http://localhost:8081/uram/accounts/category-one', {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -262,15 +262,15 @@ const AccountTransfer = () => {
   };
 
   return (
-    <div className="transfer-container">
+    <div className="AccountTransfer-container">
       <h2>계좌이체</h2>
       <form onSubmit={handleSubmit}>
-        <table className="transfer-table">
+        <table className="AccountTransfer-table">
           <tbody>
             <tr>
               <th>출금계좌번호</th>
               <td>
-                <div className="account-balance-section">
+                <div className="AccountTransfer-account-balance-section">
                   <select
                     value={selectedAccount}
                     onChange={(e) => {
@@ -294,13 +294,13 @@ const AccountTransfer = () => {
                       </option>
                     )}
                   </select>
-                  <button type="button" onClick={handleCheckBalance} className="balance-button">
-                  출금가능금액
+                  <button type="button" onClick={handleCheckBalance} className="AccountTransfer-balance-button">
+                    출금가능금액
                   </button>
                   {availableBalance !== null ? (
-                    <span className="balance-info">{availableBalance.toLocaleString()}원</span>
+                    <span className="AccountTransfer-balance-info">{availableBalance.toLocaleString()}원</span>
                   ) : (
-                    <span className="error-message">{errorMessages.selectedAccount}</span> // 출금 가능 금액 확인 경고 메시지
+                    <span className="AccountTransfer-error-message">{errorMessages.selectedAccount}</span> // 출금 가능 금액 확인 경고 메시지
                   )}
                 </div>
               </td>
@@ -311,12 +311,13 @@ const AccountTransfer = () => {
                 <select
                   value={selectedBank}
                   onChange={(e) => setSelectedBank(e.target.value)}
+                  disabled={isAccountValid} // 계좌 확인 후 은행명 변경 불가
                 >
                   <option value="">은행명 선택</option>
                   <option value="동명은행">동명은행</option>
                   <option value="우람은행">우람은행</option>
                 </select>
-                {errorMessages.selectedBank && <span className="error-message">{errorMessages.selectedBank}</span>}
+                {errorMessages.selectedBank && <span className="AccountTransfer-error-message">{errorMessages.selectedBank}</span>}
               </td>
             </tr>
             <tr>
@@ -327,16 +328,19 @@ const AccountTransfer = () => {
                   value={targetAccountNumber}
                   onChange={handleAccountNumberChange}
                   placeholder="입금 계좌번호 입력"
+                  disabled={isAccountValid} // 계좌 확인 후 계좌번호 변경 불가
                 />
-                <button type="button" onClick={handleAccountCheck}>계좌 확인</button>
-                {isAccountValid === true && <span className="valid-check">✔ 계좌 유효</span>}
-                {errorMessages.targetAccountNumber && <span className="error-message">{errorMessages.targetAccountNumber}</span>}
+                <button type="button" onClick={handleAccountCheck} disabled={isAccountValid}>
+                  계좌 확인
+                </button>
+                {isAccountValid === true && <span className="AccountTransfer-valid-check">✔ 계좌 유효</span>}
+                {errorMessages.targetAccountNumber && <span className="AccountTransfer-error-message">{errorMessages.targetAccountNumber}</span>}
               </td>
             </tr>
             <tr>
               <th>이체금액</th>
               <td>
-                <div className="amount-buttons">
+                <div className="AccountTransfer-amount-buttons">
                   {[1000000, 500000, 100000, 50000, 10000].map((amount) => (
                     <button
                       type="button"
@@ -353,7 +357,7 @@ const AccountTransfer = () => {
                   onChange={(e) => setTransferAmount(e.target.value)} // 금액 입력 시 바로 설정
                   placeholder="금액 입력"
                 />
-                {errorMessages.transferAmount && <span className="error-message">{errorMessages.transferAmount}</span>}
+                {errorMessages.transferAmount && <span className="AccountTransfer-error-message">{errorMessages.transferAmount}</span>}
               </td>
             </tr>
             <tr>
@@ -369,17 +373,18 @@ const AccountTransfer = () => {
                 <button type="button" onClick={handlePasswordCheck} disabled={isPasswordValid}>
                   확인
                 </button>
-                {isPasswordValid === true && <span className="valid-check">✔ 비밀번호 확인</span>}
-                {errorMessages.password && <span className="error-message">{errorMessages.password}</span>}
+                {isPasswordValid === true && <span className="AccountTransfer-valid-check">✔ 비밀번호 확인</span>}
+                {errorMessages.password && <span className="AccountTransfer-error-message">{errorMessages.password}</span>}
               </td>
             </tr>
           </tbody>
         </table>
-        <button type="submit" className="submit-button">확인</button>
+        <button type="submit" className="AccountTransfer-submit-button">확인</button>
       </form>
-      {errorMessages.general && <div className="error-message">{errorMessages.general}</div>}
+      {errorMessages.general && <div className="AccountTransfer-error-message">{errorMessages.general}</div>}
     </div>
   );
+  
 };
 
 export default AccountTransfer;

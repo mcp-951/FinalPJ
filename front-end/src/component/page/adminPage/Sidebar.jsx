@@ -86,10 +86,10 @@ const Sidebar = () => {
             {showBillsDropdown && (
               <ul className="dropdown">
                 <li>
-                  <NavLink to="/taxInsert">청구서 작성</NavLink>
+                  <NavLink to="/adTaxInsert">청구서 작성</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/taxList">납부 현황</NavLink>
+                  <NavLink to="/adTaxList">납부 현황</NavLink>
                 </li>
               </ul>
             )}

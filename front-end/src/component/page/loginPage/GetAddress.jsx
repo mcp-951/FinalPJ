@@ -1,5 +1,6 @@
 import React from 'react';
 import DaumPostcode from 'react-daum-postcode';
+import '../../../resource/css/getAddress.css';
 
 function getAddress() {
     const handleComplete = (data) => {
@@ -9,9 +10,12 @@ function getAddress() {
     };
 
     return (
-        <div>
-            <DaumPostcode onComplete={handleComplete} />
-            <button onClick={() => window.close()}>닫기</button>
+        <div className="getAddress-container">
+            <div className="getAddress-header">
+                <h2>주소 검색</h2>
+                <button className="getAddress-close" onClick={() => window.close()}>닫기</button>
+            </div>
+            <DaumPostcode className="getAddress-postcode" onComplete={handleComplete} />
         </div>
     );
 }

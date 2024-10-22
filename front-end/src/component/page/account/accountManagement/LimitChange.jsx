@@ -84,14 +84,14 @@ const LimitChange = () => {
   };
 
   return (
-    <div className="limit-change-container">
+    <div className="LimitChange-container">
       <h2>이체한도 변경</h2>
       <p>1회 이체한도를 확인하시고 변경할 이체한도를 입력해주세요</p>
       
       {/* 오류 메시지 출력 */}
-      {errorMessage && <p className="error-message" style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <p className="LimitChange-error-message">{errorMessage}</p>}
 
-      <table className="limit-change-table">
+      <table className="LimitChange-table">
         <thead>
           <tr>
             <th></th>
@@ -108,16 +108,14 @@ const LimitChange = () => {
                 type="text"
                 value={newOnceLimit}
                 onChange={(e) => setNewOnceLimit(e.target.value)}
-                placeholder="입력칸"
-              />
-              원
+                placeholder="입력칸"/>원
             </td>
           </tr>
         </tbody>
       </table>
 
-      <div className="limit-change-button-container">
-        <button onClick={handleLimitChange} className="limit-change-button">
+      <div className="LimitChange-button-container">
+        <button onClick={handleLimitChange} className="LimitChange-button">
           변경
         </button>
       </div>

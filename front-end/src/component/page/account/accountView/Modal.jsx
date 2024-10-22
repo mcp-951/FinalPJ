@@ -8,9 +8,9 @@ const Modal = ({ show, onClose, account }) => {
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <ul className="modal-links">
+    <div className="Modal-overlay">
+      <div className="Modal-content">
+        <ul className="Modal-links">
           {/* 계좌 비밀번호 변경 */}
           <li>
             <Link
@@ -39,7 +39,7 @@ const Modal = ({ show, onClose, account }) => {
           </li>
         </ul>
 
-        <button className="close-button" onClick={onClose}>닫기</button>
+        <button className="Modal-close-button" onClick={onClose}>닫기</button>
       </div>
     </div>
   );

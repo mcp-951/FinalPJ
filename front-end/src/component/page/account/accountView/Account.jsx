@@ -22,12 +22,31 @@ function Account() {
   };
 
   return (
-    <div className="account-container">
+    <div className="Account-container">
       <h1>계좌 조회</h1>
       {/* 상단 탭 고정 */}
-      <Tabs selectedTab={selectedTab} onSelectTab={setSelectedTab} />
+      <div className="Account-tabs">
+        <button 
+          className={selectedTab === "전체" ? "active" : ""} 
+          onClick={() => setSelectedTab("전체")}
+        >
+          전체
+        </button>
+        <button 
+          className={selectedTab === "예금" ? "active" : ""} 
+          onClick={() => setSelectedTab("예금")}
+        >
+          예금
+        </button>
+        <button 
+          className={selectedTab === "적금" ? "active" : ""} 
+          onClick={() => setSelectedTab("적금")}
+        >
+          적금
+        </button>
+      </div>
       {/* 탭에 따라 내용 바뀜 */}
-      <div className="account-info">
+      <div className="Account-info">
         {renderContent()}
       </div>
     </div>
@@ -35,4 +54,3 @@ function Account() {
 }
 
 export default Account;
-

@@ -1,0 +1,111 @@
+.AdRetiredMember-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f4f4f9;
+  justify-content: center;
+}
+
+.AdRetiredMember-mainContent {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+}
+
+.AdRetiredMember-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.AdRetiredMember-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.AdRetiredMember-searchBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.AdRetiredMember-searchBar select,
+.AdRetiredMember-searchBar input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.AdRetiredMember-searchBar button {
+  padding: 10px 20px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.AdRetiredMember-searchBar button:hover {
+  background-color: #5d95d1;
+}
+
+.AdRetiredMember-paginationControls {
+  display: flex;
+  align-items: center;
+}
+
+.AdRetiredMember-paginationControls select {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.AdRetiredMember-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+}
+
+.AdRetiredMember-table th,
+.AdRetiredMember-table td {
+  padding: 14px 18px;
+  border: 1px solid #e0e0e0;
+  font-size: 15px;
+}
+
+.AdRetiredMember-table th {
+  background-color: #f0f0f5;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.AdRetiredMember-table td {
+  color: #555;
+  background-color: #f9f9f9;
+}
+
+.AdRetiredMember-table tr:hover {
+  background-color: #eef1f7;
+  cursor: pointer;
+}
+
+.AdRetiredMember-emptyMessage {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
+}

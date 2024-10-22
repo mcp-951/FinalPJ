@@ -131,9 +131,9 @@ const PasswordChange = () => {
   };
 
   return (
-    <div className="password-change-container">
+    <div className="PasswordChange-container">
       <h2>계좌 비밀번호 변경</h2>
-      <table className="password-change-table">
+      <table className="PasswordChange-table">
         <tbody>
           <tr>
             <th>계좌번호</th>
@@ -151,8 +151,9 @@ const PasswordChange = () => {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="비밀번호 입력"
+                className="PasswordChange-input"
               />
-              {validationError.newPassword && <span className="error-message">{validationError.newPassword}</span>}
+              {validationError.newPassword && <span className="PasswordChange-error-message">{validationError.newPassword}</span>}
             </td>
           </tr>
           <tr>
@@ -163,8 +164,9 @@ const PasswordChange = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="비밀번호 확인"
+                className="PasswordChange-input"
               />
-              {validationError.confirmPassword && <span className="error-message">{validationError.confirmPassword}</span>}
+              {validationError.confirmPassword && <span className="PasswordChange-error-message">{validationError.confirmPassword}</span>}
             </td>
           </tr>
           <tr>
@@ -174,9 +176,10 @@ const PasswordChange = () => {
                 type="tel"
                 value={hp}
                 placeholder="01012345678"
-                readOnly // 핸드폰 번호는 수정 불가능
+                readOnly
+                className="PasswordChange-input"
               />
-              <button onClick={handleCheckHp} className="verify-button">
+              <button onClick={handleCheckHp} className="PasswordChange-verify-button">
                 인증번호 받기
               </button>
             </td>
@@ -189,19 +192,20 @@ const PasswordChange = () => {
                 value={enteredAuthKey}
                 onChange={(e) => setEnteredAuthKey(e.target.value)}
                 placeholder="인증번호 입력"
+                className="PasswordChange-input"
               />
-              <button onClick={handleAuthKeyCheck} className="verify-button">
+              <button onClick={handleAuthKeyCheck} className="PasswordChange-verify-button">
                 인증하기
               </button>
-              {authSuccess && <span className="success-message">✔ 인증 완료</span>}
-              {validationError.auth && <span className="error-message">{validationError.auth}</span>}
+              {authSuccess && <span className="PasswordChange-success-message">✔ 인증 완료</span>}
+              {validationError.auth && <span className="PasswordChange-error-message">{validationError.auth}</span>}
             </td>
           </tr>
         </tbody>
       </table>
-
-      <div className="submit-button-container">
-        <button onClick={handlePasswordChange} className="submit-button">
+  
+      <div className="PasswordChange-submit-button-container">
+        <button onClick={handlePasswordChange} className="PasswordChange-submit-button">
           확인
         </button>
       </div>

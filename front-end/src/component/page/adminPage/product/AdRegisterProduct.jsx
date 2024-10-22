@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar'; // Sidebar 추가
-import '../../../../resource/css/admin/EditSavingsProduct.css'; // CSS 파일 추가
+import '../../../../resource/css/admin/AdRegisterProduct.css'; // CSS 파일 추가
 
 const AdRegisterProduct = () => {
   const navigate = useNavigate();
@@ -11,7 +11,6 @@ const AdRegisterProduct = () => {
     depositName: '',
     depositCategory: '',  
     depositRate: '',
-    depositPeriod: '',
     depositContent: '',
     depositIMG: '',
     repaymentType: ''
@@ -20,8 +19,6 @@ const AdRegisterProduct = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
-    navigate(-1);
   };
 
   // 취소 버튼 클릭 시 FinancialProduct 페이지로 이동
@@ -44,12 +41,12 @@ const AdRegisterProduct = () => {
   };
 
   return (
-    <div className="app-container">
+    <div className="AdRegisterProduct-container">
       <Sidebar /> {/* Sidebar 추가 */}
-      <div className="alog-main-content">
-        <div className="register-product-container">
+      <div className="AdRegisterProduct-main-content">
+        <div className="AdRegisterProduct-form-container">
           <h2>상품 등록</h2>
-          <table className="register-table">
+          <table className="AdRegisterProduct-table">
             <tbody>
               <tr>
                 <td>상품명:</td>
@@ -119,11 +116,11 @@ const AdRegisterProduct = () => {
               </tr>
             </tbody>
           </table>
-          <div className="button-group">
-            <button type="button" onClick={handleCancel}>
+          <div className="AdRegisterProduct-button-group">
+            <button type="button" className="AdRegisterProduct-cancel-button" onClick={handleCancel}>
               취소
             </button>
-            <button type="button" onClick={handleRegister}> {/* onClick으로 변경 */}
+            <button type="button" className="AdRegisterProduct-submit-button" onClick={handleRegister}>
               등록
             </button>
           </div>

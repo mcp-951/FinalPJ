@@ -131,12 +131,12 @@ const PasswordCheck = ({ title, instructions }) => {
   }
 
   return (
-    <div className="password-check-container">
+    <div className="PasswordCheck-container">
       <h2>{title}</h2>
       <p>{instructions}</p>
-
+  
       {/* 계좌 선택 창 */}
-      <div className="account-select">
+      <div className="PasswordCheck-account-select">
         <label>계좌 선택</label>
         <select value={accountNumber} onChange={handleAccountSelect}>
           <option value="">계좌를 선택하세요</option>
@@ -147,8 +147,8 @@ const PasswordCheck = ({ title, instructions }) => {
           ))}
         </select>
       </div>
-
-      <div className="password-input">
+  
+      <div className="PasswordCheck-password-input">
         <label>비밀번호 입력</label>
         <input
           type="password"
@@ -159,22 +159,23 @@ const PasswordCheck = ({ title, instructions }) => {
         />
         <button
           onClick={handlePasswordCheck}
-          className="password-check-button"
+          className="PasswordCheck-password-check-button"
           disabled={isPasswordDisabled} // 비밀번호 확인 후 버튼 비활성화
         >
-          확인
+          비밀번호 확인
         </button>
-
-        <span className={`password-check-status ${isPasswordValid === false ? 'error' : isPasswordValid === true ? 'check-mark' : ''}`}>
+  
+        <span className={`PasswordCheck-password-check-status ${isPasswordValid === false ? 'error' : isPasswordValid === true ? 'check-mark' : ''}`}>
           {errorMessage}
         </span>
       </div>
-
-      <button onClick={handleSubmit} className="password-submit-button">
+  
+      <button onClick={handleSubmit} className="PasswordCheck-password-submit-button">
         확인
       </button>
     </div>
   );
 };
 
+// export 구문은 파일의 마지막에 위치해야 합니다.
 export default PasswordCheck;
