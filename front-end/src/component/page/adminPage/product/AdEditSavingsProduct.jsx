@@ -12,9 +12,15 @@ const AdEditSavingsProduct = () => {
     depositNo: '', // 상품 번호 (수정 불가)
     depositCategory: '', // 상품종류
     depositName: '', // 상품이름
-    depositRate: '', // 금리
+    depositMaximumAmount: '', // 최대 금액
+    depositMaximumDate: '', // 최대 기간
+    depositMaximumRate: '', // 최대 금리
+    depositMinimumAmount: '', // 최소 금액
+    depositMinimumDate: '', // 최소 기간
+    depositMinimumRate: '', // 최소 금리
     depositContent: '', // 상품설명
     depositIMG: '', // 상품 이미지
+    depositState: '' // 상품 상태
   });
 
   const token = localStorage.getItem("token");
@@ -22,39 +28,27 @@ const AdEditSavingsProduct = () => {
   // 데이터가 state로 넘어온 경우 state를 우선 사용, 넘어오지 않았다면 API 호출
   useEffect(() => {
     if (location.state?.deposit) {
-      const { depositNo, depositCategory, depositName, depositRate, depositContent, depositIMG } = location.state.deposit;
+      const { depositNo, depositCategory, depositName, depositMaximumAmount, depositMaximumDate, depositMaximumRate, depositMinimumAmount, depositMinimumDate, depositMinimumRate, depositContent, depositIMG, depositState } = location.state.deposit;
       setFormData({
         depositNo,
         depositCategory,
         depositName,
-        depositRate,
+        depositMaximumAmount,
+        depositMaximumDate,
+        depositMaximumRate,
+        depositMinimumAmount,
+        depositMinimumDate,
+        depositMinimumRate,
         depositContent,
         depositIMG,
+        depositState,
       });
       setLoading(false);
     } else {
-      // 만약 state로 데이터가 넘어오지 않았다면, 상품 번호를 기반으로 데이터를 가져오는 API 호출
-      const productId = formData.depositName;
-      axios.get(`http://localhost:8081/admin/getSavingsProduct/${productId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }).then(response => {
-        setFormData({
-          depositNo: response.data.depositNo,
-          depositCategory: response.data.depositCategory,
-          depositName: response.data.depositName,
-          depositRate: response.data.depositRate,
-          depositContent: response.data.depositContent,
-          depositIMG: response.data.depositIMG,
-        });
-        setLoading(false);
-      }).catch(error => {
-        console.error('데이터를 불러오는 중 오류 발생:', error);
-        setLoading(false);
-      });
+      alert("상품 정보가 없습니다.");
+      navigate('/admin/adDepositProduct'); // 상품 목록 페이지로 이동
     }
-  }, [location.state, token]);
+  }, [location.state, token, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +56,7 @@ const AdEditSavingsProduct = () => {
   };
 
   const handleCancel = () => {
-    navigate('/admin/financialProduct'); // 취소하면 목록으로 이동
+    navigate(-1); // 취소하면 목록으로 이동
   };
 
   const handleSubmit = async (e) => {
@@ -74,7 +68,7 @@ const AdEditSavingsProduct = () => {
         }
       });
       alert("수정이 완료되었습니다.");
-      navigate("/admin/financialProduct");
+      navigate(-1); // 수정 후 목록으로 이동
     } catch (error) {
       console.error("수정 중 오류 발생:", error);
       alert("수정 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -129,12 +123,67 @@ const AdEditSavingsProduct = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td>금리</td>
+                  <td>최대 금액</td>
                   <td>
                     <input
-                      type="text"
-                      name="depositRate"
-                      value={formData.depositRate}
+                      type="number"
+                      name="depositMaximumAmount"
+                      value={formData.depositMaximumAmount}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>최대 기간</td>
+                  <td>
+                    <input
+                      type="number"
+                      name="depositMaximumDate"
+                      value={formData.depositMaximumDate}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>최대 금리</td>
+                  <td>
+                    <input
+                      type="number"
+                      name="depositMaximumRate"
+                      value={formData.depositMaximumRate}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>최소 금액</td>
+                  <td>
+                    <input
+                      type="number"
+                      name="depositMinimumAmount"
+                      value={formData.depositMinimumAmount}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>최소 기간</td>
+                  <td>
+                    <input
+                      type="number"
+                      name="depositMinimumDate"
+                      value={formData.depositMinimumDate}
+                      onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>최소 금리</td>
+                  <td>
+                    <input
+                      type="number"
+                      name="depositMinimumRate"
+                      value={formData.depositMinimumRate}
                       onChange={handleChange}
                     />
                   </td>
@@ -158,6 +207,18 @@ const AdEditSavingsProduct = () => {
                       name="depositIMG"
                       value={formData.depositIMG}
                       onChange={handleChange}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>상태</td>
+                  <td>
+                    <input
+                      type="text"
+                      name="depositState"
+                      value={formData.depositState}
+                      readOnly
+                      disabled
                     />
                   </td>
                 </tr>

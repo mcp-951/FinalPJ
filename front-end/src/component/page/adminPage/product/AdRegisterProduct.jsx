@@ -9,22 +9,24 @@ const AdRegisterProduct = () => {
 
   const [formData, setFormData] = useState({
     depositName: '',
-    depositCategory: '',  
-    depositRate: '',
-    depositPeriod: '',
+    depositCategory: '',
     depositContent: '',
-    depositIMG: '',
-    repaymentType: ''
+    depositCharacteristic: '',
+    depositMinimumAmount: '',
+    depositMaximumAmount: '',
+    depositMinimumRate: '',
+    depositMaximumRate: '',
+    depositMinimumDate: '',
+    depositMaximumDate: '',
+    depositState: '' // 추가된 상태 필드
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    
-    navigate(-1);
   };
 
-  // 취소 버튼 클릭 시 FinancialProduct 페이지로 이동
+  // 취소 버튼 클릭 시 이전 페이지로 이동
   const handleCancel = () => {
     navigate(-1);
   };
@@ -48,7 +50,7 @@ const AdRegisterProduct = () => {
       <Sidebar /> {/* Sidebar 추가 */}
       <div className="alog-main-content">
         <div className="register-product-container">
-          <h2>상품 등록</h2>
+          <h2>예금적금 상품 등록</h2>
           <table className="register-table">
             <tbody>
               <tr>
@@ -74,17 +76,6 @@ const AdRegisterProduct = () => {
                 </td>
               </tr>
               <tr>
-                <td>금리:</td>
-                <td>
-                  <input
-                    type="text"
-                    name="depositRate"
-                    value={formData.depositRate}
-                    onChange={handleChange}
-                  />
-                </td>
-              </tr>
-              <tr>
                 <td>상품 설명:</td>
                 <td>
                   <input
@@ -96,23 +87,89 @@ const AdRegisterProduct = () => {
                 </td>
               </tr>
               <tr>
-                <td>상품 이미지:</td>
+                <td>상품 특성:</td>
                 <td>
                   <input
                     type="text"
-                    name="depositIMG"
-                    value={formData.depositIMG}
+                    name="depositCharacteristic"
+                    value={formData.depositCharacteristic}
                     onChange={handleChange}
                   />
                 </td>
               </tr>
               <tr>
-                <td>상환 방식:</td>
+                <td>최소 예치 금액:</td>
+                <td>
+                  <input
+                    type="number"
+                    name="depositMinimumAmount"
+                    value={formData.depositMinimumAmount}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>최대 예치 금액:</td>
+                <td>
+                  <input
+                    type="number"
+                    name="depositMaximumAmount"
+                    value={formData.depositMaximumAmount}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>최소 금리:</td>
+                <td>
+                  <input
+                    type="number"
+                    name="depositMinimumRate"
+                    value={formData.depositMinimumRate}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>최대 금리:</td>
+                <td>
+                  <input
+                    type="number"
+                    name="depositMaximumRate"
+                    value={formData.depositMaximumRate}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>최소 기간:</td>
                 <td>
                   <input
                     type="text"
-                    name="repaymentType"
-                    value={formData.repaymentType}
+                    name="depositMinimumDate"
+                    value={formData.depositMinimumDate}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>최대 기간:</td>
+                <td>
+                  <input
+                    type="text"
+                    name="depositMaximumDate"
+                    value={formData.depositMaximumDate}
+                    onChange={handleChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>상태:</td>
+                <td>
+                  <input
+                    type="text"
+                    name="depositState"
+                    value={formData.depositState}
                     onChange={handleChange}
                   />
                 </td>
@@ -123,7 +180,7 @@ const AdRegisterProduct = () => {
             <button type="button" onClick={handleCancel}>
               취소
             </button>
-            <button type="button" onClick={handleRegister}> {/* onClick으로 변경 */}
+            <button type="submit" onClick={handleRegister}> {/* onClick으로 변경 */}
               등록
             </button>
           </div>

@@ -24,7 +24,7 @@ const AdRegisterLoanProduct = () => {
   };
 
   const handleCancel = () => {
-    navigate('/admin/adLoanProduct'); // 취소 시 목록으로 이동
+    navigate(-1); // 취소 시 목록으로 이동
   };
 
   const handleRegister = async (e) => {
@@ -43,7 +43,7 @@ const AdRegisterLoanProduct = () => {
 
   return (
     <div className="app-container">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="alog-main-content">
         <div className="register-product-container">
           <h2>대출 상품 등록</h2>

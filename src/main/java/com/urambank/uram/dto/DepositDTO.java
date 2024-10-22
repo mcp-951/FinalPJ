@@ -11,10 +11,11 @@ import java.time.LocalDate;
 @ToString
 public class DepositDTO {
     private int depositNo;                // 예금 번호
+    private String depositName;           // 예금 이름
     private int depositCategory;          // 예금 카테고리
     private String depositContent;        // 예금 설명
     private String depositIMG;            // 예금 이미지
-    private String depositName;           // 예금 이름
+
     private char depositState;            // 예금 상태 (기본값: 'Y')
     private String depositCharacteristic; // 예금 특성
     private int depositMaximumAmount;     // 최대 예치 금액
@@ -31,4 +32,5 @@ public class DepositDTO {
         this.depositContent = depositContent;
         this.depositState = depositState;
     }
+
 }

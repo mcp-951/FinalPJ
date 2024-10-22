@@ -150,9 +150,9 @@ const RouteComponent = () => {
                         <Route path="/inquiry-form" element={<InquiryForm addInquiry={addInquiry} />} /> {/* InquiryForm 라우팅 설정 */}
                         
                         {/* 사용자 관리 페이지 */}
-                        <Route path="/admin/adMemberList" element={<AdMemberList />} />
-                        <Route path="/admin/adRetiredMember" element={<AdRetiredMember />} />
-                        <Route path="/admin/adEditMember" element={<AdMemberEdit />} />
+                        <Route path="/adMemberList" element={<AdMemberList />} />
+                        <Route path="/adRetiredMember" element={<AdRetiredMember />} />
+                        <Route path="/adEditMember" element={<AdMemberEdit />} />
 
                         {/* 관리자 페이지 문의 관리 목록 */}
                         <Route path="/admin/support/inquiries" element={<AdminInquiryList />} />
