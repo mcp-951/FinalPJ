@@ -73,14 +73,17 @@ public class UserService {
         System.out.println("id : " + userDTO.getUserId());
         System.out.println("Pw : " + userDTO.getUserPw());
         Calendar cal = Calendar.getInstance();
-        int birthYear = cal.get(Calendar.YEAR) - userDTO.getBirth().getYear();
+        System.out.println("cal.get(Calendar.YEAR) : " + cal.get(Calendar.YEAR));
+        System.out.println("userDTO.getBirth().getYear() : " + userDTO.getBirth().toLocalDate().getYear());
+        int birthYear = cal.get(Calendar.YEAR) - userDTO.getBirth().toLocalDate().getYear();
 
-        UserDTO dto = new UserDTO();
         userDTO.setResidentNumber(userDTO.getResidentNumber1() + "-" + userDTO.getResidentNumber2());
         userDTO.setAddress(userDTO.getAddress1() + userDTO.getAddress2());
         userDTO.setEmail(userDTO.getEmail1()+ "@" + userDTO.getEmail2());
         userDTO.setGrade(getGrade(birthYear));
         userDTO.setOCRCheck(1);
+
+        UserDTO dto = new UserDTO();
 
         try {
             // 사용자 정보 설정 및 비밀번호 암호화
