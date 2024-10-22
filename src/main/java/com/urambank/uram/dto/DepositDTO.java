@@ -13,7 +13,6 @@ public class DepositDTO {
     private int depositNo;
     private String accountNo;
     private String depositName;
-    private float depositRate;
     private String depositContent;
     private int depositCategory;
     private char depositState;
@@ -26,6 +25,6 @@ public class DepositDTO {
     private int userNo;
     private String accountNumber;
 
-    public DepositDTO(int depositNo, String depositName, int depositCategory, float depositRate, String depositContent, char depositState) {
+    public DepositDTO(int depositNo, String depositName, int depositCategory, String depositContent, char depositState) {
     }
 }

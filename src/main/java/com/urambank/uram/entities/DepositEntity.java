@@ -20,9 +20,6 @@ public class DepositEntity {
     @Column(name = "depositName")
     private String depositName;
 
-    @Column(name = "depositRate")
-    private float depositRate;
-
     @Column(name = "depositContent")
     private String depositContent;
 

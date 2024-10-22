@@ -84,7 +84,6 @@ public class AdminService {
             .depositCategory(depositDTO.getDepositCategory())
             .depositContent(depositDTO.getDepositContent())
             .depositName(depositDTO.getDepositName())
-            .depositRate(depositDTO.getDepositRate())
             .depositState(depositDTO.getDepositState())
             .build();
 }
@@ -95,7 +94,6 @@ public class AdminService {
                 .depositNo(depositEntity.getDepositNo())
                 .depositName(depositEntity.getDepositName())
                 .depositCategory(depositEntity.getDepositCategory())
-                .depositRate(depositEntity.getDepositRate())
                 .depositContent(depositEntity.getDepositContent())
                 .depositState(depositEntity.getDepositState())
                 .build();  // 여기서 .build()를 추가
@@ -107,7 +105,6 @@ public class AdminService {
         DepositEntity depositEntity = DepositEntity.builder()
                 .depositName(depositDTO.getDepositName())
                 .depositCategory(depositDTO.getDepositCategory())
-                .depositRate(depositDTO.getDepositRate())
                 .depositContent(depositDTO.getDepositContent())
                 .depositState('Y')  // 신규 등록은 'Y'로 활성화 상태로 설정
                 .build();
@@ -126,8 +123,7 @@ public class AdminService {
                 .map(deposit -> new DepositDTO(
                         deposit.getDepositNo(),         // 예금 번호
                         deposit.getDepositName(),       // 예금 이름
-                        deposit.getDepositCategory(),   // 예금 카테고리 (이 부분이 추가됨)
-                        deposit.getDepositRate(),       // 예금 금리
+                        deposit.getDepositCategory(),   // 예금 카테고리
                         deposit.getDepositContent(),    // 예금 설명
                         deposit.getDepositState()       // 예금 상태
                 ))
@@ -178,7 +174,6 @@ public class AdminService {
                     .depositNo(eDto.getDepositNo())
                     .depositName(eDto.getDepositName())
                     .depositCategory(eDto.getDepositCategory())
-                    .depositRate(eDto.getDepositRate())
                     .depositContent(eDto.getDepositContent())
                     .depositState(eDto.getDepositState())
                     .build();  // 적금 DTO 생성
@@ -198,7 +193,6 @@ public class AdminService {
         // DTO 데이터를 엔티티로 반영
         depositEntity.setDepositName(depositDTO.getDepositName());
         depositEntity.setDepositCategory(depositDTO.getDepositCategory());
-        depositEntity.setDepositRate(depositDTO.getDepositRate());
         depositEntity.setDepositContent(depositDTO.getDepositContent());
 
         // 변경된 엔티티 저장
@@ -222,7 +216,6 @@ public List<DepositDTO> getDeposits() {
                 .depositNo(eDto.getDepositNo())
                 .depositName(eDto.getDepositName())
                 .depositCategory(eDto.getDepositCategory())
-                .depositRate(eDto.getDepositRate())
                 .depositContent(eDto.getDepositContent())
                 .depositState(eDto.getDepositState())
                 .build();  // 예금 DTO 생성
