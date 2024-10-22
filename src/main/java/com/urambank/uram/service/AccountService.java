@@ -457,56 +457,37 @@ public class AccountService {
     }
 
 
-    public List<AutoTransferDTO> getAllAutoTransfers(int userNo) {
+    public List<Map<String, Object>> getAllAutoTransfers(int userNo) {
         List<AutoTransferEntity> autoTransferEntities = autoTransferRepository.findAllActiveAutoTransfersByUserNo(userNo);
 
         return autoTransferEntities.stream()
                 .map(autoTransfer -> {
-                    // 출금 계좌 정보 조회
-                    AccountEntity fromAccount = accountRepository.findByAccountNo(autoTransfer.getAccountNo());
-                    AccountDTO fromAccountDTO = null;
-                    if (fromAccount != null) {
-                        fromAccountDTO = AccountDTO.builder()
-                                .accountNo(fromAccount.getAccountNo())
-                                .accountNumber(fromAccount.getAccountNumber())
-                                .userNo(fromAccount.getUserNo())
-                                .accountBalance(fromAccount.getAccountBalance())
-                                .accountLimit(fromAccount.getAccountLimit())
-                                .build();
-                    }
+                    // 출금 계좌 번호 조회
+                    String fromAccountNumber = accountRepository.findAccountNumberByAccountNo(autoTransfer.getAccountNo());
 
-                    // 입금 계좌 정보 조회 (내부 계좌)
-                    AccountEntity toAccount = accountRepository.findByAccountNoAndBankName(
+                    // 입금 계좌 번호 조회 (내부 계좌일 경우)
+                    String receiveAccountNumber = accountRepository.findAccountNumberByAccountNoAndBankName(
                             autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
-                    AccountDTO toAccountDTO = null;
 
-                    if (toAccount != null) {
-                        toAccountDTO = AccountDTO.builder()
-                                .accountNo(toAccount.getAccountNo())
-                                .accountNumber(toAccount.getAccountNumber())
-                                .userNo(toAccount.getUserNo())
-                                .accountBalance(toAccount.getAccountBalance())
-                                .accountLimit(toAccount.getAccountLimit())
-                                .build();
-                    }
-
-                    // 외부 계좌 정보 조회
-                    OutAccountEntity outAccount = null;
-                    if (toAccount == null) { // 내부 계좌가 아닐 경우 외부 계좌 조회
-                        outAccount = outAccountRepository.findByOAccountNoAndOBankName(
+                    // 외부 계좌일 경우 OutAccount 테이블에서 조회
+                    if (receiveAccountNumber == null) {
+                        receiveAccountNumber = outAccountRepository.findOAccountNumberByOAccountNoAndOBankName(
                                 autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
                     }
-                    OutAccountDTO outAccountDTO = null;
-                    if (outAccount != null) {
-                        outAccountDTO = OutAccountDTO.builder()
-                                .oAccountNumber(outAccount.getOAccountNumber())
-                                .oUserName(outAccount.getOUserName())
-                                .oBankName(outAccount.getOBankName())
-                                .build();
+
+                    // 계좌주명 조회
+                    String recipientName;
+                    if ("우람은행".equals(autoTransfer.getToBankName())) { // 내부 계좌일 경우
+                        AccountEntity account = accountRepository.findByAccountNo(autoTransfer.getReceiveAccountNo());
+                        recipientName = account != null ? userRepository.findByUserNo(account.getUserNo()).getName() : "사용자 이름 없음";
+                    } else { // 외부 계좌일 경우
+                        OutAccountEntity outAccount = outAccountRepository.findByOAccountNoAndOBankName(autoTransfer.getReceiveAccountNo(), autoTransfer.getToBankName());
+                        recipientName = outAccount != null ? outAccount.getOUserName() : "외부 계좌 사용자 이름 없음";
                     }
 
-                    // AutoTransferDTO 구성
-                    return AutoTransferDTO.builder()
+                    // 결과 맵 구성
+                    Map<String, Object> responseMap = new HashMap<>();
+                    responseMap.put("autoTransfer", AutoTransferDTO.builder()
                             .autoTransNo(autoTransfer.getAutoTransNo())
                             .accountNo(autoTransfer.getAccountNo())
                             .receiveAccountNo(autoTransfer.getReceiveAccountNo())
@@ -517,16 +498,17 @@ public class AccountService {
                             .transferDay(autoTransfer.getTransferDay())
                             .reservationState(autoTransfer.getReservationState())
                             .deleteDate(autoTransfer.getDeleteDate())
-                            .toBankName(autoTransfer.getToBankName())
-                            .fromAccountDTO(fromAccountDTO)  // 출금 계좌 정보 설정
-                            .toAccountDTO(toAccountDTO)      // 내부 입금 계좌 정보 설정
-                            .outAccountDTO(outAccountDTO)    // 외부 입금 계좌 정보 설정
-                            .build();
+                            .toBankName(autoTransfer.getToBankName()) // toBankName 추가
+                            .build());
+
+                    responseMap.put("fromAccountNumber", fromAccountNumber);
+                    responseMap.put("receiveAccountNumber", receiveAccountNumber);
+                    responseMap.put("recipientName", recipientName); // 계좌주명 추가
+
+                    return responseMap;
                 })
                 .collect(Collectors.toList());
     }
-
-
 
     public Integer getAccountNoByAccountNumber(String accountNumber) {
         AccountEntity accountEntity = accountRepository.findByAccountNumber(accountNumber)
