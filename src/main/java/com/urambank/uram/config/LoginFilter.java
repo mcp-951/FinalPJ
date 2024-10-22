@@ -42,25 +42,19 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-
             // JSON 파싱
             String body = sb.toString();
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> jsonRequest = objectMapper.readValue(body, Map.class);
-
+            // 파싱 완료 데이터 변수 저장
             String userId = jsonRequest.get("userId");
             String userPw = jsonRequest.get("userPw");
-
-            System.out.println("userId : " + userId);
-            System.out.println("userPw : " + userPw);
-
-
-
+//            System.out.println("userId : " + userId);
+//            System.out.println("userPw : " + userPw);
             // 인증 토큰 생성
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, userPw, null);
-
+            // 인증 토큰 넣어서 인가 리턴
             return authenticationManager.authenticate(authToken);
-
         } catch (IOException e) {
             throw new AuthenticationException("Failed to read request body") {};
         }
@@ -74,31 +68,23 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String username = customUserDetails.getUsername();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = authorities.iterator().next().getAuthority();
-        System.out.println(role);
-
+        //System.out.println(role);
         // 만료 시간 (30분)
         long tokenValidity = 30 * 60 * 1000L; // 30분을 밀리초로 설정
-
         // JWT 토큰 생성
         String token = jwtUtil.createJwt(username, role, tokenValidity, userNo, name);
-
         // 응답 헤더에 토큰을 추가
         response.addHeader("Authorization", "Bearer " + token);
-
         // TokenDTO 객체 생성
         TokenDTO dto = new TokenDTO();
         dto.setAccessToken(token);
         dto.setUserNo(userNo);
-
-
         // 응답을 JSON 형식으로 설정
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
         // ObjectMapper를 이용해 JSON 응답
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(dto);
-
         // 응답 본문에 accessToken을 JSON 형식으로 추가
         response.getWriter().write(jsonResponse);
     }
