@@ -108,7 +108,10 @@ const AccountList = ({ type }) => {
                 <Link to={`/account/detail/${account.accountNumber}`}>
                   <button className="list-detail-button">상세</button>
                 </Link>
-                <button className="list-transfer-button" onClick={() => handleTransferClick(account.accountNumber)}>이체</button>
+                {/* 적금 계좌가 아닐 경우에만 이체 버튼 표시 */}
+                {type !== '적금' && (
+                  <button className="list-transfer-button" onClick={() => handleTransferClick(account.accountNumber)}>이체</button>
+                )}
               </div>
             </div>
           ))
