@@ -1,17 +1,13 @@
 package com.urambank.uram.service;
 
-import com.urambank.uram.dto.LoanDTO;
-import com.urambank.uram.dto.LoanProductDTO;
-import com.urambank.uram.dto.UserDTO;
-import com.urambank.uram.entities.LoanEntity;
-import com.urambank.uram.entities.LoanProductEntity;
-import com.urambank.uram.entities.User;
-import com.urambank.uram.repository.LoanProductRepository;
-import com.urambank.uram.repository.LoanRepository;
-import com.urambank.uram.repository.UserRepository;
+import com.urambank.uram.dto.*;
+import com.urambank.uram.entities.*;
+import com.urambank.uram.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +17,8 @@ public class LoanServiece {
     private final LoanProductRepository loanProductRepository;
     private final UserRepository userRepository;
     private final LoanRepository loanRepository;
+    private final AccountRepository accountRepository;
+    private final AutoTransferRepository autoTransferRepository;
 
     public List<LoanProductDTO> loanProductList(){
         List<LoanProductEntity> eList = loanProductRepository.findByViewPoint('Y');
@@ -82,5 +80,67 @@ public class LoanServiece {
         }
 
         return resultNo;
+    }
+
+    public List<AccountDTO> userAccountList(int userNo){
+        String state = "NORMAL";
+        List<AccountEntity> eList = accountRepository.findByUserNoAndAccountState(userNo, state);
+        List<AccountDTO> list = new ArrayList<>();
+
+        for (AccountEntity eDto : eList){
+            AccountDTO dto = AccountDTO.builder()
+                    .accountNo(eDto.getAccountNo())
+                    .accountNumber(eDto.getAccountNumber())
+                    .build();
+            list.add(dto);
+        }
+
+        return list ;
+    }
+
+    public int userLoanJoin(LoanDTO dto){
+        int a = 0;
+        LoanEntity eDto = LoanEntity.builder()
+                .loanProductNo(dto.getLoanProductNo())
+                .userNo(dto.getUserNo())
+                .repaymentType(dto.getRepaymentType())
+                .loanTern(dto.getLoanTern())
+                .loanAmount(dto.getLoanAmount())
+                .loanInterest(dto.getLoanInterest())
+                .interestRate(dto.getInterestRate())
+                .loanStatus("NORMAL")
+                .loanJoinDate(Date.valueOf(LocalDate.now()))
+                .build();
+
+        LoanEntity l = loanRepository.save(eDto);
+        if(l != null){
+            return a=1;
+        }
+        return a;
+    }
+
+    public int userAuto_TransferJoin(AutoTransferDTO autoTransferDTO, LoanDTO loanDTO){
+        int a =0;
+        int price = (loanDTO.getLoanAmount() + loanDTO.getLoanInterest()) / loanDTO.getLoanTern();
+        LocalDate startDate = LocalDate.now().plusMonths(1).withDayOfMonth(autoTransferDTO.getTransferDay());
+        LocalDate endDate = startDate.plusMonths(loanDTO.getLoanTern());
+        System.out.println(price);
+        AutoTransferEntity eDto = AutoTransferEntity.builder()
+                .accountNo(autoTransferDTO.getAccountNo())
+                .receiveAccountNo(autoTransferDTO.getReceiveAccountNo())
+                .reservationState("ACTIVE")
+                .reservationDate(LocalDate.now())
+                .autoSendPrice(price)
+                .startDate(startDate)
+                .endDate(endDate)
+                .transferDay(autoTransferDTO.getTransferDay())
+                .toBankName(autoTransferDTO.getToBankName())
+                .autoAgreement('Y')
+                .build();
+        AutoTransferEntity l = autoTransferRepository.save(eDto);
+        if(l != null){
+            return a =1;
+        }
+        return a;
     }
 }

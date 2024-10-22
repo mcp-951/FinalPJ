@@ -1,14 +1,9 @@
 package com.urambank.uram.controller;
 
-import com.urambank.uram.dto.LoanDTO;
-import com.urambank.uram.dto.LoanProductDTO;
-import com.urambank.uram.dto.UserDTO;
+import com.urambank.uram.dto.*;
 import com.urambank.uram.service.LoanServiece;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,9 +29,32 @@ public class LoanController {
         return loanServiec.userInfo(userNo);
     }
 
-    @GetMapping("apply/join/{userNo}/{loanProductNo}")
+    @GetMapping("/apply/join/{userNo}/{loanProductNo}")
     public int loanInfo(@PathVariable("userNo") int userNo, @PathVariable("loanProductNo") int loanProductNo) {
         System.out.println(userNo + loanProductNo + "하이이");
         return loanServiec.loanJoinCheck(userNo, loanProductNo);
+    }
+
+    @GetMapping("/apply/account/{userNo}")
+    public List<AccountDTO> userAccountList (@PathVariable("userNo") int userNo) {
+        return loanServiec.userAccountList(userNo);
+    }
+
+    @PostMapping("/apply/send")
+    public int applyLoan (@RequestBody RequestPayload requestPayload){
+        int a =0;
+        LoanDTO loanDTO = requestPayload.getLoanDTO();
+        int result_join = loanServiec.userLoanJoin(loanDTO);
+
+        AutoTransferDTO autoTransferDTO = requestPayload.getAutoTransferDTO();
+        int result_join2 = loanServiec.userAuto_TransferJoin(autoTransferDTO, loanDTO);
+        
+        if (result_join == 1 && result_join2 ==1){
+            System.out.println("성공");
+
+            return a =1;
+        }
+
+        return a;
     }
 }

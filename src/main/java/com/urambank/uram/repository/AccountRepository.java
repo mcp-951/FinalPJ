@@ -15,6 +15,7 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
 
     List<AccountEntity> findByUserNo(int userNo);
+    List<AccountEntity> findByUserNoAndAccountState(int userNo, String accountState);
 
     // 전체 계좌 반환
     @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, " +
@@ -82,7 +83,7 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     List<AccountEntity> findAccountsWithDeposit(@Param("userNo") int userNo, @Param("state") String state);
 
 
-    List<AccountEntity> findByUserNoAndAccountState(@Param("userNo")int userNo,@Param("accountState") String accountState);
+
 
     // userNo와 accountNo로 계좌 찾기
     @Query("SELECT a FROM AccountEntity a WHERE a.userNo = :userNo AND a.accountNo = :accountNo")
