@@ -28,7 +28,7 @@
 
 /* 라벨 스타일 */
 .exlabel {
-    background-color: #4A90E2; /* 테마 색상 적용 */
+    background-color: #74a1d2; /* 테마 색상 적용 */
     padding: 10px;
     margin-bottom: 10px;
     width: 100%; 
@@ -69,7 +69,7 @@
 /* 비밀번호 확인 버튼 */
 .password-button {
     padding: 10px 20px; 
-    background-color: #4A90E2; /* 테마 색상 적용 */
+    background-color: #74a1d2; /* 테마 색상 적용 */
     border: none;
     color: white;
     cursor: pointer;
@@ -78,14 +78,14 @@
 }
 
 .password-button:hover {
-    background-color: #4179c5; /* 호버 시 어두운 파란색 */
+    background-color: #5d95d1; /* 호버 시 어두운 파란색 */
 }
 
 /* 확인 버튼 스타일 (환전 신청 버튼) */
 .OkBtn {
     width: auto;
     padding: 10px 30px;
-    background-color: #4A90E2; /* 테마 색상 적용 */
+    background-color: #74a1d2; /* 테마 색상 적용 */
     border: none;
     color: white;
     cursor: pointer;
@@ -96,7 +96,7 @@
 }
 
 .OkBtn:hover {
-    background-color: #4179c5; /* 호버 시 어두운 파란색 */
+    background-color: #5d95d1; /* 호버 시 어두운 파란색 */
 }
 
 /* 반응형 디자인 - 작은 화면에서 세로로 배치 */

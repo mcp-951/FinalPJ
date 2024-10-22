@@ -110,20 +110,7 @@ function Navbar() {
                                     </div>
                                 )}
                             </li>
-                            <li onClick={() => toggleDropdown('asset')}>
-                                <div>자산관리</div>
-                                {activeDropdown === 'asset' && (
-                                    <div className="dropdown_menu show">
-                                        <div className="dropdown_menu_div">
-                                            <ul>
-                                                <li><a href="/myAsset">자산현황</a></li>
-                                                <li><a href="/asset-calendar">자산캘린더</a></li>
-                                                <li><a href="/AssetsAnalysis">자산분석</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                )}
-                            </li>
+                           
                             <li onClick={moveInvestment}>
                                 <div>투자</div>
                             </li>

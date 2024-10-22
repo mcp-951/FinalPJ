@@ -92,6 +92,8 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     // 계좌 리스트 불러오기
     List<AccountEntity> findByAccountState(String accountState);
 
+
+
     @Modifying
     @Transactional
     @Query("UPDATE AccountEntity a SET a.accountState = :accountState WHERE a.accountNo = :accountNo")
