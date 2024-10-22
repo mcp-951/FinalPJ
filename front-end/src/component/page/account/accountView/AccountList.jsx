@@ -87,30 +87,30 @@ const AccountList = ({ type }) => {
   return (
     <div>
       <h5>{type} 계좌 조회 | 총 잔액: {accounts.reduce((acc, account) => acc + (account.accountBalance || 0), 0).toLocaleString()}원</h5>
-      <div className="account-list-container">
+      <div className="AccountList-container">
         {error ? (
           <p>{error}</p>
         ) : accounts.length > 0 ? (
           accounts.map((account) => (
-            <div className="account-list-box" key={account.accountNumber}>
-              <div className="list-more-icon" onClick={() => handleMoreClick(account)}>
+            <div className="AccountList-box" key={account.accountNumber}>
+              <div className="AccountList-more-icon" onClick={() => handleMoreClick(account)}>
                 <FaEllipsisV />
               </div>
 
-              <div className="account-list-number-section">
-                <Link to={`/account/detail/${account.accountNumber}`} className="account-list-number">
+              <div className="AccountList-number-section">
+                <Link to={`/account/detail/${account.accountNumber}`} className="AccountList-number">
                   <span>계좌번호: {account.accountNumber} | 계좌명: {account.depositName}</span>
                 </Link>
-                <div className="account-list-balance">잔액: {account.accountBalance.toLocaleString()}원</div>
+                <div className="AccountList-balance">잔액: {account.accountBalance.toLocaleString()}원</div>
               </div>
 
-              <div className="account-list-buttons">
+              <div className="AccountList-buttons">
                 <Link to={`/account/detail/${account.accountNumber}`}>
-                  <button className="list-detail-button">상세</button>
+                  <button className="AccountList-detail-button">상세</button>
                 </Link>
                 {/* 적금 계좌가 아닐 경우에만 이체 버튼 표시 */}
                 {type !== '적금' && (
-                  <button className="list-transfer-button" onClick={() => handleTransferClick(account.accountNumber)}>이체</button>
+                <button className="AccountList-transfer-button" onClick={() => handleTransferClick(account.accountNumber)}>이체</button>
                 )}
               </div>
             </div>

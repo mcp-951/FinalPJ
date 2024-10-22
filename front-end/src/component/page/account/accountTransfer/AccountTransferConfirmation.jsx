@@ -38,7 +38,7 @@ const AccountTransferConfirmation = () => {
       try {
         const response = await axios.get('http://localhost:8081/uram/recipient-name', {
           params: {
-            accountNumber: targetAccountNumber, // String 타입
+            accountNumber: targetAccountNumber,
             bankName: selectedBank,
           },
           headers: {
@@ -66,30 +66,18 @@ const AccountTransferConfirmation = () => {
       return;
     }
   
-    // 잔액 계산: 이체 후 남은 잔액 계산
     const remainingBalance = availableBalance - parseInt(transferAmount, 10);
-  
-    // 서버로 전송할 데이터 확인 (디버깅용 로그)
-    console.log('전송할 데이터:', {
-      fromAccountNumber: selectedAccount, // String 타입
-      toBankName: selectedBank,
-      toAccountNumber: targetAccountNumber, // String 타입
-      transferAmount: transferAmount, // String 그대로 사용
-      password: password, // String 타입
-      userNo: userNo, // String 타입
-    });
-  
-    // 이체 처리 API 호출
+
     try {
       const response = await axios.post(
         'http://localhost:8081/uram/transfer',
         {
-          fromAccountNumber: selectedAccount, // String 타입 유지
+          fromAccountNumber: selectedAccount,
           toBankName: selectedBank,
-          toAccountNumber: targetAccountNumber, // String 타입 유지
-          transferAmount: transferAmount, // String 타입
-          password: password, // String 타입으로 전송
-          userNo: userNo, // String 타입으로 전송
+          toAccountNumber: targetAccountNumber,
+          transferAmount: transferAmount,
+          password: password,
+          userNo: userNo,
         },
         {
           headers: {
@@ -100,7 +88,6 @@ const AccountTransferConfirmation = () => {
       );
   
       if (response.status === 200) {
-        // 이체 완료 후 이체 완료 페이지로 이동
         navigate('/account/transfer-complete', {
           state: {
             selectedAccount,
@@ -108,7 +95,7 @@ const AccountTransferConfirmation = () => {
             targetAccountNumber,
             transferAmount,
             remainingBalance,
-            recipientName, // 수신자 이름 전달
+            recipientName,
           },
         });
       } else {
@@ -122,21 +109,19 @@ const AccountTransferConfirmation = () => {
       }
     }
   };
-  
 
-  // 취소 버튼 클릭 시 메인 페이지로 이동
   const handleCancel = () => {
     navigate('/'); // 메인 페이지로 이동
   };
 
   return (
-    <div className="confirmation-container">
+    <div className="AccountTransferConfirmation-container">
       <h2>계좌이체</h2>
-      <p className="confirmation-message">
+      <p className="AccountTransferConfirmation-message">
         {`${recipientName || '수신자'}님께 ${transferAmount.toLocaleString()}원 이체하시겠습니까?`}
       </p>
 
-      <table className="confirmation-table">
+      <table className="AccountTransferConfirmation-table">
         <thead>
           <tr>
             <th>No</th>
@@ -154,16 +139,16 @@ const AccountTransferConfirmation = () => {
             <td>{selectedBank}</td>
             <td>{targetAccountNumber}</td>
             <td>{transferAmount.toLocaleString()}원</td>
-            <td>{recipientName || '정보 없음'}</td> {/* 수신자 이름 출력 */}
+            <td>{recipientName || '정보 없음'}</td>
           </tr>
         </tbody>
       </table>
 
-      <div className="confirmation-buttons">
-        <button className="confirm-button" onClick={handleConfirm}>
+      <div className="AccountTransferConfirmation-buttons">
+        <button className="AccountTransferConfirmation-confirm-button" onClick={handleConfirm}>
           확인
         </button>
-        <button className="cancel-button" onClick={handleCancel}>
+        <button className="AccountTransferConfirmation-cancel-button" onClick={handleCancel}>
           취소
         </button>
       </div>

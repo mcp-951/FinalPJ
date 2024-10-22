@@ -1,0 +1,68 @@
+.AdLoanProduct-container {
+  display: flex;
+}
+
+.AdLoanProduct-main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.AdLoanProduct-product-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.AdLoanProduct-register-button {
+  padding: 10px 15px;
+  background-color: #74a1d2; /* 색상 적용 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.AdLoanProduct-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AdLoanProduct-table th, 
+.AdLoanProduct-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.AdLoanProduct-table th {
+  background-color: #f2f2f2;
+}
+
+.AdLoanProduct-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.AdLoanProduct-edit-button {
+  padding: 5px 10px;
+  background-color: #74a1d2; /* 색상 적용 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdLoanProduct-delete-button {
+  padding: 5px 10px;
+  background-color: #74a1d2; /* 삭제 버튼 색상 유지 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdLoanProduct-table td {
+  white-space: nowrap;
+}

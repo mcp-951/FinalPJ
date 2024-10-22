@@ -20,6 +20,7 @@
   transition: background-color 0.3s ease;
 }
 
+
 .topBtn:hover {
   background-color: #0056b3; /* 버튼 hover 시 색상 변화 */
 }
@@ -134,3 +135,4 @@
 .chatbotFooter button:hover {
   background-color: #5d95d1;
 }
+

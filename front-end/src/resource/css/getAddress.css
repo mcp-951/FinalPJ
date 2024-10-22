@@ -1,0 +1,46 @@
+.getAddress-container {
+    width: 100%;
+    max-width: 500px; /* 팝업 크기에 맞춘 너비 */
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 0; /* 전체 패딩 제거 */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+.getAddress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* 아래 여백을 줄임 */
+    padding: 10px 20px; /* 헤더의 좌우 패딩 추가 */
+}
+
+.getAddress-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.getAddress-close {
+    background-color: #74a1d2;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.getAddress-close:hover {
+    background-color: #5b8ab8;
+}
+
+.getAddress-postcode {
+    width: 100%;
+    border: none;
+    height: 400px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0; /* 아래 여백 제거 */
+}

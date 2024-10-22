@@ -8,101 +8,121 @@ import { IoCloseSharp } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import SearchBar from './searchBar/SearchBar';  // SearchBar 경로 확인 후 추가
 
-function Navbar(){
+function Navbar() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
     const handleLogout = () => {
-        console.log(token);
         localStorage.clear();
         window.location.reload();
     };
 
     const [searchOpen, setSearchOpen] = useState(false);
+    const [activeDropdown, setActiveDropdown] = useState(null); // 활성화된 드롭다운 상태
 
     const handleSearchBar = () => {
         setSearchOpen(!searchOpen);
     };
+
+    const toggleDropdown = (menu) => {
+        if (activeDropdown === menu) {
+            setActiveDropdown(null); // 같은 메뉴 클릭 시 닫힘
+        } else {
+            setActiveDropdown(menu); // 해당 메뉴 열림
+        }
+    };
+
     const moveInvestment = () => {
-        navigate('/investment')
-    }
+        navigate('/investment');
+    };
+
     const navMyPage = () => {
         navigate('/mypage');
-    }
+    };
 
     return (
         <>
             {!searchOpen ? (
                 <div className="navbar_header">
                     <div className="nav_logo">
-                        <a href='/'><img src="/images/main/logo2.png" /></a>
+                        <a href='/'><img src="/images/main/logo2.png" alt="로고" /></a>
                     </div>
                     <div className='nav_menu'>
                         <ul>
-                            <li>
+                            <li onClick={() => toggleDropdown('account')}>
                                 <div>계좌</div>
-                                <div className="dropdown_menu">
-                                    <div className="dropdown_menu_div">
-                                        <ul>
-                                            <li><a href="/accounts">전체계좌조회</a></li>
-                                            <li><a href="/account/password-check?purpose=password-change">비밀번호 변경</a></li>
-                                            <li><a href="/account/password-check?purpose=close-account">계좌해지</a></li>
-                                            <li><a href="/account/password-check?purpose=limit-inquiry">이체한도 조회</a></li>
-                                            <li><a href="/account/transfer">이체</a></li>
-                                            <li><a href='/auto-transfer/register'>자동이체 등록</a></li>
-                                            <li><a href='/auto-transfer/list'>자동이체 조회</a></li>
-                                        </ul>
+                                {activeDropdown === 'account' && (
+                                    <div className="dropdown_menu show">
+                                        <div className="dropdown_menu_div">
+                                            <ul>
+                                                <li><a href="/accounts">전체계좌조회</a></li>
+                                                <li><a href="/account/password-check?purpose=password-change">비밀번호 변경</a></li>
+                                                <li><a href="/account/password-check?purpose=close-account">계좌해지</a></li>
+                                                <li><a href="/account/password-check?purpose=limit-inquiry">이체한도 조회</a></li>
+                                                <li><a href="/account/transfer">이체</a></li>
+                                                <li><a href='/auto-transfer/register'>자동이체 등록</a></li>
+                                                <li><a href='/auto-transfer/list'>자동이체 조회</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </li>
-                            <li>
+                            <li onClick={() => toggleDropdown('finance')}>
                                 <div>금융상품</div>
-                                <div className="dropdown_menu">
-                                    <div className="dropdown_menu_div">
-                                        <ul>
-                                            <li><a href='/deposit-list'>상품 리스트</a></li>
-                                            <li><a href='/DepositSearch'>중도출금</a></li>
-                                            <li><a href='/loanmain'>대출상품 리스트</a></li>
-                                            <li><a href='/Repayment'>중도상환</a></li>
-                                            <li><a href='/Calculatior'>대출 이자계산기</a></li>
-                                        </ul>
+                                {activeDropdown === 'finance' && (
+                                    <div className="dropdown_menu show">
+                                        <div className="dropdown_menu_div">
+                                            <ul>
+                                                <li><a href='/deposit-list'>상품 리스트</a></li>
+                                                <li><a href='/DepositMain'>상품 메인</a></li>
+                                                <li><a href='/loanmain'>대출상품 리스트</a></li>
+                                                <li><a href='/Repayment'>중도상환</a></li>
+                                                <li><a href='/Calculatior'>대출 이자계산기</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </li>
-                            <li>
+                            <li onClick={() => toggleDropdown('exchange')}>
                                 <div>외환</div>
-                                <div className="dropdown_menu">
-                                    <div className="dropdown_menu_div">
-                                        <ul>
-                                            <li><a href="/exchange-rate">실시간 환율</a></li>
-                                            <li><a href="/exchange">환전 신청</a></li>
-                                            <li><a href="/exchangeList">환전 내역</a></li>
-                                        </ul>
+                                {activeDropdown === 'exchange' && (
+                                    <div className="dropdown_menu show">
+                                        <div className="dropdown_menu_div">
+                                            <ul>
+                                                <li><a href="/exchange-rate">실시간 환율</a></li>
+                                                <li><a href="/exchange">환전 신청</a></li>
+                                                <li><a href="/exchangeList">환전 내역</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </li>
-                            <li>
+                            <li onClick={() => toggleDropdown('tax')}>
                                 <div>공과금</div>
-                                <div className="dropdown_menu">
-                                    <div className="dropdown_menu_div">
-                                        <ul>
-                                            <li><a href="/tax/elec">공과금 납부</a></li>
-                                            <li><a href="/tax/History">이용 내역</a></li>
-                                        </ul>
+                                {activeDropdown === 'tax' && (
+                                    <div className="dropdown_menu show">
+                                        <div className="dropdown_menu_div">
+                                            <ul>
+                                                <li><a href="/tax/elec">공과금 납부</a></li>
+                                                <li><a href="/tax/History">이용 내역</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </li>
-                            <li>
+                            <li onClick={() => toggleDropdown('asset')}>
                                 <div>자산관리</div>
-                                <div className="dropdown_menu">
-                                    <div className="dropdown_menu_div">
-                                        <ul>
-                                            <li><a href="/myAsset">자산현황</a></li>
-                                            <li><a href="/asset-calendar">자산캘린더</a></li>
-                                            <li><a href="/AssetsAnalysis">자산분석</a></li>
-                                        </ul>
+                                {activeDropdown === 'asset' && (
+                                    <div className="dropdown_menu show">
+                                        <div className="dropdown_menu_div">
+                                            <ul>
+                                                <li><a href="/myAsset">자산현황</a></li>
+                                                <li><a href="/asset-calendar">자산캘린더</a></li>
+                                                <li><a href="/AssetsAnalysis">자산분석</a></li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </li>
                             <li onClick={moveInvestment}>
                                 <div>투자</div>

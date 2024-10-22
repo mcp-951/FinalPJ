@@ -1,0 +1,107 @@
+.AdDepositProduct-app-container {
+  display: flex;
+}
+
+.AdDepositProduct-main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.AdDepositProduct-product-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.AdDepositProduct-search-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.AdDepositProduct-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.AdDepositProduct-search-bar input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.AdDepositProduct-search-bar select, 
+.AdDepositProduct-search-button {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #74a1d2; /* 버튼 색상 적용 */
+  color: white;
+  cursor: pointer;
+}
+
+.AdDepositProduct-register-button {
+  padding: 10px 15px;
+  background-color: #74a1d2; /* 버튼 색상 적용 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdDepositProduct-edit-button {
+  padding: 5px 10px;
+  background-color: #74a1d2; /* 버튼 색상 적용 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdDepositProduct-delete-button {
+  padding: 5px 10px;
+  background-color: #74a1d2; /* 삭제 버튼은 유지 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdDepositProduct-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AdDepositProduct-table th, 
+.AdDepositProduct-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.AdDepositProduct-table th {
+  background-color: #f2f2f2;
+}
+
+.AdDepositProduct-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* 버튼 가로 정렬 */
+.AdDepositProduct-table td {
+  white-space: nowrap; /* 버튼이 한 줄에 오도록 */
+}
+
+.AdDepositProduct-pagination-controls {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.AdDepositProduct-pagination-controls select {
+  margin-left: 10px;
+  padding: 5px;
+}

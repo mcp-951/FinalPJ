@@ -59,6 +59,7 @@ const AutoTransferList = () => {
         });
       }
     } catch (error) {
+      // 백엔드에서 넘어온 에러 메시지 표시
       if (error.response && error.response.status === 400) {
         alert(error.response.data); // 백엔드의 오류 메시지를 사용자에게 보여줌 (24시간 이내로 변경 불가 등)
       } else {
@@ -87,6 +88,7 @@ const AutoTransferList = () => {
         });
       }
     } catch (error) {
+      // 백엔드에서 넘어온 에러 메시지 표시
       if (error.response && error.response.status === 400) {
         alert(error.response.data); // 백엔드의 오류 메시지를 사용자에게 보여줌 (24시간 이내로 해지 불가 등)
       } else {
@@ -96,15 +98,16 @@ const AutoTransferList = () => {
   };
 
   return (
-    <div className="auto-transfer-list-container">
+    <div className="AutoTransferList-container">
       <h2>자동이체 내역</h2>
       {autoTransfers.length > 0 ? (
-        <table className="auto-transfer-list-table">
+        <table className="AutoTransferList-table">
           <thead>
             <tr>
+              <th>자동이체 번호</th>
               <th>출금 계좌 번호</th>
               <th>입금 계좌 번호</th>
-              <th>입금 계좌주명</th> {/* 예금주명 추가 */}
+              <th>입금 계좌주명</th>
               <th>이체 금액</th>
               <th>예약 날짜</th>
               <th>자동이체 시작일</th>
@@ -115,31 +118,33 @@ const AutoTransferList = () => {
             </tr>
           </thead>
           <tbody>
-            {autoTransfers.map((transfer) => {
-              const fromAccountNumber = transfer.fromAccountDTO?.accountNumber || 'N/A';
-              const receiveAccountNumber = transfer.toAccountDTO?.accountNumber || transfer.outAccountDTO?.oAccountNumber || 'N/A';
-              const recipientName = transfer.toAccountDTO ? transfer.toAccountDTO.userName : transfer.outAccountDTO?.oUserName || 'N/A';
+            {autoTransfers.map((transferData) => {
+              const transfer = transferData.autoTransfer;
+              const fromAccountNumber = transferData.fromAccountNumber;
+              const receiveAccountNumber = transferData.receiveAccountNumber;
+              const recipientName = transferData.recipientName;
 
               return (
                 <tr key={transfer.autoTransNo}>
-                  <td>{fromAccountNumber}</td>
-                  <td>{receiveAccountNumber}</td>
-                  <td>{recipientName}</td> {/* 예금주명 표시 */}
-                  <td>{transfer.autoSendPrice.toLocaleString()}원</td>
-                  <td>{new Date(transfer.reservationDate).toLocaleDateString()}</td>
-                  <td>{new Date(transfer.startDate).toLocaleDateString()}</td>
-                  <td>{new Date(transfer.endDate).toLocaleDateString()}</td>
-                  <td>{transfer.reservationState}</td>
+                  <td>{transfer.autoTransNo}</td>
+                  <td>{fromAccountNumber !== -1 ? fromAccountNumber : 'N/A'}</td>
+                  <td>{receiveAccountNumber !== -1 ? receiveAccountNumber : 'N/A'}</td>
+                  <td>{recipientName ? recipientName : 'N/A'}</td>
+                  <td>{transfer.autoSendPrice ? transfer.autoSendPrice.toLocaleString() : 'N/A'}원</td>
+                  <td>{transfer.reservationDate ? new Date(transfer.reservationDate).toLocaleDateString() : 'N/A'}</td>
+                  <td>{transfer.startDate ? new Date(transfer.startDate).toLocaleDateString() : 'N/A'}</td>
+                  <td>{transfer.endDate ? new Date(transfer.endDate).toLocaleDateString() : 'N/A'}</td>
+                  <td>{transfer.reservationState || 'N/A'}</td>
                   <td>
                     <button
                       onClick={() => handleModifyClick(transfer.autoTransNo, fromAccountNumber)}
-                      className="modify-button"
+                      className="AutoTransferList-modify-button"
                     >
                       변경
                     </button>
                   </td>
                   <td>
-                    <button onClick={() => handleCancelClick(transfer.autoTransNo, fromAccountNumber)} className="cancel-button">
+                    <button onClick={() => handleCancelClick(transfer.autoTransNo, fromAccountNumber)} className="AutoTransferList-cancel-button">
                       해지
                     </button>
                   </td>
@@ -149,7 +154,7 @@ const AutoTransferList = () => {
           </tbody>
         </table>
       ) : (
-        <p>등록된 자동이체 내역이 없습니다.</p> // 자동이체 내역이 없을 때 표시
+        <p>등록된 자동이체 내역이 없습니다.</p>
       )}
     </div>
   );

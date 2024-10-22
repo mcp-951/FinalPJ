@@ -1,227 +1,276 @@
-/* AccountDetailPage.css */
-
-.account-detail-container {
-  width: 60%;
+/* 전체 컨테이너 */
+.AccountDetail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: #f4f4f9;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.account-detail-title {
+/* 상단 제목 */
+.AccountDetail-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
   text-align: center;
-  margin-bottom: 15px;
-  font-size: 22px;
+}
+
+/* 계좌 정보 섹션 */
+.AccountDetail-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.AccountDetail-number {
+  font-size: 1.4rem;
+  font-weight: bold;
   color: #333;
 }
 
-.account-detail-info {
-  display: flex;
-  justify-content: space-between;
-}
-
-.account-number-section {
-  width: 60%;
-}
-
-.account-number-box,
-.account-detail-balance-box {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-bottom: 10px;
-  font-size: 16px;
-  background-color: #fff;
-  border-radius: 5px;
-}
-
-.right-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end; /* 버튼들을 오른쪽 정렬 */
-  width: 35%;
-}
-
-.account-detail-period {
-  font-size: 14px;
+.AccountDetail-balance-box {
+  font-size: 1.4rem;
   color: #666;
-  margin-bottom: 20px;
+  text-align: right;
 }
 
-.account-detail-action-buttons {
+.AccountDetail-action-buttons {
   display: flex;
-  justify-content: flex-end; /* 버튼들을 오른쪽으로 정렬 */
   gap: 10px;
 }
 
-.account-detail-action-button,
-.account-detail-transfer-button {
-  padding: 8px 16px;
-  background-color: #5a5a5a;
+.AccountDetail-transfer-button {
+  background-color: #74a1d2;
   color: white;
   border: none;
+  padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.account-detail-action-button:hover,
-.account-detail-transfer-button:hover {
-  background-color: #444;
+.AccountDetail-transfer-button:hover {
+  background-color: #5f90bf;
 }
 
-/* 총 입금금액, 총 출금금액 */
-.account-summary {
+/* 요약 섹션 */
+.AccountDetail-summary {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
   padding: 10px;
-  background-color: #f1f1f1;
-  margin-top: 10px;
-  border-radius: 5px;
 }
 
-.total-deposit,
-.total-withdraw {
-  font-size: 16px;
+.AccountDetail-summary .highlighted-text {
+  color: #74a1d2;
+  font-weight: bold;
 }
 
-.highlighted-text {
-  color: #007bff;
-}
-
-.account-detail-table {
+/* 거래 내역 테이블 */
+.AccountDetail-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 15px;
-}
-
-.account-detail-table th,
-.account-detail-table td {
-  padding: 8px;
-  border: 1px solid #ddd;
+  margin-top: 20px;
   text-align: center;
 }
 
-.account-detail-table th {
-  background-color: #5a5a5a;
-  color: white;
+.AccountDetail-table th, .AccountDetail-table td {
+  border: 1px solid #ddd;
+  padding: 15px;
+  text-align: center;
+  vertical-align: middle;
 }
 
-/* 페이징 처리와 목록 버튼을 세로로 가운데 정렬 */
-.account-detail-pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-}
-
-.pagination-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.account-detail-page-button,
-.account-detail-back-button {
-  padding: 8px 12px;
-  margin-top: 10px;
-  background-color: #5a5a5a;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.account-detail-back-button:hover,
-.account-detail-page-button:hover {
-  background-color: #444;
-}
-
-/* 달력 전체 크기 조정 */
-.react-calendar {
-  width: 100%;
-  max-width: 1200px; /* 원하는 최대 크기로 조정 */
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  font-family: Arial, sans-serif;
+.AccountDetail-table th {
+  background-color: #f4f4f4;
+  color: #333;
   font-size: 1rem;
 }
 
-/* 년도와 월 스타일 */
-.react-calendar__navigation {
+.AccountDetail-table td {
+  color: #666;
+  font-size: 1rem;
+}
+
+.AccountDetail-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.AccountDetail-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* 페이지네이션 버튼 */
+.AccountDetail-pagination {
+  margin-top: 20px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
+  justify-content: center;
 }
 
+.pagination-button {
+  background-color: #e0e0e0;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-button.active {
+  background-color: #74a1d2;
+  color: white;
+}
+
+.pagination-button:hover {
+  background-color: #b0c4de;
+}
+
+/* 목록으로 돌아가는 버튼 */
+.AccountDetail-back-button {
+  background-color: #ccc;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.AccountDetail-back-button:hover {
+  background-color: #aaa;
+}
+
+/* 캘린더 버튼 */
+.AccountDetail-action-button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.AccountDetail-action-button:hover {
+  background-color: #5f90bf;
+}
+
+/* 캘린더 스타일 */
+.react-calendar {
+  width: 100%;
+  max-width: 600px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  border: none;
+  font-family: Arial, sans-serif;
+}
+
+/* 캘린더 타일 기본 스타일 */
+.react-calendar__tile {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.react-calendar__tile:hover {
+  background-color: #e6f2ff;
+}
+
+/* 입금 표시된 날짜 타일 */
+.react-calendar__tile.deposit {
+  background-color: #74a1d2;
+  color: white;
+}
+
+/* 출금 표시된 날짜 타일 */
+.react-calendar__tile.withdraw {
+  background-color: #74a1d2;
+  color: white;
+}
+
+/* 오늘 날짜 타일 강조 */
+.react-calendar__tile--now {
+  background-color: #74a1d2 !important;
+  color: white !important;
+}
+
+/* 선택된 날짜 타일 */
+.react-calendar__tile--active {
+  background-color: #5b8bbb !important;
+  color: white !important;
+}
+
+/* 캘린더 헤더 (월, 연도 선택 부분) */
 .react-calendar__navigation button {
-  color: #333;
-  font-size: 1.2rem;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 0 5px;
+  cursor: pointer;
 }
 
-.react-calendar__navigation button:disabled {
-  color: #ccc;
+.react-calendar__navigation button:hover {
+  background-color: #5b8bbb;
 }
 
-/* 요일 스타일 */
+/* 요일 헤더 스타일 */
 .react-calendar__month-view__weekdays {
   text-align: center;
   font-weight: bold;
-  color: #555;
-  font-size: 1.2rem; /* 요일 크기 조정 */
+  color: #333;
 }
 
-/* 날짜 타일 크기 및 스타일 */
-.react-calendar__tile {
-  padding: 0.5rem; /* 날짜 타일 안쪽 여백을 줄여서 타일 크기 조정 */
-  text-align: center;
-  font-size: 0.8rem; /* 날짜 크기 조정 */
-  border-radius: 8px;
-  height: 80px; /* 타일의 세로 크기를 키워서 전체 상하 폭 조정 */
-  width: 80px; /* 타일의 가로 크기도 동일하게 설정 */
-  color: #333;  /* 기본 날짜 색상을 검은색으로 유지 */
+.react-calendar__month-view__weekdays__weekday {
+  padding: 10px;
 }
 
-/* 현재 날짜 스타일 */
-.react-calendar__tile--now {
-  background: #ffffe0; /* 현재 날짜 배경색 */
+/* 달력 내 네비게이션 화살표 버튼 스타일 */
+.react-calendar__navigation__arrow {
+  color: white;
 }
 
-/* 선택된 날짜 스타일 */
-.react-calendar__tile--active {
-  background: #ffd700; /* 선택된 날짜 배경색 */
-}
-
-/* 호버 시 선택 가능한 날짜 배경색 */
-.react-calendar__tile--hasActive:hover {
-  background: #ffa500;
-}
-
-/* 입금(파란색), 출금(빨간색) 스타일 */
-.react-calendar__tile.deposit {
-  color: blue; /* 입금일 파란색 */
-}
-
-.react-calendar__tile.withdraw {
-  color: red; /* 출금일 빨간색 */
-}
-
-/* 토요일은 파란색, 일요일은 빨간색 */
-.react-calendar__tile.saturday {
-  color: blue !important; /* 토요일 파란색 */
-}
-
-.react-calendar__tile.sunday {
-  color: red !important; /* 일요일 빨간색 */
-}
-
-/* 텍스트 색상 변경 */
-.red-text {
-  color: red;
-}
-
+/* 입금 표시 스타일 */
 .blue-text {
-  color: blue;
+  color: #ff3300;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
+/* 출금 표시 스타일 */
+.red-text {
+  color: #001aff;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* 입출금 내역 표시 공간 확보 */
+.react-calendar__tile {
+  position: relative;
+  height: auto;  /* 타일 높이 자동 조정 */
+}
+
+/* 타일 안의 텍스트 조그맣게 */
+.react-calendar__tile div {
+  font-size: 12px;  /* 작은 폰트 크기로 입출금 내역 표시 */
+  margin-top: 3px;
+}

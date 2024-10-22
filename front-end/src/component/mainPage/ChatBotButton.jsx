@@ -103,7 +103,7 @@ function ChatBotButton() {
                         <>
                             <div className="chatbotBody">
                                 <RiRobot2Line />
-                                <p>안녕하세요 사용자님! 무엇을 도와드릴까요!</p>
+                                <p>안녕하세요 사용자님! 무엇을 도와드릴까요?</p>
                                 <div id="messages">
                                     {messages.map((message, index) => (
                                         <div key={index} className={message.sender === 'User' ? 'userMessage' : 'botMessage'}>

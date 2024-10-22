@@ -1,6 +1,4 @@
-/* Modal.css */
-
-.modal-overlay {
+.Modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -12,44 +10,52 @@
   align-items: center;
 }
 
-.modal-content {
+.Modal-content {
   background-color: white;
   padding: 20px;
-  border-radius: 8px;
-  width: 300px;
+  border-radius: 10px;
+  width: 400px; /* 모달 너비를 살짝 넓힘 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-.modal-links {
+.Modal-links {
   list-style-type: none; /* 리스트 점 제거 */
   padding: 0;
   margin: 20px 0;
 }
 
-.modal-links li {
-  margin-bottom: 10px;
+.Modal-links li {
+  margin-bottom: 15px; /* 리스트 간격 증가 */
+  font-size: 16px;
 }
 
-.modal-links a {
-  color: #007bff;
+.Modal-links a {
+  color: #74a1d2;
   text-decoration: none;
+  padding: 10px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
-.modal-links a:hover {
+.Modal-links a:hover {
+  background-color: #f1f1f1;
   text-decoration: underline;
 }
 
-/* 닫기 버튼을 작게 만듦 */
-.close-button {
-  padding: 8px 16px;
-  background-color: #007bff;
+.Modal-close-button {
+  padding: 10px 20px;
+  background-color: #74a1d2;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px; /* 버튼 크기 조정 */
+  font-size: 16px;
+  margin-top: 20px;
 }
 
-.close-button:hover {
-  background-color: #0056b3;
+.Modal-close-button:hover {
+  background-color: #5b8bbb;
 }

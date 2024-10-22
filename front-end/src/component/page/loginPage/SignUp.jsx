@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import apiSer from '../../ApiService';
 import { useNavigate } from 'react-router-dom';
-import '../../../resource/css/login/SignUp.css';
+import '../../../resource/css/SignUp.css';
 
 function SignUp() {
     const [form, setForm] = useState({
@@ -377,6 +377,7 @@ function SignUp() {
                             type="text"
                             name="address1"
                             value={form.address1}
+                            onChange={handleChange}
                             className="SignUp-input"
                         />
                         <button type="button" onClick={openPopup} className="SignUp-button">검색</button>

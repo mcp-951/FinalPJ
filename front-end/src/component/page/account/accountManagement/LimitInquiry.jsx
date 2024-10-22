@@ -66,12 +66,12 @@ const LimitInquiry = () => {
   }
 
   return (
-    <div className="limit-inquiry-container">
+    <div className="LimitInquiry-container">
       <h2>이체한도 조회</h2>
 
       {errorMessage && <p className="error-message" style={{ color: 'red' }}>{errorMessage}</p>}
 
-      <table className="limit-info-table">
+      <table className="LimitInquiry-table">
         <tbody>
           <tr>
             <th>계좌번호</th>
@@ -88,8 +88,8 @@ const LimitInquiry = () => {
         </tbody>
       </table>
 
-      <div className="limit-change-button-container">
-        <button onClick={handleLimitChange} className="limit-change-button">
+      <div className="LimitInquiry-button-container">
+        <button onClick={handleLimitChange} className="LimitInquiry-button">
           이체한도 변경
         </button>
       </div>
