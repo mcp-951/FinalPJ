@@ -73,8 +73,9 @@ public class LoanServiece {
     }
 
     public int loanJoinCheck(int userNo, int loanProductNo){
-        LoanEntity eDto =  loanRepository.findByLoanProductNoAndUserNo(userNo, loanProductNo);
+        LoanEntity eDto =  loanRepository.findByLoanProductNoAndUserNo(loanProductNo, userNo);
         int resultNo = 0;
+
         if (eDto != null){
             resultNo = 1;
         }

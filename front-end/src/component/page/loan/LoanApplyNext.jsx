@@ -68,7 +68,7 @@ function LoanApplyNext () {
                         }
                     });
                     const data = response.data;
-
+                    console.log(data + "가입했는지 안했는지!!!!");
                     if (data === 1) {
                         alert("같은 대출 상품은 한번만 가입 가능합니다.");
                         navigate('/');
