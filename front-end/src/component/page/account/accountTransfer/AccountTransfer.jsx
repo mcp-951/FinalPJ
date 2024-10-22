@@ -295,7 +295,7 @@ const AccountTransfer = () => {
                     )}
                   </select>
                   <button type="button" onClick={handleCheckBalance} className="balance-button">
-                  출금가능금액
+                    출금가능금액
                   </button>
                   {availableBalance !== null ? (
                     <span className="balance-info">{availableBalance.toLocaleString()}원</span>
@@ -311,6 +311,7 @@ const AccountTransfer = () => {
                 <select
                   value={selectedBank}
                   onChange={(e) => setSelectedBank(e.target.value)}
+                  disabled={isAccountValid} // 계좌 확인 후 은행명 변경 불가
                 >
                   <option value="">은행명 선택</option>
                   <option value="동명은행">동명은행</option>
@@ -327,8 +328,11 @@ const AccountTransfer = () => {
                   value={targetAccountNumber}
                   onChange={handleAccountNumberChange}
                   placeholder="입금 계좌번호 입력"
+                  disabled={isAccountValid} // 계좌 확인 후 계좌번호 변경 불가
                 />
-                <button type="button" onClick={handleAccountCheck}>계좌 확인</button>
+                <button type="button" onClick={handleAccountCheck} disabled={isAccountValid}>
+                  계좌 확인
+                </button>
                 {isAccountValid === true && <span className="valid-check">✔ 계좌 유효</span>}
                 {errorMessages.targetAccountNumber && <span className="error-message">{errorMessages.targetAccountNumber}</span>}
               </td>

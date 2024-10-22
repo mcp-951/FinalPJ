@@ -398,6 +398,7 @@ const AutoTransferRegister2 = () => {
                 <select
                   value={selectedAutoBank}
                   onChange={(e) => setSelectedAutoBank(e.target.value)}
+                  disabled={isAutoAccountValid} // 계좌 확인 후 은행명 변경 불가
                 >
                   <option value="">은행명 선택</option>
                   <option value="동명은행">동명은행</option>
@@ -414,8 +415,11 @@ const AutoTransferRegister2 = () => {
                   value={autoTargetAccount}
                   onChange={handleAutoTargetAccountChange}
                   placeholder="입금 계좌번호 입력"
+                  disabled={isAutoAccountValid} // 계좌 확인 후 계좌번호 변경 불가
                 />
-                <button type="button" onClick={handleAutoAccountCheck}>계좌 확인</button>
+                <button type="button" onClick={handleAutoAccountCheck} disabled={isAutoAccountValid}>
+                  계좌 확인
+                </button>
                 {isAutoAccountValid === true && <span className="valid-check">✔ 계좌 유효</span>}
                 {recipientName && <span className="recipient-name">계좌주: {recipientName}</span>} {/* 계좌주명 표시 */}
                 {errorMessages.autoTargetAccount && <span className="error-message">{errorMessages.autoTargetAccount}</span>}
@@ -454,7 +458,7 @@ const AutoTransferRegister2 = () => {
                   placeholder="비밀번호 입력"
                   disabled={isAutoPasswordValid} // 비밀번호가 확인되면 비밀번호 입력 불가
                 />
-                <button type="button" onClick={handleAutoPasswordCheck}>
+                <button type="button" onClick={handleAutoPasswordCheck} disabled={isAutoPasswordValid}>
                   확인
                 </button>
                 {isAutoPasswordValid === true && <span className="valid-check">✔ 비밀번호 확인</span>}
