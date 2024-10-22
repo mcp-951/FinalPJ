@@ -49,7 +49,7 @@ const AdDepositProduct = () => {
   };
 
   const handleRegister = () => {
-    navigate('/admin/RegisterProduct');
+    navigate('/admin/adRegisterProduct');
   };
 
   return (
