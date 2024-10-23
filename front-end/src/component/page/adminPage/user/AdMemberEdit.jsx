@@ -10,9 +10,9 @@ const AdMemberEdit = () => {
   const { memberData } = location.state;
   const token = localStorage.getItem("token");
 
+  // formData 초기값 설정
   const [formData, setFormData] = useState({
     userId: memberData.userId,
-    userPw: memberData.userPw || '',
     name: memberData.name,
     email: memberData.email,
     hp: memberData.hp,
@@ -23,6 +23,7 @@ const AdMemberEdit = () => {
     state: memberData.state
   });
 
+  // input 변경 처리
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -31,12 +32,16 @@ const AdMemberEdit = () => {
     });
   };
 
+  // 수정 제출
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    axios.put(`http://localhost:8081/admin/updateUser/${memberData.userNo}`, formData, {
+    console.log('수정할 데이터:', formData);  // 수정할 데이터 확인용
+
+    // 백엔드로 PUT 요청 전송
+    axios.put(`http://localhost:8081/admin/updateUser/${memberData.userNo}`, formData,{
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`  // Authorization 헤더에 JWT 추가
       }
     })
       .then(() => {
@@ -56,9 +61,6 @@ const AdMemberEdit = () => {
         <form className="AdMemberEdit-form" onSubmit={handleSubmit}>
           <label className="AdMemberEdit-label">아이디</label>
           <input className="AdMemberEdit-input" type="text" value={formData.userId} disabled />
-
-          <label className="AdMemberEdit-label">비밀번호</label>
-          <input className="AdMemberEdit-input" type="password" name="userPw" value={formData.userPw} onChange={handleInputChange} />
 
           <label className="AdMemberEdit-label">이름</label>
           <input className="AdMemberEdit-input" type="text" name="name" value={formData.name} onChange={handleInputChange} />

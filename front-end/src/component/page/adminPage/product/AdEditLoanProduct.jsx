@@ -8,7 +8,7 @@ const AdEditLoanProduct = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const loan = location.state?.loan || {}; // loan 데이터를 location.state에서 가져오기
-
+ 
   const [formData, setFormData] = useState({
     loanProductNo: loan.loanProductNo || '', // 상품 번호 (수정 불가)
     loanProductTitle: loan.loanProductTitle || '',  // 상품명
@@ -57,7 +57,7 @@ const AdEditLoanProduct = () => {
           <h2>대출 상품 수정</h2>
           <form onSubmit={handleSubmit}>
             <table className="edit-table">
-              <tbody>
+            <tbody>
                 <tr>
                   <td>상품 번호</td>
                   <td>
@@ -89,6 +89,8 @@ const AdEditLoanProduct = () => {
                       name="loanMaxLimit"
                       value={formData.loanMaxLimit}
                       onChange={handleChange}
+                       min="0"
+                       step="0.01"
                     />
                   </td>
                 </tr>
@@ -100,6 +102,8 @@ const AdEditLoanProduct = () => {
                       name="loanMinLimit"
                       value={formData.loanMinLimit}
                       onChange={handleChange}
+                       min="0"
+                       step="0.01"
                     />
                   </td>
                 </tr>
@@ -111,6 +115,7 @@ const AdEditLoanProduct = () => {
                       name="loanMaxTern"
                       value={formData.loanMaxTern}
                       onChange={handleChange}
+                      min="0"
                     />
                   </td>
                 </tr>
@@ -122,6 +127,7 @@ const AdEditLoanProduct = () => {
                       name="loanMinTern"
                       value={formData.loanMinTern}
                       onChange={handleChange}
+                       min="0"
                     />
                   </td>
                 </tr>
@@ -134,6 +140,7 @@ const AdEditLoanProduct = () => {
                       name="minInterestRate"
                       value={formData.minInterestRate}
                       onChange={handleChange}
+                       min="0"
                     />
                   </td>
                 </tr>
@@ -146,6 +153,7 @@ const AdEditLoanProduct = () => {
                       name="maxInterestRate"
                       value={formData.maxInterestRate}
                       onChange={handleChange}
+                       min="0"
                     />
                   </td>
                 </tr>
@@ -158,6 +166,7 @@ const AdEditLoanProduct = () => {
                       name="earlyRepaymentFee"
                       value={formData.earlyRepaymentFee}
                       onChange={handleChange}
+                       min="0"
                     />
                   </td>
                 </tr>
@@ -169,6 +178,8 @@ const AdEditLoanProduct = () => {
                       name="minCreditScore"
                       value={formData.minCreditScore}
                       onChange={handleChange}
+                       min="0"
+                       max="9"
                     />
                   </td>
                 </tr>

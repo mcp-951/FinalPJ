@@ -66,13 +66,13 @@ const Sidebar = () => {
                   <NavLink to="/admin/adTransactionHistory">거래 로그</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/adAccount">NORMAL 계좌</NavLink>
+                  <NavLink to="/admin/adAccount">정상 계좌</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/adAccountStop">STOP 계좌</NavLink>
+                  <NavLink to="/admin/adAccountStop">정지 계좌</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/admin/adAccountClosure">CLOSURE 계좌</NavLink>
+                  <NavLink to="/admin/adAccountClosure">해지 계좌</NavLink>
                 </li>
               </ul>
             )}

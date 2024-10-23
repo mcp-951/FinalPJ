@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import '../../../../resource/css/admin/AdAccount.css';
-import localStorage from 'localStorage';
 
 const AdAccount = () => {
   const [accounts, setAccounts] = useState([]);
   const [searchField, setSearchField] = useState('전체');
   const [searchTerm, setSearchTerm] = useState('');
-  const [displayCount, setDisplayCount] = useState(10);
+  const [displayCount, setDisplayCount] = useState(3);
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
+  const [totalPages, setTotalPages] = useState(1); // 총 페이지 수
   const token = localStorage.getItem("token");
 
   const fetchAccounts = () => {
@@ -45,25 +46,67 @@ const AdAccount = () => {
     });
   };
 
+  // 검색 및 필터링 로직
   const filteredList = accounts.filter(account => {
-    if (searchField === '계좌 종류') {
-      return account.productCategory.includes(searchTerm);
-    } else if (searchField === '계좌 번호') {
-      return account.accountNumber.toString().includes(searchTerm);
-    } else if (searchField === '유저No') {
-      return account.userNo.toString() === searchTerm;
-    } else if (searchField === '만든날짜') {
-      return new Date(account.accountOpen).toISOString().includes(searchTerm);
+    if (searchTerm.length < 2) {
+      return true; // 검색어가 두 글자 미만이면 필터링하지 않음
     }
-    return true;
-  }).slice(0, displayCount);
+
+    const lowerSearchTerm = searchTerm.toLowerCase();
+
+    switch (searchField) {
+      case '계좌 종류':
+        return account.productCategory?.toLowerCase().includes(lowerSearchTerm) || false;
+      case '계좌 번호':
+        return account.accountNumber?.toString().includes(lowerSearchTerm) || false;
+      case '유저 No':
+        return account.userNo?.toString() === searchTerm;
+      case '만든날짜':
+        return account.accountOpen ? new Date(account.accountOpen).toLocaleDateString().includes(searchTerm) : false;
+      case '전체':
+        return (
+          account.productCategory?.toLowerCase().includes(lowerSearchTerm) ||
+          account.accountNumber?.toString().includes(lowerSearchTerm) ||
+          account.userNo?.toString() === searchTerm ||
+          (account.accountOpen && new Date(account.accountOpen).toLocaleDateString().includes(searchTerm))
+        ) || false;
+      default:
+        return true;
+    }
+  });
+
+  // 페이지네이션 적용: 현재 페이지에 따른 계좌 목록
+  const startIndex = (currentPage - 1) * displayCount;
+  const endIndex = startIndex + displayCount;
+  const paginatedList = filteredList.slice(startIndex, endIndex); // 현재 페이지의 데이터 추출
+
+  useEffect(() => {
+    // 필터링된 데이터에 따라 총 페이지 수 계산
+    setTotalPages(Math.ceil(filteredList.length / displayCount));
+  }, [displayCount, filteredList]);
+
+  const handlePageChange = (pageNum) => {
+    if (pageNum > 0 && pageNum <= totalPages) {
+      setCurrentPage(pageNum);
+    }
+  };
+
+  // 페이지 번호 범위를 설정하는 함수
+  const getPageNumbers = () => {
+    const maxVisiblePages = 5; // 한 번에 표시할 페이지 버튼 수
+    let start = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let end = Math.min(totalPages, start + maxVisiblePages - 1);
+    start = Math.max(1, end - maxVisiblePages + 1);
+    
+    return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+  };
 
   return (
     <div className="AdAccount-container">
       <Sidebar />
       <div className="AdAccount-main-content">
         <div className="AdAccount-list-content">
-          <h2>NORMAL 계좌 관리</h2>
+          <h2>정상 계좌 관리</h2>
 
           <div className="AdAccount-search-controls">
             <div className="AdAccount-search-bar">
@@ -80,15 +123,15 @@ const AdAccount = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <button className="AdAccount-search-button">검색</button>
+      
             </div>
 
             <div className="AdAccount-pagination-controls">
               <label>표시 개수: </label>
               <select value={displayCount} onChange={(e) => setDisplayCount(Number(e.target.value))}>
-                <option value={10}>10 개</option>
-                <option value={50}>50 개</option>
-                <option value={100}>100 개</option>
+                <option value={3}>3 개</option>
+                <option value={5}>5 개</option>
+                <option value={7}>7 개</option>
               </select>
             </div>
           </div>
@@ -111,9 +154,9 @@ const AdAccount = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredList.map((account, index) => (
+              {paginatedList.map((account, index) => (
                 <tr key={account.accountNo}>
-                  <td>{index + 1}</td>
+                  <td>{startIndex + index + 1}</td>
                   <td>{account.userNo}</td>
                   <td>{account.accountNumber}</td>
                   <td>{account.bankName}</td>
@@ -131,6 +174,32 @@ const AdAccount = () => {
               ))}
             </tbody>
           </table>
+
+          <div className="AdAccount-pagination">
+            <button 
+              disabled={currentPage === 1} 
+              onClick={() => handlePageChange(1)}>{'<<'}</button>
+            <button 
+              disabled={currentPage === 1} 
+              onClick={() => handlePageChange(currentPage - 1)}>{'<'}</button>
+            
+            {getPageNumbers().map(pageNum => (
+              <button
+                key={pageNum}
+                className={pageNum === currentPage ? 'active' : ''}
+                onClick={() => handlePageChange(pageNum)}
+              >
+                {pageNum}
+              </button>
+            ))}
+            
+            <button 
+              disabled={currentPage === totalPages} 
+              onClick={() => handlePageChange(currentPage + 1)}>{'>'}</button>
+            <button 
+              disabled={currentPage === totalPages} 
+              onClick={() => handlePageChange(totalPages)}>{'>>'}</button>
+          </div>
         </div>
       </div>
     </div>

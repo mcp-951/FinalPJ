@@ -43,6 +43,14 @@
     border-radius: 4px;
   }
   
+  .AdRegisterProduct-table select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
   .AdRegisterProduct-button-group {
     display: flex;
     justify-content: flex-end;

@@ -112,43 +112,23 @@ const AdEditSavingsProduct = () => {
                 <tr>
                   <td>상품 종류</td>
                   <td>
-                    <input
-                      type="text"
+                    <select
                       name="depositCategory"
                       value={formData.depositCategory}
                       onChange={handleChange}
-                    />
+                    >
+                      <option value="1">예금</option>
+                      <option value="2">적금</option>
+                    </select>
                   </td>
                 </tr>
                 <tr>
-                  <td>최대 금액</td>
+                  <td>상품 설명</td>
                   <td>
                     <input
-                      type="number"
-                      name="depositMaximumAmount"
-                      value={formData.depositMaximumAmount}
-                      onChange={handleChange}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>최대 기간</td>
-                  <td>
-                    <input
-                      type="number"
-                      name="depositMaximumDate"
-                      value={formData.depositMaximumDate}
-                      onChange={handleChange}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>최대 금리</td>
-                  <td>
-                    <input
-                      type="number"
-                      name="depositMaximumRate"
-                      value={formData.depositMaximumRate}
+                      type="text"
+                      name="depositContent"
+                      value={formData.depositContent}
                       onChange={handleChange}
                     />
                   </td>
@@ -161,6 +141,21 @@ const AdEditSavingsProduct = () => {
                       name="depositMinimumAmount"
                       value={formData.depositMinimumAmount}
                       onChange={handleChange}
+                      min="0"
+                      step="0.01"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>최대 금액</td>
+                  <td>
+                    <input
+                      type="number"
+                      name="depositMaximumAmount"
+                      value={formData.depositMaximumAmount}
+                      onChange={handleChange}
+                      min="0"
+                      step="0.01"
                     />
                   </td>
                 </tr>
@@ -172,6 +167,19 @@ const AdEditSavingsProduct = () => {
                       name="depositMinimumDate"
                       value={formData.depositMinimumDate}
                       onChange={handleChange}
+                      min="0"
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>최대 기간</td>
+                  <td>
+                    <input
+                      type="number"
+                      name="depositMaximumDate"
+                      value={formData.depositMaximumDate}
+                      onChange={handleChange}
+                      min="0"
                     />
                   </td>
                 </tr>
@@ -183,17 +191,21 @@ const AdEditSavingsProduct = () => {
                       name="depositMinimumRate"
                       value={formData.depositMinimumRate}
                       onChange={handleChange}
+                      min="0"
+                      step="0.01"
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td>상품 설명</td>
+                  <td>최대 금리</td>
                   <td>
                     <input
-                      type="text"
-                      name="depositContent"
-                      value={formData.depositContent}
+                      type="number"
+                      name="depositMaximumRate"
+                      value={formData.depositMaximumRate}
                       onChange={handleChange}
+                      min="0"
+                     step="0.01"
                     />
                   </td>
                 </tr>

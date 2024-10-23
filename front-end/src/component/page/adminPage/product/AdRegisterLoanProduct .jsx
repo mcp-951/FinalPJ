@@ -24,7 +24,7 @@ const AdRegisterLoanProduct = () => {
   };
 
   const handleCancel = () => {
-    navigate('/admin/adLoanProduct'); // 취소 시 목록으로 이동
+    navigate(-1); // 취소 시 목록으로 이동
   };
 
   const handleRegister = async (e) => {
@@ -56,35 +56,35 @@ const AdRegisterLoanProduct = () => {
                 </tr>
                 <tr>
                   <td>최대 한도:</td>
-                  <td><input type="number" name="loanMaxLimit" value={formData.loanMaxLimit} onChange={handleChange} /></td>
+                  <td><input type="number" name="loanMaxLimit" value={formData.loanMaxLimit} onChange={handleChange} min="0" /></td>
                 </tr>
                 <tr>
                   <td>최소 한도:</td>
-                  <td><input type="number" name="loanMinLimit" value={formData.loanMinLimit} onChange={handleChange} /></td>
+                  <td><input type="number" name="loanMinLimit" value={formData.loanMinLimit} onChange={handleChange} min="0"/></td>
                 </tr>
                 <tr>
                   <td>최대 기간:</td>
-                  <td><input type="number" name="loanMaxTern" value={formData.loanMaxTern} onChange={handleChange} /></td>
+                  <td><input type="number" name="loanMaxTern" value={formData.loanMaxTern} onChange={handleChange} min="0"/></td>
                 </tr>
                 <tr>
                   <td>최소 기간:</td>
-                  <td><input type="number" name="loanMinTern" value={formData.loanMinTern} onChange={handleChange} /></td>
+                  <td><input type="number" name="loanMinTern" value={formData.loanMinTern} onChange={handleChange} min="0"/></td>
                 </tr>
                 <tr>
                   <td>최소 금리:</td>
-                  <td><input type="number" step="0.01" name="minInterestRate" value={formData.minInterestRate} onChange={handleChange} /></td>
+                  <td><input type="number" step="0.01" name="minInterestRate" value={formData.minInterestRate} onChange={handleChange} min="0" /></td>
                 </tr>
                 <tr>
                   <td>최대 금리:</td>
-                  <td><input type="number" step="0.01" name="maxInterestRate" value={formData.maxInterestRate} onChange={handleChange} /></td>
+                  <td><input type="number" step="0.01" name="maxInterestRate" value={formData.maxInterestRate} onChange={handleChange} min="0"/></td>
                 </tr>
                 <tr>
                   <td>중도 상환 수수료:</td>
-                  <td><input type="number" step="0.01" name="earlyRepaymentFee" value={formData.earlyRepaymentFee} onChange={handleChange} /></td>
+                  <td><input type="number" step="0.01" name="earlyRepaymentFee" value={formData.earlyRepaymentFee} onChange={handleChange} min="0"/></td>
                 </tr>
                 <tr>
                   <td>최소 신용등급:</td>
-                  <td><input type="number" name="minCreditScore" value={formData.minCreditScore} onChange={handleChange} /></td>
+                  <td><input type="number" name="minCreditScore" value={formData.minCreditScore} onChange={handleChange} min="0" max="9"/></td>
                 </tr>
               </tbody>
             </table>
