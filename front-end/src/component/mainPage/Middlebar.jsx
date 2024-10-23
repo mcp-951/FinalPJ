@@ -7,9 +7,8 @@ function Middlebar() {
             <ul>
                 <li><a href="/users/:userNo/accounts">계좌조회</a></li>
                 <li><a href="/exchange-rate">환율조회</a></li>
-                <li><a href="#">예적금</a></li>
-                <li><a href="#">투자정보</a></li>
-                <li><a href="#">이체</a></li>
+                <li><a href="/deposit-list">상품둘러보기</a></li>
+                <li><a href="/account/transfer">이체</a></li>
             </ul>
         </div>
     );

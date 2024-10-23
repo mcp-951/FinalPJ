@@ -25,6 +25,18 @@
   margin-bottom: 20px;
 }
 
+.AdLoanProduct-search-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.AdLoanProduct-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .AdLoanProduct-table {
   width: 100%;
   border-collapse: collapse;

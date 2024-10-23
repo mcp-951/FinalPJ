@@ -32,6 +32,7 @@ public interface DepositRepository extends JpaRepository<DepositEntity, Integer>
 
     // loanState가 "Y"인 대출 상품을 페이징 처리하여 반환하는 메서드
     Page<DepositEntity> findByDepositState(Character depositState, Pageable pageable);
+
     Optional<DepositEntity> findById(Integer depositNo);
 
 }

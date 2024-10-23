@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../Sidebar'; // Sidebar 추가
-import 'resource/css/admin/EditSavingsProduct.css'; // CSS 파일 추가
+import '../../../../resource/css/admin/AdRegisterProduct.css'; // CSS 파일 추가
 
 const AdRegisterProduct = () => {
   const navigate = useNavigate();
@@ -17,8 +17,7 @@ const AdRegisterProduct = () => {
     depositMinimumRate: '',
     depositMaximumRate: '',
     depositMinimumDate: '',
-    depositMaximumDate: '',
-    depositState: '' // 추가된 상태 필드
+    depositMaximumDate: '', // 추가된 상태 필드
   });
 
   const handleChange = (e) => {
@@ -46,13 +45,13 @@ const AdRegisterProduct = () => {
   };
 
   return (
-    <div className="app-container">
+    <div className="AdRegisterProduct-container">
       <Sidebar /> {/* Sidebar 추가 */}
-      <div className="alog-main-content">
-        <div className="register-product-container">
-          <h2>예금적금 상품 등록</h2>
-          <table className="register-table">
-            <tbody>
+      <div className="AdRegisterProduct-main-content">
+        <div className="AdRegisterProduct-form-container">
+          <h2>예금/적금 상품 등록</h2>
+          <table className="AdRegisterProduct-table">
+          <tbody>
               <tr>
                 <td>상품명:</td>
                 <td>
@@ -67,12 +66,14 @@ const AdRegisterProduct = () => {
               <tr>
                 <td>상품 종류:</td>
                 <td>
-                  <input
-                    type="text"
+                  <select
                     name="depositCategory"
                     value={formData.depositCategory}
                     onChange={handleChange}
-                  />
+                  >
+                    <option value="1">예금</option>
+                    <option value="2">적금</option>
+                  </select>
                 </td>
               </tr>
               <tr>
@@ -105,6 +106,8 @@ const AdRegisterProduct = () => {
                     name="depositMinimumAmount"
                     value={formData.depositMinimumAmount}
                     onChange={handleChange}
+                    min="0"
+                    step="0.01"
                   />
                 </td>
               </tr>
@@ -116,6 +119,8 @@ const AdRegisterProduct = () => {
                     name="depositMaximumAmount"
                     value={formData.depositMaximumAmount}
                     onChange={handleChange}
+                    min="0"
+                    step="0.01"
                   />
                 </td>
               </tr>
@@ -127,6 +132,8 @@ const AdRegisterProduct = () => {
                     name="depositMinimumRate"
                     value={formData.depositMinimumRate}
                     onChange={handleChange}
+                    min="0"
+                    step="0.01"
                   />
                 </td>
               </tr>
@@ -138,6 +145,8 @@ const AdRegisterProduct = () => {
                     name="depositMaximumRate"
                     value={formData.depositMaximumRate}
                     onChange={handleChange}
+                    min="0"
+                    step="0.01"
                   />
                 </td>
               </tr>
@@ -149,6 +158,7 @@ const AdRegisterProduct = () => {
                     name="depositMinimumDate"
                     value={formData.depositMinimumDate}
                     onChange={handleChange}
+                    min="0"
                   />
                 </td>
               </tr>
@@ -160,27 +170,17 @@ const AdRegisterProduct = () => {
                     name="depositMaximumDate"
                     value={formData.depositMaximumDate}
                     onChange={handleChange}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>상태:</td>
-                <td>
-                  <input
-                    type="text"
-                    name="depositState"
-                    value={formData.depositState}
-                    onChange={handleChange}
+                    min="0"
                   />
                 </td>
               </tr>
             </tbody>
           </table>
-          <div className="button-group">
-            <button type="button" onClick={handleCancel}>
+          <div className="AdRegisterProduct-button-group">
+            <button type="button" className="AdRegisterProduct-cancel-button" onClick={handleCancel}>
               취소
             </button>
-            <button type="submit" onClick={handleRegister}> {/* onClick으로 변경 */}
+            <button type="button" className="AdRegisterProduct-submit-button" onClick={handleRegister}>
               등록
             </button>
           </div>

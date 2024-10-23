@@ -7,6 +7,7 @@ import com.urambank.uram.dto.DepositDTO;
 import com.urambank.uram.dto.LoanProductDTO;
 import com.urambank.uram.entities.LogEntity;
 import com.urambank.uram.entities.User;
+import com.urambank.uram.entities.LoanEntity;
 import com.urambank.uram.entities.AccountEntity;
 import com.urambank.uram.entities.DepositEntity;
 import com.urambank.uram.entities.LoanProductEntity;
@@ -16,6 +17,8 @@ import com.urambank.uram.repository.DepositRepository;
 import com.urambank.uram.repository.AccountRepository;
 import com.urambank.uram.repository.LoanProductRepository;
 import com.urambank.uram.repository.LoanRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ import java.util.Map;
 
 @Service
 public class AdminService {
+
 
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
@@ -254,6 +258,7 @@ public class AdminService {
     public void updateDeposit(int depositNo, DepositDTO depositDTO) {
         DepositEntity depositEntity = depositRepository.findById(depositNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 적금 상품을 찾을 수 없습니다."));
+
         // DTO 데이터를 엔티티로 반영
         depositEntity.setDepositName(depositDTO.getDepositName());
         depositEntity.setDepositCategory(depositDTO.getDepositCategory());
@@ -265,9 +270,11 @@ public class AdminService {
         depositEntity.setDepositMinimumAmount(depositDTO.getDepositMinimumAmount());  // 최소 예치 금액 추가
         depositEntity.setDepositMinimumDate(depositDTO.getDepositMinimumDate());  // 최소 기간 추가
         depositEntity.setDepositMinimumRate(depositDTO.getDepositMinimumRate());  // 최소 금리 추가
+
         // 변경된 엔티티 저장
         depositRepository.save(depositEntity);
     }
+
     // 예금,적금 "삭제" 상태로 변경하는 메서드
     public void deleteDeposit(int depositNo) {
         depositRepository.updateDepositStateToN(depositNo);
@@ -531,25 +538,25 @@ public class AdminService {
         List<AccountDTO> list = new ArrayList<>();
         List<AccountEntity> saccounts = accountRepository.findByAccountState("STOP");
 
-            for (AccountEntity eDto : saccounts) {
-                AccountDTO accountDTO = AccountDTO.builder()
-                        .accountNo(eDto.getAccountNo())
-                        .accountNumber(eDto.getAccountNumber())
-                        .userNo(eDto.getUserNo())
-                        .bankName(eDto.getBankName())
-                        .accountBalance(eDto.getAccountBalance())
-                        .accountLimit(eDto.getAccountLimit())
-                        .accountPW(eDto.getAccountPW())
-                        .accountState(eDto.getAccountState())
-                        .accountOpen(eDto.getAccountOpen())  // LocalDateTime을 Date로 변환
-                        .accountClose(eDto.getAccountClose()) // LocalDateTime을 Date로 변환
-                        .accountRate(eDto.getAccountRate())
-                        .agreement(eDto.getAgreement())
-                        .withdrawal(eDto.getWithdrawal())
-                        .build();
+        for (AccountEntity eDto : saccounts) {
+            AccountDTO accountDTO = AccountDTO.builder()
+                    .accountNo(eDto.getAccountNo())
+                    .accountNumber(eDto.getAccountNumber())
+                    .userNo(eDto.getUserNo())
+                    .bankName(eDto.getBankName())
+                    .accountBalance(eDto.getAccountBalance())
+                    .accountLimit(eDto.getAccountLimit())
+                    .accountPW(eDto.getAccountPW())
+                    .accountState(eDto.getAccountState())
+                    .accountOpen(eDto.getAccountOpen())  // LocalDateTime을 Date로 변환
+                    .accountClose(eDto.getAccountClose()) // LocalDateTime을 Date로 변환
+                    .accountRate(eDto.getAccountRate())
+                    .agreement(eDto.getAgreement())
+                    .withdrawal(eDto.getWithdrawal())
+                    .build();
 
-                list.add(accountDTO);
-            }
+            list.add(accountDTO);
+        }
         System.out.println("<<< AdminService getNormalAccounts - list >>> : " + list);
         return list;
     }
@@ -581,26 +588,26 @@ public class AdminService {
     }
 
 
-        //----------------------------------계좌 상태 변경 ---------------
-        // 계좌를 STOP으로 변경
-        public void stopAccount( int accountNo){
-            AccountEntity accountEntity = accountRepository.findById(accountNo)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid account number: " + accountNo));
+    //----------------------------------계좌 상태 변경 ---------------
+    // 계좌를 STOP으로 변경
+    public void stopAccount( int accountNo){
+        AccountEntity accountEntity = accountRepository.findById(accountNo)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid account number: " + accountNo));
 
-            // 계좌 상태를 STOP으로 설정
-            accountEntity.setAccountState("STOP");
-            accountRepository.save(accountEntity);  // 저장하여 업데이트 반영
-        }
+        // 계좌 상태를 STOP으로 설정
+        accountEntity.setAccountState("STOP");
+        accountRepository.save(accountEntity);  // 저장하여 업데이트 반영
+    }
 
-        // 계좌를 NORMAL로 변경
-        public void resumeAccount ( int accountNo){
-            AccountEntity accountEntity = accountRepository.findById(accountNo)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid account number: " + accountNo));
+    // 계좌를 NORMAL로 변경
+    public void resumeAccount ( int accountNo){
+        AccountEntity accountEntity = accountRepository.findById(accountNo)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid account number: " + accountNo));
 
-            // 계좌 상태를 NORMAL로 설정
-            accountEntity.setAccountState("NORMAL");
-            accountRepository.save(accountEntity);  // 저장하여 업데이트 반영
-        }
+        // 계좌 상태를 NORMAL로 설정
+        accountEntity.setAccountState("NORMAL");
+        accountRepository.save(accountEntity);  // 저장하여 업데이트 반영
+    }
 
 
     // 활성 회원 목록 조회 (NORMAL, STOP 상태의 유저를 조회)
@@ -660,5 +667,5 @@ public class AdminService {
         userEntity.setState(userState); // 상태를 '정상'가 아닌 '정지'로 변경
         userRepository.save(userEntity);
     }
-    }
+}
 

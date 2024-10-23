@@ -59,6 +59,14 @@
   box-sizing: border-box;
 }
 
+.edit-table select {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 .edit-table input[type="text"]:disabled {
   background-color: #f9f9f9;
   color: #888;

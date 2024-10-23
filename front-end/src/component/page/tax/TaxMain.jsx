@@ -70,7 +70,7 @@ function TaxMain(){
             <div className="TaxMainPrice">
                 <div className="TaxTextBox">
                     {taxData ? (
-                            <p>{userName}님의 {taxData.taxWriteDate.substring(5, 7)}월달 {taxData.taxCategory === 'electro' ? ('전기세') : ('수도세')}는 {sum}원 입니다.</p>) : (<p>{userName}님의 {taxData.taxCategory === 'electro' ? ('전기세') : ('수도세')}는 0원 입니다.</p>
+                            <p>{userName}님의 {taxData.taxWriteDate.substring(5, 7)}월달 {taxData.taxCategory === 'electro' ? ('전기세') : ('수도세')}는 {sum}원 입니다.</p>) : (<p>{userName}님의 {category === 'electro' ? ('전기세') : ('수도세')}는 0원 입니다.</p>
                     )}
                 </div>
             </div>

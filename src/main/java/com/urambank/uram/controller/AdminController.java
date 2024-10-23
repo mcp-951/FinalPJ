@@ -27,7 +27,7 @@ public class AdminController {
     public AdminController(AdminService adminService) {
         this.adminService = adminService;
     }
-//------------------------ 전체 상품 -------------------------------------
+    //------------------------ 전체 상품 -------------------------------------
     // 전체 금융 상품 조회
     @GetMapping("/financial-products")
     public List<Object> getAllFinancialProducts() {
@@ -43,7 +43,7 @@ public class AdminController {
         System.out.println("<<< AdminController /product-counts >>>");
         return adminService.getProductCounts();
     }
-//------------------- 적금 상품 관련 -------------------------------------
+    //------------------- 적금 상품 관련 -------------------------------------
     // 적금 상품 목록 조회
     @GetMapping("/savings")
     public ResponseEntity<List<DepositDTO>> savings() {
@@ -71,6 +71,7 @@ public class AdminController {
         adminService.deleteDeposit(depositNo);
         return ResponseEntity.ok("해당 적금 상품이 삭제되었습니다.");
     }
+
     // 예금,적금 상품 등록
     @PostMapping("/register-product")
     public ResponseEntity<String> addDepositProduct(@RequestBody DepositDTO depositDTO) {
@@ -78,7 +79,7 @@ public class AdminController {
         adminService.addDepositProduct(depositDTO);  // 서비스에서 적금 상품 등록
         return ResponseEntity.ok("상품이 성공적으로 등록되었습니다.");
     }
-//--------------------------------- 예금 상품 관련 -----------------------------------------
+    //--------------------------------- 예금 상품 관련 -----------------------------------------
     // 예금 상품 목록 조회
     @GetMapping("/deposits")
     public ResponseEntity<List<DepositDTO>> getDeposits() {
@@ -86,7 +87,7 @@ public class AdminController {
         List<DepositDTO> deposits = adminService.getDeposits();
         return ResponseEntity.ok(deposits);
     }
-//--------------------------------- 대출 관련 ----------------------------------------------------------// 새로운 상품 등록
+    //--------------------------------- 대출 관련 ----------------------------------------------------------// 새로운 상품 등록
     //대출 상품 등록
     @PostMapping("/register-loan")
     public ResponseEntity<String> addLoanProduct(@RequestBody LoanProductDTO loanProductDTO) {
@@ -151,7 +152,7 @@ public class AdminController {
         return ResponseEntity.ok(accounts);
     }
 
-//----------------------------------------계좌 상태값 바꾸기 -------------------------------
+    //----------------------------------------계좌 상태값 바꾸기 -------------------------------
     // STOP으로 계좌 상태 변경
     @PutMapping("/stopAccount/{accountNo}")
     public ResponseEntity<String> stopAccount(@PathVariable("accountNo") int accountNo) {
@@ -167,7 +168,7 @@ public class AdminController {
         adminService.resumeAccount(accountNo);  // NORMAL로 변경하는 서비스 호출
         return ResponseEntity.ok("계좌가 재개되었습니다.");
     }
-//--------------------------------------회원 관련-----------------------------------------
+    //--------------------------------------회원 관련-----------------------------------------
     // 활성 회원 목록 조회 (DTO 사용)
     @GetMapping("/getUserList")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
