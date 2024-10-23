@@ -8,12 +8,7 @@ const DepositItem = ({ depositNo, depositName, depositMaximumRate, depositMaximu
 
   const handleDetailClick = () => {
     sessionStorage.setItem('selectedDeposit', JSON.stringify({ depositNo, depositName, depositMaximumRate, depositMaximumDate, depositContent }));
-    
-    if (depositName.includes("입출금")) {
-      navigate('/ReceivedPaidMain');
-    } else {
       navigate('/DepositMain');
-    }
   };
 
   return (
