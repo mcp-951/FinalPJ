@@ -1,0 +1,91 @@
+/* 메인 컨테이너 */
+.DepositTerms-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+  }
+  
+  /* 약관 박스 */
+  .DepositTerms-box {
+    max-height: 200px; /* 스크롤 적용을 위한 고정 높이 */
+    overflow-y: auto;
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  /* 약관 내용 */
+  .DepositTerms-content {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  
+ /* 체크박스 및 동의 섹션 */
+.DepositTerms-checkbox-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  /* 체크박스와 텍스트를 가로로 나열 */
+  .DepositTerms-checkbox-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  }
+  
+  .DepositTerms-checkbox-item input {
+    margin-right: 10px; /* 체크박스와 텍스트 사이의 간격 */
+  }
+  
+  .DepositTerms-checkbox-item span {
+    font-size: 14px; /* 텍스트 크기 */
+    color: #333; /* 텍스트 색상 */
+    line-height: 1.6; /* 텍스트가 한 줄로 배치되도록 보장 */
+  }
+  
+ /* 버튼 그룹 */
+.DepositTerms-button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  /* '예' 버튼과 '아니오' 버튼 동일한 크기 */
+  .DepositTerms-yes-button,
+  .DepositTerms-no-button {
+    width: 100px; /* 동일한 너비 설정 */
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .DepositTerms-yes-button {
+    background-color: #74a1d2;
+    color: white;
+  }
+  
+  .DepositTerms-yes-button:hover {
+    background-color: #5b90bf;
+  }
+  
+  .DepositTerms-no-button {
+    background-color: #74a1d2;
+    color: white;
+  }
+  
+  .DepositTerms-no-button:hover {
+    background-color: #5b90bf;
+  }
+  

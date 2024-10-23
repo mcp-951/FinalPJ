@@ -33,34 +33,34 @@ const DepositMain = () => {
   };
 
   return (
-    <div className="loan-product-detail">
+    <div className="DepositMain-container">
       {/* 상단 섹션 */}
-      <div className="loan-header">
-        <div className="loan-title-section">
+      <div className="DepositMain-header">
+        <div className="DepositMain-title-section">
           <h2>{depositData ? depositData.depositName : 'Loading...'}</h2>
           <p>{depositData ? depositData.depositContent : '상품 정보를 불러오는 중입니다...'}</p>
         </div>
-        <div className="loan-details">
+        <div className="DepositMain-details">
           {depositData ? (
-            <div className="loan-info">
-              <div className="loan-info-item">
+            <div className="DepositMain-info">
+              <div className="DepositMain-info-item">
                 <p>기간</p>
                 <p>{depositData.depositMinimumDate} ~ {depositData.depositMaximumDate}개월</p>
               </div>
-              <div className="loan-info-item">
+              <div className="DepositMain-info-item">
                 <p>이자율</p>
                 <p>{depositData.depositMinimumRate}% ~ {depositData.depositMaximumRate}%</p>
               </div>
-              <div className="loan-info-item">
+              <div className="DepositMain-info-item">
                 <p>가입금액</p>
-                <p>{depositData.depositMinimumAmount*0.0001} ~ {depositData.depositMaximumAmount*0.0001}만원</p>
+                <p>{depositData.depositMinimumAmount * 0.0001} ~ {depositData.depositMaximumAmount * 0.0001}만원</p>
               </div>
             </div>
           ) : (
             <p>상품 정보를 불러오는 중입니다...</p>
           )}
         </div>
-        <div className="loan-buttons">
+        <div className="DepositMain-buttons">
           <button onClick={goToDepositList}>목록으로</button>
           <button onClick={goToDepositTermination}>가입하기</button>
         </div>
@@ -68,9 +68,9 @@ const DepositMain = () => {
 
       {/* 하단 설명 섹션 */}
       {depositData && (
-        <div className="loan-description">
+        <div className="DepositMain-description">
           <h3>상품 설명</h3>
-          <table>
+          <table className="DepositMain-table">
             <tbody>
               <tr>
                 <th>상품특징</th>
@@ -86,7 +86,7 @@ const DepositMain = () => {
               </tr>
               <tr>
                 <th>가입금액</th>
-                <td>{depositData.depositMinimumAmount*0.0001}만원 ~ {depositData.depositMaximumAmount*0.0001}만원</td>
+                <td>{depositData.depositMinimumAmount * 0.0001}만원 ~ {depositData.depositMaximumAmount * 0.0001}만원</td>
               </tr>
               <tr>
                 <th>이율</th>
