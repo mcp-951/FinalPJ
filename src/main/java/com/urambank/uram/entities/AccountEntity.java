@@ -15,6 +15,7 @@ import java.sql.Date;
 public class AccountEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "accountNo")
     private int accountNo;
 

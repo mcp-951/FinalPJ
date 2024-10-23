@@ -18,7 +18,6 @@ import org.springframework.data.jpa.repository.Modifying;
 @Repository
 public interface DepositRepository extends JpaRepository<DepositEntity, Integer>{
 
-
     List<DepositEntity> findByDepositCategoryAndDepositState(int depositCategory, char depositState);
 
     int countByDepositCategoryAndDepositState(int depositCategory, char depositState);

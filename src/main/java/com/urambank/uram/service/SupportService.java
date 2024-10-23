@@ -6,6 +6,8 @@ import com.urambank.uram.repository.SupportRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,7 @@ public class SupportService {
         List<SupportEntity> supports = supportRepository.findAllByUserIdAndIsDeleted(userId, "N");
         List<SupportDTO> dtoList = new ArrayList<>();
         for (SupportEntity support : supports) {
+            System.out.println(convertToDTO(support));
             dtoList.add(convertToDTO(support));
         }
         return dtoList;
@@ -39,10 +42,12 @@ public class SupportService {
                 .message(dto.getMessage())
                 .answer(dto.getAnswer())
                 .userId(dto.getUserId())
+                .isDeleted("N")
+                .createdAt(Date.valueOf(LocalDate.now()))
                 .status("답변 전")
                 .build();
         SupportEntity savedEntity = supportRepository.save(support);
-        return (savedEntity != null && savedEntity.getQnaNo() != null) ? 1 : 0;
+        return (savedEntity.getQnaNo() != null) ? 1 : 0;
     }
 
     // 문의글 수정

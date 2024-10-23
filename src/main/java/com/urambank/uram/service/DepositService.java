@@ -29,6 +29,7 @@ public class DepositService {
     private final UserRepository userRepository;
     private final AutoTransferRepository autoTransferRepository; // AutoTransferRepository 추가
     private final BCryptPasswordEncoder passwordEncoder;
+    private final AccountService accountService;
 
     public List<Map<String, Object>> getNormalAccountData(String token) {
         int userNo = jwtUtil.getUserNo(token);
@@ -106,9 +107,6 @@ public class DepositService {
 
         // 로그 기록
         logDepositTransaction(accountEntity, savedNewAccount, dto.getDepositBalance());
-
-        // 자동이체 설정
-        setUpAutoTransfer(accountEntity, savedNewAccount, dto.getDepositTransferDay());
 
         return "ok";
     }

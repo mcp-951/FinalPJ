@@ -7,6 +7,7 @@ import {jwtDecode} from 'jwt-decode';
 function CustomerServiceMain() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const userNo = localStorage.getItem('userNo');
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -14,7 +15,7 @@ function CustomerServiceMain() {
       try {
         const decoding = jwtDecode(token); // JWT 토큰에서 사용자 정보 디코딩
         const response = await axios.get(
-          `http://localhost:8081/support/board/${decoding.userNo}`,
+          `http://localhost:8081/support/board/${userNo}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         console.log('API 응답 데이터:', response.data); // 응답 확인

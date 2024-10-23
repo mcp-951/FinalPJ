@@ -49,7 +49,7 @@ import AdRetiredMember from '../page/adminPage/user/AdRetiredMember';
 import AdFinancialProduct from '../page/adminPage/product/AdFinancialProduct';
 import AdDepositProduct from '../page/adminPage/product/AdDepositProduct';
 import AdSavingsProduct from '../page/adminPage/product/AdSavingsProduct';
-import AdLoanProduct from 'component/page/adminPage/product/AdLoanProduct';
+import AdLoanProduct from 'component/page/adminPage/product/ADLoanProduct';
 import AdRegisterProduct from '../page/adminPage/product/AdRegisterProduct';
 import AdRegisterLoanProduct from '../page/adminPage/product/AdRegisterLoanProduct ';
 import AdEditSavingsProduct from '../page/adminPage/product/AdEditSavingsProduct';

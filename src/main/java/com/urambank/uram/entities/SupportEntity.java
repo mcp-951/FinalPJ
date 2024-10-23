@@ -1,12 +1,10 @@
 package com.urambank.uram.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import jakarta.persistence.*;
 
 import java.sql.Date;
-
 
 @Entity
 @Table(name = "SUPPORT_TB")
@@ -20,6 +18,7 @@ public class SupportEntity {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "qnaNo")
     private Integer qnaNo; // 문의 ID
 
