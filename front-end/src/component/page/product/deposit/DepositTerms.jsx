@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; // useLocation 추가
-import '../../../../resource/css/account/autoTransfer/AutoTransferRegister.css'; // 고유 스타일링을 위한 CSS 파일
+import '../../../../resource/css/product/DepositTerms.css'; // 고유 스타일링을 위한 CSS 파일
 
-const AutoTransferRegister = () => {
+const DepositTerms = () => {
   const [isMandatoryChecked, setIsMandatoryChecked] = useState(false); // 필수 약관 동의 상태
   const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
   const location = useLocation(); // 전달된 state를 가져오기 위해 useLocation 사용
@@ -41,11 +41,11 @@ const AutoTransferRegister = () => {
   };
 
   return (
-    <div className="auto-transfer-register-container-unique">
+    <div className="DepositTerms-container">
       {/* 스크롤 가능한 약관 영역 */}
       <h4>[필수] 상품가입 약관</h4>
-      <div className="terms-box-unique">
-        <div className="terms-content-unique">
+      <div className="DepositTerms-box">
+        <div className="DepositTerms-content">
           <p>
             제 1 조 (목적)<br />
             이 약관은 고객이 당행에서 제공하는 예금, 적금, 대출 상품에 가입함에 있어, 해당 금융 상품 이용에 관한 기본적인 사항을 규정함을 목적으로 합니다.
@@ -89,10 +89,10 @@ const AutoTransferRegister = () => {
           <p>본 약관은 2024년 10월 17일부터 시행됩니다.</p>
         </div>
       </div>
+
       <h4>[필수] 자동이체 약관</h4>
-      <div className="terms-box-unique">
-        <p>자동이체를 등록하기 전, 약관을 반드시 숙지하시기 바랍니다.</p>
-        <div className="terms-content-unique">
+      <div className="DepositTerms-box">
+        <div className="DepositTerms-content">
           <p>
             제 1 조 (자동이체의 기능)<br />
             자동이체는 미리 정해진 일정에 따라 지정된 계좌로 자동적으로 이체하는 기능을 의미합니다.
@@ -133,8 +133,9 @@ const AutoTransferRegister = () => {
           </p>
         </div>
       </div>
-      <div className="terms-container-unique">
-        <div className="term-item-unique">
+
+      <div className="DepositTerms-checkbox-container">
+        <div className="DepositTerms-checkbox-item">
           <input
             type="checkbox"
             checked={isMandatoryChecked}
@@ -146,14 +147,16 @@ const AutoTransferRegister = () => {
 
       <p>위 약관의 내용을 충분히 숙지하시고 이해하셨으며, 이에 동의하십니까?</p>
 
-      <div className="button-group-unique">
-        <button className="yes-button-unique" onClick={handleYesClick}>
+      <div className="DepositTerms-button-group">
+        <button className="DepositTerms-yes-button" onClick={handleYesClick}>
           예
         </button>
-        <button className="no-button-unique" onClick={handleNoClick}>아니오</button>
+        <button className="DepositTerms-no-button" onClick={handleNoClick}>
+          아니오
+        </button>
       </div>
     </div>
   );
 };
 
-export default AutoTransferRegister;
+export default DepositTerms;

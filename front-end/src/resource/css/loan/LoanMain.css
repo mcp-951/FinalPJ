@@ -1,19 +1,117 @@
-/*#E8F5FF*/
-.LoanMainContainer{
+/* 상위 컨테이너에 배경 색 적용 */
+.LoanMainContainer {
     width: 100%;
-    background-color: black;
-    min-height: 40vw;
+    background-color: #f2f2f2; /* 연한 회색 배경 */
     padding-top: 3rem;
     padding-bottom: 3rem;
-}
-
-.LoanMainContainer ui {
-    width: 100%;
     display: flex;
-    padding: 0;
+    flex-direction: column;
+    align-items: center; /* 중앙 정렬 */
 }
 
+/* 페이지 상단 타이틀 스타일 */
+.LoanMainTitle {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 40px; /* 타이틀 아래 여백 추가 */
+    color: #333;
+}
+
+/* 리스트 스타일 */
+.LoanMainContainer ul {
+    width: 90%; /* 전체 폭을 약간 줄여 중앙에 여백 생성 */
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 리스트 아이템 간의 간격 조정 */
+    padding: 0;
+    list-style-type: none; /* 기본 리스트 스타일 제거 */
+    max-width: 800px; /* 리스트 아이템의 최대 너비를 설정 */
+}
+
+/* 리스트 항목 스타일 */
 .LoanMainContainer li {
     width: 100%;
-    margin-top: 2rem;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 애니메이션 적용 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.LoanMainContainer li:hover {
+    transform: scale(1.05); /* 마우스 올렸을 때 살짝 확대됨 */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* 확대 시 그림자 더 진하게 */
+}
+
+/* 텍스트 섹션 스타일 */
+.LoanMainContainer .loan-text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.loan-text p {
+    margin: 5px 0;
+    color: #666; /* 설명 텍스트 색상 */
+}
+
+/* 버튼 스타일 */
+.LoanMainContainer .LoanMain-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.LoanMainContainer .LoanMain-buttons button {
+    background-color: #74a1d2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.LoanMainContainer .LoanMain-buttons button:hover {
+    background-color: #5b90bf;
+}
+
+/* 페이지네이션 스타일 */
+.LoanMainPagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.LoanMainPaginationButton {
+    background-color: #74a1d2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+.LoanMainPaginationButton.active {
+    background-color: #5b90bf;
+}
+
+.LoanMainPaginationButton:hover {
+    background-color: #5b90bf; /* 활성화된 버튼 호버 색상 */
+}
+
+.LoanMainPagination span {
+    font-size: 1rem;
+    color: #333;
 }

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Footer from '../../util/Footer'; // Footer 컴포넌트 임포트
+import Footer from '../../util/Footer';
 import '../../../resource/css/exchange/ExchangeRate.css'; 
-import euFlag from './free-icon-european-union-206593.png'; // 유로 깃발 이미지 임포트
+import euFlag from './free-icon-european-union-206593.png';
 
 const ExchangeRate = () => {
     const [exchangeRates, setExchangeRates] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('buy'); // 'buy' 또는 'sell'
 
-    // API 호출
     useEffect(() => {
         const fetchExchangeRates = async () => {
             try {
@@ -27,7 +26,7 @@ const ExchangeRate = () => {
                 const ratesEUR = responseEUR.data.rates;
 
                 const KRW_USD = ratesUSD['KRW'];
-                const KRW_JPY = ratesJPY['KRW'] * 100; // 엔화는 100 곱해서 출력
+                const KRW_JPY = ratesJPY['KRW'] * 100;
                 const KRW_CNY = ratesCNY['KRW'];
                 const KRW_GBP = ratesGBP['KRW'];
                 const KRW_EUR = ratesEUR['KRW'];
@@ -37,7 +36,7 @@ const ExchangeRate = () => {
                     { cur_unit: 'JPY', deal_bas_r: KRW_JPY, bkpr: KRW_JPY * 1.02, tts: KRW_JPY * 0.98, flag: 'JP', symbol: '¥' },
                     { cur_unit: 'CNY', deal_bas_r: KRW_CNY, bkpr: KRW_CNY * 1.02, tts: KRW_CNY * 0.98, flag: 'CN', symbol: '元' },
                     { cur_unit: 'GBP', deal_bas_r: KRW_GBP, bkpr: KRW_GBP * 1.02, tts: KRW_GBP * 0.98, flag: 'GB', symbol: '£' },
-                    { cur_unit: 'EUR', deal_bas_r: KRW_EUR, bkpr: KRW_EUR * 1.02, tts: KRW_EUR * 0.98, flag: euFlag, symbol: '€' } // 유로는 로컬 이미지 사용
+                    { cur_unit: 'EUR', deal_bas_r: KRW_EUR, bkpr: KRW_EUR * 1.02, tts: KRW_EUR * 0.98, flag: euFlag, symbol: '€' }
                 ];
                 setExchangeRates(filteredRates);
                 setLoading(false);
@@ -56,39 +55,41 @@ const ExchangeRate = () => {
             {loading ? (
                 <p className="ExchangeRate-loading">로딩 중...</p>
             ) : (
-                <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
-                    <select
-                        onChange={(e) => setActiveTab(e.target.value)}
-                        className="ExchangeRate-dropdown"
-                    >
-                        <option value="buy">살 때</option>
-                        <option value="sell">팔 때</option>
-                    </select>
-                    <table className="ExchangeRate-table">
-                        <thead>
-                            <tr>
-                                <th>국가</th>
-                                <th>통화</th>
-                                <th>현재 환율 (원)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {exchangeRates.map((rate) => (
-                                <tr key={rate.cur_unit}>
-                                    <td>
-                                        <img 
-                                            src={rate.flag === euFlag ? euFlag : `https://flagsapi.com/${rate.flag}/flat/64.png`} 
-                                            alt={`${rate.cur_unit} flag`} 
-                                        />
-                                    </td>
-                                    <td>
-                                        {rate.cur_unit} <span>{rate.symbol}</span>
-                                    </td>
-                                    <td>{(activeTab === 'buy' ? rate.bkpr : rate.tts).toFixed(2)}</td>
+                <div>
+                    <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+                        <select
+                            onChange={(e) => setActiveTab(e.target.value)}
+                            className="ExchangeRate-dropdown"
+                        >
+                            <option value="buy">살 때</option>
+                            <option value="sell">팔 때</option>
+                        </select>
+                        <table className="ExchangeRate-table">
+                            <thead>
+                                <tr>
+                                    <th>국가</th>
+                                    <th>통화</th>
+                                    <th>현재 환율 (원)</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {exchangeRates.map((rate) => (
+                                    <tr key={rate.cur_unit}>
+                                        <td>
+                                            <img 
+                                                src={rate.flag === euFlag ? euFlag : `https://flagsapi.com/${rate.flag}/flat/64.png`} 
+                                                alt={`${rate.cur_unit} flag`} 
+                                            />
+                                        </td>
+                                        <td>
+                                            {rate.cur_unit} <span>{rate.symbol}</span>
+                                        </td>
+                                        <td>{(activeTab === 'buy' ? rate.bkpr : rate.tts).toFixed(2)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
 

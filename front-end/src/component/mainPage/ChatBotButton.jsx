@@ -87,12 +87,12 @@ function ChatBotButton() {
                         <div className="chatbotInfo">
                             <RiRobot2Line size={30} />
                         </div>
-                        <span className="chatbotName">URAM 챗봇</span>
+                        <span className="chatbotName">URAM 고객상담봇</span>
                     </div>
                     {getChat === false && (
                         <>
                             <div className="chatbotBody">
-                                <p>도움이 필요하신가요? 대화를 시작해보세요</p>
+                                <p>고객님! 도움이 필요하신가요? 대화를 시작해보세요.</p>
                             </div>
                             <div className="chatbotFooter">
                                 <button className="startButton" onClick={startChat}>시작하기</button>
@@ -103,7 +103,7 @@ function ChatBotButton() {
                         <>
                             <div className="chatbotBody">
                                 <RiRobot2Line />
-                                <p>안녕하세요 사용자님! 무엇을 도와드릴까요?</p>
+                                <p>안녕하세요 URAM 고객님! 무엇을 도와드릴까요?</p>
                                 <div id="messages">
                                     {messages.map((message, index) => (
                                         <div key={index} className={message.sender === 'User' ? 'userMessage' : 'botMessage'}>

@@ -223,22 +223,26 @@ function LoanApply() {
                     </p>
                 </div>
             </div>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check 
-            type="checkbox" 
-            label="[필수]개인정보 이용약관" 
-            name="personalInfo"
-            checked={termsChecked.personalInfo}
-            onChange={handleIndividualChange}
-            />
-            <Form.Check 
-            type="checkbox" 
-            label="[필수]대출 이용약관" 
-            name="loanInfo"
-            checked={termsChecked.loanInfo}
-            onChange={handleIndividualChange}
-            />
-        </Form.Group>
+            <Form.Group className="mb-3 d-flex justify-content-end align-items-center personal-info-group" controlId="formBasicCheckbox">
+        <Form.Check 
+        className="personal-info-checkbox"
+        type="checkbox" 
+        label="[필수]개인정보 이용약관"
+        name="personalInfo"
+        checked={termsChecked.personalInfo}
+        onChange={handleIndividualChange}
+        />
+    </Form.Group>
+    <Form.Group className="mb-3 d-flex justify-content-end align-items-center loan-info-group" controlId="formBasicCheckbox">
+        <Form.Check 
+        className="loan-info-checkbox"
+        type="checkbox" 
+        label="[필수]대출 이용약관"
+        name="loanInfo"
+        checked={termsChecked.loanInfo}
+        onChange={handleIndividualChange}
+        />
+    </Form.Group>
         </Container>
         <Container className=''>
             <Row className="w-100">
@@ -278,23 +282,23 @@ function LoanApply() {
                                 maxLength={7}
                             />
                         </Col>
-                        <Col Col sm={2}>
-                            {localNoCheck ? (<div>인증완료</div>) : (<Button onClick = {noCheck}>인증하기</Button>) }
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row} controlId="formUsername" className="mt-3">
-                        <Form.Label column sm={3} className="text-left">ID</Form.Label>
-                        <Col sm={6}>
-                            <Form.Control
-                                type="tel"
-                                placeholder="핸드폰 번호를 - 빼고 입력해 주세요."
-                                name="hp"
-                                value={userData ? userData.hp : "로딩중"}
-                            />
-                        </Col>
                         <Col sm={2}>
-                            <Button onClick = {hpCheck}>인증번호 받기</Button>
+                            {localNoCheck ? (<div>인증완료</div>) : (<Button className="auth-button" onClick={noCheck}>인증하기</Button>) }
                         </Col>
+                        </Form.Group>
+                        <Form.Group as={Row} controlId="formUsername" className="mt-3">
+                            <Form.Label column sm={3} className="text-left">ID</Form.Label>
+                            <Col sm={6}>
+                                <Form.Control
+                                    type="tel"
+                                    placeholder="핸드폰 번호를 - 빼고 입력해 주세요."
+                                    name="hp"
+                                    value={userData ? userData.hp : "로딩중"}
+                                />
+                            </Col>
+                            <Col sm={2}>
+                                <Button className="auth-button" onClick={hpCheck}>인증번호 받기</Button>
+                            </Col>
                     </Form.Group>
                     {startCheckHp && (
                         <Form.Group controlId="formHpAuthKey" className="mt-3">
@@ -328,10 +332,11 @@ function LoanApply() {
                 </Form>
             </Row>
         </Container>
-        <Container className='Next_Cancel_Container'>
-            <Button onClick={moveNext}>다음</Button>
-            <Button>취소</Button>
-        </Container>
+        <Container className="Next_Cancel_Container">
+        <Button className="next-button" onClick={moveNext}>다음</Button>
+        <Button className="cancel-button">취소</Button>
+    </Container>
+
     </Container>
   );
 }

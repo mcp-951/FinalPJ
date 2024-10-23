@@ -7,13 +7,13 @@
 }
 
 .topBtn {
-  background-color: #007BFF;
+  background-color: #8baacb;
   border: none;
   color: white;
   padding: 15px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,22 +78,15 @@
   overflow-y: auto;
 }
 
-/* 채팅 메시지 스타일 */
+
+/* 전체 메시지 컨테이너 */
 .messageContainer {
   display: flex;
+  flex-direction: column;
   margin-bottom: 10px;
-  align-items: center;
 }
 
-.botMessage {
-  background-color: #dceaf1;
-  color: #333;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 70%;
-  text-align: left;
-}
-
+/* 사용자 메시지 */
 .userMessage {
   background-color: #bbe4f7;
   color: rgb(0, 0, 0);
@@ -101,8 +94,33 @@
   border-radius: 10px;
   max-width: 70%;
   text-align: right;
-  margin-left: auto; /* 사용자 메시지를 오른쪽 정렬 */
+  display: inline-block;
+  word-wrap: break-word;
+  width: auto;
+  margin-left: auto;
+  margin-right: 0;
+  float: right;
+  clear: both; /* 사용자 메시지 아래로 다음 메시지가 내려가도록 설정 */
 }
+
+/* 봇 메시지 */
+.botMessage {
+  background-color: #dceaf1;
+  color: #333;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  text-align: left;
+  display: inline-block;
+  word-wrap: break-word;
+  width: auto;
+  margin-right: auto;
+  margin-left: 0;
+  float: left;
+  clear: both; /* 봇 메시지 아래로 다음 메시지가 내려가도록 설정 */
+}
+
+
 
 /* 챗봇 푸터 */
 .chatbotFooter {
@@ -134,5 +152,23 @@
 
 .chatbotFooter button:hover {
   background-color: #5d95d1;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.chatbotBody p {
+  animation: fadeIn 1s ease-in-out;
+  font-size: 24px; /* 글자 크기를 24px로 설정 */
+  font-weight: bold; /* 글자 굵기를 조금 더 두껍게 설정 */
+  text-align: center; /* 문구를 가운데 정렬 */
 }
 

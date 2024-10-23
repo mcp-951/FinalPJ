@@ -21,7 +21,7 @@ function Navbar() {
     const [activeDropdown, setActiveDropdown] = useState(null); // 활성화된 드롭다운 상태
 
     const handleSearchBar = () => {
-        setSearchOpen(!searchOpen);
+        setSearchOpen(!searchOpen); // 검색창 열고 닫기 토글
     };
 
     const toggleDropdown = (menu) => {
@@ -131,8 +131,10 @@ function Navbar() {
                 </div>
             ) : (
                 <div className='SearchBar_div'>
-                    <button onClick={handleSearchBar}><IoCloseSharp /></button>
                     <SearchBar onSearch={handleSearchBar} />
+                    <button onClick={handleSearchBar} className="SearchBar-close-button">
+                        <IoCloseSharp />
+                    </button>
                 </div>
             )}
         </>
