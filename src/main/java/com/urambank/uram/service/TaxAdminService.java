@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class TaxAdminService {
+    public class TaxAdminService {
 
     @Autowired
     private TaxRepository taxRepository;

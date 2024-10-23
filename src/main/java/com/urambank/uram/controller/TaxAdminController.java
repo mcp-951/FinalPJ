@@ -37,7 +37,7 @@ public class TaxAdminController {
 
     // 특정 세금 수정
     @PutMapping("/edit/{taxNo}")
-    public ResponseEntity<String> updateTax(@PathVariable("taxNo") int taxNo, @RequestBody TaxDTO taxDTO) {
+        public ResponseEntity<String> updateTax(@PathVariable("taxNo") int taxNo, @RequestBody TaxDTO taxDTO) {
         taxAdminService.updateTax(taxNo, taxDTO);
         return ResponseEntity.ok("Tax updated successfully");
     }
