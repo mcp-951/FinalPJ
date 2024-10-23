@@ -9,10 +9,11 @@ const DepositMain = () => {
   useEffect(() => {
     // sessionStorage에서 저장된 상품 정보를 불러오기
     const storedDeposit = sessionStorage.getItem('selectedDeposit');
+    console.log("Fetched deposit data:", storedDeposit); // 디버깅용 로그
     if (storedDeposit) {
-      setDepositData(JSON.parse(storedDeposit)); // JSON 데이터를 객체로 변환 후 저장
+        setDepositData(JSON.parse(storedDeposit)); // JSON 데이터를 객체로 변환 후 저장
     }
-  }, []);
+}, []);
 
   const goToDepositList = () => {
     navigate('/DepositList'); // DepositList로 이동
