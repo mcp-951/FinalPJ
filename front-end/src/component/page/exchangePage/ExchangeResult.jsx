@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Map, MapMarker } from 'react-kakao-maps-sdk'; // 카카오 맵 임포트
-
+import '../../../resource/css/exchange/ExchangeResult.css';
 const ExchangeResult = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -82,12 +82,12 @@ const ExchangeResult = () => {
             )}
 
             <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', marginBottom: '20px' }}>
-                <button onClick={() => navigate('/exchange-rate')} className="main-button">
+                <button onClick={() => navigate('/exchange-rate')} className="result-main-button">
                     메인으로
                 </button>
 
                 {/* 위치보기 버튼 */}
-                <button onClick={toggleMap} className="location-button">
+                <button onClick={toggleMap} className="result-location-button">
                     {showMap ? "지도 숨기기" : "위치보기"}
                 </button>
             </div>
