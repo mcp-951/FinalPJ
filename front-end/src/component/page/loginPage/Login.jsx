@@ -92,19 +92,19 @@ function Login() {
             };
             const response = await apiSer.login(form)      // 로그인 벡앤드 통신
                 .then((response) =>{
-                    const token = response.data.accessToken;            // 통신 데이터 변수에 저장
-                    localStorage.setItem('token', token);               // 로그인 성공 시 토큰 저장
-                    localStorage.setItem('userNo', response.data.userNo);
+                    const token = response.data.accessToken;                // 통신 데이터 변수에 저장
+                    localStorage.setItem('token', token);                   // 로그인 성공 시 토큰 저장
+                    localStorage.setItem('userNo', response.data.userNo);   // 로그인 성공 시 유저 넘버 저장
                     navigate('/'); // 메인 페이지로 이동
                 })
                 .catch((error) =>{
-                    console.error("Error checking Hp: ", error);
+                    console.error("Error : ", error);
                 })
         } catch (error) {
             console.error('로그인 실패:', error);
-            if (error.message === 'Request failed with status code 403') {
+            if (error.message === 'Request failed with status code 403') {  // 아이디 일치하지 않거나 정지당한 유저의 경우
                 alert('일치하는 아이디가 존재하지 않습니다.');
-            } else if (error.message === 'Request failed with status code 401') {
+            } else if (error.message === 'Request failed with status code 401') {   // 비밀번호 불일치
                 alert('비밀번호가 일치하지 않습니다.');
             } else {
                 alert('로그인에 실패했습니다.');
