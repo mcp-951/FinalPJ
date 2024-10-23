@@ -175,4 +175,24 @@ public class DepositController {
             return ResponseEntity.status(500).build();
         }
     }
+
+    @PostMapping("/checkPassword")
+    public ResponseEntity<Boolean> checkAccountPassword(@RequestHeader("Authorization") String token,
+                                                        @RequestBody Map<String, String> request) {
+        try {
+            String accountNumber = request.get("accountNumber");
+            String password = request.get("password");
+
+            // "Bearer " 제거하여 실제 토큰만 추출
+            String cleanToken = token.replace("Bearer ", "");
+
+            boolean isPasswordCorrect = depositService.checkAccountPassword(cleanToken, accountNumber, password);
+            return ResponseEntity.ok(isPasswordCorrect);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(false);
+        }
+    }
+
+
 }

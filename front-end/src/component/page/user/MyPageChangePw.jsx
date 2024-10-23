@@ -84,7 +84,7 @@ function MyPageChangePw() {
           </tbody>
         </table>
         <div className="MyPageChangePw-buttons">
-          <button className="MyPageChangePw-btn">변경</button>
+          <button className="MyPageChangePw-btn" onClick={submitNewPw}>변경</button>
           <button className="MyPageChangePw-btn MyPageChangePw-cancel-btn" onClick={backToMyPage}>취소</button>
         </div>
       </div>

@@ -74,7 +74,7 @@ function Navbar() {
                                         <div className="dropdown_menu_div">
                                             <ul>
                                                 <li><a href='/deposit-list'>상품 리스트</a></li>
-                                                <li><a href='/DepositMain'>상품 메인</a></li>
+                                                <li><a href='/DepositSearch'>상품 중도출금</a></li>
                                                 <li><a href='/loanmain'>대출상품 리스트</a></li>
                                             </ul>
                                         </div>

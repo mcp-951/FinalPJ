@@ -64,8 +64,11 @@ function EmergencyWithdrawal() {
     // 비밀번호 확인 함수
     const handlePasswordCheck = async () => {
         try {
-            const response = await ApiService.checkPassword(accountNumber, password, selectedAccount.userNo);
-            if (response.status === 200) {
+            const token = localStorage.getItem('token'); // 로컬 스토리지에서 토큰 가져오기
+            const response = await ApiService.checkPassword(token, accountNumber, password); // 토큰 포함해서 호출
+
+            // 서버 응답 데이터 확인
+            if (response.status === 200 && response.data === true) {
                 setPasswordError('비밀번호가 확인되었습니다.');
             } else {
                 setPasswordError('비밀번호가 일치하지 않습니다.');
@@ -167,6 +170,7 @@ function EmergencyWithdrawal() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
+                        maxLength={4}
                     />
                     <button type="button" onClick={handlePasswordCheck}>확인</button>
                     {passwordError && <p className="password-error">{passwordError}</p>}

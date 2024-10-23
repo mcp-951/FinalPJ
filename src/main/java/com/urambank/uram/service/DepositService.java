@@ -12,8 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -197,6 +199,7 @@ public class DepositService {
         int userGrade = user.getGrade();
         double userRate = depositMaximumRate - (0.2 * (userGrade - 1));
 
+
         // 기존 계좌 조회
         AccountEntity existingAccount = accountRepository.findByUserNoAndAccountNo(user.getUserNo(), Integer.parseInt(dto.getAccountNo()))
                 .orElseThrow(() -> new IllegalArgumentException("계좌를 찾을 수 없습니다."));
@@ -362,11 +365,22 @@ public class DepositService {
         return null; // 유저가 없을 경우 null 반환
     }
 
+
+
+    public boolean checkAccountPassword(String token, String accountNumber, String password) {
+        // 토큰에서 사용자 정보를 추출 (예: 사용자 번호)
+        int userNo = jwtUtil.getUserNo(token);
+
+        // 계좌 번호와 사용자 번호로 계좌 조회
+        Optional<AccountEntity> accountOptional = accountRepository.findByAccountNumberAndUserNo(accountNumber, userNo);
+        AccountEntity account = accountOptional.orElseThrow(() -> new IllegalArgumentException("계좌를 찾을 수 없습니다."));
+
+        // 암호화된 비밀번호 비교
+        boolean isMatch = passwordEncoder.matches(password, account.getAccountPW());
+        System.out.println("입력된 비밀번호: " + password);
+        System.out.println("암호화된 비밀번호: " + account.getAccountPW());
+        System.out.println("비밀번호 일치 여부: " + isMatch);
+
+        return isMatch;
+    }
 }
-
-
-
-
-
-
-

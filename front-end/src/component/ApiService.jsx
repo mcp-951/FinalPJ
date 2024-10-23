@@ -54,6 +54,7 @@ const apiSer = {
     },
     changePassword:(data) => {
         console.log("userPw : " + data);
+        console.log("token : " + token);
         return axios.put(`${API_BASE_URL}/changePassword`,data,{
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
@@ -225,6 +226,22 @@ savingsReceive: async (depositData, token) => {
     } catch (error) {
       console.error('휴대폰 번호 정보를 불러오는 중 오류 발생:', error);
       throw error; // 에러 발생 시 상위로 전달
+    }
+  },
+  checkPassword: async (token, accountNumber, password) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/products/deposits/checkPassword`, {
+            accountNumber,
+            password
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}` // JWT 토큰 추가
+            }
+        });
+        return response;
+    } catch (error) {
+        console.error('비밀번호 확인 중 오류 발생:', error);
+        throw error;
     }
   }
 }

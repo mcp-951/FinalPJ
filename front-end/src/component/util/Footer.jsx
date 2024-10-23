@@ -10,7 +10,6 @@ function Footer() {
         <a href="/terms-of-service">Terms of Service</a>
         <a href="/contact-us">Contact Us</a>
         <a href="/customer-service">고객센터</a>
-        하이
       </div>
     </footer>
   );
