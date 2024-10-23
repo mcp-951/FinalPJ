@@ -43,6 +43,31 @@ function SignUp() {
         setForm({ ...form, [name]: value });
     };
 
+    // 아이디 중복 확인
+    const idCheck = () => {
+        const userId = form.userId;
+        if (userId === '') {
+            setIdCheckMessage('아이디를 입력하세요');
+        } else {
+            handleCheckId(userId);
+        }
+    };
+    const handleCheckId = (userId) => {
+        apiSer.checkId(userId)
+            .then((response) => {
+                if (response.data === '') {
+                    setIdCheckMessage(`${userId}는(은) 사용가능한 아이디입니다.`);
+                    setIdCheckState(true);
+                } else {
+                    setIdCheckMessage(`${userId}는(은) 이미 존재하는 아이디입니다.`);
+                    setIdCheckState(false);
+                }
+            })
+            .catch((error) => {
+                console.error('Error checking ID: ', error);
+            });
+    };
+
     // 신분증 인증 처리 함수
     const ocrMove = () => {
         const localNo = form.residentNumber1 + form.residentNumber2;
@@ -82,32 +107,6 @@ function SignUp() {
                 navigate('/login');
             });
         }
-    };
-
-    // 아이디 중복 확인
-    const idCheck = () => {
-        const userId = form.userId;
-        if (userId === '') {
-            setIdCheckMessage('아이디를 입력하세요');
-        } else {
-            handleCheckId(userId);
-        }
-    };
-
-    const handleCheckId = (userId) => {
-        apiSer.checkId(userId)
-            .then((response) => {
-                if (response.data === '') {
-                    setIdCheckMessage(`${userId}는(은) 사용가능한 아이디입니다.`);
-                    setIdCheckState(true);
-                } else {
-                    setIdCheckMessage(`${userId}는(은) 이미 존재하는 아이디입니다.`);
-                    setIdCheckState(false);
-                }
-            })
-            .catch((error) => {
-                console.error('Error checking ID: ', error);
-            });
     };
 
     // 비밀번호 확인

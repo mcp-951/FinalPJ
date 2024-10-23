@@ -13,7 +13,7 @@ const DepositMain = () => {
     if (storedDeposit) {
         setDepositData(JSON.parse(storedDeposit)); // JSON 데이터를 객체로 변환 후 저장
     }
-}, []);
+  }, []);
 
   const goToDepositList = () => {
     navigate('/DepositList'); // DepositList로 이동
@@ -27,8 +27,10 @@ const DepositMain = () => {
       navigate('/login'); // 토큰이 없으면 로그인 페이지로 이동
       return;
     }
-    // 토큰이 있는 경우만 다음 페이지로 이동
-    if (depositData) {
+    // 상품명에 "입출금"이 포함된 경우 특정 페이지로 이동
+    if (depositData && depositData.depositName.includes("입출금")) {
+      navigate('/ReceivedPaidMainJoin'); // ReceivedPaidMainJoin 페이지로 이동
+    } else if (depositData) {
       navigate('/DepositTerms', { state: { depositCategory: depositData.depositCategory } });
     }
   };

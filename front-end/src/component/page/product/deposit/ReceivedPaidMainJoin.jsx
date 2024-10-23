@@ -188,10 +188,10 @@ const ReceivedPaidMainJoin = () => {
   }
 
   return (
-    <div className="deposit-form-container">
+    <div className="DepositJoin-container">
       <h2>정보입력</h2>
       {/* 핸드폰 인증 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>휴대폰 번호</label>
         <input
           type="tel"
@@ -199,12 +199,12 @@ const ReceivedPaidMainJoin = () => {
           value={formData.hp}
           readOnly // 수정 불가 설정
         />
-        <button type="button" onClick={handleHpVerification} className="verify-button">
+        <button type="button" onClick={handleHpVerification} className="DepositJoin-verify-button">
           인증번호 받기
         </button>
       </div>
 
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>인증번호</label>
         <input
           type="text"
@@ -213,14 +213,14 @@ const ReceivedPaidMainJoin = () => {
           onChange={(e) => setEnteredAuthKey(e.target.value)}
           placeholder="인증번호 입력"
         />
-        <button type="button" onClick={handleAuthKeyCheck} className="verify-button">
+        <button type="button" onClick={handleAuthKeyCheck} className="DepositJoin-verify-button">
           인증하기
         </button>
         {authSuccess && <span className="success-message">✔ 인증 완료</span>}
       </div>
 
       {/* 비밀번호 입력 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>비밀번호 입력 (4자리)</label>
         <input
           type="password"
@@ -232,7 +232,7 @@ const ReceivedPaidMainJoin = () => {
       </div>
 
       {/* 비밀번호 확인 입력 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>비밀번호 확인</label>
         <input
           type="password"
@@ -241,11 +241,11 @@ const ReceivedPaidMainJoin = () => {
           maxLength="4"
           onChange={handleChange}
         />
-        <button type="button" onClick={handlePasswordCheck}>확인</button>
+        <button type="DepositJoin-verify-button" onClick={handlePasswordCheck}>확인</button>
         <span className="password-error">{passwordError}</span>
       </div>
       {/* 버튼 */}
-      <div className="form-buttons">
+      <div className="DepositJoin-buttons">
         <button type="button" onClick={goToDepositList}>취소</button>
         <button type="button" onClick={goToDepositJoinFinish}>완료</button>
       </div>
