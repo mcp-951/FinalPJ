@@ -18,6 +18,8 @@ public class SupportController {
     // 특정 사용자 ID로 삭제되지 않은 문의글 목록 조회
     @GetMapping("/board/{userNo}")
     public ResponseEntity<List<SupportDTO>> getActiveInquiriesByUser(@PathVariable("userNo") Integer userNo) {
+        System.out.println("<<< getActiveInquiriesByUser >>>");
+        System.out.println("userNo : " + userNo);
         List<SupportDTO> inquiries = supportService.getActiveSupportByUserId(userNo);
         return ResponseEntity.ok(inquiries);
     }

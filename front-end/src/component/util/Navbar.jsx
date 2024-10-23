@@ -21,7 +21,7 @@ function Navbar() {
     const [activeDropdown, setActiveDropdown] = useState(null); // 활성화된 드롭다운 상태
 
     const handleSearchBar = () => {
-        setSearchOpen(!searchOpen);
+        setSearchOpen(!searchOpen); // 검색창 열고 닫기 토글
     };
 
     const toggleDropdown = (menu) => {
@@ -76,8 +76,6 @@ function Navbar() {
                                                 <li><a href='/deposit-list'>상품 리스트</a></li>
                                                 <li><a href='/DepositMain'>상품 메인</a></li>
                                                 <li><a href='/loanmain'>대출상품 리스트</a></li>
-                                                <li><a href='/Repayment'>중도상환</a></li>
-                                                <li><a href='/Calculatior'>대출 이자계산기</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -118,7 +116,6 @@ function Navbar() {
                     </div>
                     <div className='nav_iconMenu'>
                         <button onClick={handleSearchBar}><div className="nav_search"><FaSearch className='nav_search_icon' /></div></button>
-                        <button><div className="nav_allMenu"><GiHamburgerMenu className='nav_toggle_icon' /></div></button>
                         {token ? (
                             <>
                                 <button onClick={navMyPage}><div className="nav_logout">마이페이지</div></button>
@@ -131,8 +128,10 @@ function Navbar() {
                 </div>
             ) : (
                 <div className='SearchBar_div'>
-                    <button onClick={handleSearchBar}><IoCloseSharp /></button>
                     <SearchBar onSearch={handleSearchBar} />
+                    <button onClick={handleSearchBar} className="SearchBar-close-button">
+                        <IoCloseSharp />
+                    </button>
                 </div>
             )}
         </>

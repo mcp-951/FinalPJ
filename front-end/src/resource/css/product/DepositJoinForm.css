@@ -1,138 +1,150 @@
-.deposit-form-container {
-  width: 60%;
+/* DepositJoin 컨테이너 */
+.DepositJoin-container {
+  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 15px; /* 더 부드러운 둥근 모서리 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
 }
 
-h2 {
-  text-align: center;
+/* 그룹 섹션 */
+.DepositJoin-group {
   margin-bottom: 20px;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 20px;
-}
-
-.form-group label {
+.DepositJoin-group label {
+  display: block;
+  margin-bottom: 5px;
   font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 1rem;
 }
 
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 10px;
+.DepositJoin-note {
   margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.form-group input[type="radio"] {
-  width: auto;
-  margin-right: 10px;
-}
-
-.form-group div {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.period-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.period-container input {
-  width: 100px;
-  padding: 8px;
-  border: 1px solid #000;
-  margin-bottom: 10px;
-  text-align: center;
-}
-
-.period-options {
-  display: flex;
-  gap: 10px;
-}
-
-.period-options button {
-  padding: 10px 15px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.period-options button:hover {
-  background-color: #007bff;
-  color: white;
-}
-
-.date-display {
-  margin-top: 10px;
-  font-size: 14px;
+  font-size: 0.9rem;
   color: #555;
 }
 
-.amount-container {
+/* 옵션 버튼 스타일 */
+.DepositJoin-period-options,
+.DepositJoin-amount-options {
   display: flex;
-  align-items: center; /* 금액 입력 필드와 버튼을 나란히 배치 */
-  gap: 10px; /* 필드와 버튼 간의 간격 */
+  gap: 15px;
+  margin-top: 10px;
 }
 
-.amount-container input {
-  width: 300px; /* 입력 필드 크기 조정 */
-  padding: 10px;
-}
-
-.amount-options {
-  display: flex;
-  gap: 10px;
-}
-
-.amount-options button {
-  padding: 12px 15px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.amount-options button:hover {
-  background-color: #007bff;
+.DepositJoin-period-options button,
+.DepositJoin-amount-options button {
+  background-color: #74a1d2;
   color: white;
+  padding: 10px 15px; /* 패딩 크기 수정 */
+  border: none;
+  border-radius: 8px; /* 버튼에 더 둥근 모서리 추가 */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.form-buttons {
-  margin: 0 auto;
-  margin-top: 30px;
-  gap:1000px;  
+.DepositJoin-period-options button:hover,
+.DepositJoin-amount-options button:hover {
+  background-color: #5a8db0;
 }
 
-.form-buttons button {
-  padding: 12px 30px;
-  background-color: #007bff;
+/* 밸런스 및 인증 버튼 */
+.DepositJoin-balance-button,
+.DepositJoin-verify-button {
+  background-color: #74a1d2;
   color: white;
   border: none;
-  border-radius: 5px;
+  padding: 10px 0; /* 패딩 수정 */
+  width: 100%;
+  max-width: 150px;
+  text-align: center;
+  border-radius: 8px; /* 둥근 모서리 추가 */
   cursor: pointer;
-  margin-right: 10px; /* 두 버튼 사이에 10px 간격 추가 */
+  transition: background-color 0.3s ease;
 }
 
-.form-buttons button:hover {
-  background-color: #0056b3;
+.DepositJoin-balance-button:hover,
+.DepositJoin-verify-button:hover {
+  background-color: #5a8db0;
 }
 
+.DepositJoin-balance-info {
+  margin-top: 10px;
+  font-weight: bold;
+}
 
-.form-buttons button:last-child {
-  margin-right: 0; /* 마지막 버튼에 오른쪽 마진을 제거 */
+/* 성공 및 오류 메시지 */
+.DepositJoin-success {
+  color: green;
+}
+
+.DepositJoin-error {
+  color: red;
+}
+
+/* 버튼 그룹 */
+.DepositJoin-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.DepositJoin-confirm-button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px; /* 더 둥근 버튼 */
+  cursor: pointer;
+  width: 100%;
+  max-width: 150px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.DepositJoin-confirm-button:hover {
+  background-color: #5a8db0;
+}
+
+.DepositJoin-buttons button {
+  background-color: #74a1d2;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px; /* 둥근 모서리 */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.DepositJoin-buttons button:hover {
+  background-color: #5a8db0;
+}
+
+/* 입력 행 스타일 */
+.DepositJoin-input-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+.DepositJoin-input {
+  flex: 1;
+  padding: 10px; /* 패딩을 더 여유롭게 조정 */
+  border-radius: 8px; /* 입력 필드에 둥근 모서리 추가 */
+  border: 1px solid #ccc;
+  margin-right: 10px;
+}
+
+.DepositJoin-text {
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  font-size: 1rem;
+}
+
+/* 주석 스타일 */
+.DepositJoin-note {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
 }

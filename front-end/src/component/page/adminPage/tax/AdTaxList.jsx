@@ -115,7 +115,7 @@ const AdTaxList = () => {
                   <td>{paymentAmount.toLocaleString()} 원</td>
                   <td>{tax.taxWriteDate}</td>
                   <td>{tax.taxState ? tax.taxState : '미납'}</td>
-                  <td>{tax.taxCategory}</td>
+                  <td>{tax.taxCategory === 'water'? '수도세':'전기세'}</td>
                   <td>
                     <button className="AdTaxList-edit-button" onClick={() => handleEdit(tax.taxNo, tax.taxCategory)}>
                       상세

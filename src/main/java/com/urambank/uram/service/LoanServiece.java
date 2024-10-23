@@ -3,6 +3,7 @@ package com.urambank.uram.service;
 import com.urambank.uram.dto.*;
 import com.urambank.uram.entities.*;
 import com.urambank.uram.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -73,8 +74,9 @@ public class LoanServiece {
     }
 
     public int loanJoinCheck(int userNo, int loanProductNo){
-        LoanEntity eDto =  loanRepository.findByLoanProductNoAndUserNo(userNo, loanProductNo);
+        LoanEntity eDto =  loanRepository.findByLoanProductNoAndUserNo(loanProductNo, userNo);
         int resultNo = 0;
+
         if (eDto != null){
             resultNo = 1;
         }
@@ -118,7 +120,7 @@ public class LoanServiece {
         }
         return a;
     }
-
+    @Transactional
     public int userAuto_TransferJoin(AutoTransferDTO autoTransferDTO, LoanDTO loanDTO){
         int a =0;
         int price = (loanDTO.getLoanAmount() + loanDTO.getLoanInterest()) / loanDTO.getLoanTern();
@@ -138,6 +140,8 @@ public class LoanServiece {
                 .autoAgreement('Y')
                 .build();
         AutoTransferEntity l = autoTransferRepository.save(eDto);
+
+        accountRepository.updateAccountBalance(autoTransferDTO.getAccountNo(), loanDTO.getLoanAmount());
         if(l != null){
             return a =1;
         }

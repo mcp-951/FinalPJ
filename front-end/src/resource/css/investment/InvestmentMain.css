@@ -1,69 +1,137 @@
-.investConteiner{
+/* 투자 메인 컨테이너 */
+.investConteiner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  /* 콘텐츠 섹션 */
+  .Content {
     display: flex;
-}
-.Content{
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  /* 주식바 스타일 */
+  .StockBar, .CoinBar {
+    flex: 1;
+    min-width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .StockBar:hover, .CoinBar:hover {
+    transform: translateY(-5px); /* 살짝 떠오르는 효과 */
+  }
+  
+  /* 테이블을 담는 섹션 */
+  .Stock_List {
+    flex: 2;
+    min-width: 650px; /* 최소 넓이를 조금 더 넓게 설정 */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+  }
+  
+  /* 테이블 스타일 */
+  .Stock_List table {
     width: 100%;
-}
-.StockBar{
-    margin-top: 1rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    height: 200px;
+    border-collapse: collapse; /* 테이블 간격을 최소화 */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .Stock_List th, .Stock_List td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 0.95rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .Stock_List th {
+    background-color: #f0f4f7;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+  }
+  
+  .Stock_List td {
+    background-color: #fff;
+    color: #666;
+  }
+  
+  .Stock_List tr:nth-child(even) td {
+    background-color: #f9fbfd;
+  }
+  
+  /* 테이블 셀 둥글게 */
+  .Stock_List th:first-child {
+    border-top-left-radius: 10px;
+  }
+  
+  .Stock_List th:last-child {
+    border-top-right-radius: 10px;
+  }
+  
+  .Stock_List td:first-child {
+    border-bottom-left-radius: 10px;
+  }
+  
+  .Stock_List td:last-child {
+    border-bottom-right-radius: 10px;
+  }
+  
+  .Stock_List td:hover {
+    background-color: #f0f4f7; /* 셀에 마우스 오버 시 배경색 변경 */
+  }
+  
+  /* 반응형 처리 */
+  @media (max-width: 768px) {
+    .Content {
+      flex-direction: column;
+    }
+  
+    .Stock_List {
+      min-width: 100%; /* 작은 화면에서 테이블이 화면 전체에 맞게 */
+      overflow-x: scroll;
+    }
+  }
+  
+  /* 타이틀 섹션 세련된 디자인 */
+  .StockBarTitle, .CoinBarTitle {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
-    flex-wrap: wrap
-}
-.StockBarTitle{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    align-items: center
-
-}
-
-.StockBarTitle a {
-    margin-right: 6px;
-    font-size: small;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .StockBarTitle h4, .CoinBarTitle h4 {
+    font-size: 18px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .StockBarTitle a, .CoinBarTitle a {
+    font-size: 14px;
+    color: #74a1d2;
     text-decoration: none;
-    color: inherit;
-}
-
-
-/* */
-.CoinBar{
-    margin-top: 4rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
-    height: 200px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center; 
-    flex-wrap: wrap
-}
-.CoinBarTitle{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    align-items: center
-
-}
-
-.CoinBarTitle a {
-    margin-right: 6px;
-    font-size: small;
-    text-decoration: none;
-    color: inherit;
-}
-
-
-/* */
-.RightList{
-    width: 20%;
-    min-height: 100vh;
-}
-
+    font-weight: 500;
+  }
+  
+  .StockBarTitle a:hover, .CoinBarTitle a:hover {
+    text-decoration: underline;
+    color: #5a90bf;
+  }
+  

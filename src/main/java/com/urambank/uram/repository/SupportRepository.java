@@ -2,11 +2,9 @@ package com.urambank.uram.repository;
 
 import com.urambank.uram.entities.SupportEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface SupportRepository extends JpaRepository<SupportEntity, Integer> {
 
     // 특정 사용자의 삭제되지 않은 문의글 조회
