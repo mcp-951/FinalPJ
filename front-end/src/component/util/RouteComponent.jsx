@@ -64,6 +64,7 @@ import AdTaxInsert from '../page/adminPage/tax/AdTaxInsert';
 import Sidebar from '../page/adminPage/Sidebar';
 import AdminInquiryDetail from 'component/page/adminPage/support/AdminInquiryDetail';
 import AdminInquiryList from 'component/page/adminPage/support/AdminInquiryList';
+import LoanJoinList from 'component/page/adminPage/loan/LoanJoinList';
 
 // 예금 적금
 import DepositMain from 'component/page/product/deposit/DepositMain';
@@ -170,7 +171,7 @@ const RouteComponent = () => {
                         <Route path="/customer-service" element={<CustomerServiceMain />} />
                         <Route path="/inquiry/:id" element={<InquiryDetail inquiries={inquiries} />} />
                         <Route path="/inquiry-form" element={<InquiryForm addInquiry={addInquiry} />} /> {/* InquiryForm 라우팅 설정 */}
-                        
+                                                
                         {/* 사용자 관리 페이지 */}
                         <Route path="/adMemberList" element={<AdMemberList />} />
                         <Route path="/adRetiredMember" element={<AdRetiredMember />} />
@@ -198,6 +199,9 @@ const RouteComponent = () => {
                         <Route path="/admin/adAccount" element={<AdAccount />} />
                         <Route path="/admin/adAccountStop" element={<AdAccountStop />} />
                         <Route path="/admin/adAccountClosure" element={<AdAccountClosure />} />
+
+                        {/* 대출가입현황 관련 */}
+                        <Route path="/admin/adLoanJoinList" element={<LoanJoinList />} />
 
 
                         {/* 예금, 적금, 대출 상품 관련 */}
