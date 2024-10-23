@@ -38,7 +38,7 @@ const Total = () => {
 
       if (uniqueAccounts.length === 0) {
         alert('등록된 계좌가 없습니다. 계좌 생성페이지로 이동합니다.');
-        navigate('/getNewAccount'); // 계좌가 없을 경우 메인 페이지로 리다이렉트
+        navigate('/deposit-list'); // 계좌가 없을 경우 메인 페이지로 리다이렉트
       } else {
         setUserName(userName); // 사용자 이름 설정
         setAccounts(uniqueAccounts); // 계좌 목록 설정
@@ -56,6 +56,8 @@ const Total = () => {
       fetchData(); // userName과 계좌 데이터 가져오기
     } else {
       console.error('userNo 또는 token이 없습니다.');
+      alert("로그인이 필요합니다.")
+      navigate('/login')
     }
   }, [userNo, token]);
 

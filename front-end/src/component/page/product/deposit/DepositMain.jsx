@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 가져오기
-import '../../../../resource/css/product/DepositMain.css';
+import 'resource/css/product/DepositMain.css';
 
 const DepositMain = () => {
   const navigate = useNavigate(); // useNavigate 훅 사용
