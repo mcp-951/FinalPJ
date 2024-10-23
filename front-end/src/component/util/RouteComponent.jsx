@@ -74,7 +74,6 @@ import DepositJoinFinish from 'component/page/product/deposit/DepositJoinFinish'
 import DepositSearch from 'component/page/product/deposit/DepositSearch';
 import EmergencyWithdrawal from 'component/page/product/deposit/EmergencyWithdrawal';
 import SavingsJoin from 'component/page/product/deposit/SavingsJoin';
-import ReceivedPaidMain from 'component/page/product/deposit/ReceivedPaidMain';
 import ReceivedPaidMainJoin from 'component/page/product/deposit/ReceivedPaidMainJoin';
 
 
@@ -210,7 +209,6 @@ const RouteComponent = () => {
                         <Route path="/DepositSearch" exact={true} element={<DepositSearch />} />
                         <Route path="/EmergencyWithdrawal" exact={true} element={<EmergencyWithdrawal />} />
                         <Route path="/DepositJoin" exact={true} element={<DepositJoin />} />
-                        <Route path="/ReceivedPaidMain" exact={true} element={<ReceivedPaidMain />} />
                         <Route path="/ReceivedPaidMainJoin" exact={true} element={<ReceivedPaidMainJoin />} />
 
                         {/* 계좌 페이지 시작_채림님*/}

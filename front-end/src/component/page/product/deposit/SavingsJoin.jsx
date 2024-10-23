@@ -61,7 +61,7 @@ const SavingsJoin = () => {
     if (token) {
       ApiService.getUserPhoneNumber(token)
         .then((phone) => {
-          setFormData((prev) => ({ ...prev, hp: phone })); // 휴대폰 번호 설정
+          setFormData((prev) => ({ ...prev, hp: phone }));
         })
         .catch((error) => {
           console.error('휴대폰 번호를 불러오는 중 오류 발생:', error);
@@ -69,17 +69,14 @@ const SavingsJoin = () => {
     }
   }, []);
 
-  // 금액에 천 단위 콤마를 추가하는 함수
   const formatNumber = (num) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
 
-  // 금액 변경 함수 (유효성 검사 추가)
   const handleAmountChange = (addedAmount) => {
     const currentAmount = formData.amount ? parseInt(formData.amount.replace(/,/g, '')) : 0;
     const newAmount = currentAmount + parseInt(addedAmount);
 
-    // 유효성 검사
     const minAmount = depositData.depositMinimumAmount;
     const maxAmount = depositData.depositMaximumAmount;
 
@@ -93,11 +90,9 @@ const SavingsJoin = () => {
       return;
     }
 
-    // 유효성 검사를 통과한 경우에만 필드에 반영
     setFormData({ ...formData, amount: formatNumber(newAmount.toString()) });
   };
 
-  // 사용자가 직접 금액 입력할 때 호출
   const handleAmountInputChange = (e) => {
     const inputAmount = e.target.value.replace(/,/g, '');
     if (!isNaN(inputAmount)) {
@@ -105,7 +100,6 @@ const SavingsJoin = () => {
     }
   };
 
-  // 가입 금액 유효성 검사 함수
   const handleAmountBlur = () => {
     const amountInWon = parseFloat(formData.amount.replace(/[^0-9]/g, ''));
     const minAmount = depositData.depositMinimumAmount;
@@ -126,7 +120,6 @@ const SavingsJoin = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 비밀번호 확인 로직
   const handlePasswordCheck = () => {
     if (formData.password !== formData.confirmPassword) {
       setPasswordError('비밀번호가 일치하지 않습니다.');
@@ -135,7 +128,6 @@ const SavingsJoin = () => {
     }
   };
 
-  // 핸드폰 인증번호 요청 함수
   const handleHpVerification = async () => {
     if (!/^\d{10,11}$/.test(formData.hp)) {
       alert("유효한 휴대폰 번호를 입력해주세요. (10~11자리 숫자)");
@@ -143,7 +135,7 @@ const SavingsJoin = () => {
     }
     try {
       const response = await ApiService.checkHp(formData.hp);
-      setHpAuthKey(response.data); // 서버로부터 받은 인증번호 저장
+      setHpAuthKey(response.data); 
       alert("인증번호가 발송되었습니다.");
     } catch (error) {
       console.error("인증번호 요청 실패:", error);
@@ -151,7 +143,6 @@ const SavingsJoin = () => {
     }
   };
 
-  // 인증번호 확인 로직
   const handleAuthKeyCheck = () => {
     if (!enteredAuthKey) {
       alert("인증번호를 입력해주세요.");
@@ -166,7 +157,6 @@ const SavingsJoin = () => {
     }
   };
 
-  // 가입 기간 유효성 검사
   const handlePeriodBlur = () => {
     const { period } = formData;
     if (!period) {
@@ -179,7 +169,6 @@ const SavingsJoin = () => {
     }
   };
 
-  // 가입 기간 변경 함수 (유효성 검사 추가)
   const handlePeriodChange = (newPeriod) => {
     const minPeriod = depositData.depositMinimumDate;
     const maxPeriod = depositData.depositMaximumDate;
@@ -198,7 +187,7 @@ const SavingsJoin = () => {
   };
 
   const goToDepositJoinFinish = async () => {
-    const token = localStorage.getItem('token'); // JWT 토큰 가져오기
+    const token = localStorage.getItem('token'); 
 
     if (!token) {
       alert('로그인이 필요합니다. 다시 로그인해 주세요.');
@@ -246,21 +235,20 @@ const SavingsJoin = () => {
     navigate('/DepositList');
   };
 
-  // 계좌정보 가져오기
   useEffect(() => {
     ApiService.getUserAccounts()
     .then((response) => {
-      console.log("계좌 정보:", response.data); // 응답 데이터 확인
+      console.log("계좌 정보:", response.data);
       const filteredAccounts = response.data.filter(account => {
         return account.depositName && account.depositName.includes('입출금');
       });
       setAccounts(filteredAccounts);
     })
     .catch((error) => {
-      console.error('계좌 정보를 불러오는 중 오류 발생:', error); // 오류 상세 정보 출력
+      console.error('계좌 정보를 불러오는 중 오류 발생:', error);
       setErrorMessages({ ...errorMessages, fetchError: '계좌 정보를 불러오는 중 오류가 발생했습니다.' });
     });
-}, []);
+  }, []);
 
   const handleCheckBalance = () => {
     const selectedAcc = accounts.find(account => account.accountNumber === selectedAccount);
@@ -277,12 +265,12 @@ const SavingsJoin = () => {
   }
 
   return (
-    <div className="deposit-form-container">
+    <div className="DepositJoin-container">
       <h2>정보입력</h2>
       {/* 가입기간 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>가입기간</label>
-        <div className="period-container">
+        <div className="DepositJoin-input-row">
           <input
             type="number"
             name="period"
@@ -291,7 +279,7 @@ const SavingsJoin = () => {
             onBlur={handlePeriodBlur}
             placeholder={'가입기간을 입력해주세요'}
           />개월
-          <div className="period-options">
+          <div className="DepositJoin-period-options">
             {depositData.depositMinimumDate <= 6 && (
               <button onClick={() => handlePeriodChange(6)}>6개월</button>
             )}
@@ -312,13 +300,13 @@ const SavingsJoin = () => {
             )}
           </div>
         </div>
-        <div className="date-display">최소 {depositData.depositMinimumDate}개월 ~ 최대 {depositData.depositMaximumDate}개월</div>
+        <div className="DepositJoin-note">최소 {depositData.depositMinimumDate}개월 ~ 최대 {depositData.depositMaximumDate}개월</div>
       </div>
 
       {/* 가입금액 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>가입금액</label>
-        <div className="amount-container">
+        <div className="DepositJoin-input-row">
           <input
             type="text"
             name="amount"
@@ -329,20 +317,20 @@ const SavingsJoin = () => {
           />
           <span>최소 {depositData.depositMinimumAmount * 0.0001} 만원이상</span>
 
-          <div className="amount-options">
+          <div className="DepositJoin-amount-options">
             <button onClick={() => handleAmountChange(1000000)}>100만</button>
             <button onClick={() => handleAmountChange(3000000)}>300만</button>
             <button onClick={() => handleAmountChange(5000000)}>500만</button>
             <button onClick={() => handleAmountChange(10000000)}>1000만</button>
           </div>
         </div>
-        <div className="date-display">최소 {depositData.depositMinimumAmount * 0.0001}만원 ~ 최대 {depositData.depositMaximumAmount * 0.0001}만원</div>
+        <div className="DepositJoin-note">최소 {depositData.depositMinimumAmount * 0.0001}만원 ~ 최대 {depositData.depositMaximumAmount * 0.0001}만원</div>
       </div>
 
       {/* 출금계좌번호 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>출금계좌번호</label>
-        <div className="auto-transfer-step2-balance-section">
+        <div className="DepositJoin-input-row">
           <select
             value={selectedAccount}
             onChange={(e) => {
@@ -358,11 +346,11 @@ const SavingsJoin = () => {
               </option>
             ))}
           </select>
-          <button type="button" onClick={handleCheckBalance} className="auto-transfer-step2-balance-button">
+          <button type="button" onClick={handleCheckBalance} className="DepositJoin-balance-button">
             출금가능금액
           </button>
           {availableBalance !== null ? (
-            <span className="auto-transfer-step2-balance-info">{availableBalance?.toLocaleString()}원</span>
+            <span className="DepositJoin-balance-info">{availableBalance?.toLocaleString()}원</span>
           ) : (
             <span className="auto-transfer-step2-error-message">{errorMessages.selectedAccount}</span>
           )}
@@ -370,62 +358,66 @@ const SavingsJoin = () => {
       </div>
 
       {/* 핸드폰 인증 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>휴대폰 번호</label>
         <input
           type="tel"
           name="hp"
           value={formData.hp}
-          readOnly // 수정 불가 설정
+          readOnly
         />
-        <button type="button" onClick={handleHpVerification} className="verify-button">
+        <button type="button" onClick={handleHpVerification} className="DepositJoin-verify-button">
           인증번호 받기
         </button>
       </div>
 
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>인증번호</label>
-        <input
-          type="text"
-          name="enteredAuthKey"
-          value={enteredAuthKey}
-          onChange={(e) => setEnteredAuthKey(e.target.value)}
-          placeholder="인증번호 입력"
-        />
-        <button type="button" onClick={handleAuthKeyCheck} className="verify-button">
-          인증하기
-        </button>
-        {authSuccess && <span className="success-message">✔ 인증 완료</span>}
+        <div className="DepositJoin-input-row">
+          <input
+            type="text"
+            name="enteredAuthKey"
+            value={enteredAuthKey}
+            onChange={(e) => setEnteredAuthKey(e.target.value)}
+            placeholder="인증번호 입력"
+          />
+          <button type="button" onClick={handleAuthKeyCheck} className="DepositJoin-verify-button">
+            인증하기
+          </button>
+        </div>
+        {authSuccess && <span className="DepositJoin-success">✔ 인증 완료</span>}
       </div>
 
       {/* 비밀번호 입력 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>비밀번호 입력 (4자리)</label>
         <input
           type="password"
           name="password"
-          value={formData.password}
           maxLength="4"
+          value={formData.password}
           onChange={handleChange}
         />
       </div>
 
-      {/* 비밀번호 확인 입력 */}
-      <div className="form-group">
+      {/* 비밀번호 확인 */}
+      <div className="DepositJoin-group">
         <label>비밀번호 확인</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          maxLength="4"
-          onChange={handleChange}
-        />
-        <button type="button" onClick={handlePasswordCheck}>확인</button>
-        <span className="password-error">{passwordError}</span>
+        <div className="DepositJoin-input-row">
+          <input
+            type="password"
+            name="confirmPassword"
+            maxLength="4"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
+          <button type="button" onClick={handlePasswordCheck} className="DepositJoin-confirm-button">확인</button>
+        </div>
+        {passwordError && <div className="DepositJoin-error">{passwordError}</div>}
       </div>
 
       {/* 자동이체일 선택 */}
-      <div className="form-group">
+      <div className="DepositJoin-group">
         <label>자동이체일 선택</label>
         <select
           name="autoTransferDate"
@@ -440,7 +432,7 @@ const SavingsJoin = () => {
       </div>
 
       {/* 버튼 */}
-      <div className="form-buttons">
+      <div className="DepositJoin-buttons">
         <button type="button" onClick={goToDepositList}>취소</button>
         <button type="button" onClick={goToDepositJoinFinish}>완료</button>
       </div>

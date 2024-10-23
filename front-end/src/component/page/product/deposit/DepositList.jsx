@@ -3,18 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import ApiService from 'component/ApiService'; // API 서비스 임포트
 import '../../../../resource/css/product/DepositList.css'; // CSS 파일 경로
 
-const DepositItem = ({ depositNo, depositName, depositMaximumRate, depositMaximumDate, depositContent }) => {
+const DepositItem = ({ depositNo, depositName, depositMinimumRate, depositMaximumRate, depositMinimumDate, depositMaximumDate, depositMinimumAmount, depositMaximumAmount, depositContent, depositCharacteristic, depositCategory, depositState }) => {
   const navigate = useNavigate();
 
   const handleDetailClick = () => {
-    sessionStorage.setItem('selectedDeposit', JSON.stringify({ depositNo, depositName, depositMaximumRate, depositMaximumDate, depositContent }));
-    
-    if (depositName.includes("입출금")) {
-      navigate('/ReceivedPaidMain');
-    } else {
-      navigate('/DepositMain');
-    }
-  };
+    // 세션에 상품 정보 저장
+    sessionStorage.setItem(
+      'selectedDeposit',
+      JSON.stringify({ depositNo, depositName, depositMinimumRate, depositMaximumRate, depositMinimumDate, depositMaximumDate, depositMinimumAmount, depositMaximumAmount, depositContent, depositCharacteristic, depositCategory, depositState })
+    );
+    navigate('/DepositMain');
+};
 
   return (
     <div className="DepositList-item">
@@ -32,20 +31,28 @@ const DepositItem = ({ depositNo, depositName, depositMaximumRate, depositMaximu
   );
 };
 
+// 상품 리스트 컴포넌트 (DepositList)
 const DepositList = ({ deposits }) => (
-  <div className="DepositList-container">
+  <div className="deposit-list">
     {deposits.map((deposit, index) => (
       <DepositItem
         key={index}
         depositNo={deposit.depositNo}
         depositName={deposit.depositName}
+        depositMinimumRate={deposit.depositMinimumRate}
         depositMaximumRate={deposit.depositMaximumRate}
+        depositMinimumDate={deposit.depositMinimumDate}
         depositMaximumDate={deposit.depositMaximumDate}
+        depositMinimumAmount={deposit.depositMinimumAmount}
+        depositMaximumAmount={deposit.depositMaximumAmount}
         depositContent={deposit.depositContent}
+        depositCharacteristic={deposit.depositCharacteristic}
+        depositCategory={deposit.depositCategory}
       />
     ))}
   </div>
 );
+
 
 const DepositList1 = () => {
   const [deposits, setDeposits] = useState([]);

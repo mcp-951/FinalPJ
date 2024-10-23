@@ -46,6 +46,8 @@ public class DepositDTO {
                 .depositMinimumDate(depositEntity.getDepositMinimumDate())
                 .depositMaximumDate(depositEntity.getDepositMaximumDate())
                 .depositCategory(depositEntity.getDepositCategory())
+                .depositCharacteristic(depositEntity.getDepositCharacteristic())
+                .depositContent(depositEntity.getDepositContent())
                 .build();
     }
 
