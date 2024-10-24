@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findByUserRoleAndState(String role, char state);
 
     User findByName(String name);
+
+    
 }

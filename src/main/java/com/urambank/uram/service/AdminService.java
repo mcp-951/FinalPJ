@@ -1,10 +1,6 @@
 package com.urambank.uram.service;
 
-import com.urambank.uram.dto.AccountDTO;
-import com.urambank.uram.dto.UserDTO;
-import com.urambank.uram.dto.LogDTO;
-import com.urambank.uram.dto.DepositDTO;
-import com.urambank.uram.dto.LoanProductDTO;
+import com.urambank.uram.dto.*;
 import com.urambank.uram.entities.LogEntity;
 import com.urambank.uram.entities.User;
 import com.urambank.uram.entities.LoanEntity;
@@ -667,5 +663,54 @@ public class AdminService {
         userEntity.setState(userState); // 상태를 '정상'가 아닌 '정지'로 변경
         userRepository.save(userEntity);
     }
+
+    public Map<String, Object> getAdminAndLoanData() {
+        // 관리자 정보 조회
+        List<UserDTO> users = userRepository.findAll()
+                .stream()
+                .map(user -> UserDTO.builder()
+                        .userId(user.getUserId())
+                        .name(user.getName())
+                        .userNo(user.getUserNo())
+                        .build())
+                .collect(Collectors.toList());
+
+        // 대출 정보 조회
+        List<LoanDTO> loans = loanRepository.findAll()
+                .stream()
+                .map(loan -> LoanDTO.builder()
+                        .loanNo(loan.getLoanNo())
+                        .userNo(loan.getUserNo())
+                        .loanJoinDate(loan.getLoanJoinDate())
+                        .repaymentType(loan.getRepaymentType())
+                        .loanProductNo(loan.getLoanProductNo())
+                        .loanAmount(loan.getLoanAmount())
+                        .loanInterest(loan.getLoanInterest())
+                        .interestRate(loan.getInterestRate())
+                        .loanTern(loan.getLoanTern())
+                        .repaymentAmount(loan.getRepaymentAmount())
+                        .repaymentInterest(loan.getRepaymentInterest())
+                        .loanStatus(loan.getLoanStatus())
+                        .build())
+                .collect(Collectors.toList());
+
+        List<LoanProductDTO> product = loanProductRepository.findAll()
+                .stream()
+                .map(products -> LoanProductDTO.builder()
+                        .loanProductNo(products.getLoanProductNo())
+                        .loanProductTitle(products.getLoanProductTitle())
+                        .build())
+                .collect(Collectors.toList());
+
+
+        // 두 리스트를 Map에 넣어서 반환
+        Map<String, Object> result = new HashMap<>();
+        result.put("users", users);
+        result.put("loans", loans);
+        result.put("product", product);
+
+        return result;
+    }
+
 }
 

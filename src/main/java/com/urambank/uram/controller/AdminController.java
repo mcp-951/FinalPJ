@@ -206,4 +206,11 @@ public class AdminController {
         adminService.deactivateUser(userNo);
         return ResponseEntity.ok("회원 탈퇴 처리 완료");
     }
+
+    //-------------------------------------- 대출 가입현황 리스트 -----------------------------------------
+    @GetMapping("/getUserAndLoanData")
+    public ResponseEntity<Map<String, Object>> getAdminAndLoanData() {
+        Map<String, Object> response = adminService.getAdminAndLoanData();
+        return ResponseEntity.ok(response);
+    }
 }

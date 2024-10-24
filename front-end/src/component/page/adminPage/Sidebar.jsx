@@ -56,6 +56,20 @@ const Sidebar = () => {
           </li>
 
           <li
+            onMouseEnter={() => setShowFinancialDropdown(true)}
+            onMouseLeave={() => setShowFinancialDropdown(false)}
+          >
+            대출가입현황
+            {showFinancialDropdown && (
+              <ul className="dropdown">
+                <li>
+                  <NavLink to="/admin/adLoanJoinList">대출가입현황</NavLink>
+                </li>
+              </ul>
+            )}
+          </li>
+
+          <li
             onMouseEnter={() => setShowAccountDropdown(true)}
             onMouseLeave={() => setShowAccountDropdown(false)}
           >
