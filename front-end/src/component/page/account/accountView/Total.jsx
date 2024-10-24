@@ -22,7 +22,7 @@ const Total = () => {
   const fetchData = async () => {
     try {
       // 전체 계좌와 사용자 이름을 함께 가져오는 API 호출
-      const response = await axios.get(`http://localhost:8081/uram/accounts`, {
+      const response = await axios.get(`http://13.125.114.85:8081/uram/accounts`, {
         headers: {
           'Authorization': `Bearer ${token.trim()}` // Authorization 헤더에 JWT 추가
         }

@@ -34,7 +34,7 @@ const AdTaxInsert = () => {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:8081/tax/role-user', {
+    axios.get('http://13.125.114.85:8081/tax/role-user', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -52,7 +52,7 @@ const AdTaxInsert = () => {
 
   const handleUserChange = (e) => {
     const selectedUserId = e.target.value;
-    axios.get(`http://localhost:8081/tax/userNo/${selectedUserId}`, {
+    axios.get(`http://13.125.114.85:8081/tax/userNo/${selectedUserId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -96,7 +96,7 @@ const AdTaxInsert = () => {
 
     const taxData = { ...tax, totalAmount, totalFee, totalBasicFee };
 
-    axios.post('http://localhost:8081/tax/insert', taxData, {
+    axios.post('http://13.125.114.85:8081/tax/insert', taxData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

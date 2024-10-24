@@ -60,7 +60,7 @@ const AccountTransfer = () => {
   // 백엔드에서 계좌 목록 가져오기
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/uram/accounts/category-one', {
+      const response = await axios.get('http://13.125.114.85:8081/uram/accounts/category-one', {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -89,7 +89,7 @@ const AccountTransfer = () => {
   // 1회 이체 한도 정보를 받아오는 함수
   const fetchOnceLimit = async (accountNumber) => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+      const response = await axios.get(`http://13.125.114.85:8081/uram/account/${accountNumber}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         },
@@ -133,7 +133,7 @@ const AccountTransfer = () => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:8081/uram/account/${selectedAccount}/check-password`, {
+      const response = await axios.post(`http://13.125.114.85:8081/uram/account/${selectedAccount}/check-password`, {
         password: password,
         userNo: userNo // userNo를 요청 본문에 포함
       }, {
@@ -164,7 +164,7 @@ const AccountTransfer = () => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:8081/uram/account/validate`, {
+      const response = await axios.get(`http://13.125.114.85:8081/uram/account/validate`, {
         params: {
           accountNumber: targetAccountNumber,
           bankName: selectedBank,

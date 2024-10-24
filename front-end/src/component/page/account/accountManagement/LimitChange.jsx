@@ -20,7 +20,7 @@ const LimitChange = () => {
   // 이체 한도 정보를 받아오는 함수
   const fetchLimits = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/account/detail/${accountNumber}`, {
+      const response = await axios.get(`http://13.125.114.85:8081/uram/account/detail/${accountNumber}`, {
         headers: {
           'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
         },
@@ -59,7 +59,7 @@ const LimitChange = () => {
   
     try {
       const response = await axios.post(
-        `http://localhost:8081/uram/account/${accountNumber}/change-limit`,
+        `http://13.125.114.85:8081/uram/account/${accountNumber}/change-limit`,
         {
           onceLimit: parseInt(newOnceLimit, 10), // 새로운 1회 이체한도
           userNo: userNo // userNo를 요청 본문에 포함

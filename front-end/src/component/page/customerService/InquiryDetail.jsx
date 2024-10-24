@@ -20,7 +20,7 @@ function InquiryDetail() {
       try {
         const token = localStorage.getItem('token');
         const response = await axios.get(
-          `http://localhost:8081/support/detail/${id}`,
+          `http://13.125.114.85:8081/support/detail/${id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         console.log('API 응답 데이터:', response.data); // API 응답 확인
@@ -48,7 +48,7 @@ function InquiryDetail() {
     if (confirmDelete) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:8081/support/${id}`, {
+        await axios.delete(`http://13.125.114.85:8081/support/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         alert('문의글이 삭제되었습니다.');
@@ -68,7 +68,7 @@ function InquiryDetail() {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `http://localhost:8081/support/${id}`,
+        `http://13.125.114.85:8081/support/${id}`,
         { qnaTitle: editedTitle, message: editedMessage },
         { headers: { Authorization: `Bearer ${token}` } }
       );

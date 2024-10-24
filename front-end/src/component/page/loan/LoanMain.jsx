@@ -11,7 +11,7 @@ function LoanMain() {
     useEffect(() => {
         const fetchLoanProduct = async () => {
             try {
-                const response = await axios.get('http://localhost:8081/loan/list');
+                const response = await axios.get('http://13.125.114.85:8081/loan/list');
                 const data = response.data;
                 setLoanData(data);
             } catch (error) {

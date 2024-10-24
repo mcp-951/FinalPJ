@@ -1,6 +1,6 @@
 import axios from 'axios';
 import localStorage from 'localStorage';
-const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://13.125.114.85:8081';
 
 const token = localStorage.getItem("token");
 const ApiService = {

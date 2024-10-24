@@ -16,7 +16,7 @@ const AdMemberList = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    axios.get('http://localhost:8081/admin/getUserList', {
+    axios.get('http://13.125.114.85:8081/admin/getUserList', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -38,7 +38,7 @@ const AdMemberList = () => {
 
   const handleStatusChange = (member) => {
     const updatedMember = { ...member, state: member.state === 'y' ? 'n' : 'y' };  
-    axios.put(`http://localhost:8081/admin/setState/${member.userNo}`, updatedMember, {
+    axios.put(`http://13.125.114.85:8081/admin/setState/${member.userNo}`, updatedMember, {
       headers: {
         'Authorization': `Bearer ${token}`
       }

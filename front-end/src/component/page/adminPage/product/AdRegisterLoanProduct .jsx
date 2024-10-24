@@ -30,7 +30,7 @@ const AdRegisterLoanProduct = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8081/admin/register-loan', formData, {
+      await axios.post('http://13.125.114.85:8081/admin/register-loan', formData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

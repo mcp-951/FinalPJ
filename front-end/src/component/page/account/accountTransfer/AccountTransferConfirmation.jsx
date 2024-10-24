@@ -36,7 +36,7 @@ const AccountTransferConfirmation = () => {
     // 수신자 이름을 가져오는 API 호출
     const fetchRecipientName = async () => {
       try {
-        const response = await axios.get('http://localhost:8081/uram/recipient-name', {
+        const response = await axios.get('http://13.125.114.85:8081/uram/recipient-name', {
           params: {
             accountNumber: targetAccountNumber,
             bankName: selectedBank,
@@ -70,7 +70,7 @@ const AccountTransferConfirmation = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:8081/uram/transfer',
+        'http://13.125.114.85:8081/uram/transfer',
         {
           fromAccountNumber: selectedAccount,
           toBankName: selectedBank,

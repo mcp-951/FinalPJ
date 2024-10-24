@@ -16,7 +16,7 @@ const ExchangeResult = () => {
     // 서버에서 pickUpAddress를 받아오는 함수
     const fetchPickUpAddress = async () => {
         try {
-            const response = await axios.get(`http://localhost:8081/exchange/pickup-address/${branch}`, {
+            const response = await axios.get(`http://13.125.114.85:8081/exchange/pickup-address/${branch}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }

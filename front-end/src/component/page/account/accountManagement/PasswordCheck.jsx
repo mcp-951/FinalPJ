@@ -35,7 +35,7 @@ const PasswordCheck = ({ title, instructions }) => {
   // 계좌 목록을 불러오는 함수
   const fetchAccounts = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/accounts`, {
+      const response = await axios.get(`http://13.125.114.85:8081/uram/accounts`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -74,7 +74,7 @@ const PasswordCheck = ({ title, instructions }) => {
   const handlePasswordCheck = async () => {
     if (password.trim() !== "") {
       try {
-        const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/check-password`, {
+        const response = await axios.post(`http://13.125.114.85:8081/uram/account/${accountNumber}/check-password`, {
           userNo: userNo,
           password: password,
         }, {

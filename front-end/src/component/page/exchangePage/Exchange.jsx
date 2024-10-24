@@ -38,7 +38,7 @@ const Exchange = () => {
         const fetchUserData = async () => {
             try {
                 // 토큰 값으로 userNo 추출
-                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`, {
+                const userNoResponse = await axios.get(`http://13.125.114.85:8081/exchange/list/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -48,7 +48,7 @@ const Exchange = () => {
                 console.log("UserNo:", userNo);
     
                 // userNo로 예금 계좌 목록 가져오기
-                const accountsResponse = await axios.get(`http://localhost:8081/exchange/users/${userNo}/accounts/category-one`, {
+                const accountsResponse = await axios.get(`http://13.125.114.85:8081/exchange/users/${userNo}/accounts/category-one`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -71,7 +71,7 @@ const Exchange = () => {
             }
     
             try {
-                const branchesResponse = await axios.get(`http://localhost:8081/exchange/pickup-places`, {
+                const branchesResponse = await axios.get(`http://13.125.114.85:8081/exchange/pickup-places`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -92,7 +92,7 @@ const Exchange = () => {
         setSelectedAccountNumber(selectedAccountNumber);
 
         try {
-            const response = await axios.get(`http://localhost:8081/exchange/get-account-info/${selectedAccountNumber}`, {
+            const response = await axios.get(`http://13.125.114.85:8081/exchange/get-account-info/${selectedAccountNumber}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -138,7 +138,7 @@ const Exchange = () => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8081/exchange/verify-password/${selectedAccountNumber}/${password}`,
+                `http://13.125.114.85:8081/exchange/verify-password/${selectedAccountNumber}/${password}`,
                 null,
                 {
                     headers: {
@@ -228,7 +228,7 @@ const Exchange = () => {
 
         const confirmResult = window.confirm('환전 하시겠습니까?');
         if (confirmResult) {
-            axios.post('http://localhost:8081/exchange/submit-exchange', exchangeDetails, {
+            axios.post('http://13.125.114.85:8081/exchange/submit-exchange', exchangeDetails, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

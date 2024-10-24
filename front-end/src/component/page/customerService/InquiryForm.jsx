@@ -49,7 +49,7 @@ function InquiryForm() {
     };
 
     try {
-      const response = await axios.post('http://localhost:8081/support/board', requestBody, {
+      const response = await axios.post('http://13.125.114.85:8081/support/board', requestBody, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`, // JWT 토큰 설정

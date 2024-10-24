@@ -89,14 +89,14 @@ const ExchangeList = () => {
     useEffect(() => {
         const fetchUserDataAndExchangeList = async () => {
             try {
-                const userNoResponse = await axios.get(`http://localhost:8081/exchange/list/${userId}`, {
+                const userNoResponse = await axios.get(`http://13.125.114.85:8081/exchange/list/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
                 });
                 const userNo = userNoResponse.data;
 
-                const exchangeResponse = await axios.get(`http://localhost:8081/exchange/exchangeList/${userNo}`, {
+                const exchangeResponse = await axios.get(`http://13.125.114.85:8081/exchange/exchangeList/${userNo}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     }
@@ -122,7 +122,7 @@ const ExchangeList = () => {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8081/exchange/pickup-address/${branch}`, {
+            const response = await axios.get(`http://13.125.114.85:8081/exchange/pickup-address/${branch}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
                 }

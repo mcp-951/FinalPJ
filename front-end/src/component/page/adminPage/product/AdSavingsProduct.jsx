@@ -70,7 +70,7 @@ const AdSavingsProduct = () => {
   // 삭제 버튼 클릭 시 depositState를 'n'으로 변경
   const handleDelete = async (depositNo) => {
     try {
-      await axios.put(`http://localhost:8081/admin/deleteSavings/${depositNo}`, null, {
+      await axios.put(`http://13.125.114.85:8081/admin/deleteSavings/${depositNo}`, null, {
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
         }

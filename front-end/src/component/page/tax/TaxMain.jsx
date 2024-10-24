@@ -32,7 +32,7 @@ function TaxMain(){
 
             const fetchTaxData = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/tax/TaxMain/${decodedToken.userNo}/${category}`, {
+                    const response = await axios.get(`http://13.125.114.85:8081/tax/TaxMain/${decodedToken.userNo}/${category}`, {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }});

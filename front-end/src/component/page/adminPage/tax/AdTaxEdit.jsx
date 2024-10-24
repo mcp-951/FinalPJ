@@ -24,7 +24,7 @@ const AdTaxEdit = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    axios.get(`http://localhost:8081/tax/select/${taxNo}`, {
+    axios.get(`http://13.125.114.85:8081/tax/select/${taxNo}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -33,7 +33,7 @@ const AdTaxEdit = () => {
       setTax(response.data);
 
       // 세금 데이터의 userNo를 사용해 사용자 이름 가져오기
-      axios.get(`http://localhost:8081/tax/name/${response.data.userNo}`, {
+      axios.get(`http://13.125.114.85:8081/tax/name/${response.data.userNo}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -67,7 +67,7 @@ const AdTaxEdit = () => {
       totalBasicFee: totalBasicFee 
     };
 
-    axios.put(`http://localhost:8081/tax/edit/${taxNo}`, updatedTax, {
+    axios.put(`http://13.125.114.85:8081/tax/edit/${taxNo}`, updatedTax, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

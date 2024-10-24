@@ -33,7 +33,7 @@ const AdRegisterProduct = () => {
   const handleRegister = async (e) => {
     e.preventDefault(); // 기본 폼 제출 방지
     try {
-      await axios.post('http://localhost:8081/admin/register-product', formData, {
+      await axios.post('http://13.125.114.85:8081/admin/register-product', formData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}` // JWT 토큰 사용
         }

@@ -15,7 +15,7 @@ const AdTaxList = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    axios.get('http://localhost:8081/tax/list', {
+    axios.get('http://13.125.114.85:8081/tax/list', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -26,7 +26,7 @@ const AdTaxList = () => {
       setFilteredTaxes(reversedData);
 
       reversedData.forEach(tax => {
-        axios.get(`http://localhost:8081/tax/name/${tax.userNo}`, {
+        axios.get(`http://13.125.114.85:8081/tax/name/${tax.userNo}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

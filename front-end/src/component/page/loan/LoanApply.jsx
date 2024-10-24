@@ -30,7 +30,7 @@ function LoanApply() {
     useEffect(() => {
         const fetchLoanProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:8081/loan/detail/${loanProductNo}`);
+                const response = await axios.get(`http://13.125.114.85:8081/loan/detail/${loanProductNo}`);
                 const data = response.data;
                 setLoanData(data);
                 setLoading(false); // 데이터 로딩 완료
@@ -57,7 +57,7 @@ function LoanApply() {
         console.log(userNo+ "콘솔값입니다.");
         const fetUserInfo = async () => {
             try {
-                const response = await axios.get(`http://localhost:8081/loan/apply/${userNo}`, {
+                const response = await axios.get(`http://13.125.114.85:8081/loan/apply/${userNo}`, {
                     headers: {
                         Authorization: `Bearer ${token}` // JWT를 헤더에 추가
                     }

@@ -15,7 +15,7 @@ function AdminInquiryDetail() {
   useEffect(() => {
     const fetchInquiry = async () => {
       try {
-        const response = await axios.get(`http://localhost:8081/admin/support/inquiry/${qnaNo}`, {
+        const response = await axios.get(`http://13.125.114.85:8081/admin/support/inquiry/${qnaNo}`, {
           headers: {
             Authorization: `Bearer ${token}`, // 토큰 포함
           },
@@ -34,7 +34,7 @@ function AdminInquiryDetail() {
   // 답변 저장 함수
   const handleSaveAnswer = async () => {
     try {
-      await axios.put(`http://localhost:8081/admin/support/answer/${qnaNo}`, answer, {
+      await axios.put(`http://13.125.114.85:8081/admin/support/answer/${qnaNo}`, answer, {
         headers: {
           Authorization: `Bearer ${token}`, // 토큰 포함
           'Content-Type': 'text/plain', // 변수를 문자열로 처리

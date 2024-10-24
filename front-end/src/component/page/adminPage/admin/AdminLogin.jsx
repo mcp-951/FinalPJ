@@ -13,7 +13,7 @@ const AdminLogin = () => {
   const handleLogin = async () => {
     try {
         console.log("전송할 데이터:", { userId: adminID, userPw: adminPW });
-        const response = await axios.post('http://localhost:8081/login', {
+        const response = await axios.post('http://13.125.114.85:8081/login', {
             userId: adminID,
             userPw: adminPW
         });

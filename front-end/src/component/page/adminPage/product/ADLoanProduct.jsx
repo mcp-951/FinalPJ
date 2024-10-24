@@ -16,7 +16,7 @@ const AdLoanProduct = () => {
 
   // 대출 상품 목록 불러오기
   const fetchLoans = () => {
-    axios.get('http://localhost:8081/admin/loans', {
+    axios.get('http://13.125.114.85:8081/admin/loans', {
       headers: {
         'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
       }
@@ -42,7 +42,7 @@ const AdLoanProduct = () => {
   // 삭제 버튼 클릭 시 loanState를 'Closed'로 변경
   const handleDelete = async (loanNo) => {
     try {
-      await axios.put(`http://localhost:8081/admin/deleteLoan/${loanNo}`, null, {
+      await axios.put(`http://13.125.114.85:8081/admin/deleteLoan/${loanNo}`, null, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

@@ -50,7 +50,7 @@ function TaxDetail () {
 
         try {
             const realToken = localStorage.getItem('token');
-            const response = await axios.get(`http://localhost:8081/tax/taxSelectList/${token.userNo}/${taxData.taxYear}/${taxData.taxMonth}/${taxData.category}`, {
+            const response = await axios.get(`http://13.125.114.85:8081/tax/taxSelectList/${token.userNo}/${taxData.taxYear}/${taxData.taxMonth}/${taxData.category}`, {
                 headers: {
                     Authorization: `Bearer ${realToken}`
                 }

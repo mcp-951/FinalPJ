@@ -39,7 +39,7 @@ const AdMemberEdit = () => {
     console.log('수정할 데이터:', formData);  // 수정할 데이터 확인용
 
     // 백엔드로 PUT 요청 전송
-    axios.put(`http://localhost:8081/admin/updateUser/${memberData.userNo}`, formData,{
+    axios.put(`http://13.125.114.85:8081/admin/updateUser/${memberData.userNo}`, formData,{
       headers: {
         'Authorization': `Bearer ${token}`  // Authorization 헤더에 JWT 추가
       }

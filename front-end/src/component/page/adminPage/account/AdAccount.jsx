@@ -13,7 +13,7 @@ const AdAccount = () => {
   const token = localStorage.getItem("token");
 
   const fetchAccounts = () => {
-    axios.get('http://localhost:8081/admin/adAccounts', {
+    axios.get('http://13.125.114.85:8081/admin/adAccounts', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -31,7 +31,7 @@ const AdAccount = () => {
   }, []);
 
   const stopAccount = (accountNo) => {
-    axios.put(`http://localhost:8081/admin/stopAccount/${accountNo}`, {
+    axios.put(`http://13.125.114.85:8081/admin/stopAccount/${accountNo}`, {
       accountState: 'STOP'
     }, {
       headers: {

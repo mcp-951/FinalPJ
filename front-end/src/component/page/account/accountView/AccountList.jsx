@@ -35,7 +35,7 @@ const AccountList = ({ type }) => {
           depositCategory = 2;
         }
     
-        const response = await axios.get(`http://localhost:8081/uram/category/${depositCategory}`, {
+        const response = await axios.get(`http://13.125.114.85:8081/uram/category/${depositCategory}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           },

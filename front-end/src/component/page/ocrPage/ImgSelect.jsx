@@ -32,7 +32,7 @@ const ImgSelect = () => {
         formData.append('file', blob, 'ocr.png');
         
         // 백엔드로 전송
-        axios.post('http://localhost:8081/ocr/upload', formData, {
+        axios.post('http://13.125.114.85:8081/ocr/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -63,7 +63,7 @@ const ImgSelect = () => {
         value1: ocrName, // 첫 번째 값
         value2: ocrLocalNo  // 두 번째 값
       };
-      window.opener.postMessage(resultMessage, 'http://localhost:3000'); // 부모 창에 메시지 전송
+      window.opener.postMessage(resultMessage, 'http://13.125.114.85:3000'); // 부모 창에 메시지 전송
       window.close();
     }
   }

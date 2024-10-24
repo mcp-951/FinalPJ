@@ -62,7 +62,7 @@ function LoanApplyNext () {
             const decodedToken = jwtDecode(storedToken);
             const checkLoanJoin = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/loan/apply/join/${decodedToken.userNo}/${loanProductNo}`, {
+                    const response = await axios.get(`http://13.125.114.85:8081/loan/apply/join/${decodedToken.userNo}/${loanProductNo}`, {
                         headers: {
                             Authorization: `Bearer ${storedToken}` // JWT를 헤더에 추가
                         }
@@ -95,7 +95,7 @@ function LoanApplyNext () {
     useEffect(() => {
         const fetchLoanProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:8081/loan/detail/${loanProductNo}`);
+                const response = await axios.get(`http://13.125.114.85:8081/loan/detail/${loanProductNo}`);
                 const data = response.data;
                 setLoanData(data);
                 console.log(data);
@@ -125,7 +125,7 @@ function LoanApplyNext () {
             if (token) {
                 const decodedToken = jwtDecode(token);
                 try {
-                    const response = await axios.get(`http://localhost:8081/loan/apply/account/${decodedToken.userNo}`, {
+                    const response = await axios.get(`http://13.125.114.85:8081/loan/apply/account/${decodedToken.userNo}`, {
                         headers: {
                             Authorization: `Bearer ${token}` // JWT를 헤더에 추가
                         }
@@ -187,7 +187,7 @@ function LoanApplyNext () {
         if (token) {
             const decodedToken = jwtDecode(token);
             try {
-                const response = await axios.post('http://localhost:8081/loan/apply/send', {
+                const response = await axios.post('http://13.125.114.85:8081/loan/apply/send', {
                     autoTransferDTO, 
                     loanDTO: {
                         ...loanDTO, 

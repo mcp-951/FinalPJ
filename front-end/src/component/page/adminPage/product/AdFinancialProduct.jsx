@@ -26,7 +26,7 @@ const AdFinancialProduct = () => {
 
     // 필터 상태에 따른 금융 상품 조회 API 호출
     const fetchProducts = (state) => {
-        axios.get(`http://localhost:8081/admin/financial-products?state=${state}`, {
+        axios.get(`http://13.125.114.85:8081/admin/financial-products?state=${state}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
@@ -52,7 +52,7 @@ const AdFinancialProduct = () => {
 
     // 차트 데이터 API 호출
     const fetchChartData = () => {
-        axios.get('http://localhost:8081/admin/product-counts', {
+        axios.get('http://13.125.114.85:8081/admin/product-counts', {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
@@ -160,14 +160,14 @@ const AdFinancialProduct = () => {
     const handleDelete = async (product) => {
         try {
             if (product.loanProductTitle && product.loanProductNo) {
-                await axios.put(`http://localhost:8081/admin/deleteLoan/${product.loanProductNo}`, { loanState: 'Closed' }, {
+                await axios.put(`http://13.125.114.85:8081/admin/deleteLoan/${product.loanProductNo}`, { loanState: 'Closed' }, {
                     headers: {
                         'Authorization': `Bearer ${token}` 
                     }
                 });
                 alert('해당 대출 상품이 삭제되었습니다.');
             } else if (product.depositName) {
-                await axios.put(`http://localhost:8081/admin/deleteSavings/${product.depositNo}`, null, {
+                await axios.put(`http://13.125.114.85:8081/admin/deleteSavings/${product.depositNo}`, null, {
                     headers: {
                         'Authorization': `Bearer ${token}` 
                     }

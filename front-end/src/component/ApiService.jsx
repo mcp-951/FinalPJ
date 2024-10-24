@@ -1,8 +1,8 @@
 import axios from 'axios';
 import localStorage from 'localStorage';
 
-const API_BASE_URL = "http://localhost:8081";
-const BASE_URL = "http://localhost:8081";
+const API_BASE_URL = "http://13.125.114.85:8081";
+const BASE_URL = "http://13.125.114.85:8081";
 const token = localStorage.getItem("token");
 
 

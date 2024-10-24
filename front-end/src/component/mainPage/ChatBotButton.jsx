@@ -31,7 +31,7 @@ function ChatBotButton() {
         setMessages([...messages, { sender: 'User', text: userMessage }]);
 
         // 서버로 메시지 전송
-        const response = await fetch('http://localhost:5000/chat', {
+        const response = await fetch('http://13.125.114.85:5000/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: userMessage })
@@ -53,7 +53,7 @@ function ChatBotButton() {
             setIsRecording(true); // 녹음 시작 상태로 변경
             // 서버에 녹음 요청 (가정: 서버에서 텍스트 변환 후 응답)
             try {
-                const response = await fetch('http://localhost:5000/voice');
+                const response = await fetch('http://13.125.114.85:5000/voice');
                 const text = await response.json();
                 const text2 = text.text;
 

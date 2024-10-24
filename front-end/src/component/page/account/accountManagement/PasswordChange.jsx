@@ -111,7 +111,7 @@ const PasswordChange = () => {
 
     // 오류 없을 시 비밀번호 변경 요청
     try {
-      const response = await axios.post(`http://localhost:8081/uram/account/${accountNumber}/change-password`, {
+      const response = await axios.post(`http://13.125.114.85:8081/uram/account/${accountNumber}/change-password`, {
         userNo: parseInt(userNo, 10), // userNo를 전송
         newPassword: newPassword,  // 비밀번호를 그대로 String으로 전송
       }, {

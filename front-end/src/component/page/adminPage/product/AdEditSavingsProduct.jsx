@@ -60,7 +60,7 @@ const AdEditSavingsProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8081/admin/editSavings/${formData.depositNo}`, formData, {
+      await axios.put(`http://13.125.114.85:8081/admin/editSavings/${formData.depositNo}`, formData, {
         headers: {
           'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가   
         }

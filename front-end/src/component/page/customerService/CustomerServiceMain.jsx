@@ -15,7 +15,7 @@ function CustomerServiceMain() {
       try {
         const decoding = jwtDecode(token); // JWT 토큰에서 사용자 정보 디코딩
         const response = await axios.get(
-          `http://localhost:8081/support/board/${userNo}`,
+          `http://13.125.114.85:8081/support/board/${userNo}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         console.log('API 응답 데이터:', response.data); // 응답 확인

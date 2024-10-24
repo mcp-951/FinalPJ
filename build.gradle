@@ -1,7 +1,21 @@
+buildscript {
+	ext {
+		springBootVersion = '3.3.3'
+		dependencyManagementVersion = '1.1.6'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.3'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'com.github.node-gradle.node' version '3.4.0'	// 이거 추가
 }
 
 group = 'com.urambank'
@@ -49,51 +63,39 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+node {
+	version = '20.16.0'
+	npmVersion = '10.9.0'
+	download = true
+	nodeModulesDir = file("${projectDir}/src/main/resources/static")
 }
 
-def webappDir = "$projectDir/front-end"
-
-sourceSets {
-	main {
-		resources {
-			srcDirs = ["$webappDir/build", "$projectDir/src/main/resources"]
-		}
-	}
+task npmInstallFrontend(type: NpmTask) {
+	workingDir = file("${projectDir}/front-end")
+	args = ["install"]
 }
 
-processResources {
-	dependsOn "copyWebApp"
+task appNpmBuild(type: NpmTask) {
+	dependsOn npmInstallFrontend
+	workingDir = file("${projectDir}/front-end")
+	args = ["run", "build"]
 }
 
 task copyWebApp(type: Copy) {
-	dependsOn "buildReact"
-	from "$webappDir/build"
-	into "$projectDir/src/main/resources/static"
+	from "${projectDir}/src/main/resources/static"
+	into "${projectDir}/build/resources/main/static/."
+}
+copyWebApp.dependsOn appNpmBuild
+
+task runReactServer(type: NpmTask) {
+	workingDir = file("${projectDir}/front-end")
+	args = ["run", "start"]
 }
 
-task buildReact(type: Exec) {
-	dependsOn "installReact"
-	workingDir "$webappDir"
-	inputs.dir "$webappDir"
-	group = BasePlugin.BUILD_GROUP
-	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine "npm.cmd", "run-script", "build"
-	} else {
-		commandLine "npm", "run-script", "build"
-	}
+bootRun {
+	dependsOn runReactServer
 }
 
-task installReact(type: Exec) {
-	workingDir "$webappDir"
-	inputs.dir "$webappDir"
-	group = BasePlugin.BUILD_GROUP
-	if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-		commandLine "npm.cmd", "audit", "fix"
-		commandLine 'npm.cmd', 'install'
-	} else {
-		commandLine "npm", "audit", "fix"
-		commandLine 'npm', 'install'
-	}
+tasks.named('test') {
+	useJUnitPlatform()
 }

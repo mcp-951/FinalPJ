@@ -13,7 +13,7 @@ function AdminInquiryList() {
     const fetchInquiries = async () => {
       try {
         const token = localStorage.getItem('token'); // 인증 토큰 가져오기
-        const response = await axios.get('http://localhost:8081/admin/support/inquiries', {
+        const response = await axios.get('http://13.125.114.85:8081/admin/support/inquiries', {
           headers: { Authorization: `Bearer ${token}` }, // 인증 헤더 추가
         });
         setInquiries(response.data); // 문의글 목록 상태 저장

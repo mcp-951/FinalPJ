@@ -20,7 +20,7 @@ function TaxHistory() {
             const decodedToken = jwtDecode(token);
             const taxUserLog = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8081/tax/taxHistory/${decodedToken.userNo}`, {
+                    const response = await axios.get(`http://13.125.114.85:8081/tax/taxHistory/${decodedToken.userNo}`, {
                         headers: {
                             Authorization: `Bearer ${token}` // JWT를 헤더에 추가
                         }

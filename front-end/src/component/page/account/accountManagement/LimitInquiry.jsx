@@ -33,7 +33,7 @@ const LimitInquiry = () => {
     const fetchLimits = async () => {
       try {
         setIsLoading(true); // 로딩 상태 시작
-        const response = await axios.get(`http://localhost:8081/uram/account/detail/${accountNumber}`, {
+        const response = await axios.get(`http://13.125.114.85:8081/uram/account/detail/${accountNumber}`, {
           headers: {
             'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
           },

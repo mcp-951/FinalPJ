@@ -14,7 +14,7 @@ const AdTransactionHistory = () => {
 
   // 백엔드에서 거래 로그 가져오기
   const useEffect = () => {
-    axios.get('http://localhost:8081/admin/adTransactionHistory', {
+    axios.get('http://13.125.114.85:8081/admin/adTransactionHistory', {
       headers: {
         'Authorization': `Bearer ${token}`
       }

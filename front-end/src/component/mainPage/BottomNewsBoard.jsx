@@ -12,7 +12,7 @@ function BottomNewsBoard() {
 
     // 데이터 가져오는 useEffect
     useEffect(() => {
-        fetch('http://localhost:5000/api/news/gallery')
+        fetch('http://13.125.114.85:5000/api/news/gallery')
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);

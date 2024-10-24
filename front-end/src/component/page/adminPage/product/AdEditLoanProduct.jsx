@@ -36,7 +36,7 @@ const AdEditLoanProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8081/admin/editLoan/${formData.loanProductNo}`, formData, {
+      await axios.put(`http://13.125.114.85:8081/admin/editLoan/${formData.loanProductNo}`, formData, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
