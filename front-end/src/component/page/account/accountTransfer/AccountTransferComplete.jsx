@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../../../../resource/css/account/accountTransfer/AccountTransferComplete.css';
 
@@ -25,16 +25,25 @@ const AccountTransferComplete = () => {
   };
 
   const handleGoToAccountList = () => {
-    navigate(`/users/${userNo}/accounts`);  // 계좌 목록으로 이동
-  };
+    navigate('/accounts');  // 계좌 목록으로 이동
+  };  
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   return (
-    <div className="transfer-complete-container">
+    <div className="AccountTransferComplete-container">
       <h2>계좌이체 완료</h2>
       <p>즉시 이체가 완료되었습니다.</p>
       <p>타행계좌로의 이체는 해당 은행의 사정에 따라 입금이 다소 지연될 수 있습니다.</p>
 
-      <table className="transfer-result-table">
+      <table className="AccountTransferComplete-result-table">
         <thead>
           <tr>
             <th>No</th>
@@ -48,22 +57,22 @@ const AccountTransferComplete = () => {
         <tbody>
           <tr>
             <td>1</td>
-            <td>{selectedAccount}</td>  {/* 출금 계좌번호 출력 */}
-            <td>{selectedBank}</td>  {/* 입금 기관 출력 */}
-            <td>{targetAccountNumber}</td>  {/* 입금 계좌번호 출력 */}
-            <td>{transferAmount.toLocaleString()}원</td>  {/* 이체 금액을 숫자로 변환 후 출력 */}
-            <td>{recipientName || '정보 없음'}</td>  {/* 수신자 이름 출력 */}
+            <td>{selectedAccount}</td>
+            <td>{selectedBank}</td>
+            <td>{targetAccountNumber}</td>
+            <td>{transferAmount.toLocaleString()}원</td>
+            <td>{recipientName || '정보 없음'}</td>
           </tr>
         </tbody>
       </table>
 
-      <p className="remaining-balance">이체 후 잔액: {remainingBalance.toLocaleString()}원</p>
+      <p className="AccountTransferComplete-remaining-balance">이체 후 잔액: {remainingBalance.toLocaleString()}원</p>
 
-      <div className="transfer-complete-buttons">
-        <button className="retry-button" onClick={handleRetry}>
+      <div className="AccountTransferComplete-buttons">
+        <button className="AccountTransferComplete-retry-button" onClick={handleRetry}>
           이체 다시하기
         </button>
-        <button className="list-button" onClick={handleGoToAccountList}>
+        <button className="AccountTransferComplete-list-button" onClick={handleGoToAccountList}>
           목록
         </button>
       </div>

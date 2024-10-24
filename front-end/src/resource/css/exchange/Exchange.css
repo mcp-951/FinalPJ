@@ -1,84 +1,113 @@
+/* 전체 컨테이너 스타일 */
 .exchange-container {
     padding: 20px;
     position: relative;
     min-height: 100vh;
+    background-color: #f9f9f9; /* 부드러운 배경색 */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 중앙 정렬 */
 }
 
+/* 행 스타일 */
 .exchange-row {
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    max-width: 800px; /* 최대 너비 제한 */
     margin-bottom: 20px;
 }
 
-.exchange-column {
+/* 열 스타일 - 중앙 정렬 */
+.exchange-column, .exchange-column-vertical {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center; /* 중앙 정렬 */
+    align-items: center;
 }
 
-.exchange-column-vertical {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 중앙 정렬 */
-}
-
+/* 라벨 스타일 */
 .exlabel {
-    display: block;
-    background-color: #20B2AA; 
-    padding: 5px;
-    margin-bottom: 5px;
-    width: 80%; 
+    background-color: #74a1d2; /* 테마 색상 적용 */
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%; 
     text-align: center; 
+    color: white; /* 흰색 글씨 */
+    font-weight: bold;
+    border-radius: 5px; /* 부드러운 모서리 */
 }
 
-
+/* 입력 필드 스타일 */
 .ex {
-    width: 80%; 
-    padding: 5px;
+    width: 100%; 
+    padding: 10px;
     margin-bottom: 20px; 
+    border: 1px solid #ddd;
+    border-radius: 5px; 
+    font-size: 16px;
+    box-sizing: border-box;
 }
 
-
+/* 비밀번호 입력 및 버튼 컨테이너 */
 .password-container {
     display: flex;
     align-items: center;
-    width: 80%;
+    width: 100%;
+    justify-content: space-between;
 }
 
+/* 비밀번호 입력창 */
 .password-input {
-    width: 70%; /* 비밀번호 입력창의 너비를 늘림 */
-    padding: 5px;
-    margin-bottom: auto;
+    width: 70%; 
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
+/* 비밀번호 확인 버튼 */
 .password-button {
-    padding: 5px 10px; /* 입력창과 높이를 맞춤 */
-    background-color: #20B2AA; /* 청록색 계열 */
+    padding: 10px 20px; 
+    background-color: #74a1d2; /* 테마 색상 적용 */
     border: none;
     color: white;
     cursor: pointer;
-    height: 36px; /* 입력창과 높이를 맞춤 */
-    margin-left: 10px; /* 입력창과 버튼 사이 간격 */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 .password-button:hover {
-    background-color: #1E90FF; /* 어두운 청록색 */
+    background-color: #5d95d1; /* 호버 시 어두운 파란색 */
 }
 
+/* 확인 버튼 스타일 (환전 신청 버튼) */
 .OkBtn {
-    padding: 10px 20px; 
-    background-color: #20B2AA; 
+    width: auto;
+    padding: 10px 30px;
+    background-color: #74a1d2; /* 테마 색상 적용 */
     border: none;
     color: white;
     cursor: pointer;
-    margin-left: 5px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
-
-
 
 .OkBtn:hover {
-    background-color: #1E90FF;
+    background-color: #5d95d1; /* 호버 시 어두운 파란색 */
 }
 
+/* 반응형 디자인 - 작은 화면에서 세로로 배치 */
+@media (max-width: 768px) {
+    .exchange-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .exchange-column, .exchange-column-vertical {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}

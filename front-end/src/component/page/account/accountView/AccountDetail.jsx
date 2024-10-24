@@ -15,8 +15,20 @@ const AccountDetail = () => {
   const [totalWithdraw, setTotalWithdraw] = useState(0);
   const [error, setError] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [logsPerPage] = useState(10);
+
   const token = localStorage.getItem("token");
   const userNo = localStorage.getItem("userNo");
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const fetchAccountDetail = async () => {
@@ -26,7 +38,7 @@ const AccountDetail = () => {
 
         const logsResponse = await ApiService.getAccountLogs(accountNumber, token);
         const logs = logsResponse.data.length > 0 ? logsResponse.data : [];
-        const sortedLogs = logs.sort((a, b) => new Date(a.sendDate) - new Date(b.sendDate));
+        const sortedLogs = logs.sort((a, b) => new Date(b.sendDate) - new Date(a.sendDate));
 
         setTransactionLogs(sortedLogs);
         calculateTotals(sortedLogs);
@@ -56,10 +68,9 @@ const AccountDetail = () => {
   };
 
   const handleCalendarViewClick = () => {
-    setShowCalendar(!showCalendar); // 캘린더 보기/숨기기
+    setShowCalendar(!showCalendar);
   };
 
-  // 날짜별 총 입금/출금 금액 계산
   const getTotalAmountsForDate = (date) => {
     let totalDepositForDate = 0;
     let totalWithdrawForDate = 0;
@@ -80,23 +91,28 @@ const AccountDetail = () => {
 
   const calculateBalanceFromCurrent = (logs, currentBalance) => {
     let balance = currentBalance;
-
-    return logs.reverse().map(log => {
-      let currentLog = { ...log };
-
+    return logs.map(log => {
+      const updatedLog = { ...log };
       if (log.sendAccountNumber === accountNumber) {
-        currentLog.balance = balance;
+        updatedLog.balance = balance;
         balance += log.sendPrice;
       } else if (log.receiveAccountNumber === accountNumber) {
-        currentLog.balance = balance;
+        updatedLog.balance = balance;
         balance -= log.sendPrice;
       }
-
-      return currentLog;
-    }).reverse();
+      return updatedLog;
+    });
   };
 
   const logsWithCalculatedBalance = calculateBalanceFromCurrent(transactionLogs, accountDetail ? accountDetail.accountBalance : 0);
+
+  const indexOfLastLog = currentPage * logsPerPage;
+  const indexOfFirstLog = indexOfLastLog - logsPerPage;
+  const currentLogs = logsWithCalculatedBalance.slice(indexOfFirstLog, indexOfLastLog);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const totalPages = Math.ceil(transactionLogs.length / logsPerPage);
 
   if (error) {
     return <p>{error}</p>;
@@ -107,129 +123,88 @@ const AccountDetail = () => {
   }
 
   return (
-    <div className="account-detail-container">
-      <h2 className="account-detail-title">계좌 상세 조회</h2>
+    <div className="AccountDetail-container">
+      <h2 className="AccountDetail-title">계좌 상세 조회</h2>
 
-      <div className="account-detail-info">
-        <div className="account-number-section">
-          <div className="account-number-box">
-            <span className="account-detail-number">{accountDetail.accountNumber} | {accountDetail.depositName}</span>
-          </div>
-          <div className="account-detail-balance-box">
-            <span className="account-detail-balance">잔액: {accountDetail.accountBalance.toLocaleString()}원</span>
-          </div>
+      <div className="AccountDetail-info">
+        <div>
+          <span className="AccountDetail-number">{accountDetail.accountNumber} | {accountDetail.depositName}</span>
         </div>
-
-        <div className="right-section">
-          <div className="account-detail-action-buttons">
-            <button className="account-detail-transfer-button" onClick={() => navigate('/account/transfer', { state: { selectedAccount: accountNumber } })}>
-              이체
-            </button>
-          </div>
+        <div className="AccountDetail-balance-box">
+          잔액: {accountDetail.accountBalance.toLocaleString()}원
         </div>
       </div>
 
-      <div className="account-summary">
-        <span className="total-deposit">총 입금금액: <span className="highlighted-text">{totalDeposit.toLocaleString()}원</span></span>
-        <span className="total-withdraw">총 출금금액: <span className="highlighted-text">{totalWithdraw.toLocaleString()}원</span></span>
+      <div className="AccountDetail-summary">
+        <span>총 입금금액: <span className="highlighted-text">{totalDeposit.toLocaleString()}원</span></span>
+        <span>총 출금금액: <span className="highlighted-text">{totalWithdraw.toLocaleString()}원</span></span>
       </div>
 
-      {/* 거래내역 표 위에 '캘린더로 보기' 버튼 추가 */}
-      <div className="calendar-toggle-section">
-        <button className="account-detail-action-button" onClick={handleCalendarViewClick}>
-          {showCalendar ? '표로 보기' : '캘린더로 보기'}
-        </button>
-      </div>
+      <button className="AccountDetail-action-button" onClick={handleCalendarViewClick}>
+        {showCalendar ? '표로 보기' : '캘린더로 보기'}
+      </button>
 
       {showCalendar ? (
         <Calendar
-        tileClassName={({ date, view }) => {
-          if (view === 'month') {
-            const day = date.getDay();
-            const isSaturday = day === 6;
-            const isSunday = day === 0;
-      
-            const classes = [];
-            if (isSaturday) {
-              classes.push('saturday');
-            }
-            if (isSunday) {
-              classes.push('sunday');
-            }
-      
+          tileClassName={({ date }) => {
             const { totalDepositForDate, totalWithdrawForDate } = getTotalAmountsForDate(date);
-
-            if (totalDepositForDate > 0 || totalWithdrawForDate > 0) {
-              if (totalWithdrawForDate > 0) {
-                classes.push('withdraw');
-              }
-              if (totalDepositForDate > 0) {
-                classes.push('deposit');
-              }
-            }
-      
+            const classes = [];
+            if (totalWithdrawForDate > 0) classes.push('withdraw');
+            if (totalDepositForDate > 0) classes.push('deposit');
             return classes.join(' ');
-          }
-        }}
-        tileContent={({ date }) => {
-          const { totalDepositForDate, totalWithdrawForDate } = getTotalAmountsForDate(date);
-        
-          if (totalDepositForDate > 0 || totalWithdrawForDate > 0) {
+          }}
+          tileContent={({ date }) => {
+            const { totalDepositForDate, totalWithdrawForDate } = getTotalAmountsForDate(date);
             return (
               <div>
-                {totalDepositForDate > 0 && (
-                  <div className="transaction-info blue-text">
-                    총 입금: {totalDepositForDate.toLocaleString()}원
-                  </div>
-                )}
-                {totalWithdrawForDate > 0 && (
-                  <div className="transaction-info red-text">
-                    총 출금: {totalWithdrawForDate.toLocaleString()}원
-                  </div>
-                )}
+                {totalDepositForDate > 0 && <div className="blue-text">입금: {totalDepositForDate.toLocaleString()}원</div>}
+                {totalWithdrawForDate > 0 && <div className="red-text">출금: {totalWithdrawForDate.toLocaleString()}원</div>}
               </div>
             );
-          } else {
-            return null;
-          }
-        }}
-      />
+          }}
+        />
       ) : (
-        transactionLogs.length === 0 ? (
-          <p>거래 내역이 없습니다.</p>
-        ) : (
-          <table className="account-detail-table">
-            <thead>
-              <tr>
-                <th>거래일시</th>
-                <th>보낸/받는분</th>
-                <th>출금(원)</th>
-                <th>입금(원)</th>
-                <th>잔액(원)</th>
+        <table className="AccountDetail-table">
+          <thead>
+            <tr>
+              <th>거래일시</th>
+              <th>보낸/받는분</th>
+              <th>출금(원)</th>
+              <th>입금(원)</th>
+              <th>잔액(원)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentLogs.map((log) => (
+              <tr key={log.logNo}>
+                <td>{new Date(log.sendDate).toLocaleDateString()}</td>
+                <td>{log.sendAccountNumber === accountNumber ? log.receiveAccountNumber : log.sendAccountNumber}</td>
+                <td>{log.sendAccountNumber === accountNumber ? log.sendPrice.toLocaleString() : '-'}</td>
+                <td>{log.receiveAccountNumber === accountNumber ? log.sendPrice.toLocaleString() : '-'}</td>
+                <td>{log.balance.toLocaleString()}원</td>
               </tr>
-            </thead>
-            <tbody>
-              {logsWithCalculatedBalance.map((log) => (
-                <tr key={log.logNo}>
-                  <td>{new Date(log.sendDate).toLocaleDateString()}</td>
-                  <td>{log.sendAccountNumber === accountNumber ? log.receiveAccountNumber : log.sendAccountNumber}</td>
-                  <td>{log.sendAccountNumber === accountNumber ? log.sendPrice.toLocaleString() : '-'}</td>
-                  <td>{log.receiveAccountNumber === accountNumber ? log.sendPrice.toLocaleString() : '-'}</td>
-                  <td>{log.balance.toLocaleString()}원</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )
+            ))}
+          </tbody>
+        </table>
       )}
 
-      <div className="account-detail-pagination">
-        <div className="pagination-center">
-          <button className="account-detail-back-button" onClick={() => navigate('/account')}>
-            목록
-          </button>
+      {!showCalendar && (
+        <div className="AccountDetail-pagination">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => paginate(index + 1)}
+              className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
-      </div>
+      )}
+
+      <button className="AccountDetail-back-button" onClick={() => navigate(`/accounts`)}>
+        목록
+      </button>
     </div>
   );
 };

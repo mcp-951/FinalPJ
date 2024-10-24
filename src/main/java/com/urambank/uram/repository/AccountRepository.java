@@ -3,44 +3,51 @@ package com.urambank.uram.repository;
 import com.urambank.uram.dto.AccountDTO;
 import com.urambank.uram.entities.AccountEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
 
-//    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, " +
-//            "a.product.productNo, a.product.productName, a.product.productPeriod " +
-//            "FROM AccountEntity a WHERE a.accountState = 'NORMAL' AND a.user.userId = :userId")
-//    List<Object[]> findAllAccountWithProductNameAndActiveByUserId(@Param("userId") Long userId);
-
     List<AccountEntity> findByUserNo(int userNo);
+    List<AccountEntity> findByUserNoAndAccountState(int userNo, String accountState);
 
-    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, " +
-            "a.deposit.depositNo, a.deposit.depositName " +
-            "FROM AccountEntity a JOIN a.deposit d WHERE d.depositCategory = :depositCategory AND a.accountState = 'NORMAL'")
-    List<Object[]> findByDepositCategoryAndActive(@Param("depositCategory") int depositCategory);
-
-    // 특정 계좌 정보와 관련된 deposit 정보를 조회
-    @Query("SELECT a FROM AccountEntity a JOIN FETCH a.deposit d WHERE a.accountNumber = :accountNumber AND a.accountState = :accountState AND a.userNo = :userNo")
-    AccountEntity findAccountDetailWithDeposit(@Param("accountNumber") String accountNumber, @Param("accountState") String accountState, @Param("userNo") int userNo);
-
-
-    // 자사 계좌 유효성 확인
-    @Query("SELECT a FROM AccountEntity a WHERE a.accountNumber = :accountNumber AND a.accountState = :accountState")
-    AccountEntity findAccount(@Param("accountNumber") String accountNumber,  // accountNumber를 String으로 변경
-                              @Param("accountState") String accountState);
-
-
-    // 'NORMAL' 상태의 계좌만 조회하여 필요한 정보 반환
+    // 전체 계좌 반환
     @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, " +
             "a.deposit.depositNo, a.deposit.depositName " +
             "FROM AccountEntity a WHERE a.accountState = 'NORMAL' AND a.userNo = :userNo")
     List<Object[]> findAllAccountWithDepositAndActive(@Param("userNo") int userNo);
 
+    // 예금 계좌만 반환
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, d.depositNo, d.depositName, d.depositCategory " +
+            "FROM AccountEntity a " +
+            "JOIN a.deposit d " +
+            "WHERE a.userNo = :userNo AND a.accountState = 'NORMAL' AND d.depositCategory = 1")
+    List<Object[]> findAllDepositCategoryOneAccounts(@Param("userNo") int userNo);
+
+    // 카테고리별 계좌
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, " +
+            "a.deposit.depositNo, a.deposit.depositName " +
+            "FROM AccountEntity a JOIN a.deposit d " +
+            "WHERE d.depositCategory = :depositCategory AND a.accountState = 'NORMAL' AND a.userNo = :userNo")
+    List<Object[]> findByDepositCategoryAndActiveAndUser(
+            @Param("depositCategory") int depositCategory,
+            @Param("userNo") int userNo
+    );
+
+    // 계좌 상세
+    @Query("SELECT a FROM AccountEntity a JOIN FETCH a.deposit d WHERE a.accountNumber = :accountNumber AND a.accountState = :accountState AND a.userNo = :userNo")
+    AccountEntity findAccountDetailWithDeposit(@Param("accountNumber") String accountNumber, @Param("accountState") String accountState, @Param("userNo") int userNo);
+
+    // 계좌 유효성 확인
+    @Query("SELECT a FROM AccountEntity a WHERE a.accountNumber = :accountNumber AND a.accountState = :accountState")
+    AccountEntity findAccount(@Param("accountNumber") String accountNumber,
+                              @Param("accountState") String accountState);
 
     @Query("SELECT a FROM AccountEntity a WHERE a.accountNo = :accountNo")
     AccountEntity findByAccountNo(@Param("accountNo") int accountNo);
@@ -72,8 +79,38 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
     @Query("SELECT a.accountNumber FROM AccountEntity a WHERE a.accountNo = :accountNo AND a.bankName = :bankName")
     String findAccountNumberByAccountNoAndBankName(@Param("accountNo") int accountNo, @Param("bankName") String bankName);  // Integer 대신 String으로 변경
 
+    @Query("SELECT a FROM AccountEntity a JOIN FETCH a.deposit WHERE a.userNo = :userNo AND a.accountState = :state")
+    List<AccountEntity> findAccountsWithDeposit(@Param("userNo") int userNo, @Param("state") String state);
 
 
 
+
+    // userNo와 accountNo로 계좌 찾기
+    @Query("SELECT a FROM AccountEntity a WHERE a.userNo = :userNo AND a.accountNo = :accountNo")
+    Optional<AccountEntity> findByUserNoAndAccountNo(@Param("userNo") int userNo, @Param("accountNo") int accountNo);
+
+    // 계좌 리스트 불러오기
+    List<AccountEntity> findByAccountState(String accountState);
+
+
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE AccountEntity a SET a.accountState = :accountState WHERE a.accountNo = :accountNo")
+    void updateAccountState(@Param("accountState") String accountState, @Param("accountNo") int accountNo);
+
+    Optional<AccountEntity> findByAccountNumberAndUserNo(String accountNumber, int userNo);
+
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, d.depositNo, d.depositName " +
+            "FROM AccountEntity a JOIN a.deposit d WHERE a.userNo = :userNo AND a.accountState = :state")
+    List<Object[]> findAccountDataWithDeposit(@Param("userNo") int userNo, @Param("state") String state);
+
+    @Query("SELECT a.accountNo, a.accountNumber, a.accountBalance, a.accountOpen, a.accountClose, a.withdrawal, d.depositNo, d.depositName, d.depositCategory " +
+            "FROM AccountEntity a JOIN a.deposit d WHERE a.userNo = :userNo AND a.accountState = :state")
+    List<Object[]> findUserDepositAccounts(@Param("userNo") int userNo, @Param("state") String state);
+
+    @Modifying
+    @Query("UPDATE AccountEntity a SET a.accountBalance = a.accountBalance + :price WHERE a.accountNo = :accountNo")
+    void updateAccountBalance(@Param("accountNo") int accountNo, @Param("price") int price);
 
 }

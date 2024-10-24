@@ -1,7 +1,8 @@
 import React from "react";
 import { useLocation } from 'react-router-dom';
+import '../../../resource/css/search/SearchResult.css'; // CSS 파일 경로
 
-function SearchResult(){
+function SearchResult() {
     const location = useLocation();
     const query = new URLSearchParams(location.search).get('query');
     const data = [
@@ -35,19 +36,25 @@ function SearchResult(){
     ) : data;
 
     return (
-        <div>
-            <table>
+        <div className="search-result-container">
+            <table className="search-result-table">
                 <thead>
                     <tr>
                         <th>검색결과 ({filteredData.length}건)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredData.map((item, index) => (
-                        <tr key={index}>
-                            <td dangerouslySetInnerHTML={{ __html: item }} /> {/* HTML 렌더링 */}
+                    {filteredData.length > 0 ? (
+                        filteredData.map((item, index) => (
+                            <tr key={index}>
+                                <td dangerouslySetInnerHTML={{ __html: item }} /> {/* HTML 렌더링 */}
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td>{`'${query}'에 대한 검색결과가 없습니다.`}</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>

@@ -1,0 +1,155 @@
+/* 전체 컨테이너 */
+.Terms_Agreement_Container {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  max-width: 800px;
+  margin: 20px auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 약관 동의 섹션 */
+.Terms_Agreement_Container {
+  background-color: #f1f1f1;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+/* 인증 버튼 스타일 */
+.auth-button {
+  background-color: #74a1d2; /* 지정된 색상 */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+
+/* hover 상태에서 색상 조금 더 어두워짐 */
+.auth-button:hover {
+  background-color: #5b90bf; /* hover 시 색상 */
+}
+
+.terms-box-unique {
+  max-height: 300px; /* 높이 제한 */
+  overflow-y: auto; /* 스크롤 */
+  border: 1px solid #ced4da;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+/* 약관 내용의 텍스트 */
+.terms-content-unique p {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 입력 필드 스타일 */
+.mt-3 {
+  margin-top: 1rem;
+}
+/* Flexbox로 체크박스와 라벨을 오른쪽으로 정렬 */
+.d-flex {
+  display: flex;
+  justify-content: flex-end; /* 라벨과 체크박스를 오른쪽 끝으로 정렬 */
+  align-items: center;       /* 수직 중앙 정렬 */
+}
+
+/* 체크박스와 라벨 사이 간격 */
+.personal-info-group .personal-info-checkbox {
+  margin-right: 10px;
+}
+
+.loan-info-group .loan-info-checkbox {
+  margin-right: 10px;
+}
+
+/* 입력 필드 라벨 */
+.text-left {
+  font-weight: bold;
+  text-align: left;
+}
+
+/* 입력 필드 */
+input[type="text"],
+input[type="password"],
+input[type="tel"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+/* 버튼 섹션 */
+.Next_Cancel_Container {
+  display: flex;
+  justify-content: space-between; /* 버튼을 가로로 배치 */
+  margin-top: 20px;
+}
+
+.Next_Cancel_Container button {
+  width: 48%; /* 버튼 너비 */
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* 버튼을 양쪽에 나열하는 flexbox 스타일 */
+.Next_Cancel_Container {
+  display: flex;
+  justify-content: space-between; /* 버튼을 양쪽에 배치 */
+  margin-top: 20px;
+}
+
+/* '다음' 버튼 스타일 */
+.next-button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 8px 16px; /* 버튼 크기 줄이기 */
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.next-button:hover {
+  background-color: #5b90bf;
+}
+
+/* '취소' 버튼 스타일 */
+.cancel-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 8px 16px; /* 버튼 크기 줄이기 */
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+
+/* 인증 상태 텍스트 */
+.Form.Text {
+  color: green;
+  font-weight: bold;
+}

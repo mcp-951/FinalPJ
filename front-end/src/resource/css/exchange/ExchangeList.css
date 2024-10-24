@@ -1,0 +1,150 @@
+/* 전체 페이지 컨테이너 스타일 */
+.ExchangeList-container {
+    text-align: center;
+    min-height: 100vh;
+    padding-bottom: 150px;
+    background-color: #f9f9f9; /* 부드러운 배경색 */
+}
+
+/* 검색 바 스타일 */
+.ExchangeList-searchBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #74a1d2; /* 테마 색상 */
+    padding: 8px; /* 패딩 줄임 */
+    border-radius: 5px;
+    margin: 20px auto;
+    width: 70%; /* 너비를 줄임 */
+}
+
+.ExchangeList-searchBar label, .ExchangeList-searchBar span {
+    color: white;
+    font-size: 16px; /* 폰트 크기를 줄임 */
+    margin-right: 8px; /* 간격을 줄임 */
+}
+
+.ExchangeList-searchBar input {
+    padding: 6px; /* 내부 패딩을 줄임 */
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    margin-right: 8px; /* 입력란 사이 간격을 줄임 */
+    width: 120px; /* 입력창 너비를 줄임 */
+}
+
+.ExchangeList-searchBar button {
+    padding: 8px 16px; /* 버튼 크기 줄임 */
+    background-color: #74a1d2;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ExchangeList-searchBar button:hover {
+    background-color: #5d95d1;
+}
+
+/* 테이블 스타일 */
+.ExchangeList-table {
+    margin: 20px auto;
+    width: 80%; /* 테이블 너비를 줄임 */
+    border-collapse: collapse;
+    font-size: 16px; /* 폰트 크기 줄임 */
+    border: 1px solid #ddd;
+}
+
+.ExchangeList-table thead {
+    background-color: #74a1d2;
+    color: white;
+}
+
+.ExchangeList-table th, .ExchangeList-table td {
+    padding: 8px; /* 셀 내부 패딩 줄임 */
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.ExchangeList-table td img {
+    width: 25px; /* 이미지 크기 줄임 */
+    cursor: pointer;
+}
+
+.ExchangeList-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.ExchangeList-table tbody tr:hover {
+    background-color: #e0e7ff;
+}
+
+/* 지도 스타일 수정 */
+.ExchangeList-map {
+    margin-top: 20px;
+    position: absolute; /* 아이콘 바로 아래에 절대 위치 설정 */
+    top: 30px; /* 아이콘과의 간격 설정 */
+    left: 50%; /* 수평 중앙 정렬 */
+    transform: translateX(-50%); /* 정확한 중앙 정렬 */
+    width: 400px; /* 지도 너비 */
+    height: 300px; /* 지도 높이 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    z-index: 100; /* 지도 우선 순위 높임 */
+}
+
+/* 지도가 열리는 셀에서 위치 고정 */
+.ExchangeList-table td {
+    position: relative; /* 테이블 셀 기준으로 지도 위치 */
+}
+
+/* 페이지네이션 버튼 스타일 */
+.ExchangeList-pagination {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.ExchangeList-pagination button {
+    margin: 0 5px;
+    padding: 6px 12px; /* 패딩을 줄여서 더 컴팩트하게 */
+    background-color: #f2f2f2;
+    color: black;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ExchangeList-pagination button.active {
+    background-color: #74a1d2;
+    color: white;
+}
+
+.ExchangeList-pagination button:hover {
+    background-color: #5d95d1;
+}
+
+/* 뒤로가기 버튼 스타일 */
+.ExchangeList-backButton {
+    margin-top: 20px;
+    margin-bottom: 50px;
+    padding: 8px 16px; /* 패딩을 줄여 버튼 크기 축소 */
+    background-color: #74a1d2;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ExchangeList-backButton:hover {
+    background-color: #5d95d1;
+}
+
+/* 푸터 스타일 */
+.ExchangeList-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+}

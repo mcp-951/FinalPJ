@@ -13,23 +13,40 @@ function Account() {
       case "전체":
         return <Total userNo={userNo} />; // userNo를 Total 컴포넌트에 전달
       case "예금":
-        return <AccountList type="예금" />;
+        return <AccountList type="예금" userNo={userNo} />; // userNo를 AccountList에 전달
       case "적금":
-        return <AccountList type="적금" />;
-      case "외환":
-        return <AccountList type="외환" />;
+        return <AccountList type="적금" userNo={userNo} />; // userNo를 AccountList에 전달
       default:
         return <Total userNo={userNo} />; // 기본적으로 userNo를 Total 컴포넌트에 전달
     }
   };
 
   return (
-    <div className="account-container">
+    <div className="Account-container">
       <h1>계좌 조회</h1>
       {/* 상단 탭 고정 */}
-      <Tabs selectedTab={selectedTab} onSelectTab={setSelectedTab} />
+      <div className="Account-tabs">
+        <button 
+          className={selectedTab === "전체" ? "active" : ""} 
+          onClick={() => setSelectedTab("전체")}
+        >
+          전체
+        </button>
+        <button 
+          className={selectedTab === "예금" ? "active" : ""} 
+          onClick={() => setSelectedTab("예금")}
+        >
+          예금
+        </button>
+        <button 
+          className={selectedTab === "적금" ? "active" : ""} 
+          onClick={() => setSelectedTab("적금")}
+        >
+          적금
+        </button>
+      </div>
       {/* 탭에 따라 내용 바뀜 */}
-      <div className="account-info">
+      <div className="Account-info">
         {renderContent()}
       </div>
     </div>

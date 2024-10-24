@@ -1,0 +1,106 @@
+.AdSavingsProduct-container {
+  display: flex;
+}
+
+.AdSavingsProduct-main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.AdSavingsProduct-product-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.AdSavingsProduct-search-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.AdSavingsProduct-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.AdSavingsProduct-search-bar input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.AdSavingsProduct-search-bar select, 
+.AdSavingsProduct-search-button {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #74a1d2;
+  color: white;
+  cursor: pointer;
+}
+
+.AdSavingsProduct-register-button {
+  padding: 10px 15px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdSavingsProduct-edit-button {
+  padding: 5px 10px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdSavingsProduct-delete-button {
+  padding: 5px 10px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdSavingsProduct-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AdSavingsProduct-table th, 
+.AdSavingsProduct-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.AdSavingsProduct-table th {
+  background-color: #f2f2f2;
+}
+
+.AdSavingsProduct-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.AdSavingsProduct-table td {
+  white-space: nowrap;
+}
+
+.AdSavingsProduct-pagination-controls {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.AdSavingsProduct-pagination-controls select {
+  margin-left: 10px;
+  padding: 5px;
+}

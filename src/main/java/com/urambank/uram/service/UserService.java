@@ -13,8 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -27,13 +28,42 @@ public class UserService {
 
     private final DefaultMessageService messageService;
 
+    public int getGrade(int birthYear) {
+        int grade;
+        if(birthYear > 0 && birthYear < 19) {
+            grade = 9;
+        }else if(birthYear >=19 && birthYear < 26){
+            grade = 8;
+        }else if(birthYear >=26 && birthYear < 31){
+            grade = 7;
+        }else if(birthYear >=31 && birthYear < 36){
+            grade = 6;
+        }else if(birthYear >=36 && birthYear < 41){
+            grade = 5;
+        }else if(birthYear >=41 && birthYear < 46){
+            grade = 4;
+        }else if(birthYear >=46 && birthYear < 51){
+            grade = 3;
+        }else if(birthYear >=51 && birthYear < 56){
+            grade = 2;
+        }else if(birthYear >=56){
+            grade = 1;
+        }else{
+            grade = 0;
+        }
+        return grade;
+    }
+
+
     public String findByUserId(String userId) {
         System.out.println("<<< UserService - findByUserId() >>>");
-            User user = new User();
+
         try{
-            user = userRepository.findByUserId(userId);
+            User user = userRepository.findByUserId(userId);
+            System.out.println("userid :" + user.getUserId());
             return user.getUserId();
         }catch(NullPointerException e){
+            System.out.println("userid :" );
             return "";
         }
     }
@@ -42,11 +72,18 @@ public class UserService {
         System.out.println("<<< UserService - register() >>>");
         System.out.println("id : " + userDTO.getUserId());
         System.out.println("Pw : " + userDTO.getUserPw());
+        Calendar cal = Calendar.getInstance();
+        System.out.println("cal.get(Calendar.YEAR) : " + cal.get(Calendar.YEAR));
+        System.out.println("userDTO.getBirth().getYear() : " + userDTO.getBirth().toLocalDate().getYear());
+        int birthYear = cal.get(Calendar.YEAR) - userDTO.getBirth().toLocalDate().getYear();
 
-        UserDTO dto = new UserDTO();
         userDTO.setResidentNumber(userDTO.getResidentNumber1() + "-" + userDTO.getResidentNumber2());
         userDTO.setAddress(userDTO.getAddress1() + userDTO.getAddress2());
         userDTO.setEmail(userDTO.getEmail1()+ "@" + userDTO.getEmail2());
+        userDTO.setGrade(getGrade(birthYear));
+        userDTO.setOCRCheck(1);
+
+        UserDTO dto = new UserDTO();
 
         try {
             // 사용자 정보 설정 및 비밀번호 암호화
@@ -64,6 +101,9 @@ public class UserService {
             user.setAddress(userDTO.getAddress());
             user.setUserRole("USER");
             user.setState('y');
+            user.setGrade(userDTO.getGrade());
+            user.setJoinDate(Date.valueOf(LocalDate.now()));
+            user.setOCRCheck(userDTO.getOCRCheck());
 
             // 사용자 저장
             User savedUser = userRepository.save(user);
@@ -122,20 +162,64 @@ public class UserService {
         }catch(NullPointerException e){
             return "";
         }
-
     }
 
     public String resetPassword(UserDTO dto) {
-        User user = new User();
         try{
-            user.setName(dto.getName());
-            user.setHp(dto.getHp());
-            user = userRepository.findByNameAndHp(user.getName(),user.getHp());
-            user.setUserPw(dto.getUserPw());
+            User user = userRepository.findByNameAndHp(dto.getName(),dto.getHp());
+            String pw = passwordEncoder.encode(dto.getUserPw());
+            user.setUserPw(pw);
             user = userRepository.save(user);
             return user.getUserPw();
         }catch(NullPointerException e){
-            return "";
+            return "error";
+        }
+    }
+    public List<User> getActiveUsersByRoleUser() {
+        return userRepository.findByUserRoleAndState("ROLE_USER", 'y');
+    }
+
+    // userId로 userNo 가져오기
+    public int getUserNoByUserId(String userId) {
+        User user = userRepository.findByUserId(userId);
+        return user.getUserNo();  // userNo 반환
+    }
+
+    public String getUserNameByUserNo(int userNo) {
+        User user = userRepository.findById(userNo).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getName();
+    }
+
+    public int getUserNoByName(String name) {
+        User user = userRepository.findByName(name);
+        return user != null ? user.getUserNo() : null;
+    }
+
+    public UserDTO getUserInfo(int userNo) {
+        User user = userRepository.findByUserNo(userNo);
+        UserDTO dto = new UserDTO();
+        dto.setUserNo(user.getUserNo());
+        dto.setUserId(user.getUserId());
+        dto.setHp(user.getHp());
+        dto.setBirth(user.getBirth());
+        dto.setName(user.getName());
+        dto.setAddress(user.getAddress());
+        dto.setEmail(user.getEmail());
+        dto.setUserPw(user.getUserPw());
+        dto.setResidentNumber(user.getResidentNumber());
+        dto.setGrade(user.getGrade());
+        return dto;
+    }
+
+    public String changePassword(int userNo, String userPw, String newUserPw) {
+        String encodedNewPw = passwordEncoder.encode(newUserPw);
+        User user = userRepository.findByUserNo(userNo);
+        if(passwordEncoder.matches(userPw,user.getUserPw())) {
+            user.setUserPw(encodedNewPw);
+            userRepository.save(user);
+            return "ok";
+        }else{
+            return "error";
         }
     }
 }

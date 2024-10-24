@@ -1,24 +1,90 @@
-.Carousel_div{
-  width: 60%;
+.Carousel_div {
+  width: 80%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
-.Carousel_Tab{
-    position: relative;
-    width: 720px;
-    height: 360px;
-    overflow: hidden;
-    border-radius: 15px;
+
+.Carousel_Tab {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 15px;
+  border: 5px solid rgba(120, 169, 201, 0.8); /* 테두리를 추가 */
 }
 
 .Carousel_Tab img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: middle; /* 이미지의 상단을 유지하고 잘리지 않도록 조정 */
+  border-radius: 10px;
+}
 
-  .carousel-control-prev, .carousel-control-next {
-    top: 50%;
-    transform: translateY(-50%);
-  }
 
+
+.carousel-caption {
+  color: black; /* 글씨 색상을 검정색으로 설정 */
+  background-color: rgba(255, 255, 255, 0.7); /* 배경색을 반투명 흰색으로 설정하여 글씨가 잘 보이도록 */
+  padding: 10px; /* 텍스트와 배경의 간격을 추가 */
+  border-radius: 5px; /* 배경을 둥글게 처리 */
+}
+
+.carousel-caption h3 {
+  font-size: 1.5em; /* 제목 글씨 크기를 키워서 강조 */
+}
+
+.carousel-caption p {
+  font-size: 1.2em; /* 본문 글씨 크기를 조절 */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px; /* 버튼 크기 조정 */
+  height: 50px;
+  background-color: rgba(120, 169, 201, 0.8); /* 반투명 파란색 배경 */
+  border-radius: 50%; /* 원형 버튼 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid white; /* 컨트롤 버튼 테두리 */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: invert(1); /* 아이콘을 흰색으로 변환 */
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(0, 123, 255, 0.8); /* 호버 시 파란색으로 변경 */
+  border: 2px solid rgba(0, 123, 255, 1); /* 호버 시 테두리 색상 변경 */
+}
+
+/* 메인 페이지 전체 레이아웃 */
+.MainPage-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 슬라이더 섹션: 슬라이더 크기를 줄임 */
+.Carouesl_Main {
+  width: 65%; /* 슬라이더가 차지하는 공간을 65%로 설정 */
+  padding-right: 20px;
+}
+
+/* 환율 정보 섹션: 나머지 35% 공간을 사용 */
+.ExchangeRateSection {
+  width: 35%;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Axios 기본 설정
 const api = axios.create({
-  baseURL: 'http://localhost:8081',  // 백엔드 서버 URL 설정
+  baseURL: 'http://localhost:8081/uram',  // 백엔드 서버 URL 설정
   headers: {
     'Content-Type': 'application/json',
   },
@@ -29,14 +29,17 @@ const ApiService = {
     });
   },
 
-  // 모든 계좌 정보 가져오기 (예금, 적금, 대출 등 모두 포함)
-  getAllAccounts: () => {
-    return api.get('/account');  // "/account" API 호출
+  getAllAccounts: (userNo, token) => {
+    return api.get(`/accounts`, {
+      headers: {
+        'Authorization': `Bearer ${token}`, // JWT 토큰 추가
+      },
+    });
   },
 
   // 특정 계좌 번호로 계좌 상세 정보 가져오기
   getAccountDetail: (userNo, accountNumber, token) => {
-    return api.get(`/account/${accountNumber}?userNo=${userNo}`, {
+    return api.get(`/account/detail/${accountNumber}?userNo=${userNo}`, {
       headers: {
         'Authorization': `Bearer ${token}`, // JWT 토큰 추가
       },

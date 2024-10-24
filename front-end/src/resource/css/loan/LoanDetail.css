@@ -1,0 +1,98 @@
+.LoanDetail-container {
+    padding: 20px;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 1200px;
+    background-color: #f9f9f9;
+}
+
+.LoanDetail-apply-container {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.LoanDetail-title {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.LoanDetail-info-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.LoanDetail-info-item {
+    font-size: 1.2em;
+    color: #555;
+}
+
+.LoanDetail-info-item b {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.LoanDetail-info-item-button {
+    margin-top: 10px;
+}
+
+.LoanDetail-apply-button {
+    background-color: #74a1d2;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.LoanDetail-apply-button:hover {
+    background-color: #5b89c0;
+}
+
+.LoanDetail-product-container {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.LoanDetail-info-header {
+    font-size: 1.6em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.LoanDetail-content-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.LoanDetail-content-table th, .LoanDetail-content-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.LoanDetail-content-table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+}
+
+.LoanDetail-content-table td {
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .LoanDetail-info-list {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

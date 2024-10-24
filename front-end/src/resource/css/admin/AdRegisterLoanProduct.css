@@ -1,0 +1,78 @@
+/* AdRegisterLoanProduct.css */
+.AdRegisterLoanProduct-container {
+    display: flex;
+  }
+  
+  .AdRegisterLoanProduct-main-content {
+    padding: 20px;
+    width: calc(100% - 200px); /* 사이드바 공간을 제외한 너비 */
+    box-sizing: border-box;
+  }
+  
+  .AdRegisterLoanProduct-form-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto; /* 폼을 가운데 정렬 */
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .AdRegisterLoanProduct-form-container h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .AdRegisterLoanProduct-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .AdRegisterLoanProduct-table td {
+    padding: 10px;
+    vertical-align: middle;
+  }
+  
+  .AdRegisterLoanProduct-table input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .AdRegisterLoanProduct-button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .AdRegisterLoanProduct-cancel-button, .AdRegisterLoanProduct-submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .AdRegisterLoanProduct-cancel-button {
+    background-color: #ccc;
+    color: white;
+  }
+  
+  .AdRegisterLoanProduct-cancel-button:hover {
+    background-color: #999;
+  }
+  
+  .AdRegisterLoanProduct-submit-button {
+    background-color: #74a1d2;
+    color: white;
+  }
+  
+  .AdRegisterLoanProduct-submit-button:hover {
+    background-color: #5f8bb2;
+  }
+  

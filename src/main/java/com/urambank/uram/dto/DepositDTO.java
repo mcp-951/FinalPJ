@@ -2,31 +2,53 @@ package com.urambank.uram.dto;
 
 import com.urambank.uram.entities.DepositEntity;
 import lombok.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @ToString
 public class DepositDTO {
-    private int depositNo;        // 상품 번호
-    private String depositName;   // 상품 이름
-    private int depositCategory;  // 상품 카테고리 (1: 예금, 2: 적금)
-    private float depositRate;    // 이자율
-    private String depositContent;// 상품 설명
-    private String depositIMG;    // 상품 이미지 URL
+    private int depositNo;                // 예금 번호
+    private int depositCategory;          // 예금 카테고리
+    private String depositContent;        // 예금 설명
+    private String depositIMG;            // 예금 이미지
+    private String depositName;           // 예금 이름
+    private char depositState;            // 예금 상태 (기본값: 'Y')
+    private String depositCharacteristic; // 예금 특성
+    private int depositMaximumAmount;     // 최대 예치 금액
+    private int depositMaximumDate; // 최대 기간
+    private float depositMaximumRate;     // 최대 금리
+    private int depositMinimumAmount;     // 최소 예치 금액
+    private int depositMinimumDate; // 최소 기간
+    private float depositMinimumRate;     // 최소 금리
+    private String depositPw;
+    private int depositBalance;
+    private int depositPeriod;
+    private int depositTransferDay;
+    private LocalDate depositJoinDay;   // LocalDate로 변경
+    private LocalDate depositFinishDay; // LocalDate로 변경
+    private String accountNumber;
+    private String accountNo;
 
-    // Entity에서 DTO로 변환
+
+
     public static DepositDTO toDepositDTO(DepositEntity depositEntity) {
-        DepositDTO depositDTO = new DepositDTO();
-        depositDTO.setDepositNo(depositEntity.getDepositNo());
-        depositDTO.setDepositName(depositEntity.getDepositName());
-        depositDTO.setDepositCategory(depositEntity.getDepositCategory());
-        depositDTO.setDepositRate(depositEntity.getDepositRate());
-        depositDTO.setDepositContent(depositEntity.getDepositContent());
-        depositDTO.setDepositIMG(depositEntity.getDepositIMG());
-
-        return depositDTO;
+        return DepositDTO.builder()
+                .depositNo(depositEntity.getDepositNo())
+                .depositName(depositEntity.getDepositName())
+                .depositMinimumRate(depositEntity.getDepositMinimumRate())
+                .depositMaximumRate(depositEntity.getDepositMaximumRate())
+                .depositMinimumAmount(depositEntity.getDepositMinimumAmount())
+                .depositMaximumAmount(depositEntity.getDepositMaximumAmount())
+                .depositMinimumDate(depositEntity.getDepositMinimumDate())
+                .depositMaximumDate(depositEntity.getDepositMaximumDate())
+                .depositCategory(depositEntity.getDepositCategory())
+                .depositCharacteristic(depositEntity.getDepositCharacteristic())
+                .depositContent(depositEntity.getDepositContent())
+                .build();
     }
+
 }

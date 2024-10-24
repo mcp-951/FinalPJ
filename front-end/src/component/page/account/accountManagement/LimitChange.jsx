@@ -20,7 +20,7 @@ const LimitChange = () => {
   // 이체 한도 정보를 받아오는 함수
   const fetchLimits = async () => {
     try {
-      const response = await axios.get(`http://localhost:8081/uram/account/${accountNumber}`, {
+      const response = await axios.get(`http://localhost:8081/uram/account/detail/${accountNumber}`, {
         headers: {
           'Authorization': `Bearer ${token}`, // Authorization 헤더에 JWT 추가
         },
@@ -34,6 +34,15 @@ const LimitChange = () => {
       console.error('Error fetching limits: ', error);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    // 토큰이 없으면 로그인 페이지로 리다이렉트
+    if (!token) {
+      alert('로그인이 필요합니다.');
+      navigate('/login');
+    }
+  }, [navigate]);
 
   useEffect(() => {
     // 컴포넌트가 마운트되면 현재 이체한도 데이터를 불러옴
@@ -75,14 +84,14 @@ const LimitChange = () => {
   };
 
   return (
-    <div className="limit-change-container">
+    <div className="LimitChange-container">
       <h2>이체한도 변경</h2>
       <p>1회 이체한도를 확인하시고 변경할 이체한도를 입력해주세요</p>
       
       {/* 오류 메시지 출력 */}
-      {errorMessage && <p className="error-message" style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <p className="LimitChange-error-message">{errorMessage}</p>}
 
-      <table className="limit-change-table">
+      <table className="LimitChange-table">
         <thead>
           <tr>
             <th></th>
@@ -99,16 +108,14 @@ const LimitChange = () => {
                 type="text"
                 value={newOnceLimit}
                 onChange={(e) => setNewOnceLimit(e.target.value)}
-                placeholder="입력칸"
-              />
-              원
+                placeholder="입력칸"/>원
             </td>
           </tr>
         </tbody>
       </table>
 
-      <div className="limit-change-button-container">
-        <button onClick={handleLimitChange} className="limit-change-button">
+      <div className="LimitChange-button-container">
+        <button onClick={handleLimitChange} className="LimitChange-button">
           변경
         </button>
       </div>

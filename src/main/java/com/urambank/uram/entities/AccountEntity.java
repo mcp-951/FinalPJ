@@ -1,10 +1,9 @@
 package com.urambank.uram.entities;
 
-import com.urambank.uram.dto.AccountDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,38 +15,49 @@ import java.util.Date;
 public class AccountEntity {
 
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "accountNo")
     private int accountNo;
 
-    @Column
+    @Column(name = "accountNumber")
     private String accountNumber;
 
-    @Column
+    @Column(name = "userNo")
     private int userNo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "depositNo")  // deposit 테이블과의 FK 관계 설정
     private DepositEntity deposit;
 
-    @Column
+    @Column(name = "bankName")
     private String bankName;
 
-    @Column
+    @Column(name = "accountBalance")
     private int accountBalance;
 
-    @Column
+    @Column(name = "accountLimit")
     private int accountLimit;
 
-    @Column
+    @Column(name = "accountPW")
     private String accountPW;
 
-    @Column
+    @Column(name = "accountState")
     private String accountState;
 
-    @Column
+    @Column(name = "accountOpen")
     private Date accountOpen;
 
-    @Column
+    @Column(name = "accountClose")
     private Date accountClose;
+
+    @Column(name = "accountRate")
+    private double accountRate;
+
+    @Column(name = "agreement")
+    private char agreement;
+
+    @Column(name = "withdrawal")
+    private Character withdrawal;
+
 
 }

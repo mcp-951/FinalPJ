@@ -1,0 +1,78 @@
+.AdMemberEdit-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f9;
+}
+
+.AdMemberEdit-content {
+  flex-grow: 1;
+  padding: 40px;
+  background-color: white;
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.AdMemberEdit-title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.AdMemberEdit-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.AdMemberEdit-label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.AdMemberEdit-input,
+.AdMemberEdit-select {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.AdMemberEdit-input:disabled {
+  background-color: #f9f9f9;
+}
+
+.AdMemberEdit-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.AdMemberEdit-submit {
+  padding: 10px 20px;
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdMemberEdit-submit:hover {
+  background-color: #5d95d1;
+}
+
+.AdMemberEdit-cancel {
+  padding: 10px 20px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.AdMemberEdit-cancel:hover {
+  background-color: #5a6268;
+}

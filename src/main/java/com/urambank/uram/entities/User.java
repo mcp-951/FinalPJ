@@ -4,17 +4,15 @@ package com.urambank.uram.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 
 import java.sql.Date;
-import java.util.Collection;
 
 @Table(name="userInfo")
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -57,8 +55,11 @@ public class User {
     @Column(length = 100, nullable = true, unique = false)
     private String residentNumber;
 
+    @Column(name = "grade")
+    private int grade;
+
     @Builder
-    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck) {
+    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck, int grade) {
         this.userNo = userNo;
         this.userId = userId;
         this.userPw = userPw;
@@ -69,12 +70,8 @@ public class User {
         this.joinDate = joinDate;
         this.state = state;
         this.OCRCheck = ocrCheck;
+        this.grade = grade;
     }
 
 
-    public User(String subject, String s, Collection<? extends GrantedAuthority> authorities) {
-    }
-
-    public void setOCRCheck(String ocrCheck) {
-    }
 }

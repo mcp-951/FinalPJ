@@ -20,7 +20,7 @@ public class PickUpPlaceEntity {
     private int pickUpPlaceNo;
 
     @Column
-    private String pickUpPlaceName;
+    private String pickupPlaceName;
 
     @Column
     private String pickUpAddress;

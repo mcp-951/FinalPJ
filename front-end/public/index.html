@@ -11,8 +11,21 @@
     />
     <title>URAM_BANK</title>
     <style>
-      body{
-        width: 1920px;
+      body {
+        margin: 0; /* 기본 여백 제거 */
+        display: flex; /* flexbox 사용 */
+        justify-content: center; /* 가로 가운데 정렬 */
+        align-items: center; /* 세로 가운데 정렬 */
+        width: 100%;
+      }
+
+      #root {
+        min-width: 1920px; /* 최대 너비 설정 */
+        max-width: 1920px;
+        width: 100%; /* 100% 너비 사용 */
+        display: flex; /* flexbox 사용 */
+        justify-content: center; /* 가로 가운데 정렬 */
+        align-items: center; /* 세로 가운데 정렬 */
       }
     </style>
     <style>
@@ -24,6 +37,6 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" class="root"></div>
   </body>
 </html>
