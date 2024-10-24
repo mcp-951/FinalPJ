@@ -7,7 +7,7 @@ import kakaoimg from 'resource/img/kakao_login.png';
 
 function Login() {
     const Rest_api_key = '7101f2d4aff750a5e9aba4237ed24b78';    // REST API KEY
-    const redirect_uri = 'http://localhost:3000/kakaoLogin';    // 카카오 연동로그인 Redirect URI
+    const redirect_uri = 'http://13.125.114.85:3000/kakaoLogin';    // 카카오 연동로그인 Redirect URI
     const [id, setId] = useState('');                           // 아이디 변수 설정
     const [password, setPassword] = useState('');               // 패스워드 변수 설정
     const navigate = useNavigate();                             // 네비게이트 기능 사용

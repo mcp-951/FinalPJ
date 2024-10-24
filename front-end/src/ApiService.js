@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Axios 기본 설정
 const api = axios.create({
-  baseURL: 'http://localhost:8081/uram',  // 백엔드 서버 URL 설정
+  baseURL: 'http://13.125.114.85:8081/uram',  // 백엔드 서버 URL 설정
   headers: {
     'Content-Type': 'application/json',
   },
