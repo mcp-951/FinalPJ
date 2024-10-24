@@ -141,7 +141,7 @@ const PasswordCheck = ({ title, instructions }) => {
         <select value={accountNumber} onChange={handleAccountSelect}>
           <option value="">계좌를 선택하세요</option>
           {accounts.map(account => (
-            <option key={account.accountNumber} value={account.accountNumber}>
+            <option key={account.accountNumber} value={account.accountNumber} disabled={isPasswordValid}>
               {account.accountNumber} ({account.depositName})
             </option>
           ))}

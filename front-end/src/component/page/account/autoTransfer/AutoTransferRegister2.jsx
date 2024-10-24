@@ -397,6 +397,7 @@ const AutoTransferRegister2 = () => {
                 <select
                   value={selectedAutoBank}
                   onChange={(e) => setSelectedAutoBank(e.target.value)}
+                  disabled={isAutoAccountValid}
                 >
                   <option value="">은행명 선택</option>
                   <option value="동명은행">동명은행</option>
