@@ -49,9 +49,6 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
 
 def webappDir = "$projectDir/front-end"
 
@@ -96,4 +93,8 @@ task installReact(type: Exec) {
 		commandLine "npm", "audit", "fix"
 		commandLine 'npm', 'install'
 	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
 }

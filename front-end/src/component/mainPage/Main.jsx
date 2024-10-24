@@ -4,11 +4,12 @@ import Carouesl_Main from './Carousel';
 import Middlebar from './Middlebar';
 import BottomNewsBoard from './BottomNewsBoard';
 import ChatBotButton from './ChatBotButton';
-import ExchangeRateChart from '../page/exchangePage/ExchangeRateChart'; // 차트 컴포넌트 추가
+import euFlag from '../page/exchangePage/free-icon-european-union-206593.png'; // EU 국기 이미지 import
 
 function Main() {
     const [exchangeRates, setExchangeRates] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState('buy'); // 'buy' 또는 'sell'
 
     useEffect(() => {
         const fetchExchangeRates = async () => {
@@ -32,11 +33,11 @@ function Main() {
                 const KRW_EUR = ratesEUR['KRW'];
 
                 const filteredRates = [
-                    { cur_unit: 'USD', deal_bas_r: KRW_USD },
-                    { cur_unit: 'JPY', deal_bas_r: KRW_JPY },
-                    { cur_unit: 'CNY', deal_bas_r: KRW_CNY },
-                    { cur_unit: 'GBP', deal_bas_r: KRW_GBP },
-                    { cur_unit: 'EUR', deal_bas_r: KRW_EUR }
+                    { cur_unit: 'USD', deal_bas_r: KRW_USD, bkpr: KRW_USD * 1.02, tts: KRW_USD * 0.98, flag: 'US', symbol: '$' },
+                    { cur_unit: 'JPY', deal_bas_r: KRW_JPY, bkpr: KRW_JPY * 1.02, tts: KRW_JPY * 0.98, flag: 'JP', symbol: '¥' },
+                    { cur_unit: 'CNY', deal_bas_r: KRW_CNY, bkpr: KRW_CNY * 1.02, tts: KRW_CNY * 0.98, flag: 'CN', symbol: '元' },
+                    { cur_unit: 'GBP', deal_bas_r: KRW_GBP, bkpr: KRW_GBP * 1.02, tts: KRW_GBP * 0.98, flag: 'GB', symbol: '£' },
+                    { cur_unit: 'EUR', deal_bas_r: KRW_EUR, bkpr: KRW_EUR * 1.02, tts: KRW_EUR * 0.98, flag: euFlag, symbol: '€' }
                 ];
                 setExchangeRates(filteredRates);
                 setLoading(false);
@@ -56,11 +57,38 @@ function Main() {
                     <Carouesl_Main />
                 </div>
                 <div className='ExchangeRateSection'>
-                    {/* 데이터를 ExchangeRateChart에 전달 */}
                     {loading ? (
                         <p>환율 데이터를 불러오는 중...</p>
                     ) : (
-                        <ExchangeRateChart exchangeRates={exchangeRates} />
+                        <div>
+                            <h2 className="ExchangeRate-title">실시간 환율</h2>
+                            <table className="ExchangeRate-table">
+                                <thead>
+                                    <tr>
+                                        <th>국가</th>
+                                        <th>통화</th>
+                                        <th>환율 (원)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {exchangeRates.map((rate) => (
+                                        <tr key={rate.cur_unit}>
+                                            <td>
+                                                <img
+                                                    src={rate.flag === euFlag ? euFlag : `https://flagsapi.com/${rate.flag}/flat/64.png`}
+                                                    alt={`${rate.cur_unit} flag`}
+                                                    className="flag-icon"
+                                                />
+                                            </td>
+                                            <td>
+                                                {rate.cur_unit} <span>{rate.symbol}</span>
+                                            </td>
+                                            <td>{(activeTab === 'buy' ? rate.bkpr : rate.tts).toFixed(2)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     )}
                 </div>
             </div>

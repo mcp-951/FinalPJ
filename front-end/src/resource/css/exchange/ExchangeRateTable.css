@@ -1,0 +1,60 @@
+/* 전체 컨테이너 스타일 */
+.ExchangeRateTable-container {
+  width: 100%;
+  max-width: 1200px; /* 최대 너비를 1200px로 설정하여 더 넓게 */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f7f9fb;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 제목 스타일 */
+.ExchangeRateTable-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #34495e;
+  margin-bottom: 25px;
+}
+
+/* 테이블 스타일 */
+.ExchangeRateTable {
+  width: 100%; /* 테이블을 컨테이너에 맞게 100%로 설정 */
+  border-collapse: collapse;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 테이블 헤더 스타일 */
+.ExchangeRateTable thead {
+  background-color: #2980b9;
+  color: white;
+  font-size: 1.4rem;
+}
+
+.ExchangeRateTable th {
+  padding: 20px;
+  text-align: center;
+  white-space: nowrap; /* 긴 텍스트도 한 줄에 유지 */
+}
+
+/* 테이블 바디 스타일 */
+.ExchangeRateTable td {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #ecf0f1;
+  white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 */
+}
+
+.ExchangeRateTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ExchangeRateTable tbody tr:hover {
+  background-color: #f0f7ff;
+}

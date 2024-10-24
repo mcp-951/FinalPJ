@@ -188,17 +188,19 @@ const AccountDetail = () => {
         </table>
       )}
 
-      <div className="AccountDetail-pagination">
-        {Array.from({ length: totalPages }, (_, index) => (
-          <button
-            key={index + 1}
-            onClick={() => paginate(index + 1)}
-            className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
-          >
-            {index + 1}
-          </button>
-        ))}
-      </div>
+      {!showCalendar && (
+        <div className="AccountDetail-pagination">
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => paginate(index + 1)}
+              className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      )}
 
       <button className="AccountDetail-back-button" onClick={() => navigate(`/accounts`)}>
         목록
