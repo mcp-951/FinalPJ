@@ -15,7 +15,7 @@ const CompletePage = () => {
   }, [navigate]);
 
   const goToDepositSearch = () => {
-    navigate('/DepositSearch'); // DepositSearch 페이지로 이동
+    navigate('/accounts'); // DepositSearch 페이지로 이동
   };
 
   return (

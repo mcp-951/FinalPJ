@@ -1,8 +1,8 @@
 import React, { useEffect , useState } from 'react';
-
 import apiSer from 'component/ApiService';
 import {useNavigate, useLocation} from 'react-router-dom';
 import getAddress from './GetAddress'
+import '../../../resource/css/SignUpForKakao.css';
 
 function SignUpForKakao() {
     const location = useLocation();
@@ -177,43 +177,47 @@ function SignUpForKakao() {
     };
 
     return (
-        <div className="signUp-container">
-            <form className="signUp-form" onSubmit={handleSubmit}>
+        <div className="SignUpForKakao-container">
+            <form className="SignUpForKakao-form" onSubmit={handleSubmit}>
                 <div className="form-row">
-                    <label>아이디</label>
+                    <label className="SignUpForKakao-label">아이디</label>
                     <input
                         type="text"
                         name="userId"
                         value={form.userId}
                         onChange={handleChange}
+                        className="SignUpForKakao-input"
                     />
                 </div>
                 <div className="form-row">
-                    <label>비밀번호</label>
+                    <label className="SignUpForKakao-label">비밀번호</label>
                     <input
                         type="password"
                         name="userPw"
                         value={form.userPw}
                         onChange={handleChange}
+                        className="SignUpForKakao-input"
                     />
                 </div>
                 <div className="form-row">
-                    <label>이름</label>
+                    <label className="SignUpForKakao-label">이름</label>
                     <input
                         type="text"
                         name="name"
                         value={form.name}
                         onChange={handleChange}
+                        className="SignUpForKakao-input"
                     />
                 </div>
                 <div className="form-row">
-                    <label>주민등록번호</label>
+                    <label className="SignUpForKakao-label">주민등록번호</label>
                     <input
                         type="text"
                         name="residentNumber1"
                         value={form.residentNumber1}
                         onChange={handleChange}
                         maxLength={6}
+                        className="SignUpForKakao-input"
                     />
                     <span>-</span>
                     <input
@@ -222,71 +226,79 @@ function SignUpForKakao() {
                         value={form.residentNumber2}
                         onChange={handleChange}
                         maxLength={7}
+                        className="SignUpForKakao-input"
                     />
                 </div>
                 <div className="form-row">
-                    <label>휴대폰 번호</label>
+                    <label className="SignUpForKakao-label">휴대폰 번호</label>
                     <input
                         type="tel"
                         name="hp"
                         value={form.hp}
                         onChange={handleChange}
                         placeholder="핸드폰 번호를 - 없이 입력하세요."
+                        className="SignUpForKakao-input"
                     />
-                    <button type="button" onClick={hpCheck}>인증번호 받기</button>
+                    <button type="button" onClick={hpCheck} className="SignUpForKakao-button">인증번호 받기</button>
                 </div>
                 {startCheckHp && (
                     <div className="form-row">
-                        <label>인증번호</label>
+                        <label className="SignUpForKakao-label">인증번호</label>
                         <input
                             type="text"
                             name="hpAuthkey"
                             value={form.hpAuthkey}
                             onChange={handleChange}
+                            className="SignUpForKakao-input"
                         />
-                        <button type="button" onClick={authingKey}>인증번호 확인</button>
+                        <button type="button" onClick={authingKey} className="SignUpForKakao-button">인증번호 확인</button>
                     </div>
                 )}
                 <div className="form-row">
-                    <label>생년월일</label>
+                    <label className="SignUpForKakao-label">생년월일</label>
                     <input
                         type="date"
                         name="birth"
                         value={form.birth}
                         onChange={handleChange}
+                        className="SignUpForKakao-input"
                     />
                 </div>
                 <div className="form-row">
-                    <label>신분증 인증</label>
+                    <label className="SignUpForKakao-label">신분증 인증</label>
                     {!ocrCheck ? (<p>인증이 완료되지 않았습니다.</p>) : (<p>인증이 완료되었습니다.</p>)}
-                    <button type="button" onClick={ocrMove}>인증하기</button>
+                    <button type="button" onClick={ocrMove} className="SignUpForKakao-button">인증하기</button>
                 </div>
                 <div className="form-row">
-                    <label>주소</label>
+                    <label className="SignUpForKakao-label">주소</label>
                     <input
                         type="text"
                         name="address1"
                         value={form.address1}
                         onChange={handleChange}
+                        className="SignUpForKakao-input"
                     />
-                    <button type="button" onClick={openPopup}>주소 검색</button>
+                    <button type="button" onClick={openPopup} className="SignUpForKakao-button">주소 검색</button>
                 </div>
                 {plusAddress && (
                     <div className="form-row">
-                        <label>추가 주소</label>
+                        <label className="SignUpForKakao-label">추가 주소</label>
                         <input
                             type="text"
                             name="address2"
                             value={form.address2}
                             onChange={handleChange}
                             placeholder="추가 주소를 입력하세요."
+                            className="SignUpForKakao-input"
                         />
                     </div>
                 )}
-                <button type="submit">가입 완료</button>
+                <button type="submit" className="SignUpForKakao-submit-button">가입 완료</button>
             </form>
         </div>
     );
+
+
 }
 
 export default SignUpForKakao;

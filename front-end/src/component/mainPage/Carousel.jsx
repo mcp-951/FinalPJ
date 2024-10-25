@@ -22,7 +22,7 @@ function Carousel_Main() {
     <div className='Carousel_div'>
       <div className='Carousel_Tab'>
         <Carousel activeIndex={index} onSelect={handleSelect}>
-          <Carousel.Item onClick={() => handleClick('/ReceivedPaidMain')} style={{ cursor: 'pointer' }}>
+          <Carousel.Item onClick={() => handleClick('/loanmain/loandetail/3')} style={{ cursor: 'pointer' }}>
             <img
               className="d-block w-100"
               src={product1}

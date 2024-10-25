@@ -6,6 +6,7 @@ import 'resource/css/user/MyPageChangePw.css';
 
 function MyPageChangePw() {
     const userNo = localStorage.getItem("userNo")
+    const token = localStorage.getItem("token")
     const navigate = useNavigate();
     const [form, setForm] = useState({
         userNo : userNo,
@@ -24,7 +25,11 @@ function MyPageChangePw() {
     }
 
     const submitNewPw = () => {
-        const response = apiSer.changePassword(form)
+        const response = apiSer.changePassword(form, {
+        headers: {
+          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
+        }
+      })
         .then((response) => {
             console.log(response.data)
             if(response.data === 'ok'){

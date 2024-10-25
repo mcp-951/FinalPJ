@@ -36,15 +36,17 @@ function ChatBotButton() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: userMessage })
         });
-
+        setForm({ message: '' });
+        // 입력 필드 초기화
         const data = await response.json();
         const botReply = data.reply;
 
         // 봇 응답을 채팅 상자에 추가
         setMessages([...messages, { sender: 'User', text: userMessage }, { sender: 'Bot', text: botReply }]);
 
-        // 입력 필드 초기화
-        setForm({ message: '' });
+
+
+
     };
 
     const toggleRecording = async () => {

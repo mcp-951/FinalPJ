@@ -52,14 +52,10 @@ const apiSer = {
         console.log("token : "+ token);
         return axios.get(`${API_BASE_URL}/getUserInfo`+ '/' + userNo,token)
     },
-    changePassword:(data) => {
+    changePassword:(data,token) => {
         console.log("userPw : " + data);
         console.log("token : " + token);
-        return axios.put(`${API_BASE_URL}/changePassword`,data,{
-        headers: {
-          'Authorization': `Bearer ${token}` // Authorization 헤더에 JWT 추가
-        }
-      })
+        return axios.put(`${API_BASE_URL}/changePassword`,data,token)
     },
 
   // 자동이체 리스트 가져오기

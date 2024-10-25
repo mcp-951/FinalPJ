@@ -1,0 +1,95 @@
+.SignUpForKakao-container {
+    background-color: #f4f4f4;
+    padding: 30px;
+    max-width: 600px;
+    margin: 40px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .SignUpForKakao-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* 간격 조정 */
+  }
+
+  .SignUpForKakao-label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333;
+    margin-right: 8px;
+    flex: 0 0 25%; /* 레이블의 너비 조정 */
+  }
+
+  .input-group {
+    display: flex; /* 입력과 버튼을 가로로 배치 */
+    align-items: center; /* 수직 정렬 */
+    flex: 1; /* 남은 공간을 차지 */
+  }
+
+  .SignUpForKakao-input,
+  .SignUpForKakao-input-half,
+  .SignUpForKakao-select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    flex: 1; /* 입력 필드가 남은 공간을 차지 */
+    margin-right: 8px; /* 버튼과의 간격 조정 */
+  }
+
+  .SignUpForKakao-button {
+    background-color: #74a1d2;
+    color: white;
+    border: none;
+    padding: 8px 15px; /* 패딩 */
+    border-radius: 20px; /* 둥글게 만들기 */
+    cursor: pointer;
+    margin-left: 8px; /* 버튼과 다른 요소 사이의 간격 줄임 */
+    font-size: 0.9rem; /* 폰트 크기 줄임 */
+    transition: background-color 0.3s; /* 부드러운 배경색 변화 */
+  }
+
+  .SignUpForKakao-button:hover {
+    background-color: #5b8ab8; /* hover 시 색상 변경 */
+  }
+
+  .SignUpForKakao-submit-button {
+    background-color: #74a1d2;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+
+  .SignUpForKakao-submit-button:hover {
+    background-color: #5b8ab8;
+  }
+
+  .SignUpForKakao-message {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    margin-top: 5px;
+  }
+
+  .SignUpForKakao-auth-success {
+    color: green;
+    font-size: 0.9rem;
+  }
+
+  .SignUpForKakao-title {
+    text-align: center; /* 제목 중앙 정렬 */
+    font-size: 1.5rem; /* 제목 크기 */
+    margin-bottom: 20px; /* 제목과 폼 간격 */
+    color: #333; /* 제목 색상 */
+  }
