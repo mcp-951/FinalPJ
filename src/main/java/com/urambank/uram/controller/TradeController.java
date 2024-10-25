@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://13.125.114.85:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/exchange")
 public class TradeController {

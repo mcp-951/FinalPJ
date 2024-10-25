@@ -11,7 +11,7 @@ const AdminList = () => {
 
   useEffect(() => {
     console.log("JWT Token: ", token);
-    axios.get('http://13.125.114.85:8081/admin/getUserAndLoanData', {
+    axios.get('http://localhost:8081/admin/getUserAndLoanData', {
         headers: {
             'Authorization': `Bearer ${token}`
         }
