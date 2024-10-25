@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
+import { useNavigate } from 'react-router-dom'; // useNavigate 임포트
 import '../../resource/css/Carousel.css';
 import product1 from '../../resource/img/a.jpg';  // 첫 번째 금융상품 이미지
 import product2 from '../../resource/img/b.jpg';  // 두 번째 금융상품 이미지
@@ -7,20 +8,25 @@ import product3 from '../../resource/img/c.jpg';  // 세 번째 금융상품 이
 
 function Carousel_Main() {
   const [index, setIndex] = useState(0);
+  const navigate = useNavigate(); // navigate 훅 생성
 
   const handleSelect = (selectedIndex) => {
     setIndex(selectedIndex);
+  };
+
+  const handleClick = (productPage) => {
+    navigate(productPage); // 클릭 시 페이지 이동
   };
 
   return (
     <div className='Carousel_div'>
       <div className='Carousel_Tab'>
         <Carousel activeIndex={index} onSelect={handleSelect}>
-          <Carousel.Item>
+          <Carousel.Item onClick={() => handleClick('/ReceivedPaidMain')} style={{ cursor: 'pointer' }}>
             <img
               className="d-block w-100"
               src={product1}
-              alt="주택청약종합저축"
+              alt="URAM 주택청약종합저축"
               style={{ maxHeight: '540px', objectFit: 'cover' }}
             />
             <Carousel.Caption style={{ color: 'black', backgroundColor: 'rgba(255, 255, 255, 0.7)', borderRadius: '5px' }}>
@@ -29,7 +35,7 @@ function Carousel_Main() {
             </Carousel.Caption>
           </Carousel.Item>
 
-          <Carousel.Item>
+          <Carousel.Item onClick={() => handleClick('/DepositMain')} style={{ cursor: 'pointer' }}>
             <img
               className="d-block w-100"
               src={product2}
@@ -42,7 +48,7 @@ function Carousel_Main() {
             </Carousel.Caption>
           </Carousel.Item>
 
-          <Carousel.Item>
+          <Carousel.Item onClick={() => handleClick('/loanmain/loandetail/2')} style={{ cursor: 'pointer' }}>
             <img
               className="d-block w-100"
               src={product3}

@@ -99,6 +99,7 @@ function Login() {
                 })
                 .catch((error) =>{
                     console.error("Error : ", error);
+                    alert('로그인에 실패했습니다.')
                 })
         } catch (error) {
             console.error('로그인 실패:', error);

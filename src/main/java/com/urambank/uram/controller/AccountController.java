@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://13.125.114.85:3000")
 @RequestMapping("/uram")
 @RestController
 public class AccountController {

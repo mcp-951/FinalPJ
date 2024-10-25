@@ -6,29 +6,28 @@ function SearchResult() {
     const location = useLocation();
     const query = new URLSearchParams(location.search).get('query');
     const data = [
-        `<a href ='/'>계좌</a> -> <a href ='/'>계좌조회</a> -> <a href ='/'>전체계좌조회</a> `,
-        '계좌 -> 계좌관리 -> 비밀번호변경',
-        '계좌 -> 계좌관리 -> 계좌해지',
-        '계좌 -> 계좌관리 -> 이체한도 조회',
-        '계좌 -> 이체 -> 이체',
-        '계좌 -> 자동이체 -> 자동이체 등록',
-        '계좌 -> 자동이체 -> 자동이체 조회',
-        '계좌 -> 자동이체 -> 자동이체 변경',
-        '계좌 -> 자동이체 -> 자동이체 해지',
+        `계좌 -> 계좌조회 -> <a href ='/accounts'>전체계좌조회</a> `,
+        `계좌 -> 계좌관리 -> <a href ='/account/:accountNumber/password-change'>비밀번호변경</a> `,
+        `계좌 -> 계좌관리 -> <a href ='/account/:accountNumber/close'>계좌해지</a>`,
+        `계좌 -> 계좌관리 -> <a href ='/account/password-check?purpose=limit-inquiry'>이체한도 조회</a>`,
+        `계좌 -> 이체 -> <a href ='/account/transfer'>계좌이체</a>`,
+        `계좌 -> 자동이체 -> <a href ='/auto-transfer/register'>자동이체 등록</a>`,
+        `계좌 -> 자동이체 -> <a href ='/auto-transfer/register'>자동이체 조회</a>`,
+        `계좌 -> 자동이체 -> <a href ='/auto-transfer/list'>자동이체 변경</a>`,
+        `계좌 -> 자동이체 -> <a href ='/auto-transfer/list'>자동이체 해지</a>`,
 
-        '금융상품 -> 예금 -> 예금상품 리스트',
-        '금융상품 -> 예금 -> 예금상품 메인',
-        '금융상품 -> 대출 -> 대출상품 리스트',
-        '금융상품 -> 대출 -> 중동상환',
-        '금융상품 -> 대출 -> 대출 이자계산기',
+        `금융상품 -> 예금,적금 -> <a href ='/deposit-list'>상품 리스트</a>`,
+        `금융상품 -> 예금,적금 -> <a href ='/DepositMain'>중도 출금</a>`,
+        `금융상품 -> 대출 -> <a href ='/loanmain'>대출 상품</a>`,
 
-        '외환 -> 환율 -> 실시간 환율',
-        '외환 -> 환전 -> 환전 신청',
-        '외환 -> 환전 -> 환전 내역',
+        `외환 -> 환율 -> <a href ='/exchange-rate'>실시간 환율</a>`,
+        `외환 -> 환전 -> <a href ='/exchange'>환전 신청</a>`,
+        `외환 -> 환전 -> <a href ='/exchangeList'>환전 내역</a>`,
 
-        '공과금 -> 공과금 납부',
-        '공과금 -> 납부내역',
-        '투자 -> '
+        `공과금 -> <a href ='/tax/elec'>공과금 납부</a>`,
+        `공과금 -> <a href ='/tax/History'>이용 내역</a>`,
+
+        `투자 -> <a href ='/investment'>투자</a>`
     ];
 
     const filteredData = query ? data.filter(item => 

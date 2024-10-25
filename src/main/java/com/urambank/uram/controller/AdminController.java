@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:3000") // CORS 설정 추가
+@CrossOrigin(origins = "http://13.125.114.85:3000") // CORS 설정 추가
 @RestController
 @RequestMapping("/admin")
 public class AdminController {

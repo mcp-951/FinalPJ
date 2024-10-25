@@ -42,7 +42,6 @@ import LoanProduct from 'component/page/loan/LoanProduct';
 
 // 어드민 라우터 임포트
 import AdminLogin from '../page/adminPage/admin/AdminLogin';
-import EditAdmin from '../page/adminPage/admin/EditAdmin';
 import AdMemberList from '../page/adminPage/user/AdMemberList';
 import AdMemberEdit from '../page/adminPage/user/AdMemberEdit';
 import AdRetiredMember from '../page/adminPage/user/AdRetiredMember';

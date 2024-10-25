@@ -62,6 +62,12 @@
   border: 2px solid rgba(0, 123, 255, 1); /* 호버 시 테두리 색상 변경 */
 }
 
+.Carouesl_Main {
+
+  /* padding-right: 20px; */ /* 패딩 제거 */
+  margin-right: 0; /* 오른쪽 여백을 0으로 설정 */
+}
+
 /* 메인 페이지 전체 레이아웃 */
 .MainPage-container {
   display: flex;
@@ -71,20 +77,16 @@
   box-sizing: border-box;
 }
 
-/* 슬라이더 섹션: 슬라이더 크기를 줄임 */
-.Carouesl_Main {
-  width: 65%; /* 슬라이더가 차지하는 공간을 65%로 설정 */
-  padding-right: 20px;
+
+/* 환율 정보 섹션: 나머지 25% 공간을 사용 */
+.ExchangeRateSection {
+  width: 25%; /* 전체 너비의 25%로 줄임 */
+  background-color: #f9f9f9; /* 배경색 */
+  border-radius: 10px; /* 둥근 모서리 */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  padding: 15px; /* 패딩을 약간 늘림 */
+  display: flex; /* Flexbox 사용 */
+  flex-direction: column; /* 세로 방향 정렬 */
+  align-items: center; /* 중앙 정렬 */
 }
 
-/* 환율 정보 섹션: 나머지 35% 공간을 사용 */
-.ExchangeRateSection {
-  width: 35%;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
