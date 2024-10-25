@@ -137,14 +137,14 @@ const AdSavingsProduct = () => {
             <button className="AdSavingsProduct-register-button" onClick={handleRegister}>등록</button>
           </div>
 
-          <div className="AdMemberList-paginationControls">
-            <label>페이지당 항목 수: </label>
-            <select value={displayCount} onChange={(e) => setDisplayCount(Number(e.target.value))}>
-              <option value={3}>3</option>
-              <option value={5}>5</option>
-              <option value={7}>7</option>
-            </select>
-          </div>
+          <div className="AdSavingsProduct-pagination-controls">
+              <label>페이지당 항목 수: </label>
+                    <select value={displayCount} onChange={(e) => setDisplayCount(Number(e.target.value))}>
+                        <option value={3}>3</option>
+                        <option value={5}>5</option>
+                        <option value={7}>7</option>
+                    </select>
+                </div>
 
           <table className="AdSavingsProduct-table">
             <thead>
@@ -188,25 +188,28 @@ const AdSavingsProduct = () => {
           </table>
 
           <div className="AdSavingsProduct-pagination">
-            <button disabled={currentPage === 1} onClick={() => handlePageChange(1)}>{'<<'}</button>
-            <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>{'<'}</button>
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              이전
+            </button>
+            <span className="AdSavingsProduct-page-info">
+              {currentPage} / {totalPages}
+            </span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              다음
+            </button>
+          </div>
 
-            {getPageNumbers().map(pageNum => (
-              <button
-                key={pageNum}
-                className={pageNum === currentPage ? 'active' : ''}
-                onClick={() => handlePageChange(pageNum)}
-              >
-                {pageNum}
-              </button>
-            ))}
-
-            <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>{'>'}</button>
-            <button disabled={currentPage === totalPages} onClick={() => handlePageChange(totalPages)}>{'>>'}</button>
+            
           </div>
         </div>
       </div>
-    </div> 
+   
   );
 };
 

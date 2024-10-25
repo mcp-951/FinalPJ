@@ -70,7 +70,9 @@ const AdRegisterProduct = () => {
                     name="depositCategory"
                     value={formData.depositCategory}
                     onChange={handleChange}
+                    required
                   >
+                    <option value="" disabled>-- 선택하세요 --</option>
                     <option value="1">예금</option>
                     <option value="2">적금</option>
                   </select>

@@ -96,12 +96,50 @@
 }
 
 .AdDepositProduct-pagination-controls {
-  margin-top: 20px;
+  margin-top: 15px; /* 페이지 네이션과 표 사이의 간격 */
   display: flex;
-  align-items: center;
+  justify-content: flex-end; /* 우측 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
 }
+
+.AdDepositProduct-pagination-controls label {
+  margin-right: 10px; /* label과 select 사이의 간격 */
+}
+
 
 .AdDepositProduct-pagination-controls select {
   margin-left: 10px;
   padding: 5px;
+}
+
+/* 페이지 네이션 스타일 */
+/* 페이지 네이션 스타일 */
+.AdDepositProduct-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px; /* 페이지 번호 간격 */
+}
+
+.AdDepositProduct-pagination button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.AdDepositProduct-pagination button:hover {
+  background-color: #5f8bb2;
+}
+
+.AdDepositProduct-pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.AdDepositProduct-pagination .active {
+  background-color: #5f8bb2;
+  font-weight: bold;
 }

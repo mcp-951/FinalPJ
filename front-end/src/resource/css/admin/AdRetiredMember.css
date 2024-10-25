@@ -109,3 +109,34 @@
   font-size: 18px;
   color: #888;
 }
+
+/* 페이지 네이션 스타일 */
+.AdRetiredMember-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px; /* 페이지 번호 간격 */
+}
+
+.AdRetiredMember-pagination button {
+  background-color: #74a1d2;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.AdRetiredMember-pagination button:hover {
+  background-color: #5f8bb2;
+}
+
+.AdRetiredMember-pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.AdRetiredMember-pagination .active {
+  background-color: #5f8bb2;
+  font-weight: bold;
+}

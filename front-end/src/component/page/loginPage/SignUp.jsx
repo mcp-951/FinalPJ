@@ -43,31 +43,6 @@ function SignUp() {
         setForm({ ...form, [name]: value });
     };
 
-    // 아이디 중복 확인
-    const idCheck = () => {
-        const userId = form.userId;
-        if (userId === '') {
-            setIdCheckMessage('아이디를 입력하세요');
-        } else {
-            handleCheckId(userId);
-        }
-    };
-    const handleCheckId = (userId) => {
-        apiSer.checkId(userId)
-            .then((response) => {
-                if (response.data === '') {
-                    setIdCheckMessage(`${userId}는(은) 사용가능한 아이디입니다.`);
-                    setIdCheckState(true);
-                } else {
-                    setIdCheckMessage(`${userId}는(은) 이미 존재하는 아이디입니다.`);
-                    setIdCheckState(false);
-                }
-            })
-            .catch((error) => {
-                console.error('Error checking ID: ', error);
-            });
-    };
-
     // 신분증 인증 처리 함수
     const ocrMove = () => {
         const localNo = form.residentNumber1 + form.residentNumber2;
@@ -107,6 +82,32 @@ function SignUp() {
                 navigate('/login');
             });
         }
+    };
+
+    // 아이디 중복 확인
+    const idCheck = () => {
+        const userId = form.userId;
+        if (userId === '') {
+            setIdCheckMessage('아이디를 입력하세요');
+        } else {
+            handleCheckId(userId);
+        }
+    };
+
+    const handleCheckId = (userId) => {
+        apiSer.checkId(userId)
+            .then((response) => {
+                if (response.data === '') {
+                    setIdCheckMessage(`${userId}는(은) 사용가능한 아이디입니다.`);
+                    setIdCheckState(true);
+                } else {
+                    setIdCheckMessage(`${userId}는(은) 이미 존재하는 아이디입니다.`);
+                    setIdCheckState(false);
+                }
+            })
+            .catch((error) => {
+                console.error('Error checking ID: ', error);
+            });
     };
 
     // 비밀번호 확인
@@ -212,194 +213,209 @@ function SignUp() {
 
     return (
         <div className="SignUp-container">
-            <form onSubmit={handleSubmit} className="SignUp-form">
-                <div className="form-row">
-                    <label className="SignUp-label">아이디</label>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            placeholder="아이디를 입력하세요"
-                            name="userId"
-                            value={form.userId}
-                            onChange={handleChange}
-                            className="SignUp-input"
-                        />
-                        <button type="button" onClick={idCheck} className="SignUp-button">중복체크</button>
-                    </div>
-                    {idCheckMessage && <p className="SignUp-message">{idCheckMessage}</p>}
-                </div>
-
-                <div className="form-row">
-                    <label className="SignUp-label">비밀번호</label>
-                    <input
-                        type="password"
-                        placeholder="비밀번호를 입력하세요"
-                        name="userPw"
-                        value={form.userPw}
-                        onChange={handleChange}
-                        className="SignUp-input"
-                    />
-                </div>
-
-                <div className="form-row">
-                    <label className="SignUp-label">비밀번호 확인</label>
-                    <input
-                        type="password"
-                        placeholder="비밀번호를 다시 입력해 주세요"
-                        name="confirmPassword"
-                        value={form.confirmPassword}
-                        onChange={handleChange}
-                        className="SignUp-input"
-                    />
-                    {pwSameCheck && <p className="SignUp-message">비밀번호가 일치하지 않습니다.</p>}
-                </div>
-
-                <div className="form-row">
-                    <label className="SignUp-label">이름</label>
-                    <input
-                        type="text"
-                        placeholder="이름을 입력해 주세요"
-                        name="name"
-                        value={form.name}
-                        onChange={handleChange}
-                        className="SignUp-input"
-                    />
-                </div>
-
-                <div className="form-row">
-                    <label className="SignUp-label">주민등록번호</label>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            placeholder="앞 6자리"
-                            name="residentNumber1"
-                            value={form.residentNumber1}
-                            onChange={handleChange}
-                            className="SignUp-input-half"
-                        />
-                        <span className="hyphen">-</span>
-                        <input
-                            type="password"
-                            placeholder="뒤 7자리"
-                            name="residentNumber2"
-                            value={form.residentNumber2}
-                            onChange={handleChange}
-                            className="SignUp-input-half"
-                        />
-                    </div>
-                </div>
-
-                <div className="form-row">
-                    <label className="SignUp-label">신분증 인증</label>
-                    <button type="button" onClick={ocrMove} className="SignUp-button">신분증 인증하기</button>
-                    {ocrCheck && <p className="SignUp-auth-success">신분증 인증 완료</p>}
-                </div>
-
-                <div className="form-row">
-                    <label className="SignUp-label">이메일</label>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            placeholder="이메일을 입력하세요"
-                            name="email1"
-                            value={form.email1}
-                            onChange={handleChange}
-                            className="SignUp-input-half"
-                        />
-                        <span className="at">@</span>
-                        <input
-                            type="text"
-                            placeholder="도메인"
-                            name="email2"
-                            value={form.email2}
-                            onChange={handleChange}
-                            className="SignUp-input-half"
-                        />
-                        <select value={form.email2} onChange={handleChangeEmail2} className="SignUp-select">
-                            <option value="">직접입력</option>
-                            <option value="gmail.com">gmail.com</option>
-                            <option value="naver.com">naver.com</option>
-                            <option value="daum.net">daum.net</option>
-                            <option value="nate.com">nate.com</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div className="form-row">
-                    <label className="SignUp-label">핸드폰 번호</label>
-                    <div className="input-group">
-                        <input
-                            type="tel"
-                            placeholder="핸드폰 번호를 입력해 주세요"
-                            name="hp"
-                            value={form.hp}
-                            onChange={handleChange}
-                            className="SignUp-input"
-                        />
-                        <button type="button" onClick={hpCheck} className="SignUp-button">인증번호 받기</button>
-                    </div>
-                </div>
-
-                {startCheckHp && (
+            <h2 className="SignUp-title">회원가입</h2>
+                <form onSubmit={handleSubmit} className="SignUp-form">
                     <div className="form-row">
-                        <label className="SignUp-label">인증번호</label>
+                        <label className="SignUp-label">아이디</label>
                         <div className="input-group">
                             <input
                                 type="text"
-                                placeholder="인증번호를 입력하세요"
-                                name="hpAuthkey"
-                                value={form.hpAuthkey}
+                                placeholder="아이디를 입력하세요"
+                                name="userId"
+                                value={form.userId}
                                 onChange={handleChange}
                                 className="SignUp-input"
                             />
-                            <button type="button" onClick={authingKey} className="SignUp-button">인증번호 확인</button>
+                            <button type="button" onClick={idCheck} className="SignUp-button">중복체크</button>
                         </div>
-                        {stateAuth && <p className="SignUp-auth-success">인증 성공</p>}
+                        {idCheckMessage && <p className="SignUp-message">{idCheckMessage}</p>}
                     </div>
-                )}
 
-                <div className="form-row">
-                    <label className="SignUp-label">생년월일</label>
-                    <input
-                        type="date"
-                        name="birth"
-                        value={form.birth}
-                        onChange={handleChange}
-                        className="SignUp-input"
-                    />
-                </div>
-
-                <div className="form-row">
-                    <label className="SignUp-label">주소</label>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            name="address1"
-                            value={form.address1}
-                            onChange={handleChange}
-                            className="SignUp-input"
-                        />
-                        <button type="button" onClick={openPopup} className="SignUp-button">검색</button>
-                    </div>
-                </div>
-
-                {plusAddress && (
                     <div className="form-row">
-                        <label className="SignUp-label">추가 주소</label>
-                        <input
-                            type="text"
-                            name="address2"
-                            value={form.address2}
-                            onChange={handleChange}
-                            placeholder="추가 주소를 입력하세요"
-                            className="SignUp-input"
-                        />
+                        <label className="SignUp-label">비밀번호</label>
+                        <div className="input-group">
+                            <input
+                                type="password"
+                                placeholder="비밀번호를 입력하세요"
+                                name="userPw"
+                                value={form.userPw}
+                                onChange={handleChange}
+                                className="SignUp-input"
+                            />
+                        </div>
                     </div>
-                )}
 
-                <button type="submit" className="SignUp-submit-button">가입완료</button>
-            </form>
-        </div>
+                    <div className="form-row">
+                        <label className="SignUp-label">비밀번호 확인</label>
+                        <div className="input-group">
+                            <input
+                                type="password"
+                                placeholder="비밀번호를 다시 입력해 주세요"
+                                name="confirmPassword"
+                                value={form.confirmPassword}
+                                onChange={handleChange}
+                                className="SignUp-input"
+                            />
+                            {pwSameCheck && <p className="SignUp-message">비밀번호가 일치하지 않습니다.</p>}
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                        <label className="SignUp-label">이름</label>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                placeholder="이름을 입력해 주세요"
+                                name="name"
+                                value={form.name}
+                                onChange={handleChange}
+                                className="SignUp-input"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                        <label className="SignUp-label">주민등록번호</label>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                placeholder="앞 6자리"
+                                name="residentNumber1"
+                                value={form.residentNumber1}
+                                onChange={handleChange}
+                                className="SignUp-input-half"
+                            />
+                            <span className="hyphen">-</span>
+                            <input
+                                type="text"
+                                placeholder="뒤 7자리"
+                                name="residentNumber2"
+                                value={form.residentNumber2}
+                                onChange={handleChange}
+                                className="SignUp-input-half"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                        <label className="SignUp-label">신분증 인증</label>
+                        <div className="input-group">
+                            <button type="button" onClick={ocrMove} className="SignUp-button">신분증 인증하기</button>
+                            {ocrCheck && <p className="SignUp-auth-success">신분증 인증 완료</p>}
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                        <label className="SignUp-label">이메일</label>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                placeholder="이메일을 입력하세요"
+                                name="email1"
+                                value={form.email1}
+                                onChange={handleChange}
+                                className="SignUp-input-half"
+                            />
+                            <span className="at">@</span>
+                            <input
+                                type="text"
+                                placeholder="도메인"
+                                name="email2"
+                                value={form.email2}
+                                onChange={handleChange}
+                                className="SignUp-input-half"
+                            />
+                            <select value={form.email2} onChange={handleChangeEmail2} className="SignUp-select">
+                                <option value="">직접입력</option>
+                                <option value="gmail.com">gmail.com</option>
+                                <option value="naver.com">naver.com</option>
+                                <option value="daum.net">daum.net</option>
+                                <option value="nate.com">nate.com</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                        <label className="SignUp-label">핸드폰 번호</label>
+                        <div className="input-group">
+                            <input
+                                type="tel"
+                                placeholder="핸드폰 번호를 입력해 주세요"
+                                name="hp"
+                                value={form.hp}
+                                onChange={handleChange}
+                                className="SignUp-input"
+                            />
+                            <button type="button" onClick={hpCheck} className="SignUp-button">인증번호 받기</button>
+                        </div>
+                    </div>
+
+                    {startCheckHp && (
+                        <div className="form-row">
+                            <label className="SignUp-label">인증번호</label>
+                            <div className="input-group">
+                                <input
+                                    type="text"
+                                    placeholder="인증번호를 입력하세요"
+                                    name="hpAuthkey"
+                                    value={form.hpAuthkey}
+                                    onChange={handleChange}
+                                    className="SignUp-input"
+                                />
+                                <button type="button" onClick={authingKey} className="SignUp-button">인증번호 확인</button>
+                                {stateAuth && <p className="SignUp-auth-success">인증 성공</p>}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="form-row">
+                        <label className="SignUp-label">생년월일</label>
+                        <div className="input-group">
+                            <input
+                                type="date"
+                                name="birth"
+                                value={form.birth}
+                                onChange={handleChange}
+                                className="SignUp-input"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="form-row">
+                        <label className="SignUp-label">주소</label>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                name="address1"
+                                value={form.address1}
+                                onChange={handleChange}
+                                className="SignUp-input"
+                            />
+                            <button type="button" onClick={openPopup} className="SignUp-button">검색</button>
+                        </div>
+                    </div>
+
+                    {plusAddress && (
+                        <div className="form-row">
+                            <label className="SignUp-label">추가 주소</label>
+                            <div className="input-group">
+                                <input
+                                    type="text"
+                                    name="address2"
+                                    value={form.address2}
+                                    onChange={handleChange}
+                                    placeholder="추가 주소를 입력하세요"
+                                    className="SignUp-input"
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    <button type="submit" className="SignUp-submit-button">가입완료</button>
+                </form>
+            </div>
+
+
     );
 }
 

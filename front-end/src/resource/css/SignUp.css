@@ -1,7 +1,7 @@
 .SignUp-container {
   background-color: #f4f4f4;
-  padding: 30px; /* 패딩 줄임 */
-  max-width: 600px; /* 최대 너비 늘림 */
+  padding: 30px;
+  max-width: 600px;
   margin: 40px auto;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -10,70 +10,67 @@
 .SignUp-form {
   width: 100%;
   display: flex;
-  flex-direction: column; /* 전체 폼을 열 형태로 유지 */
+  flex-direction: column;
 }
 
 .form-row {
-  display: flex; /* 항목을 가로로 정렬 */
-  align-items: center; /* 수직 가운데 정렬 */
-  margin-bottom: 10px; /* 간격 줄임 */
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px; /* 간격 조정 */
 }
 
 .SignUp-label {
-  font-size: 0.9rem; /* 폰트 크기 줄임 */
+  font-size: 0.9rem;
   font-weight: bold;
   color: #333;
-  margin-right: 8px; /* 레이블과 입력 필드 사이의 간격 줄임 */
-  flex: 0 0 25%; /* 행의 25%를 차지 */
+  margin-right: 8px;
+  flex: 0 0 25%; /* 레이블의 너비 조정 */
+}
+
+.input-group {
+  display: flex; /* 입력과 버튼을 가로로 배치 */
+  align-items: center; /* 수직 정렬 */
+  flex: 1; /* 남은 공간을 차지 */
 }
 
 .SignUp-input,
 .SignUp-input-half,
 .SignUp-select {
-  padding: 10px; /* 패딩 통일 */
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  font-size: 0.9rem; /* 폰트 크기 통일 */
-  flex: 1; /* 행에서 남은 공간을 차지 */
-  margin-top: 5px; /* 위쪽 여백 추가 */
-  text-align: left; /* placeholder와 입력 텍스트를 왼쪽으로 정렬 */
-  direction: ltr; /* 왼쪽에서 오른쪽으로 텍스트 방향 설정 */
-}
-
-.SignUp-input::placeholder,
-.SignUp-input-half::placeholder {
-  text-align: left; /* placeholder 텍스트 왼쪽 정렬 */
-}
-
-.SignUp-input-half {
-  width: calc(50% - 8px); /* 반 입력 필드의 너비 조정 */
+  font-size: 0.9rem;
+  flex: 1; /* 입력 필드가 남은 공간을 차지 */
+  margin-right: 8px; /* 버튼과의 간격 조정 */
 }
 
 .SignUp-button {
   background-color: #74a1d2;
   color: white;
   border: none;
-  padding: 8px 15px; /* 패딩 줄임 */
-  border-radius: 5px;
+  padding: 8px 15px; /* 패딩 */
+  border-radius: 20px; /* 둥글게 만들기 */
   cursor: pointer;
   margin-left: 8px; /* 버튼과 다른 요소 사이의 간격 줄임 */
   font-size: 0.9rem; /* 폰트 크기 줄임 */
+  transition: background-color 0.3s; /* 부드러운 배경색 변화 */
 }
 
 .SignUp-button:hover {
-  background-color: #5b8ab8;
+  background-color: #5b8ab8; /* hover 시 색상 변경 */
 }
+
 
 .SignUp-submit-button {
   background-color: #74a1d2;
   color: white;
   border: none;
-  padding: 12px 0; /* 패딩 줄임 */
+  padding: 12px 0;
   border-radius: 5px;
   width: 100%;
-  font-size: 1rem; /* 폰트 크기 줄임 */
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 15px; /* 간격 줄임 */
+  margin-top: 15px;
 }
 
 .SignUp-submit-button:hover {
@@ -91,7 +88,10 @@
   font-size: 0.9rem;
 }
 
-/* select 스타일 추가 */
-.SignUp-select {
-  margin-left: 20px; /* 오른쪽으로 이동할 간격 추가 */
+.SignUp-title {
+  text-align: center; /* 제목 중앙 정렬 */
+  font-size: 1.5rem; /* 제목 크기 */
+  margin-bottom: 20px; /* 제목과 폼 간격 */
+  color: #333; /* 제목 색상 */
 }
+

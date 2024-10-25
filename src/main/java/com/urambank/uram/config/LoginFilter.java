@@ -69,8 +69,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         String role = authorities.iterator().next().getAuthority();
         //System.out.println(role);
-        // 만료 시간 (30분)
-        long tokenValidity = 30 * 60 * 1000L; // 30분을 밀리초로 설정
+        // 만료 시간 (60분)
+        long tokenValidity = 60 * 60 * 1000L; // 60분을 밀리초로 설정
         // JWT 토큰 생성
         String token = jwtUtil.createJwt(username, role, tokenValidity, userNo, name);
         // 응답 헤더에 토큰을 추가

@@ -103,6 +103,28 @@
   margin-right: 10px; /* 검색어 입력창과의 간격 */
 }
 
+.AdFinancialProduct-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.AdFinancialProduct-search-bar input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.AdFinancialProduct-search-bar select, 
+.AdFinancialProduct-search-button {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #74a1d2; /* 버튼 색상 적용 */
+  color: white;
+  cursor: pointer;
+}
+
 .AdFinancialProduct-input {
   padding: 8px;
   font-size: 14px;
@@ -124,11 +146,15 @@
 /* 페이지 네이션 컨트롤 스타일 */
 .AdFinancialProduct-pagination-controls {
   margin-top: 15px; /* 페이지 네이션과 표 사이의 간격 */
+  display: flex;
+  justify-content: flex-end; /* 우측 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
 }
 
 .AdFinancialProduct-pagination-controls label {
-  margin-right: 10px; /* 레이블과 선택 박스 간격 */
+  margin-right: 10px; /* label과 select 사이의 간격 */
 }
+
 
 /* 페이지 네이션 스타일 */
 .AdFinancialProduct-pagination {
