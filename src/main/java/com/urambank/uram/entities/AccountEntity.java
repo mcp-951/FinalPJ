@@ -59,5 +59,4 @@ public class AccountEntity {
     @Column(name = "withdrawal")
     private Character withdrawal;
 
-
 }

@@ -8,6 +8,7 @@ import com.urambank.uram.service.AdminService;
 import com.urambank.uram.dto.LoanProductDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @CrossOrigin(origins = "http://localhost:3000") // CORS 설정 추가
 @RestController
@@ -31,7 +33,6 @@ public class AdminController {
     // 전체 금융 상품 조회
     @GetMapping("/financial-products")
     public List<Object> getAllFinancialProducts() {
-
         System.out.println("<<< AdminController /getAllFinancialProducts >>>");
         return adminService.getAllFinancialProducts();
     }
@@ -195,18 +196,25 @@ public class AdminController {
     @PutMapping("/updateUser/{userNo}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable("userNo") int userNo, @RequestBody UserDTO userDTO) {
         System.out.println("<<< updateUser >>>");
-
         UserDTO updatedUser = adminService.updateUser(userNo, userDTO);
-        return ResponseEntity.ok(updatedUser);
+        if(updatedUser == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }else{
+            return ResponseEntity.ok(updatedUser);
+        }
     }
 
     // 회원 탈퇴 처리 (DTO 사용)
     @PutMapping("/deactivate/{userNo}")
     public ResponseEntity<String> deactivateUser(@PathVariable int userNo) {
-        adminService.deactivateUser(userNo);
-        return ResponseEntity.ok("회원 탈퇴 처리 완료");
+        String result = adminService.setState(userNo,'e');
+        if(Objects.equals(result, "ok")){
+            return ResponseEntity.ok("회원 탈퇴 처리 완료");
+        }
+        else{
+            return ResponseEntity.ok("회원탈퇴 처리 실패");
+        }
     }
-
     //-------------------------------------- 대출 가입현황 리스트 -----------------------------------------
     @GetMapping("/getUserAndLoanData")
     public ResponseEntity<Map<String, Object>> getAdminAndLoanData() {

@@ -17,10 +17,8 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products/deposits")
-
 public class DepositController {
 
-    private PasswordEncoder passwordEncoder;
     private final DepositService depositService;
     private JWTUtil jwtUtil;
     private DepositService emergencyWithdrawalService;
@@ -193,6 +191,4 @@ public class DepositController {
             return ResponseEntity.status(500).body(false);
         }
     }
-
-
 }

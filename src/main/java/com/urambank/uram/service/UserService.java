@@ -86,24 +86,23 @@ public class UserService {
         UserDTO dto = new UserDTO();
 
         try {
-            // 사용자 정보 설정 및 비밀번호 암호화
-            User user = new User();
-//            user.setUserNo(userNo);
-            user.setUserId(userDTO.getUserId());
-            user.setHp(userDTO.getHp());
-            user.setEmail(userDTO.getEmail());
-            user.setResidentNumber(userDTO.getResidentNumber());
-            user.setName(userDTO.getName());
             String encodingPw = passwordEncoder.encode(userDTO.getUserPw());
-            System.out.println("encodingPw : " + encodingPw);
-            user.setUserPw(encodingPw);  // 비밀번호 암호화
-            user.setBirth(userDTO.getBirth());
-            user.setAddress(userDTO.getAddress());
-            user.setUserRole("USER");
-            user.setState('y');
-            user.setGrade(userDTO.getGrade());
-            user.setJoinDate(Date.valueOf(LocalDate.now()));
-            user.setOCRCheck(userDTO.getOCRCheck());
+            // 사용자 정보 설정 및 비밀번호 암호화
+            User user = User.builder()
+                            .userId(userDTO.getUserId())
+                            .userPw(encodingPw)
+                            .birth(userDTO.getBirth())
+                            .name(userDTO.getName())
+                            .grade(userDTO.getGrade())
+                            .joinDate(Date.valueOf(LocalDate.now()))
+                            .state('y')
+                            .email(userDTO.getEmail())
+                            .ocrCheck(userDTO.getOCRCheck())
+                            .hp(userDTO.getHp())
+                            .userRole("USER")
+                            .residentNumber(userDTO.getResidentNumber())
+                            .address(userDTO.getAddress())
+                            .build();
 
             // 사용자 저장
             User savedUser = userRepository.save(user);
@@ -155,9 +154,8 @@ public class UserService {
 
     public String findUserId(String name, String hp){
         System.out.println("name : " + name);
-        User user = new User();
         try{
-            user = userRepository.findByNameAndHp(name,hp);
+            User user = userRepository.findByNameAndHp(name,hp);
             return user.getUserId();
         }catch(NullPointerException e){
             return "";
@@ -168,7 +166,21 @@ public class UserService {
         try{
             User user = userRepository.findByNameAndHp(dto.getName(),dto.getHp());
             String pw = passwordEncoder.encode(dto.getUserPw());
-            user.setUserPw(pw);
+            user = User.builder()
+                    .userNo(user.getUserNo())
+                    .userId(user.getUserId())
+                    .userPw(pw)
+                    .userRole("ROLE_USER")
+                    .state('y')
+                    .email(user.getEmail())
+                    .name(user.getName())
+                    .address(user.getAddress())
+                    .ocrCheck(user.getOCRCheck())
+                    .hp(user.getHp())
+                    .birth(user.getBirth())
+                    .joinDate(user.getJoinDate())
+                    .residentNumber(user.getResidentNumber())
+                    .build();
             user = userRepository.save(user);
             return user.getUserPw();
         }catch(NullPointerException e){
@@ -215,8 +227,26 @@ public class UserService {
         String encodedNewPw = passwordEncoder.encode(newUserPw);
         User user = userRepository.findByUserNo(userNo);
         if(passwordEncoder.matches(userPw,user.getUserPw())) {
-            user.setUserPw(encodedNewPw);
-            userRepository.save(user);
+            try {
+                user = User.builder()
+                        .userNo(user.getUserNo())
+                        .userId(user.getUserId())
+                        .userPw(encodedNewPw)
+                        .userRole("ROLE_USER")
+                        .state('y')
+                        .email(user.getEmail())
+                        .name(user.getName())
+                        .address(user.getAddress())
+                        .ocrCheck(user.getOCRCheck())
+                        .hp(user.getHp())
+                        .birth(user.getBirth())
+                        .joinDate(user.getJoinDate())
+                        .residentNumber(user.getResidentNumber())
+                        .build();
+                userRepository.save(user);
+            }catch (NullPointerException e){
+                return "error";
+            }
             return "ok";
         }else{
             return "error";

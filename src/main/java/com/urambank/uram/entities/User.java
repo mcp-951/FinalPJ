@@ -7,12 +7,11 @@ import lombok.*;
 
 import java.sql.Date;
 
-@Table(name="userInfo")
-@Getter
-@Setter
+
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name="userInfo")
 public class User {
 
     @Id
@@ -49,17 +48,17 @@ public class User {
     @Column(length = 100, nullable = true, unique = false)
     private int OCRCheck;
 
-    @Column(name = "user_role",length = 20, nullable = true, unique = false)
+    @Column(length = 20, nullable = true, unique = false)
     private String userRole;
 
     @Column(length = 100, nullable = true, unique = false)
     private String residentNumber;
 
-    @Column(name = "grade")
+    @Column
     private int grade;
 
     @Builder
-    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck, int grade) {
+    public User(int userNo, String userId, String userPw, String name, Date birth, String hp, String email, Date joinDate, char state, int ocrCheck, int grade,String userRole, String address, String residentNumber) {
         this.userNo = userNo;
         this.userId = userId;
         this.userPw = userPw;
@@ -71,7 +70,8 @@ public class User {
         this.state = state;
         this.OCRCheck = ocrCheck;
         this.grade = grade;
+        this.residentNumber = residentNumber;
+        this.address = address;
+        this.userRole = userRole;
     }
-
-
 }

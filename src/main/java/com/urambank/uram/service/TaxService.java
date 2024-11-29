@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public class TaxService {
     final TaxRepository taxRepository;
 
-    public TaxDTO taxTomonth(int userNo, String category){
+    public TaxDTO taxToMonth(int userNo, String category){
         List<TaxEntity> eList =  taxRepository.findByUserNoAndTaxCategory(userNo, category);
         TaxDTO dto = null;
         LocalDate localTime = LocalDate.now();

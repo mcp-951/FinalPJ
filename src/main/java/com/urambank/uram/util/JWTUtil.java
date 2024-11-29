@@ -15,7 +15,6 @@ import java.util.HashMap;
 public class JWTUtil {
 
     private final SecretKey secretKey;
-    //private static final long ACCESS_TOKEN_EXPIRATION_TIME = 10 * 60 * 10L;  // 1시간
     private static final long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7L;  // 7일
 
     public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
@@ -89,10 +88,12 @@ public class JWTUtil {
                 .compact();
     }
 
-    public String generateRefreshToken(HashMap<String, Object> claims, UserDetails userDetails) {
+    public String generateRefreshToken(String username, String role, Long expiredMs, int userNo, String name) {
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(userDetails.getUsername())
+                .claim("userNo", userNo)
+                .claim("username", username)
+                .claim("role", role)
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_TIME))
                 .signWith(secretKey)

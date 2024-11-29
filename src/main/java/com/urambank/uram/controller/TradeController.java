@@ -36,6 +36,7 @@ public class TradeController {
             Integer userNo = tradeService.getUserNoByUserId(userId);
             if (userNo == null) {
                 return ResponseEntity.status(404).body(null);
+
             }
             return ResponseEntity.ok(userNo);
         } catch (Exception e) {

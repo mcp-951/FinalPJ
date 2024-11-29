@@ -4,6 +4,7 @@ import com.urambank.uram.dto.UserDTO;
 import com.urambank.uram.service.KakaoService;
 import com.urambank.uram.service.UserService;
 import jakarta.servlet.ServletException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,21 +13,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@CrossOrigin(origins="http://localhost:3000")
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
-
     private final KakaoService kakaoService;
-
-    public UserController(UserService userService, KakaoService kakaoService) {
-        super();
-        this.userService = userService;
-        this.kakaoService = kakaoService;
-    }
 
     //id 중복조회
     @GetMapping("/findById/{userId}")

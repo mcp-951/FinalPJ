@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,13 +16,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class JWTFilter extends OncePerRequestFilter {
     private final JWTUtil jwtUtil;
-    public JWTFilter(JWTUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
         //request에서 Authorization 헤더를 찾음
         String authorization= request.getHeader("Authorization");
         // 필터 타지 않도록 설정
@@ -98,16 +97,17 @@ public class JWTFilter extends OncePerRequestFilter {
         System.out.println(role);
 
         //userEntity를 생성하여 값 set
-        User userEntity = new User();
-        userEntity.setUserId(username);
-        userEntity.setUserPw("temppassword");
-        userEntity.setUserRole(role);
+        User userEntity = User.builder()
+                .userId(username)
+                .userPw("temppassword")
+                .userRole(role)
+                .build();
 
-        //UserDetails에 회원 정보 객체 담기
+        // UserDetails에 회원 정보 객체 담기
         CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
-        //스프링 시큐리티 인증 토큰 생성
+        // 스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-        //세션에 사용자 등록
+        // 세션에 사용자 등록
         SecurityContextHolder.getContext().setAuthentication(authToken);
         // 필터 종료
         filterChain.doFilter(request, response);

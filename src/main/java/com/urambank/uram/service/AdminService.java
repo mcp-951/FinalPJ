@@ -3,7 +3,6 @@ package com.urambank.uram.service;
 import com.urambank.uram.dto.*;
 import com.urambank.uram.entities.LogEntity;
 import com.urambank.uram.entities.User;
-import com.urambank.uram.entities.LoanEntity;
 import com.urambank.uram.entities.AccountEntity;
 import com.urambank.uram.entities.DepositEntity;
 import com.urambank.uram.entities.LoanProductEntity;
@@ -13,8 +12,6 @@ import com.urambank.uram.repository.DepositRepository;
 import com.urambank.uram.repository.AccountRepository;
 import com.urambank.uram.repository.LoanProductRepository;
 import com.urambank.uram.repository.LoanRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -149,8 +146,7 @@ public class AdminService {
         List<Object> allProducts = new ArrayList<>();
 
         // 1. DepositEntity를 DepositDTO로 변환
-        List<DepositDTO> deposits = depositRepository.findAll()
-                .stream()  // DepositEntity 리스트를 스트림으로 변환
+        List<DepositDTO> deposits = depositRepository.findAll().stream()  // DepositEntity 리스트를 스트림으로 변환
                 .map(deposit -> DepositDTO.builder()
                         .depositNo(deposit.getDepositNo())
                         .depositName(deposit.getDepositName())
@@ -244,7 +240,6 @@ public class AdminService {
                     .build();  // 모든 필드를 포함한 적금 DTO 생성
 
             list.add(depositDTO);  // 적금 DTO를 리스트에 추가
-
         }
         System.out.println("DepositDTO details: " + list);
         return list;  // 적금 상품 목록 반환
@@ -628,40 +623,57 @@ public class AdminService {
     public UserDTO updateUser(int userNo, UserDTO userDTO) {
         User userEntity = userRepository.findById(userNo)
                 .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
-
-        // 비밀번호가 null이 아닌 경우에만 업데이트
-        if (userDTO.getUserPw() != null && !userDTO.getUserPw().isEmpty()) {
-            userEntity.setUserPw(userDTO.getUserPw());
-        }
-
         // 다른 필드 업데이트
-        userEntity.setUserId(userDTO.getUserId());
-        userEntity.setEmail(userDTO.getEmail());
-        userEntity.setName(userDTO.getName());
-        userEntity.setResidentNumber(userDTO.getResidentNumber());
-        userEntity.setOCRCheck(userDTO.getOCRCheck());
-        userEntity.setBirth(userDTO.getBirth());
-        userEntity.setHp(userDTO.getHp());
-        userEntity.setAddress(userDTO.getAddress());
-        userEntity.setState(userDTO.getState());
-
-        User updatedEntity = userRepository.save(userEntity);
-        return convertToDTO(updatedEntity);
+        try{
+            userEntity = User.builder()
+                    .userNo(userEntity.getUserNo())
+                    .userId(userDTO.getUserId())
+                    .userPw(userDTO.getUserPw())
+                    .name(userDTO.getName())
+                    .email(userDTO.getEmail())
+                    .birth(userDTO.getBirth())
+                    .hp(userDTO.getHp())
+                    .address(userDTO.getAddress())
+                    .joinDate(userDTO.getJoinDate())
+                    .userRole(userDTO.getUSER_ROLE())
+                    .residentNumber(userDTO.getResidentNumber())
+                    .ocrCheck(userDTO.getOCRCheck())
+                    .state(userDTO.getState())
+                    .build();
+            User updatedEntity = userRepository.save(userEntity);
+            return convertToDTO(updatedEntity);
+        }catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    // 회원 탈퇴 처리 (state를 'END'로 변경)
-    public void deactivateUser(int userNo) {
+    public String setState(int userNo, char userState) {
         User userEntity = userRepository.findById(userNo)
                 .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
-        userEntity.setState('e'); // 상태를 '탈퇴'가 아닌 'END'로 변경
-        userRepository.save(userEntity);
-    }
-
-    public void setState(int userNo, char userState) {
-        User userEntity = userRepository.findById(userNo)
-                .orElseThrow(() -> new RuntimeException("회원이 존재하지 않습니다."));
-        userEntity.setState(userState); // 상태를 '정상'가 아닌 '정지'로 변경
-        userRepository.save(userEntity);
+        // 다른 필드 업데이트
+        try{
+            userEntity = User.builder()
+                    .userNo(userEntity.getUserNo())
+                    .userId(userEntity.getUserId())
+                    .userPw(userEntity.getUserPw())
+                    .name(userEntity.getName())
+                    .email(userEntity.getEmail())
+                    .birth(userEntity.getBirth())
+                    .hp(userEntity.getHp())
+                    .address(userEntity.getAddress())
+                    .joinDate(userEntity.getJoinDate())
+                    .userRole(userEntity.getUserRole())
+                    .residentNumber(userEntity.getResidentNumber())
+                    .ocrCheck(userEntity.getOCRCheck())
+                    .state(userState)
+                    .build();
+            userRepository.save(userEntity);
+            return "ok";
+        }catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public Map<String, Object> getAdminAndLoanData() {
@@ -701,8 +713,6 @@ public class AdminService {
                         .loanProductTitle(products.getLoanProductTitle())
                         .build())
                 .collect(Collectors.toList());
-
-
         // 두 리스트를 Map에 넣어서 반환
         Map<String, Object> result = new HashMap<>();
         result.put("users", users);
@@ -713,4 +723,3 @@ public class AdminService {
     }
 
 }
-

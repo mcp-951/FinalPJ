@@ -20,7 +20,7 @@ public class SupportService {
 
     // 특정 사용자 ID로 삭제되지 않은 문의글 목록 조회
     public List<SupportDTO> getActiveSupportByUserId(Integer userId) {
-        List<SupportEntity> supports = supportRepository.findAllByUserIdAndIsDeleted(userId, "N");
+         List<SupportEntity> supports = supportRepository.findAllByUserIdAndIsDeleted(userId, "N");
         List<SupportDTO> dtoList = new ArrayList<>();
         for (SupportEntity support : supports) {
             System.out.println(convertToDTO(support));

@@ -106,7 +106,6 @@ public class TradeService {
     // 8. selectedAccountNumber로 accountNo를 가져오는 서비스 메서드 (AccountEntity -> AccountDTO 변환)
     public AccountDTO getAccountNoBySelectedAccountNumber(String selectedAccountNumber) {
         Optional<AccountEntity> account = accountRepository.findByAccountNumber(selectedAccountNumber);
-
         // 값이 있으면 AccountDTO로 변환하여 반환, 없으면 null 반환
         return account.map(AccountDTO::toAccountDTO).orElse(null);
     }

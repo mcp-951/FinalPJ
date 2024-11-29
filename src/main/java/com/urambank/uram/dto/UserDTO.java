@@ -43,6 +43,4 @@ public class UserDTO {
     private String residentNumber2;
     private int grade;
 
-
-
 }

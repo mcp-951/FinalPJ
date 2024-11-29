@@ -49,8 +49,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             // 파싱 완료 데이터 변수 저장
             String userId = jsonRequest.get("userId");
             String userPw = jsonRequest.get("userPw");
-//            System.out.println("userId : " + userId);
-//            System.out.println("userPw : " + userPw);
             // 인증 토큰 생성
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userId, userPw, null);
             // 인증 토큰 넣어서 인가 리턴
@@ -73,11 +71,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         long tokenValidity = 60 * 60 * 1000L; // 60분을 밀리초로 설정
         // JWT 토큰 생성
         String token = jwtUtil.createJwt(username, role, tokenValidity, userNo, name);
+        String refreshToken = jwtUtil.generateRefreshToken(username, role, tokenValidity, userNo, name);
         // 응답 헤더에 토큰을 추가
         response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("Authorization", "Bearer " + refreshToken);
         // TokenDTO 객체 생성
         TokenDTO dto = new TokenDTO();
         dto.setAccessToken(token);
+        dto.setRefreshToken(refreshToken);
         dto.setUserNo(userNo);
         // 응답을 JSON 형식으로 설정
         response.setContentType("application/json");

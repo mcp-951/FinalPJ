@@ -17,8 +17,8 @@ public class TaxContoller {
 
     @GetMapping("/TaxMain/{userNo}/{category}")
     public TaxDTO electroTax(@PathVariable("userNo") int userNo, @PathVariable("category") String category){
-        System.out.println(taxService.taxTomonth(userNo, category) + "값임");
-        return taxService.taxTomonth(userNo, category);
+        System.out.println(taxService.taxToMonth(userNo, category) + "값임");
+        return taxService.taxToMonth(userNo, category);
     }
 
     @GetMapping("/taxSelectList/{userNo}/{taxYear}/{taxMonth}/{category}")

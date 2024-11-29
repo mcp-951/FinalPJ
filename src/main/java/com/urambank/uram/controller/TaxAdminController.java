@@ -42,8 +42,6 @@ public class TaxAdminController {
         return ResponseEntity.ok("Tax updated successfully");
     }
 
-
-
     // userNo를 통해 userId 가져오기
     @GetMapping("/userId/{userNo}")
     public ResponseEntity<String> getUserIdByUserNo(@PathVariable("userNo") int userNo) {
